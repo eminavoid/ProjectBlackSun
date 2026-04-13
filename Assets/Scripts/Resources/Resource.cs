@@ -1,7 +1,7 @@
 public enum Resource
 {
-    Gold,
-    Fervor,
+    Wealth,
+    Zeal,
     Authority,
-    Devouts,
+    Flock,
 }

@@ -1,14 +1,28 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 [CreateAssetMenu(fileName = "Player Resources", menuName = "PlayerResources", order = 1)]
 public class PlayerResources : ScriptableObject
 {
-    public Dictionary<Resource, int> Resources { get; } = new Dictionary<Resource, int>()
+    private readonly Dictionary<Resource, int> resources = new Dictionary<Resource, int>()
     {
-        { Resource.Gold, 0 },
-        { Resource.Fervor, 0 },
-        { Resource.Devouts, 0 },
+        { Resource.Wealth, 0 },
+        { Resource.Zeal, 0 },
+        { Resource.Flock, 0 },
         { Resource.Authority, 0 },
     };
+
+    public Action<Resource, int> onResourceGained;
+
+    public void AddResource(Resource resource, int amount)
+    {
+        resources[resource] += amount;
+        onResourceGained?.Invoke(resource, amount);
+    }
+
+    public int GetResourceAmount(Resource resource)
+    {
+        return resources[resource];
+    }
 }
