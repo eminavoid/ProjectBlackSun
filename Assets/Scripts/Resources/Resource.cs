@@ -4,4 +4,5 @@ public enum Resource
     Zeal,
     Authority,
     Flock,
+    Happiness
 }

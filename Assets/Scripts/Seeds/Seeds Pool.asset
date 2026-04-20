@@ -9,6 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 944f7ce597ee0354283c0582b5e0969a, type: 3}
-  m_Name: Test Option
-  m_EditorClassIdentifier: Assembly-CSharp::TestOption
+  m_Script: {fileID: 11500000, guid: d567af7d0fb77254da0d64f5ea91d23b, type: 3}
+  m_Name: Seeds Pool
+  m_EditorClassIdentifier: Assembly-CSharp::SeedsPool
+  EvilSeeds:
+  - {fileID: 11400000, guid: 751c739df90a0fa4fbfe9fee24f9a964, type: 2}

@@ -6,6 +6,11 @@ public class DistrictData : ScriptableObject
 {
     private readonly List<Node> nodes = new List<Node>();
 
+    public Node GetRandomNode()
+    {
+        return nodes[Random.Range(0, nodes.Count)];
+    }
+
     public List<Node> GetNodes()
     {
         return new List<Node>(nodes);

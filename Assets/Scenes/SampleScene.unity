@@ -405,6 +405,53 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 79565981}
   m_CullTransparentMesh: 1
+--- !u!1 &118157088
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 118157090}
+  - component: {fileID: 118157089}
+  m_Layer: 0
+  m_Name: AI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &118157089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 118157088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: feec550e70dfc7d4ca2747b9ddf34237, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DebugAI
+  seedsPool: {fileID: 11400000, guid: 948e32aecc4880044bb13623f65d8a0e, type: 2}
+  minTickCooldown: 3
+  spawnTickChanceRatio: 0.25
+--- !u!4 &118157090
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 118157088}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1717.0149, y: 813.70874, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &126405046
 GameObject:
   m_ObjectHideFlags: 0
@@ -2015,9 +2062,10 @@ MonoBehaviour:
   startZeal: 0
   startFlock: 50
   startAuthority: 0
-  tithe: 1
+  startHappiness: 100
+  tithe: 0.5
   monthlyWealthPerFlock: 1
-  monthlyZealPerFlock: 0.5
+  monthlyZealPerFlock: 1
   uiWindow: {fileID: 8615628383825455374, guid: 778a8f7019ff05743b5ad1abc6c8d319, type: 3}
 --- !u!1 &939013296
 GameObject:
@@ -3972,3 +4020,4 @@ SceneRoots:
   - {fileID: 394309179}
   - {fileID: 339160}
   - {fileID: 443712482}
+  - {fileID: 118157090}

@@ -1,13 +1,23 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Option : ScriptableObject
+[CreateAssetMenu(fileName = "New Option", menuName = "Options/New Option", order = 1)]
+public class Option : ScriptableObject
 {
-    protected Seed seed;
+    [SerializeReferenceDropdown, SerializeReference] private List<OptionModule> modules;
+
+    private Seed seed;
 
     public void Initialize(Seed seed)
     {
         this.seed = seed;
     }
 
-    public abstract void ExecuteOption();
+    public void ExecuteOption()
+    {
+        for (int i = 0; i < modules.Count; i++)
+        {
+            modules[i]?.Execute(seed);
+        }
+    }
 }

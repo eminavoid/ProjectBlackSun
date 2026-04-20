@@ -11,9 +11,10 @@ public class ResourceManager : Singleton<ResourceManager>
     [SerializeField] private int startZeal;
     [SerializeField] private int startFlock;
     [SerializeField] private int startAuthority;
+    [SerializeField] private int startHappiness = 100;
 
     [Header("Modifiers")]
-    [SerializeField] private float tithe = 1f;
+    [SerializeField] private float tithe = 0.5f;
 
     [Header("Passive production")]
     [SerializeField] private float monthlyWealthPerFlock;
@@ -22,7 +23,14 @@ public class ResourceManager : Singleton<ResourceManager>
     [Header("User Interface")]
     [SerializeField] private UIWindow uiWindow;
 
+    public static PlayerResources Resources => Instance.playerResources;
+
     private UIWindow resourceWindow = null;
+
+    public void SetTithe(float value)
+    {
+        tithe = value;
+    }
 
     protected override void OnInitialization()
     {
@@ -30,6 +38,7 @@ public class ResourceManager : Singleton<ResourceManager>
         playerResources.AddResource(Resource.Zeal, startZeal);
         playerResources.AddResource(Resource.Flock, startFlock);
         playerResources.AddResource(Resource.Authority, startAuthority);
+        playerResources.AddResource(Resource.Happiness, startHappiness);
 
         resourceWindow = Instantiate(uiWindow, GlobalReferences.ScreenCanvas.transform);
 
@@ -37,6 +46,8 @@ public class ResourceManager : Singleton<ResourceManager>
         resourceWindow.TryGetElement<TextMeshProUGUI>("Zeal").text = playerResources.GetResourceAmount(Resource.Zeal).ToString();
         resourceWindow.TryGetElement<TextMeshProUGUI>("Flock").text = playerResources.GetResourceAmount(Resource.Flock).ToString();
         resourceWindow.TryGetElement<TextMeshProUGUI>("Authority").text = playerResources.GetResourceAmount(Resource.Authority).ToString();
+
+        resourceWindow.TryGetElement<TextMeshProUGUI>("Happiness").text = playerResources.GetResourceAmount(Resource.Happiness).ToString() + "%";
 
         playerResources.onResourceGained += OnResourceGained;
     }
@@ -55,7 +66,7 @@ public class ResourceManager : Singleton<ResourceManager>
     {
         int flock = playerResources.GetResourceAmount(Resource.Flock);
 
-        int wealthGain = Mathf.FloorToInt(monthlyWealthPerFlock * flock * tithe);
+        int wealthGain = Mathf.FloorToInt(monthlyWealthPerFlock * flock * (1 - tithe));
         int zealGain = Mathf.FloorToInt(monthlyZealPerFlock * flock * tithe);
 
         playerResources.AddResource(Resource.Wealth, wealthGain);

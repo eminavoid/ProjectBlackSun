@@ -20,6 +20,15 @@ public class DistrictsManager : Singleton<DistrictsManager>
         return Instance.districts[district];
     }
 
+    public static DistrictData GetRandomDistrict()
+    {
+        Array array = Enum.GetValues(typeof(Districts));
+        int randomIndex = UnityEngine.Random.Range(0, array.Length);
+        Districts randomDistrict = (Districts)array.GetValue(randomIndex);
+
+        return Instance.districts[randomDistrict];
+    }
+
     protected override sealed void OnInitialization()
     {
         for (int i = 0; i < districtsConfig.Count; i++)
