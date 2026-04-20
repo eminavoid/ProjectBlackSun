@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: Seeds Pool
   m_EditorClassIdentifier: Assembly-CSharp::SeedsPool
   EvilSeeds:
+  - {fileID: 11400000, guid: 25d1a879ab53dc1498ca8d7406f54ce7, type: 2}
   - {fileID: 11400000, guid: 751c739df90a0fa4fbfe9fee24f9a964, type: 2}
+  - {fileID: 11400000, guid: 2db2599274ac1a44e9b1e7aff3f1a539, type: 2}

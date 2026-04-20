@@ -6,11 +6,15 @@ public class Node : MonoBehaviour
 
     private Seed seed = null;
 
-    public void AddSeed(Seed seed)
+    public bool AddSeed(Seed seed)
     {
-        if (this.seed != null) return;
-        seed.Initialize(this);
-        this.seed = seed;
+        if (this.seed != null) return false;
+        if (seed == null) return false;
+
+        Seed seedInstance = Instantiate(seed);
+        seedInstance.Initialize(this);
+        this.seed = seedInstance;
+        return true;
     }
 
     public void RemoveSeed(Seed seed)

@@ -10,14 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
-  m_Name: Seed
+  m_Name: seed_quest1
   m_EditorClassIdentifier: Assembly-CSharp::Seed
-  title: Seed1
-  description: esta es la seed 1
-  icon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  title: investigar distrito
+  description: quest 1
+  icon: {fileID: 0}
   ticks: 1
   <Options>k__BackingField:
-  - {fileID: 11400000, guid: 3a9806e3d5cede14e97f83d2198294e3, type: 2}
-  - {fileID: 11400000, guid: 3a9806e3d5cede14e97f83d2198294e3, type: 2}
-  - {fileID: 11400000, guid: 3a9806e3d5cede14e97f83d2198294e3, type: 2}
-  - {fileID: 11400000, guid: 3a9806e3d5cede14e97f83d2198294e3, type: 2}
+  - {fileID: 11400000, guid: 4696f3628b7fcef4d90e1ef4c22055b9, type: 2}
+  - {fileID: 11400000, guid: 582d9cd9fea49054f86b12982cc10f5e, type: 2}
