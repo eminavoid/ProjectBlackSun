@@ -18,7 +18,12 @@ MonoBehaviour:
   modules:
   - rid: -2
   endsQuestline: 0
-  followUpSeeds: []
+  followUpSeeds:
+  - followUpSeed: {fileID: 11400000, guid: a9bdc28645f90f943834e22e7fd0e775, type: 2}
+    useCurrentSeedNode: 1
+    useSpecificNode: 0
+    specificNode: {fileID: 0}
+    randomInSameDistrict: 0
   references:
     version: 2
     RefIds:
