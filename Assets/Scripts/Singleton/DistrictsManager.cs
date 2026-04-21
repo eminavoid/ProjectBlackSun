@@ -20,6 +20,50 @@ public class DistrictsManager : Singleton<DistrictsManager>
         return Instance.districts[district];
     }
 
+    public static bool TryGetDistrictData(Districts district, out DistrictData data)
+    {
+        return Instance.districts.TryGetValue(district, out data) && data != null;
+    }
+
+    public static List<Node> GetDistrictNodes(Districts district)
+    {
+        if (!TryGetDistrictData(district, out DistrictData data)) return new List<Node>();
+        return data.GetNodes();
+    }
+
+    public static bool TryGetRandomNodeInDistrict(Districts district, out Node node)
+    {
+        node = null;
+        List<Node> nodes = GetDistrictNodes(district);
+        if (nodes.Count == 0) return false;
+
+        int randomIndex = UnityEngine.Random.Range(0, nodes.Count);
+        node = nodes[randomIndex];
+        return node != null;
+    }
+
+    public static bool TryGetRandomNodeAnyDistrict(out Node node)
+    {
+        node = null;
+        List<Node> allNodes = new List<Node>();
+
+        foreach (Districts district in Enum.GetValues(typeof(Districts)))
+        {
+            List<Node> districtNodes = GetDistrictNodes(district);
+            for (int i = 0; i < districtNodes.Count; i++)
+            {
+                if (districtNodes[i] == null) continue;
+                allNodes.Add(districtNodes[i]);
+            }
+        }
+
+        if (allNodes.Count == 0) return false;
+
+        int randomIndex = UnityEngine.Random.Range(0, allNodes.Count);
+        node = allNodes[randomIndex];
+        return node != null;
+    }
+
     public static DistrictData GetRandomDistrict()
     {
         Array array = Enum.GetValues(typeof(Districts));

@@ -10,16 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
-  m_Name: New Option
+  m_Name: op_quest1_good1
   m_EditorClassIdentifier: Assembly-CSharp::Option
+  title: ganar wealth
+  description: ganar wealth
+  icon: {fileID: 0}
   modules:
-  - rid: 2308102842948255930
+  - rid: 8002854122877092027
+  endsQuestline: 1
+  followUpSeeds: []
   references:
     version: 2
     RefIds:
-    - rid: 2308102842948255930
+    - rid: 8002854122877092027
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
-        resource: 3
-        minAmount: 25
-        maxAmount: 100
+        resource: 0
+        minAmount: 100
+        maxAmount: 200
