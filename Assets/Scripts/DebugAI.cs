@@ -42,8 +42,7 @@ public class DebugAI : MonoBehaviour
             Node node = district.GetRandomNode();
             Seed seed = seedsPool.EvilSeeds[Random.Range(0, seedsPool.EvilSeeds.Count)];
 
-            bool planted = node.AddSeed(seed);
-            if (!planted) return;
+            node.AddSeed(seed);
 
             inCooldown = true;
             tickTimer = 0;
