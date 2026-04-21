@@ -9,7 +9,7 @@ public class RequireResource : OptionModule
 
     public override bool CanExecute()
     {
-        int amount = ResourceManager.Resources.GetResourceAmount(resource);;
+        int amount = ResourceManager.Resources.GetResourceAmount(resource);
         return amount >= required;
     }
 
