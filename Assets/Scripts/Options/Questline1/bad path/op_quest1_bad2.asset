@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
   m_Name: op_quest1_bad2
   m_EditorClassIdentifier: Assembly-CSharp::Option
-  title: perder zeal
-  description: perder zeal
+  title: perder wealth
+  description: perder wealth
   icon: {fileID: 0}
   modules:
   - rid: 8002854122877092027
@@ -25,6 +25,6 @@ MonoBehaviour:
     - rid: 8002854122877092027
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
-        resource: 1
+        resource: 0
         minAmount: -100
         maxAmount: -200

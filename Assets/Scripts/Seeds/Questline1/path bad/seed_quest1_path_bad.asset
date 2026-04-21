@@ -16,6 +16,4 @@ MonoBehaviour:
   description: 
   icon: {fileID: 0}
   ticks: 1
-  <Options>k__BackingField:
-  - {fileID: 11400000, guid: 81a5523a0f7dcef41b481ed522e5d143, type: 2}
-  - {fileID: 11400000, guid: dc4d94bb82700834883de2ff6c341d59, type: 2}
+  <Options>k__BackingField: []
