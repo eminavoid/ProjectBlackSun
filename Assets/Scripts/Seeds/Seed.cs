@@ -7,6 +7,11 @@ public class Seed : ScriptableObject
     [SerializeField] private int ticks = 1;
     [field: SerializeField] public List<Option> Options { get; private set; }
 
+    [field: Space]
+
+    [field: SerializeField] public string Title { get; private set; }
+    [field: SerializeField, TextArea(10, 10)] public string Description { get; private set; }
+
     private Node currentNode;
 
     private int currentTicks = 0;

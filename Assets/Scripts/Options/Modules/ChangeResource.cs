@@ -8,6 +8,8 @@ public class ChangeResource : OptionModule
     [SerializeField] private int minAmount;
     [SerializeField] private int maxAmount;
 
+    public override bool CanExecute() => true;
+
     public override void Execute(Seed seed)
     {
         int resourceAmount = UnityEngine.Random.Range(minAmount, maxAmount + 1);

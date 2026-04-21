@@ -319,6 +319,7 @@ GameObject:
   - component: {fileID: 6424408404740225624}
   - component: {fileID: 6468248115014692805}
   - component: {fileID: 8615628383825455374}
+  - component: {fileID: 5699568374700155396}
   m_Layer: 5
   m_Name: Resources
   m_TagString: Untagged
@@ -426,6 +427,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be4feff47b6da7346b8c863c955de1b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Zeke.UI.UIWindow
+--- !u!114 &5699568374700155396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 739304921537269862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc21ee73316f39040b20167f311bb1f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HierarchyOrder
+  order: 0
 --- !u!1 &1347295151901910910
 GameObject:
   m_ObjectHideFlags: 0

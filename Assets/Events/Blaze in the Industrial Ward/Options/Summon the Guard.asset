@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: Summon the Guard
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  modules:
+  - rid: 2308102993291247698
+  - rid: 2308102993291247702
+  - rid: 2308102993291247700
+  - rid: 2308102993291247707
+  - rid: 2308102993291247708
+  <Title>k__BackingField: Summon the Guard
+  <Description>k__BackingField: 'We must summon the Captain of the Guard to mount
+    a rescue at once.
+
+    [-1 Authority]'
+  references:
+    version: 2
+    RefIds:
+    - rid: 2308102993291247698
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 100
+          module:
+            rid: 2308102993291247699
+          output: 'The Captain bristles at taking commands from our Order, yet even
+            he cannot defy our influence. With the aid of trained guardsmen, the
+            blaze is swiftly extinguished. However, the master of the manufactory
+            knows well whom to truly thank. He and his laborers have eagerly pledged
+            themselves to our covenant, offering a generous "tithe" for good measure.
+
+            [+30
+            Flock, +20 Wealth]'
+    - rid: 2308102993291247699
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        minAmount: 0
+        maxAmount: 0
+    - rid: 2308102993291247700
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 2
+        minAmount: -1
+        maxAmount: -1
+    - rid: 2308102993291247702
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 2
+        required: 1
+    - rid: 2308102993291247707
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: 30
+        maxAmount: 30
+    - rid: 2308102993291247708
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        minAmount: 20
+        maxAmount: 20
