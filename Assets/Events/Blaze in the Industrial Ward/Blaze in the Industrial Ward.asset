@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
   m_Name: Blaze in the Industrial Ward
   m_EditorClassIdentifier: Assembly-CSharp::Seed
+  title: Blaze in the Industrial Ward
+  description: A manufactory run by the uninitiated is ablaze, with poor souls trapped
+    within its walls. Sending aid may prove to be the very incentive they need to
+    join our covenant.
+  icon: {fileID: 0}
   ticks: 1
   <Options>k__BackingField:
   - {fileID: 11400000, guid: 24eadf8077cea4148aea690e2a48f753, type: 2}
   - {fileID: 11400000, guid: acf2831919ce8f64a91a913bc766e9f1, type: 2}
   - {fileID: 11400000, guid: 8580780a39b7c864ca19e67fc22fe28b, type: 2}
-  <Title>k__BackingField: Blaze in the Industrial Ward
-  <Description>k__BackingField: A manufactory run by the uninitiated is ablaze, with
-    poor souls trapped within its walls. Sending aid may prove to be the very incentive
-    they need to join our covenant.

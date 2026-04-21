@@ -12,17 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
   m_Name: Summon the Guard
   m_EditorClassIdentifier: Assembly-CSharp::Option
+  title: Summon the Guard
+  description: 'Authority We must summon the Captain of the Guard to mount a rescue
+    at once.
+
+    [-1 Authority]'
+  icon: {fileID: 0}
   modules:
   - rid: 2308102993291247698
   - rid: 2308102993291247702
   - rid: 2308102993291247700
   - rid: 2308102993291247707
   - rid: 2308102993291247708
-  <Title>k__BackingField: Summon the Guard
-  <Description>k__BackingField: 'We must summon the Captain of the Guard to mount
-    a rescue at once.
-
-    [-1 Authority]'
+  endsQuestline: 1
+  followUpSeeds: []
   references:
     version: 2
     RefIds:

@@ -12,12 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
   m_Name: Send Relief
   m_EditorClassIdentifier: Assembly-CSharp::Option
+  title: Send Relief
+  description: 'Let us send our brethren to quench the flames and pull the laborers
+    from the inferno. Such a grand display of charity shall surely win them over
+    to our cause.
+
+    [-10 Flock]'
+  icon: {fileID: 0}
   modules:
   - rid: 2308102993291247682
-  <Title>k__BackingField: Send Relief
-  <Description>k__BackingField: Let us send our brethren to quench the flames and
-    pull the laborers from the inferno. Such a grand display of charity shall surely
-    win them over to our cause.
+  - rid: 2308102996343128129
+  - rid: 2308102996343128130
+  endsQuestline: 1
+  followUpSeeds: []
   references:
     version: 2
     RefIds:
@@ -58,3 +65,14 @@ MonoBehaviour:
     - rid: 2308102993291247696
       type: {class: DoNothing, ns: , asm: Assembly-CSharp}
       data: 
+    - rid: 2308102996343128129
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        required: 10
+    - rid: 2308102996343128130
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: -10
+        maxAmount: -10

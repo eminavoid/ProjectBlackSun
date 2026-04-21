@@ -12,11 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
   m_Name: Turn a Blind Eye
   m_EditorClassIdentifier: Assembly-CSharp::Option
+  title: 'Action D: Turn a Blind Eye '
+  description: 'This burden is not ours to bear. Had they desired our salvation,
+    they ought to have pledged themselves to our covenant long ago.
+
+    [Free]'
+  icon: {fileID: 0}
   modules:
   - rid: 2308102993291247709
-  <Title>k__BackingField: Turn a Blind Eye
-  <Description>k__BackingField: This burden is not ours to bear. Had they desired
-    our salvation, they ought to have pledged themselves to our covenant long ago.
+  endsQuestline: 1
+  followUpSeeds: []
   references:
     version: 2
     RefIds:
