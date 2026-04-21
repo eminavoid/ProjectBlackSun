@@ -6,7 +6,7 @@ public class Seed : ScriptableObject
 {
     [Header("Display")]
     [SerializeField] private string title;
-    [SerializeField] private string description;
+    [SerializeField, TextArea(3, 6)] private string description;
     [SerializeField] private Sprite icon;
 
     [Header("Gameplay")]
@@ -18,11 +18,6 @@ public class Seed : ScriptableObject
     public Sprite Icon => icon;
     public Node CurrentNode => currentNode;
     public Districts? CurrentDistrict => currentNode != null ? currentNode.District : null;
-
-    [field: Space]
-
-    [field: SerializeField] public string Title { get; private set; }
-    [field: SerializeField, TextArea(10, 10)] public string Description { get; private set; }
 
     private Node currentNode;
 

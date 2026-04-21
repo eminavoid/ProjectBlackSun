@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class OptionDisplay : MonoBehaviour
 {
-    public Action onOptionSelected;
+    public Action<Option> onOptionSelected;
 
     [Header("Optional UI Bindings")]
     [SerializeField] private TMP_Text titleText;
@@ -28,7 +28,7 @@ public class OptionDisplay : MonoBehaviour
 
     private void OnOptionExecuted()
     {
-        onOptionSelected?.Invoke();
+        onOptionSelected?.Invoke(option);
     }
 
     private void RefreshView()

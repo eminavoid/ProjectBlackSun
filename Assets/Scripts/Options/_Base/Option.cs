@@ -7,16 +7,13 @@ public class Option : ScriptableObject
 {
     [Header("Display")]
     [SerializeField] private string title;
-    [SerializeField] private string description;
+    [SerializeField, TextArea(3, 6)] private string description;
     [SerializeField] private Sprite icon;
 
     [Header("Logic")]
     [SerializeReferenceDropdown, SerializeReference] private List<OptionModule> modules;
     [SerializeField] private bool endsQuestline = true;
     [SerializeField] private List<FollowUpSeedConfig> followUpSeeds = new List<FollowUpSeedConfig>();
-
-    [field: SerializeField] public string Title { get; private set; }
-    [field: SerializeField, TextArea(10, 10)] public string Description { get; private set; }
 
     private Seed seed;
 
