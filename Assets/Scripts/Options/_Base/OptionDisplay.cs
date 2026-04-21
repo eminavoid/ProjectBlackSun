@@ -22,8 +22,11 @@ public class OptionDisplay : MonoBehaviour
 
     public void ExecuteOptions()
     {
-        option.ExecuteOption();
-        OnOptionExecuted();
+        if (option.CanExecute())
+        {
+            option.ExecuteOption();
+            OnOptionExecuted();
+        }
     }
 
     private void OnOptionExecuted()

@@ -9,12 +9,9 @@ public class RequireResource : OptionModule
 
     public override bool CanExecute()
     {
-        int amount = ResourceManager.Resources.GetResourceAmount(resource);
+        int amount = ResourceManager.Resources.GetResourceAmount(resource);;
         return amount >= required;
     }
 
-    public override void Execute(Seed seed)
-    {
-        Debug.Log("execute");
-    }
+    public override void Execute(Seed seed) { }
 }
