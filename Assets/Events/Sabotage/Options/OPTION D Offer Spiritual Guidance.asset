@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: OPTION D Offer Spiritual Guidance
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  title: Offer Spiritual Guidance
+  description: 
+  icon: {fileID: 0}
+  modules:
+  - rid: 107151340257149034
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 107151340257149034
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 80
+          module:
+          - rid: 107151343762276426
+          - rid: 107151343762276427
+          output: "The Overseer is not content that our only offering is spiritual
+            aid. He claims that \u201Cwords of encouragement\u201D will not grant
+            his men peace of mind. Many have decided to abandon our sect. Words of
+            encouragement? Do they not realize we speak for the Beholder?\n[Lost
+            10 Bliss & 10 Flock]"
+        - weight: 20
+          module:
+          - rid: 107151343762276428
+          output: 'Our followers find peace in our words. His Gaze is upon all, and
+            even the worst shall pass. This is enough to calm them, though they remain
+            visibly troubled.
+
+            [Lost 5 Bliss]'
+    - rid: 107151343762276426
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: -10
+        maxAmount: -10
+    - rid: 107151343762276427
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: -10
+        maxAmount: -10
+    - rid: 107151343762276428
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: -5
+        maxAmount: -5

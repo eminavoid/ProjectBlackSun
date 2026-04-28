@@ -12,17 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
   m_Name: Offer Worldly Aid
   m_EditorClassIdentifier: Assembly-CSharp::Option
-  title: Offer Worldly Aid
-  description: 'We dare not risk the lives of our flock to the flames, yet we can
-    send coin and supplies to aid in the rebuilding. We shall offer our prayers for
-    the poor souls trapped within.
-
-    [-10 Wealth]'
+  title: 
+  description: 'OPTION B: Hire Mercenaries for Security'
   icon: {fileID: 0}
   modules:
   - rid: 2308102993291247682
-  - rid: 2308102996343128127
-  - rid: 2308102996343128128
   endsQuestline: 1
   followUpSeeds: []
   references:
@@ -53,14 +47,3 @@ MonoBehaviour:
     - rid: 2308102993291247685
       type: {class: DoNothing, ns: , asm: Assembly-CSharp}
       data: 
-    - rid: 2308102996343128127
-      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
-      data:
-        resource: 0
-        required: 10
-    - rid: 2308102996343128128
-      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
-      data:
-        resource: 0
-        minAmount: -10
-        maxAmount: -10

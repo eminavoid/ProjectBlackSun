@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: OPTION A Send Our Faithful to Quench the Fire
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  title: Send Our Faithful to Quench the Fire
+  description: 'COST: 20 Flock'
+  icon: {fileID: 0}
+  modules:
+  - rid: 107151340257149004
+  - rid: 107151343762276434
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 107151340257149004
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 25
+          module:
+          - rid: 107151343762276430
+          output: 'The bravery of our people is commendable. They charged into the
+            roaring flames and, by the grace of the Beholder, rescued those trapped
+            inside. Not only that, but they managed to douse the fire entirely. The
+            laborers are now lining up to join our sect. The Beholder smiles upon
+            us!
+
+            [Gained 30 Flock]'
+        - weight: 50
+          module:
+          - rid: 107151343762276431
+          output: 'Our men managed to extinguish the flames, yet none dared to venture
+            into the burning structure until it was far too late. The poor souls
+            trapped within are now with the Beholder. Even so, the Overseer offered
+            a reward for the service rendered.
+
+            [Gained 10 Wealth]'
+        - weight: 25
+          module:
+          - rid: 107151343762276432
+          - rid: 107151343762276433
+          output: 'What a tragedy! Our brave followers entered the inferno without
+            fear in their hearts to save the trapped men. But as time passed, it
+            became clear that no one was coming out. May the Beholder gently receive
+            our valiant martyrs.
+
+            [Gained 10 Zeal Lost 10 Bliss]'
+    - rid: 107151343762276430
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: 25
+        maxAmount: 25
+    - rid: 107151343762276431
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        minAmount: 10
+        maxAmount: 10
+    - rid: 107151343762276432
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: 10
+        maxAmount: 10
+    - rid: 107151343762276433
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: -10
+        maxAmount: -10
+    - rid: 107151343762276434
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        required: 20

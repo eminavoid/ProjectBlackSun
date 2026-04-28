@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: OPTION C Dispatch Fanatics to Execute the Responsible
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  title: Dispatch Fanatics to Execute the Responsible
+  description: 'COST: 20 Flock'
+  icon: {fileID: 0}
+  modules:
+  - rid: 107151340257149031
+  - rid: 107151340257149039
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 107151340257149031
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 50
+          module:
+          - rid: 107151343762276421
+          - rid: 107151343762276422
+          output: 'Our men track the culprits to a small rival parish, which is promptly
+            stormed and its inhabitants beaten. We have not only defended our followers
+            but proven that the Beholder favors us.
+
+            [Gained 10 Bliss
+            & 20 Zeal]
+
+'
+        - weight: 50
+          module:
+          - rid: 107151343762276423
+          - rid: 107151343762276424
+          - rid: 107151343762276425
+          output: 'Our men track the culprits to a rival parish but are ambushed
+            along the way. The struggle is bitter, and in the end, we are forced
+            to retreat. Not all return home. The Beholder has abandoned us.
+
+            [Lost
+            10 Bliss, 20 Zeal & 5 Flock]'
+    - rid: 107151340257149039
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        required: 20
+    - rid: 107151343762276421
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: 10
+        maxAmount: 10
+    - rid: 107151343762276422
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: 20
+        maxAmount: 20
+    - rid: 107151343762276423
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: -10
+        maxAmount: -10
+    - rid: 107151343762276424
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: -20
+        maxAmount: -20
+    - rid: 107151343762276425
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: -5
+        maxAmount: -5
