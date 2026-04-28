@@ -41,8 +41,15 @@ public class DistrictMeshView : MonoBehaviour
 
     [Header("Rendering")]
     [SerializeField] private Material districtMaterial;
+    [SerializeField] private Shader districtShader;
     [SerializeField] private bool createMaterialFromShader = true;
     [SerializeField] private string shaderName = "Custom/DistrictOverlay";
+    [SerializeField] private List<string> shaderFallbackNames = new List<string>
+    {
+        "Universal Render Pipeline/Unlit",
+        "Universal Render Pipeline/Lit",
+        "Standard"
+    };
     [SerializeField] private Color color = new Color(1f, 0.9f, 0.1f, 0.35f);
     [SerializeField] private List<DistrictColorOverride> districtColorOverrides = new List<DistrictColorOverride>();
     
@@ -250,6 +257,8 @@ public class DistrictMeshView : MonoBehaviour
     [ContextMenu("Rebuild District Mesh")]
     public void Rebuild()
     {
+        EnsureCoreComponents();
+
         if (buildMode == BuildMode.AllDistricts)
         {
             RebuildAllDistricts();
@@ -336,7 +345,7 @@ public class DistrictMeshView : MonoBehaviour
     {
         polygon = new List<Vector2>();
 
-        List<Node> nodes = DistrictsManager.GetDistrictNodes(targetDistrict);
+        List<Node> nodes = GetNodesForDistrict(targetDistrict);
         if (nodes.Count < 3)
         {
             Debug.LogWarning($"DistrictMeshView: district {targetDistrict} has fewer than 3 nodes.", this);
@@ -387,6 +396,27 @@ public class DistrictMeshView : MonoBehaviour
 
         EnsureCounterClockwise(polygon);
         return true;
+    }
+
+    private List<Node> GetNodesForDistrict(Districts targetDistrict)
+    {
+        List<Node> nodes = DistrictsManager.GetDistrictNodes(targetDistrict);
+        if (nodes.Count >= 3) return nodes;
+
+        // Rebuild can be invoked from inspector/context menu in edit mode, before runtime caches are populated.
+        if (Application.isPlaying) return nodes;
+
+        Node[] sceneNodes = FindObjectsByType<Node>(FindObjectsSortMode.None);
+        List<Node> fallbackNodes = new List<Node>(sceneNodes.Length);
+        for (int i = 0; i < sceneNodes.Length; i++)
+        {
+            Node node = sceneNodes[i];
+            if (node == null) continue;
+            if (node.District != targetDistrict) continue;
+            fallbackNodes.Add(node);
+        }
+
+        return fallbackNodes.Count > 0 ? fallbackNodes : nodes;
     }
 
     private void BuildMesh(Districts targetDistrict, List<Vector2> polygon, List<int> triangles, out Mesh mesh)
@@ -465,9 +495,12 @@ public class DistrictMeshView : MonoBehaviour
             return;
         }
 
-        if (!createMaterialFromShader) return;
+        if (!createMaterialFromShader)
+        {
+            return;
+        }
 
-        Shader shader = Shader.Find(shaderName);
+        Shader shader = ResolveShader();
         if (shader == null)
         {
             Debug.LogWarning($"DistrictMeshView: shader '{shaderName}' not found.", this);
@@ -488,8 +521,35 @@ public class DistrictMeshView : MonoBehaviour
         targetRenderer.sharedMaterial = runtimeMaterial;
     }
 
+    private Shader ResolveShader()
+    {
+        if (districtShader != null)
+        {
+            return districtShader;
+        }
+
+        Shader resolved = Shader.Find(shaderName);
+        if (resolved != null) return resolved;
+
+        for (int i = 0; i < shaderFallbackNames.Count; i++)
+        {
+            string fallbackName = shaderFallbackNames[i];
+            if (string.IsNullOrWhiteSpace(fallbackName)) continue;
+
+            resolved = Shader.Find(fallbackName);
+            if (resolved != null)
+            {
+                return resolved;
+            }
+        }
+
+        return null;
+    }
+
     private void ClearMesh()
     {
+        EnsureCoreComponents();
+
         if (districtMesh != null)
         {
             districtMesh.Clear();
@@ -501,7 +561,25 @@ public class DistrictMeshView : MonoBehaviour
             meshCollider.sharedMesh = null;
         }
 
+        if (meshFilter == null)
+        {
+            return;
+        }
+
         meshFilter.sharedMesh = null;
+    }
+
+    private void EnsureCoreComponents()
+    {
+        if (meshFilter == null)
+        {
+            meshFilter = GetComponent<MeshFilter>();
+        }
+
+        if (meshRenderer == null)
+        {
+            meshRenderer = GetComponent<MeshRenderer>();
+        }
     }
 
     private void EnsureMainRendererEnabled(bool enabled)
