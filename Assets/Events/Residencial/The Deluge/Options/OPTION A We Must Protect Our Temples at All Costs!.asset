@@ -1,0 +1,123 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: OPTION A We Must Protect Our Temples at All Costs!
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  title: We Must Protect Our Temples at All Costs!
+  description: 'COST: 40 Flock'
+  icon: {fileID: 0}
+  modules:
+  - rid: 107151359355650107
+  - rid: 107151359355650108
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 107151359355650107
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        required: 40
+    - rid: 107151359355650108
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 50
+          module:
+          - rid: 107151359355650109
+          - rid: 107151359355650110
+          output: 'The order is given and our followers mobilize. Barricades, buckets,
+            and every precaution are employed to keep the waters at bay. When the
+            storm finally breaks, the homes of the faithful lie in ruins, but the
+            damage to our temples is minimal. Upon seeing our sanctuaries standing
+            pristine amidst the wreckage, the people attribute it to divine providence.
+
+            [Gained
+            20 Zeal & 40 Flock]
+
+'
+        - weight: 45
+          module:
+          - rid: 107151359355650111
+          - rid: 107151359355650112
+          - rid: 107151359355650113
+          output: 'Good news! We managed to minimize the damage to our temples. However,
+            the populace accuses us of prioritizing material wealth over the lives
+            of our followers. We shall have to toil hard to cleanse this stain from
+            our reputation.
+
+            [Gained 10 Zeal & 20 Flock Lost 15 Bliss]
+
+'
+        - weight: 5
+          module:
+          - rid: 107151359355650114
+          - rid: 107151359355650115
+          - rid: 107151359355650116
+          output: 'The wrath of the Beholder is directed at us! The districts where
+            our temples stand are the hardest hit by the deluge. Our men drown while
+            attempting to defend the holy sites, which are destroyed regardless.
+            The people take note of our misfortune. Has the Beholder forsaken us?
+
+            [Lost
+            40 Wealth, 10 Zeal & 15 Bliss]
+
+'
+    - rid: 107151359355650109
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: 20
+        maxAmount: 20
+    - rid: 107151359355650110
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: 40
+        maxAmount: 40
+    - rid: 107151359355650111
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: 10
+        maxAmount: 10
+    - rid: 107151359355650112
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: 20
+        maxAmount: 20
+    - rid: 107151359355650113
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: -15
+        maxAmount: -15
+    - rid: 107151359355650114
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        minAmount: -40
+        maxAmount: -40
+    - rid: 107151359355650115
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: -10
+        maxAmount: -10
+    - rid: 107151359355650116
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: -15
+        maxAmount: -15

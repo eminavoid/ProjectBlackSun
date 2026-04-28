@@ -1,0 +1,92 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: OPTION B Bribe the Ruffians
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  title: Bribe the Ruffians
+  description: 'COST: 50 Wealth'
+  icon: {fileID: 0}
+  modules:
+  - rid: 107151359355650052
+  - rid: 107151359355650053
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 107151359355650052
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        required: 50
+    - rid: 107151359355650053
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 65
+          module:
+          - rid: 107151359355650054
+          output: 'Let it not be said that gold cannot move mountains. At the prospect
+            of being paid for their idleness, the ruffians accept our offer as swiftly
+            as it is proposed. The price was steep, but we should suffer no further
+            trouble from them.
+
+            [Gained 10 Bliss]
+
+'
+        - weight: 25
+          module:
+          - rid: 107151359355650055
+          - rid: 107151359355650056
+          output: 'Who would have thought it? Criminals with standards! The gang
+            refused to accept our coin, remaining loyal to their current masters.
+            It seems our troubles shall continue for the time being.
+
+            [Gained
+            50 Wealth & Bane Lost 10 Bliss]
+
+'
+        - weight: 10
+          module:
+          - rid: 107151359355650057
+          output: 'What a disaster! Our agents made contact with the scoundrels,
+            who accepted the payment without hesitation. However, it was naught but
+            a ruse, for the very next day they returned to wreak even greater havoc!
+            We have been swindled!
+
+            [Lost 15 Bliss]
+
+'
+    - rid: 107151359355650054
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: 10
+        maxAmount: 10
+    - rid: 107151359355650055
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        minAmount: 50
+        maxAmount: 50
+    - rid: 107151359355650056
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: -10
+        maxAmount: -10
+    - rid: 107151359355650057
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: -15
+        maxAmount: -15

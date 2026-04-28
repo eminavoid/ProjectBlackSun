@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: OPTION D Ignore the Situation
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  title: Ignore the Situation
+  description: No cost
+  icon: {fileID: 0}
+  modules:
+  - rid: 107151359355650154
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 107151359355650154
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 80
+          module:
+          - rid: 107151359355650155
+          - rid: 107151359355650156
+          - rid: 107151359355650157
+          output: 'The play is a resounding success. For several months, it is the
+            only topic of conversation among high society. What a disaster! May the
+            Beholder curse them!
+
+            [Gained Bane Lost 20 Zeal, 10 Bliss
+            & 20 Flock]
+
+'
+        - weight: 20
+          module:
+          - rid: 107151359355650158
+          output: "Ha! The play had the misfortune of opening on the same eve as
+            a premiere directed by one of the Empire\u2019s greatest masters. It
+            passed without glory or notice. Those who did attend mentioned it cast
+            us in a poor light, but who cares? The Beholder smiles upon us!\r\n[Lost
+            5 Bliss]\r\n"
+    - rid: 107151359355650155
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: -20
+        maxAmount: -20
+    - rid: 107151359355650156
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: -10
+        maxAmount: -10
+    - rid: 107151359355650157
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: -20
+        maxAmount: -20
+    - rid: 107151359355650158
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: -5
+        maxAmount: -5

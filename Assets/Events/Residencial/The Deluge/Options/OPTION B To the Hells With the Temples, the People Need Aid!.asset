@@ -1,0 +1,111 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: OPTION B To the Hells With the Temples, the People Need Aid!
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  title: To the Hells With the Temples, the People Need Aid!
+  description: 'COST: 50 Flock'
+  icon: {fileID: 0}
+  modules:
+  - rid: 107151359355650117
+  - rid: 107151359355650118
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 107151359355650117
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        required: 50
+    - rid: 107151359355650118
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 70
+          module:
+          - rid: 107151359355650119
+          - rid: 107151359355650120
+          - rid: 107151359355650121
+          - rid: 107151359355650122
+          output: 'We are the talk of the town. Everyone witnessed our followers
+            mobilizing to save those in need throughout the city. By the time the
+            waters recede, our temples lie in ruins, but our image is untarnished.
+
+            [Gained
+            30 Zeal, 10 Bliss & 70 Flock Lost 40 Wealth]
+
+'
+        - weight: 30
+          module:
+          - rid: 107151359355650123
+          - rid: 107151359355650124
+          - rid: 107151359355650125
+          - rid: 107151359355650126
+          output: 'What a tragedy! Many of our heroic followers drown while attempting
+            to save the innocent. Though our martyrs shall be remembered as heroes,
+            the loss is undeniable. To worsen matters, our temples have been reduced
+            to rubble.
+
+            [Gained 50 Zeal & 25 Flock Lost 15 Bliss & 40
+            Wealth]
+
+'
+    - rid: 107151359355650119
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: 30
+        maxAmount: 30
+    - rid: 107151359355650120
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: 10
+        maxAmount: 10
+    - rid: 107151359355650121
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: 70
+        maxAmount: 70
+    - rid: 107151359355650122
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        minAmount: -40
+        maxAmount: -40
+    - rid: 107151359355650123
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: 50
+        maxAmount: 50
+    - rid: 107151359355650124
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: 25
+        maxAmount: 25
+    - rid: 107151359355650125
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: -15
+        maxAmount: -15
+    - rid: 107151359355650126
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        minAmount: -40
+        maxAmount: -40

@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: OPTION A Purchase Treats in Bulk and Distribute Them Among the Masses
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  title: Purchase Treats in Bulk and Distribute Them Among the Masses
+  description: 'COST: 20 Wealth'
+  icon: {fileID: 0}
+  modules:
+  - rid: 107151359355650068
+  - rid: 107151359355650069
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 107151359355650068
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        required: 20
+    - rid: 107151359355650069
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 50
+          module:
+          - rid: 107151359355650070
+          - rid: 107151359355650071
+          output: 'The masses are moved by our charity. Many among them had never
+            received a gift in all their lives! We may take satisfaction in a righteous
+            deed well done, with the added grace of new initiates joining our fold.
+
+            [Gained
+            10 Bliss & 20 Flock]
+
+'
+        - weight: 50
+          module:
+          - rid: 107151359355650072
+          - rid: 107151359355650073
+          output: 'What a disaster! The delicacies were spoiled. Reports are already
+            arriving of the commoners falling ill after consuming them. This is the
+            price of placing our trust in outlanders! May they never receive the
+            Gaze of the Beholder!
+
+            [Lost 10 Bliss & 20 Flock]
+
+'
+    - rid: 107151359355650070
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: 10
+        maxAmount: 10
+    - rid: 107151359355650071
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: 20
+        maxAmount: 20
+    - rid: 107151359355650072
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: -10
+        maxAmount: -10
+    - rid: 107151359355650073
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: -20
+        maxAmount: -20

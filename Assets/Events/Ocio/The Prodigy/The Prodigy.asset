@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
+  m_Name: The Prodigy
+  m_EditorClassIdentifier: Assembly-CSharp::Seed
+  title: The Prodigy
+  description: Eminence! Interesting tidings! It appears a young but prodigious painter
+    from the slums is gaining significant prominence among the higher echelons of
+    society. Many whisper that he shall be the next great master of our age! Better
+    still, his elderly benefactor recently passed away. In his grief, the youth seems
+    to have found solace in the Beholder. Perhaps we might persuade him to join our
+    fold?
+  icon: {fileID: 0}
+  ticks: 1
+  <Options>k__BackingField:
+  - {fileID: 11400000, guid: b6b949a3b91b4ee4997b61ee4286bb53, type: 2}
+  - {fileID: 11400000, guid: a298caf2f6840d04eb81e47a0d028061, type: 2}
+  - {fileID: 11400000, guid: 11c583827092aa148830dcc06474cc08, type: 2}
+  - {fileID: 11400000, guid: 8f8b98ba9397dc24bb33a87dca5031ce, type: 2}

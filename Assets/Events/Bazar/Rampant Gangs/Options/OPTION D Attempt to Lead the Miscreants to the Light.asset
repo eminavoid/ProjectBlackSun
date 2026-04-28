@@ -1,0 +1,85 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: OPTION D Attempt to Lead the Miscreants to the Light
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  title: Attempt to Lead the Miscreants to the Light
+  description: No cost
+  icon: {fileID: 0}
+  modules:
+  - rid: 107151359355650062
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 107151359355650062
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 95
+          module:
+          - rid: 107151359355650063
+          - rid: 107151359355650064
+          output: 'What were we thinking? To convince these wretches of the error
+            of their ways? They laughed in the face of the cleric we dispatched and
+            gave him a sound thrashing to boot. What shall the people think of our
+            sect after such a public humiliation?
+
+            [Gained Bane Lost
+            10 Bliss & 10 Zeal]
+
+'
+        - weight: 5
+          module:
+          - rid: 107151359355650065
+          - rid: 107151359355650066
+          - rid: 107151359355650067
+          output: 'Impressive! The man we sent to convert the miscreants must surely
+            possess a silver tongue, for he has persuaded them to abandon their wicked
+            ways and join our fold instead. If this is not proof that we are favored
+            by the Beholder, then naught is!
+
+            [Gained 20 Flock, 10 Bliss
+            & 30 Zeal]
+
+'
+    - rid: 107151359355650063
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: -10
+        maxAmount: -10
+    - rid: 107151359355650064
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: -10
+        maxAmount: -10
+    - rid: 107151359355650065
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: 20
+        maxAmount: 20
+    - rid: 107151359355650066
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: 10
+        maxAmount: 10
+    - rid: 107151359355650067
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: 30
+        maxAmount: 30

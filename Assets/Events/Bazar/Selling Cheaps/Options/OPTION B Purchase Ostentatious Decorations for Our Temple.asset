@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: OPTION B Purchase Ostentatious Decorations for Our Temple
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  title: Purchase Ostentatious Decorations for Our Temple
+  description: 'COST: 40 Wealth'
+  icon: {fileID: 0}
+  modules:
+  - rid: 107151359355650074
+  - rid: 107151359355650075
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 107151359355650074
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        required: 40
+    - rid: 107151359355650075
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 50
+          module:
+          - rid: 107151359355650076
+          output: 'The merchant may have been an outlander, but it is impossible
+            to deny that his ornaments are truly breathtaking. Their modest price
+            allowed us to adorn many of our temples, granting us newfound legitimacy
+            in the eyes of the populace!
+
+            [Gained 30 Zeal]
+
+'
+        - weight: 50
+          module:
+          - rid: 107151359355650077
+          output: 'What a disgrace! The decorations seemed a bargain, but we should
+            have known better... they were of wretched quality! That man has swindled
+            us, and reports of broken finery are already pouring in. Worse still,
+            accidents have been caused by their collapse. This is the price of trusting
+            outlanders!
+
+            [Lost 30 Zeal]
+
+'
+    - rid: 107151359355650076
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: 30
+        maxAmount: 30
+    - rid: 107151359355650077
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: -30
+        maxAmount: -30

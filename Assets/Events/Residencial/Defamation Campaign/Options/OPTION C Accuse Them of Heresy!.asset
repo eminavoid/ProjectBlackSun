@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: OPTION C Accuse Them of Heresy!
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  title: Accuse Them of Heresy!
+  description: 'COST: 1 Authority'
+  icon: {fileID: 0}
+  modules:
+  - rid: 107151359355650102
+  - rid: 107151359355650103
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 107151359355650102
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 2
+        required: 1
+    - rid: 107151359355650103
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 100
+          module:
+          - rid: 107151359355650104
+          output: 'There is nothing a missive to our friends in high places cannot
+            resolve. These men are clearly spouting blasphemy, and what is blasphemy
+            if not a form of heresy? To the pyre with them! Our sect brings justice
+            to the wicked!
+
+            [Gained 40 Zeal]
+
+'
+    - rid: 107151359355650104
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: 40
+        maxAmount: 40

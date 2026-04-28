@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
+  m_Name: A Problematic Play
+  m_EditorClassIdentifier: Assembly-CSharp::Seed
+  title: A Problematic Play
+  description: Excellency! A situation is developing. It has reached our ears that
+    a rival sect has commissioned a play at a prestigious local theater, casting
+    us as the villains of the tale. If we do not act, we risk the performance becoming
+    a resounding success! Imagine the scandal!
+  icon: {fileID: 0}
+  ticks: 1
+  <Options>k__BackingField:
+  - {fileID: 11400000, guid: c4311a5de2fcb4f41acc41ad88c8d1b2, type: 2}
+  - {fileID: 11400000, guid: 3fa282a61360bed4ab6ee92c5e580fbd, type: 2}
+  - {fileID: 11400000, guid: 6cd3e2562d3e4784189ceebecd2482ee, type: 2}
+  - {fileID: 11400000, guid: 14df64a8714217c439199138aac30372, type: 2}

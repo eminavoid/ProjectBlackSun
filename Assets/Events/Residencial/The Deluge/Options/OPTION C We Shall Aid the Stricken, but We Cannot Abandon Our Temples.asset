@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: OPTION C We Shall Aid the Stricken, but We Cannot Abandon Our Temples
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  title: We Shall Aid the Stricken, but We Cannot Abandon Our Temples
+  description: 'COST: 40 Wealth'
+  icon: {fileID: 0}
+  modules:
+  - rid: 107151359355650127
+  - rid: 107151359355650128
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 107151359355650127
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        required: 40
+    - rid: 107151359355650128
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 100
+          module:
+          - rid: 107151359355650129
+          - rid: 107151359355650130
+          - rid: 107151359355650131
+          output: 'The people appreciate the assistance rendered. And though our
+            temples suffered damage, it is nothing that cannot be mended with coin.
+            Tomorrow is another day!
+
+            [Gained 20 Zeal & 10 Bliss Lost
+            20 Wealth]
+
+'
+    - rid: 107151359355650129
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: 20
+        maxAmount: 20
+    - rid: 107151359355650130
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: 10
+        maxAmount: 10
+    - rid: 107151359355650131
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        minAmount: -20
+        maxAmount: -20
