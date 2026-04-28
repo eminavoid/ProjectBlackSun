@@ -13,8 +13,5 @@ public class RequireResource : OptionModule
         return amount >= required;
     }
 
-    public override void Execute(Seed seed)
-    {
-        Debug.Log("execute");
-    }
+    public override void Execute(Seed seed) { }
 }

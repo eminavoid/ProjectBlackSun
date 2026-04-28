@@ -51,19 +51,16 @@ public class SeedEventManager : Singleton<SeedEventManager>
     private void OnTurnStarted()
     {
         StartChoosingOptionsPhase();
-        SetOptionsWindowVisibility(true);
     }
 
     private void StartChoosingOptionsPhase()
     {
         if (seedEvents.Count <= 0)
         {
-            Debug.Log("no qeued seeds this turn");
             return;
         }
 
-        Debug.Log("new seed event");
-
+        SetOptionsWindowVisibility(true);
         CreateSeedOptionsInCanvas(seedEvents.Dequeue());
     }
 
