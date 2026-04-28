@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: Enviar guardias
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  title: Enviar guardias
+  description: 
+  icon: {fileID: 0}
+  modules:
+  - rid: 107151340257149012
+  - rid: 107151340257149013
+  - rid: 107151340257149015
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 107151340257149012
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        minAmount: 20
+        maxAmount: 20
+    - rid: 107151340257149013
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: 20
+        maxAmount: 20
+    - rid: 107151340257149015
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 100
+          module:
+            rid: 107151340257149016
+          output: Los guaridas resuelven los problemas
+    - rid: 107151340257149016
+      type: {class: DoNothing, ns: , asm: Assembly-CSharp}
+      data: 

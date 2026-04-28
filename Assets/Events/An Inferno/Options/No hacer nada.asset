@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: No hacer nada
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  title: No hacer nada
+  description: 
+  icon: {fileID: 0}
+  modules:
+  - rid: 107151340257149017
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 107151340257149017
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 80
+          module:
+            rid: 107151340257149018
+          output: La fabrica es destruida
+        - weight: 20
+          module:
+            rid: 107151340257149019
+          output: La fabrica es destruida y los fieles se sienten responsables
+    - rid: 107151340257149018
+      type: {class: DoNothing, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 107151340257149019
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: -10
+        maxAmount: -10

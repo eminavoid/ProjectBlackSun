@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
   m_Name: Offer Worldly Aid
   m_EditorClassIdentifier: Assembly-CSharp::Option
+  title: 
+  description: 'OPTION B: Hire Mercenaries for Security'
+  icon: {fileID: 0}
   modules:
   - rid: 2308102993291247682
-  <Title>k__BackingField: Offer Worldly Aid
-  <Description>k__BackingField: We dare not risk the lives of our flock to the flames,
-    yet we can send coin and supplies to aid in the rebuilding. We shall offer our
-    prayers for the poor souls trapped within.
+  endsQuestline: 1
+  followUpSeeds: []
   references:
     version: 2
     RefIds:

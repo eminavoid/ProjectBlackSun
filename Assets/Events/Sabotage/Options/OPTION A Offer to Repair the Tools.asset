@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: OPTION A Offer to Repair the Tools
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  title: 'Offer to Repair the Tools '
+  description: 'COST: 20 Wealth'
+  icon: {fileID: 0}
+  modules:
+  - rid: 107151340257149024
+  - rid: 107151340257149025
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 107151340257149024
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        required: 20
+    - rid: 107151340257149025
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 80
+          module:
+            rid: 107151340257149026
+          output: "Gold serves well to soothe the Overseer\u2019s temper. However,
+            his men remain restless, fearing the future intervention of other rival
+            sects."
+        - weight: 20
+          module:
+            rid: 107151340257149027
+          output: "The Overseer is quick to accept our donation, yet he cannot help
+            but remark that both he and his men would have preferred a more \u201Cdirect\u201D
+            retribution against those responsible.\r\n[Lost 5 Bliss]\r\n"
+    - rid: 107151340257149026
+      type: {class: DoNothing, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 107151340257149027
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: -5
+        maxAmount: -5
