@@ -12,12 +12,57 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
   m_Name: OPTION C Subject Him to Interrogation, the Inquisitor Shall Have the Truth
   m_EditorClassIdentifier: Assembly-CSharp::Option
-  title: 
-  description: 
+  title: Subject Him to Interrogation, the Inquisitor Shall Have the Truth
+  description: No cost
   icon: {fileID: 0}
-  modules: []
+  modules:
+  - rid: 107151358184390665
   endsQuestline: 1
   followUpSeeds: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 107151358184390665
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 30
+          module:
+          - rid: 107151358184390666
+          output: 'The cleric speaks with absolute certainty. Our Inquisitor could
+            not determine if the visions are genuine or merely delusions, but there
+            seems to be no harm in allowing him to minister to the masses. However,
+            after the Inquisitor''s harsh methods, the cleric appears noticeably
+            diminished.
+
+            [Gained 10 Zeal]
+
+'
+        - weight: 30
+          module: []
+          output: What a relief! The cleric was revealed to be a charlatan. He made
+            a valiant effort to conceal his deceit, but after a lengthy session of
+            "interrogation," the truth was wrung from him. Long live the Beholder,
+            and long live the Inquisitor!
+        - weight: 40
+          module:
+          - rid: 107151358184390667
+          output: 'The Inquisitor overplayed his hand during the questioning... the
+            cleric did not survive the ordeal. Now, we shall never know the truth
+            of his visions.
+
+            [Lost 10 Bliss]
+
+'
+    - rid: 107151358184390666
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: 10
+        maxAmount: 10
+    - rid: 107151358184390667
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: -10
+        maxAmount: -10

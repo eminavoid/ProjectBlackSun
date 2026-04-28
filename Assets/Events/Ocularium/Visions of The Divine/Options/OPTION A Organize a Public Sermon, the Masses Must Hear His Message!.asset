@@ -12,12 +12,76 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
   m_Name: OPTION A Organize a Public Sermon, the Masses Must Hear His Message!
   m_EditorClassIdentifier: Assembly-CSharp::Option
-  title: 
-  description: 
+  title: Organize a Public Sermon, the Masses Must Hear His Message!
+  description: 'COST: 10 Wealth'
   icon: {fileID: 0}
-  modules: []
+  modules:
+  - rid: 107151358184390656
+  - rid: 107151358184390661
   endsQuestline: 1
   followUpSeeds: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 107151358184390656
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 45
+          module:
+          - rid: 107151358184390657
+          output: 'The prophet speaks with undeniable conviction, enough to stir
+            the hearts of all present. Even if his divine visions do not truly descend
+            from the Beholder, it is undeniable that his words inspire the faithful!
+
+            [Gained
+            30 Zeal]'
+        - weight: 50
+          module:
+          - rid: 107151358184390658
+          output: 'What a disaster! The prophet proved to be little more than a raving
+            lunatic. The moment he was granted the floor, he began to babble of apocalyptic
+            dooms and other absurdities. The people took no liking to his sermons;
+            it will take much effort to restore their trust.
+
+            [Lost
+            30 Zeal]
+
+'
+        - weight: 5
+          module:
+          - rid: 107151358184390659
+          - rid: 107151358184390660
+          output: 'A miracle! As the prophet addressed the masses, the heavens parted
+            and a shaft of light descended from the very center of the sun. His words
+            echoed throughout the Ocularium, and the sound of trumpets could be heard
+            from the firmament. This man is truly a chosen vessel of the Beholder!
+            Long live our sect!
+
+            [Gained 50 Zeal & Boon]'
+    - rid: 107151358184390657
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: 30
+        maxAmount: 30
+    - rid: 107151358184390658
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: -30
+        maxAmount: -30
+    - rid: 107151358184390659
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: 50
+        maxAmount: 50
+    - rid: 107151358184390660
+      type: {class: DoNothing, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 107151358184390661
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        required: 10

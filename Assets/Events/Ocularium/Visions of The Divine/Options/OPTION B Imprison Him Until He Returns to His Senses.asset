@@ -13,11 +13,47 @@ MonoBehaviour:
   m_Name: OPTION B Imprison Him Until He Returns to His Senses
   m_EditorClassIdentifier: Assembly-CSharp::Option
   title: Imprison Him Until He Returns to His Senses
-  description: 
+  description: No cost
   icon: {fileID: 0}
-  modules: []
+  modules:
+  - rid: 107151358184390662
   endsQuestline: 1
   followUpSeeds: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 107151358184390662
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 70
+          module: []
+          output: After several days in isolation, the cleric recovers his wits.
+            It appears this episode was naught but a fleeting bout of madness. Having
+            reflected upon his errors, the cleric is now prepared to return to his
+            duties.
+        - weight: 30
+          module:
+          - rid: 107151358184390663
+          - rid: 107151358184390664
+          output: 'We have a problem... the cleric has escaped his confinement. Reports
+            are flooding in of a naked madman shrieking in the streets about the
+            coming apocalypse and the righteous punishment of the Beholder. Lamentably,
+            a rival sect has already identified him as one of our own.
+
+            [Lost
+            20 Zeal & 10 Bliss]
+
+'
+    - rid: 107151358184390663
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: -30
+        maxAmount: -30
+    - rid: 107151358184390664
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: -10
+        maxAmount: -10

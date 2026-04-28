@@ -12,8 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
   m_Name: Visions of The Divine
   m_EditorClassIdentifier: Assembly-CSharp::Seed
-  title: 
-  description: 
+  title: Visions of The Divine
+  description: My Pontiff, I bring tidings of a most peculiar nature. One of our
+    most esteemed clerics has been proclaiming that the Beholder Himself speaks to
+    him in his dreams, granting him prophetic visions and divine instructions. Several
+    of the faithful who have spoken with him are convinced of his holy mandate, yet
+    many more remain skeptical. How shall we proceed?
   icon: {fileID: 0}
   ticks: 1
-  <Options>k__BackingField: []
+  <Options>k__BackingField:
+  - {fileID: 11400000, guid: c64a2e087473d7548b0989590f12e895, type: 2}
+  - {fileID: 11400000, guid: 9e7bd0b0141c21745a68b6215c129f01, type: 2}
+  - {fileID: 11400000, guid: eb11b39b6a4f4d746bb57907e2d7a759, type: 2}
+  - {fileID: 11400000, guid: c6b4ae832eedd814aacdee75aeb702ba, type: 2}

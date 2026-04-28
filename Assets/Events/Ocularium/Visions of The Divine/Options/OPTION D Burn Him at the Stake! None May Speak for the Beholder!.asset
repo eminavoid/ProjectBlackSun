@@ -12,12 +12,85 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
   m_Name: OPTION D Burn Him at the Stake! None May Speak for the Beholder!
   m_EditorClassIdentifier: Assembly-CSharp::Option
-  title: 
-  description: 
+  title: Burn Him at the Stake! None May Speak for the Beholder!
+  description: No cost
   icon: {fileID: 0}
-  modules: []
+  modules:
+  - rid: 107151358184390668
   endsQuestline: 1
   followUpSeeds: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 107151358184390668
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 50
+          module:
+          - rid: 107151358184390669
+          - rid: 107151358184390670
+          output: 'The people gather around the pyre with heavy hearts. The accused''s
+            cries for mercy fall upon deaf ears, yet he maintained his innocence
+            until his final breath. The populace is disturbed, questioning why we
+            would consign one of our own to the flames.
+
+            [Lost 10 Zeal
+            & 5 Bliss]
+
+'
+        - weight: 45
+          module:
+          - rid: 107151358184390671
+          - rid: 107151358184390672
+          output: 'The people rejoice! The shrieks of a heretic are as music to the
+            ears of the masses. The burning of a transgressor always serves to rouse
+            the spirit... and keep dissidents at bay.
+
+            [Gained 10 Zeal
+            & 10 Bliss]
+
+'
+        - weight: 5
+          module:
+          - rid: 107151358184390673
+          output: 'What calamity! What horror! We are surely forsaken! As we bound
+            the cleric to the stake, he remained defiant, simply whispering "Forgive
+            them, Father, for they know not what they do" while gazing at the sky.
+            He did not flinch as the flames rose, and when the fire died out, his
+            body had vanished! The people believe we have slain a scion of the Beholder!
+
+            [Lost
+            50 Zeal Gained Bane]
+
+'
+    - rid: 107151358184390669
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: -10
+        maxAmount: -10
+    - rid: 107151358184390670
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: -5
+        maxAmount: -5
+    - rid: 107151358184390671
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: 10
+        maxAmount: 10
+    - rid: 107151358184390672
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: 10
+        maxAmount: 10
+    - rid: 107151358184390673
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: -50
+        maxAmount: -50
