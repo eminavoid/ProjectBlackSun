@@ -13,6 +13,13 @@ MonoBehaviour:
   m_Name: AI Event Pool
   m_EditorClassIdentifier: Assembly-CSharp::SeedsPool
   EvilSeeds:
+  - {fileID: 11400000, guid: a0f28d300b0eb054b83d202dd75970ed, type: 2}
+  - {fileID: 11400000, guid: 3ec2812723775a24996482d8ec17f503, type: 2}
   - {fileID: 11400000, guid: d75ebdaf9fadad942a84bf2103a6d83a, type: 2}
   - {fileID: 11400000, guid: 2af08cea8f7d008498e6261c99df4715, type: 2}
+  - {fileID: 11400000, guid: 49f15c601ac32744a820ef14ba7a95e6, type: 2}
+  - {fileID: 11400000, guid: bb4ef834f817bfd40a797efe4b92a622, type: 2}
   - {fileID: 11400000, guid: 894bbf7feda21984ba97bf841e3ad163, type: 2}
+  - {fileID: 11400000, guid: 1cc73b4f29689ca429cb8add8da32867, type: 2}
+  - {fileID: 11400000, guid: 331f2a387ab5a1740b3edd10e465258f, type: 2}
+  - {fileID: 11400000, guid: 660b6f3cd3ba13f488fc76fac84187f4, type: 2}
