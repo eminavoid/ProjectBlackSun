@@ -4,17 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a42c9136-0aac-4f8a-91a6-2854c1038143" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/Events/An Inferno/Options/Enviar Ayuda.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Events/An Inferno/Options/Enviar Ayuda.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Events/An Inferno/Options/Enviar guardias.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Events/An Inferno/Options/Enviar guardias.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Events/An Inferno/Options/Financiar Reconstruccion.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Events/An Inferno/Options/Financiar Reconstruccion.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Events/An Inferno/Options/No hacer nada.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Events/An Inferno/Options/No hacer nada.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Options/Modules/WeighedChoice.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Options/Modules/WeighedChoice.cs" afterDir="false" />
-    </list>
+    <list default="true" id="a42c9136-0aac-4f8a-91a6-2854c1038143" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -98,7 +88,7 @@
       <option name="presentableId" value="Default" />
       <updated>1777329542918</updated>
       <workItem from="1777329544542" duration="2362000" />
-      <workItem from="1777345390658" duration="769000" />
+      <workItem from="1777345390658" duration="1369000" />
     </task>
     <servers />
   </component>
