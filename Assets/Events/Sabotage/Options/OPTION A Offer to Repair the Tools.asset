@@ -34,20 +34,20 @@ MonoBehaviour:
         modules:
         - weight: 80
           module:
-            rid: 107151340257149026
+          - rid: 107151343762276418
           output: "Gold serves well to soothe the Overseer\u2019s temper. However,
             his men remain restless, fearing the future intervention of other rival
             sects."
         - weight: 20
           module:
-            rid: 107151340257149027
+          - rid: 107151343762276419
           output: "The Overseer is quick to accept our donation, yet he cannot help
             but remark that both he and his men would have preferred a more \u201Cdirect\u201D
             retribution against those responsible.\r\n[Lost 5 Bliss]\r\n"
-    - rid: 107151340257149026
+    - rid: 107151343762276418
       type: {class: DoNothing, ns: , asm: Assembly-CSharp}
       data: 
-    - rid: 107151340257149027
+    - rid: 107151343762276419
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 4

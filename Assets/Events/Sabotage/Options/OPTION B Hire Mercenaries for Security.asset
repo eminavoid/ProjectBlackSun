@@ -29,21 +29,21 @@ MonoBehaviour:
         modules:
         - weight: 100
           module:
-            rid: 107151340257149030
+          - rid: 107151343762276420
           output: 'Both the Overseer and his laborers feel more secure in the presence
             of the mercenaries. We must pray to the Beholder that a few weeks of
             vigil will be enough to deter further attacks.
 
-            [Gained
-            10 Bliss]'
-    - rid: 107151340257149030
-      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
-      data:
-        resource: 4
-        minAmount: 10
-        maxAmount: 10
+            [Gained 10
+            Bliss]'
     - rid: 107151340257149040
       type: {class: RequireResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 0
         required: 40
+    - rid: 107151343762276420
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: 10
+        maxAmount: 10

@@ -13,7 +13,11 @@ MonoBehaviour:
   m_Name: An Inferno
   m_EditorClassIdentifier: Assembly-CSharp::Seed
   title: An Inferno
-  description: Fuego en una fabrica con trabajadores atrapados
+  description: My Pontiff, a dire situation has unfolded in the industrial district.
+    One of the foundries has suffered a catastrophic accident and is being consumed
+    by an inferno. Worse still, there are men trapped within the blazing ruins! To
+    aid them is not only the righteous path, but a golden opportunity to initiate
+    the survivors into our fold.
   icon: {fileID: 0}
   ticks: 1
   <Options>k__BackingField:

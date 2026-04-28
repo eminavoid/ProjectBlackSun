@@ -29,34 +29,59 @@ MonoBehaviour:
         modules:
         - weight: 50
           module:
-            rid: 107151340257149032
+          - rid: 107151343762276421
+          - rid: 107151343762276422
           output: 'Our men track the culprits to a small rival parish, which is promptly
             stormed and its inhabitants beaten. We have not only defended our followers
             but proven that the Beholder favors us.
 
-            [Gained 20 Zeal]
+            [Gained 10 Bliss
+            & 20 Zeal]
 
 '
         - weight: 50
           module:
-            rid: 107151340257149033
-          output: Our men track the culprits to a rival parish but are ambushed along
-            the way. The struggle is bitter, and in the end, we are forced to retreat.
-            Not all return home. The Beholder has abandoned us.
-    - rid: 107151340257149032
-      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
-      data:
-        resource: 1
-        minAmount: 20
-        maxAmount: 20
-    - rid: 107151340257149033
-      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
-      data:
-        resource: 3
-        minAmount: 5
-        maxAmount: 5
+          - rid: 107151343762276423
+          - rid: 107151343762276424
+          - rid: 107151343762276425
+          output: 'Our men track the culprits to a rival parish but are ambushed
+            along the way. The struggle is bitter, and in the end, we are forced
+            to retreat. Not all return home. The Beholder has abandoned us.
+
+            [Lost
+            10 Bliss, 20 Zeal & 5 Flock]'
     - rid: 107151340257149039
       type: {class: RequireResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         required: 20
+    - rid: 107151343762276421
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: 10
+        maxAmount: 10
+    - rid: 107151343762276422
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: 20
+        maxAmount: 20
+    - rid: 107151343762276423
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: -10
+        maxAmount: -10
+    - rid: 107151343762276424
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: -20
+        maxAmount: -20
+    - rid: 107151343762276425
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: -5
+        maxAmount: -5

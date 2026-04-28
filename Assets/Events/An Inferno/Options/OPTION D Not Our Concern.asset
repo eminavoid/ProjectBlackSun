@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
-  m_Name: No hacer nada
+  m_Name: OPTION D Not Our Concern
   m_EditorClassIdentifier: Assembly-CSharp::Option
-  title: No hacer nada
+  title: Not Our Concern
   description: 
   icon: {fileID: 0}
   modules:
@@ -28,18 +28,25 @@ MonoBehaviour:
         modules:
         - weight: 80
           module:
-            rid: 107151340257149018
-          output: La fabrica es destruida
+          - rid: 107151343762276443
+          output: "The commoners of the district gather around the foundry to witness
+            the destruction as if it were a communal bonfire. The cracking of the
+            timber almost manages to drown out the screams of those trapped within\u2026
+            almost."
         - weight: 20
           module:
-            rid: 107151340257149019
-          output: La fabrica es destruida y los fieles se sienten responsables
-    - rid: 107151340257149018
+          - rid: 107151343762276444
+          output: "The commoners of the district gather around the foundry to witness
+            the destruction as if it were a communal bonfire. The cracking of the
+            timber almost manages to drown out the screams of those trapped within\u2026
+            almost. Our own men cannot help but feel that we should have intervened.\r\n[Lost
+            5 Bliss]"
+    - rid: 107151343762276443
       type: {class: DoNothing, ns: , asm: Assembly-CSharp}
       data: 
-    - rid: 107151340257149019
+    - rid: 107151343762276444
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 4
-        minAmount: -10
-        maxAmount: -10
+        minAmount: -5
+        maxAmount: -5

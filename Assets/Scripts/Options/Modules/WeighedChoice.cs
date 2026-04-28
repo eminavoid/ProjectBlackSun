@@ -15,7 +15,10 @@ public class WeighedChoice : OptionModule
         {
             WeightedElement element = WeightedSelect.SelectElement(modules);
 
-            element.module.Execute(seed);
+            for (int i = 0; i < element.module.Count; i++)
+            {
+                element.module[i].Execute(seed);
+            }
             SeedEventManager.CreateEventOutputWindow(element.output);
         }
     }
@@ -24,7 +27,7 @@ public class WeighedChoice : OptionModule
     private struct WeightedElement : IWeighted
     {
         public int weight;
-        [SerializeReferenceDropdown, SerializeReference] public OptionModule module;
+        [SerializeReferenceDropdown, SerializeReference] public List<OptionModule> module;
 
         [Space]
 

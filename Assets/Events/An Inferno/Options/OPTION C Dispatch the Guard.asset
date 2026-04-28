@@ -10,15 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
-  m_Name: Enviar guardias
+  m_Name: OPTION C Dispatch the Guard
   m_EditorClassIdentifier: Assembly-CSharp::Option
-  title: Enviar guardias
-  description: 
+  title: Dispatch the Guard
+  description: 'COST: 1 Authority'
   icon: {fileID: 0}
   modules:
   - rid: 107151340257149012
   - rid: 107151340257149013
   - rid: 107151340257149015
+  - rid: 107151343762276441
   endsQuestline: 1
   followUpSeeds: []
   references:
@@ -34,16 +35,30 @@ MonoBehaviour:
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
-        minAmount: 20
-        maxAmount: 20
+        minAmount: 30
+        maxAmount: 30
     - rid: 107151340257149015
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
         modules:
         - weight: 100
           module:
-            rid: 107151340257149016
-          output: Los guaridas resuelven los problemas
-    - rid: 107151340257149016
+          - rid: 107151343762276442
+          output: 'With a hastily written missive, you mobilize the local watch.
+            The Captain is displeased to follow your commands, but he knows you have
+            friends in high places. Under the capable hands of the Guard, the Overseer
+            saves both his foundry and his men. They know we are truly responsible
+            for their salvation and choose to affiliate themselves immediately, offering
+            an early tithe as thanks.
+
+            [Gained 30 Flock & 20 Wealth]
+
+'
+    - rid: 107151343762276441
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 2
+        required: 1
+    - rid: 107151343762276442
       type: {class: DoNothing, ns: , asm: Assembly-CSharp}
       data: 

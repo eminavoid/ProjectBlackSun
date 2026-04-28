@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
+  m_Name: The Rival Orator
+  m_EditorClassIdentifier: Assembly-CSharp::Seed
+  title: THE RIVAL ORATOR
+  description: My Pontiff! An orator from a rival sect has taken a stand in the main
+    plaza of the Ocularium and has begun to proselytize to all who will listen. This
+    would not be a concern in itself, were it not for the fact that this particular
+    speaker seems to possess a silver tongue. If we do not act to silence him, we
+    risk the situation spiraling beyond our control!
+  icon: {fileID: 0}
+  ticks: 1
+  <Options>k__BackingField:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}

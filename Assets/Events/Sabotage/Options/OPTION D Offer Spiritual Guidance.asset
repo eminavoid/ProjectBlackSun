@@ -28,24 +28,34 @@ MonoBehaviour:
         modules:
         - weight: 80
           module:
-            rid: 107151340257149035
+          - rid: 107151343762276426
+          - rid: 107151343762276427
           output: "The Overseer is not content that our only offering is spiritual
             aid. He claims that \u201Cwords of encouragement\u201D will not grant
             his men peace of mind. Many have decided to abandon our sect. Words of
-            encouragement? Do they not realize we speak for the Beholder?"
+            encouragement? Do they not realize we speak for the Beholder?\n[Lost
+            10 Bliss & 10 Flock]"
         - weight: 20
           module:
-            rid: 107151340257149036
-          output: Our followers find peace in our words. His Gaze is upon all, and
+          - rid: 107151343762276428
+          output: 'Our followers find peace in our words. His Gaze is upon all, and
             even the worst shall pass. This is enough to calm them, though they remain
             visibly troubled.
-    - rid: 107151340257149035
+
+            [Lost 5 Bliss]'
+    - rid: 107151343762276426
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: -10
+        maxAmount: -10
+    - rid: 107151343762276427
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: -10
         maxAmount: -10
-    - rid: 107151340257149036
+    - rid: 107151343762276428
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 4
