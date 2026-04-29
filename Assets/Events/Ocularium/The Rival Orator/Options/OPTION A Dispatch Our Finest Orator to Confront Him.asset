@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: OPTION A Dispatch Our Finest Orator to Confront Him
   m_EditorClassIdentifier: Assembly-CSharp::Option
   title: Dispatch Our Finest Orator to Confront Him
-  description: 
+  description: No cost
   icon: {fileID: 0}
   modules:
   - rid: 107151343762276446

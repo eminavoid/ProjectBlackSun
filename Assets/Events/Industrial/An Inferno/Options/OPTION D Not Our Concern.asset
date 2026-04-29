@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: OPTION D Not Our Concern
   m_EditorClassIdentifier: Assembly-CSharp::Option
   title: Not Our Concern
-  description: 
+  description: No cost
   icon: {fileID: 0}
   modules:
   - rid: 107151340257149017

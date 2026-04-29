@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: OPTION D Offer Spiritual Guidance
   m_EditorClassIdentifier: Assembly-CSharp::Option
   title: Offer Spiritual Guidance
-  description: 
+  description: No cost
   icon: {fileID: 0}
   modules:
   - rid: 107151340257149034

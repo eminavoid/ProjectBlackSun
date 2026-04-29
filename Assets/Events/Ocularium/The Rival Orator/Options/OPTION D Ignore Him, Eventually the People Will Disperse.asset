@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: OPTION D Ignore Him, Eventually the People Will Disperse
   m_EditorClassIdentifier: Assembly-CSharp::Option
   title: Ignore Him, Eventually the People Will Disperse
-  description: 
+  description: No cost
   icon: {fileID: 0}
   modules:
   - rid: 107151343762276461
