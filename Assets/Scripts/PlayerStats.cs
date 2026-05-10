@@ -10,11 +10,11 @@ public class PlayerStats : ScriptableObject
     private readonly Dictionary<PlayerStat, int> playerStats = new Dictionary<PlayerStat, int>()
     {
         { PlayerStat.None, 0 },
-        { PlayerStat.Value1, 0 },
-        { PlayerStat.Value2, 0 },
-        { PlayerStat.Value3, 0 },
-        { PlayerStat.Value4, 0 },
-        { PlayerStat.Value5, 0 },
+        { PlayerStat.Diplomacy, 0 },
+        { PlayerStat.Aggresion, 0 },
+        { PlayerStat.Stewardship, 0 },
+        { PlayerStat.Intrigue, 0 },
+        { PlayerStat.Learning, 0 },
     };
 
     public int GetStatExtraWeight(PlayerStat stat) => GetStat(stat) * ExtraWeightPerStat;
@@ -27,12 +27,6 @@ public class PlayerStats : ScriptableObject
         {
             playerStats[stat] += value;
         }
-
-        Debug.Log(GetStat(PlayerStat.Value1));
-        Debug.Log(GetStat(PlayerStat.Value2));
-        Debug.Log(GetStat(PlayerStat.Value3));
-        Debug.Log(GetStat(PlayerStat.Value4));
-        Debug.Log(GetStat(PlayerStat.Value5));
     }
 
     public void ResetValues()
@@ -46,10 +40,10 @@ public class PlayerStats : ScriptableObject
     public enum PlayerStat
     {
         None,
-        Value1,
-        Value2, 
-        Value3, 
-        Value4, 
-        Value5
+        Diplomacy,
+        Aggresion, 
+        Stewardship, 
+        Intrigue, 
+        Learning
     }
 }
