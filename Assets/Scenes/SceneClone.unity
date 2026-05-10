@@ -1206,6 +1206,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DebugAI
   seedsPool: {fileID: 11400000, guid: d37786678358a6042a7e851e42cf9470, type: 2}
+  aiProfile: {fileID: 11400000, guid: 237577d5da4f4f938cc4de9a1ec80408, type: 2}
   minTickCooldown: 1
   spawnTickChanceRatio: 100
 --- !u!4 &118157090
