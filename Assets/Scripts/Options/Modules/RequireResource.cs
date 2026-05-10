@@ -13,5 +13,5 @@ public class RequireResource : OptionModule
         return amount >= required;
     }
 
-    public override void Execute(Seed seed) { }
+    public override void Execute(Option option, Seed seed) { }
 }

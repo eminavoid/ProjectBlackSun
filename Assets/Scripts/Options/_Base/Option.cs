@@ -17,6 +17,8 @@ public class Option : ScriptableObject
     [SerializeField] private bool endsQuestline = true;
     [SerializeField] private List<FollowUpSeedConfig> followUpSeeds = new List<FollowUpSeedConfig>();
 
+    public PlayerStats PlayerStats => playerStats;
+
     private Seed seed;
 
     public string Title => string.IsNullOrWhiteSpace(title) ? name : title;
@@ -45,7 +47,7 @@ public class Option : ScriptableObject
     {
         for (int i = 0; i < modules.Count; i++)
         {
-            modules[i]?.Execute(seed);
+            modules[i]?.Execute(this, seed);
         }
 
         ExecuteFollowUpSeeds();

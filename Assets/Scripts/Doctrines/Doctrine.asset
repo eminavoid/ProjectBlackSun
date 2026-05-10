@@ -15,5 +15,5 @@ MonoBehaviour:
   <Name>k__BackingField: 
   <Description>k__BackingField: 
   statUpdates:
-  - playerStat: 0
+  - playerStat: 1
     changeAmount: 10
