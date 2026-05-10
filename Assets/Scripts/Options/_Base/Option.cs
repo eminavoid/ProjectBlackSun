@@ -5,6 +5,8 @@ using System;
 [CreateAssetMenu(fileName = "New Option", menuName = "Options/New Option", order = 1)]
 public class Option : ScriptableObject
 {
+    [SerializeField] private PlayerStats playerStats;
+
     [Header("Display")]
     [SerializeField] private string title;
     [SerializeField, TextArea(3, 6)] private string description;
