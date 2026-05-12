@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
   m_Name: OPTION C We Shall Aid the Stricken, but We Cannot Abandon Our Temples
   m_EditorClassIdentifier: Assembly-CSharp::Option
+  playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
   title: We Shall Aid the Stricken, but We Cannot Abandon Our Temples
   description: 'COST: 40 Wealth'
   icon: {fileID: 0}

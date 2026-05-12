@@ -5,5 +5,5 @@ public abstract class OptionModule
 {
     public abstract bool CanExecute();
 
-    public abstract void Execute(Seed seed);
+    public abstract void Execute(Option option, Seed seed);
 }

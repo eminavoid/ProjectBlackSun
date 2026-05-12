@@ -1,6 +1,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum SeedEventType
+{
+    Economic,
+    Social,
+    Security
+}
+
+public enum SeedDifficulty
+{
+    Easy = 1,
+    Medium = 2,
+    Hard = 3
+}
+
 [CreateAssetMenu(fileName = "Seed", menuName = "Seeds/New Seed", order = 1)]
 public class Seed : ScriptableObject
 {
@@ -11,8 +25,14 @@ public class Seed : ScriptableObject
 
     [Header("Gameplay")]
     [SerializeField] private int ticks = 1;
+    [Header("Classification")]
+    [SerializeField] private SeedEventType eventType;
+    [SerializeField] private SeedDifficulty difficulty;
     [field: SerializeField] public List<Option> Options { get; private set; }
     public int Ticks => ticks;
+    public SeedEventType EventType => eventType;
+    public SeedDifficulty Difficulty => difficulty;
+    public int DifficultyValue => (int)difficulty;
     public string Title => string.IsNullOrWhiteSpace(title) ? name : title;
     public string Description => description;
     public Sprite Icon => icon;
