@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
   m_Name: "OPTION B Arrange an \u201CAccident\u201D for Those Involved"
   m_EditorClassIdentifier: Assembly-CSharp::Option
+  playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
   title: "Arrange an \u201CAccident\u201D for Those Involved"
   description: 'COST: 30 Wealth'
   icon: {fileID: 0}
@@ -52,8 +53,8 @@ MonoBehaviour:
             Now the men speak with even greater conviction, and none can deny they
             are favored by the Beholder. What a disaster!
 
-            [Lost 20
-            Zeal & 10 Bliss]
+            [Lost 20 Zeal
+            & 10 Bliss]
 
 '
         - weight: 20

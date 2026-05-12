@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: "OPTION A Two Can Play at That Game! Send Men to \u201CReason\u201D With
     Them"
   m_EditorClassIdentifier: Assembly-CSharp::Option
+  playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
   title: "Two Can Play at That Game! Send Men to \u201CReason\u201D With Them"
   description: 'COST: 20 Flock'
   icon: {fileID: 0}

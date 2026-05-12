@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
   m_Name: OPTION B Bribe the Ruffians
   m_EditorClassIdentifier: Assembly-CSharp::Option
+  playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
   title: Bribe the Ruffians
   description: 'COST: 50 Wealth'
   icon: {fileID: 0}

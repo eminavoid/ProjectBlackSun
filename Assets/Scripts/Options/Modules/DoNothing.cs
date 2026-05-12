@@ -6,5 +6,5 @@ public class DoNothing : OptionModule
 {
     public override bool CanExecute() => true;
 
-    public override void Execute(Seed seed) { }
+    public override void Execute(Option option, Seed seed) { }
 }

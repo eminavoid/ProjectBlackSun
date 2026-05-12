@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
   m_Name: OPTION A Organize a Public Sermon, the Masses Must Hear His Message!
   m_EditorClassIdentifier: Assembly-CSharp::Option
+  playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
   title: Organize a Public Sermon, the Masses Must Hear His Message!
   description: 'COST: 10 Wealth'
   icon: {fileID: 0}
@@ -44,8 +45,8 @@ MonoBehaviour:
             dooms and other absurdities. The people took no liking to his sermons;
             it will take much effort to restore their trust.
 
-            [Lost
-            30 Zeal]
+            [Lost 30
+            Zeal]
 
 '
         - weight: 5

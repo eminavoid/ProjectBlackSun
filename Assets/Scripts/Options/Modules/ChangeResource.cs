@@ -10,7 +10,7 @@ public class ChangeResource : OptionModule
 
     public override bool CanExecute() => true;
 
-    public override void Execute(Seed seed)
+    public override void Execute(Option option, Seed seed)
     {
         int resourceAmount = UnityEngine.Random.Range(minAmount, maxAmount + 1);
         ResourceManager.Resources.AddResource(resource, resourceAmount);
