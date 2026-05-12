@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: OPTION B Intimidate the Director
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  title: Intimidate the Director
+  description: No cost
+  icon: {fileID: 0}
+  modules:
+  - rid: 107151359355650147
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 107151359355650147
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 60
+          module:
+          - rid: 107151359355650148
+          output: 'A nocturnal visit is all it takes for the director to abandon
+            his patrons. Our men can be so persuasive when the need arises... it
+            is their trade, after all!
+
+            [Gained 5 Bliss]
+
+'
+        - weight: 40
+          module:
+          - rid: 107151359355650149
+          - rid: 107151359355650150
+          output: 'The gall of this man! Even with a band of fanatics appearing at
+            his doorstep, he refuses to forsake his benefactors. Such dedication
+            would be commendable were it not directed squarely against us.
+
+            [Lost
+            20 Zeal & 10 Bliss]
+
+'
+    - rid: 107151359355650148
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: 5
+        maxAmount: 5
+    - rid: 107151359355650149
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: -20
+        maxAmount: -20
+    - rid: 107151359355650150
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: -10
+        maxAmount: -10

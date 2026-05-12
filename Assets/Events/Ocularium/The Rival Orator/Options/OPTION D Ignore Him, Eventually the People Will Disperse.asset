@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: OPTION D Ignore Him, Eventually the People Will Disperse
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  title: Ignore Him, Eventually the People Will Disperse
+  description: 
+  icon: {fileID: 0}
+  modules:
+  - rid: 107151343762276461
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 107151343762276461
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 100
+          module:
+          - rid: 107151343762276462
+          - rid: 107151343762276463
+          output: 'But the people did not disperse; instead, they grew in number.
+            The orator has gained great influence within the Ocularium, and our sect
+            pays dearly for failing to deal with him when the chance was ours.
+
+            [Lost
+            30 Zeal & 30 Flock]'
+    - rid: 107151343762276462
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: -30
+        maxAmount: -30
+    - rid: 107151343762276463
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: -30
+        maxAmount: -30

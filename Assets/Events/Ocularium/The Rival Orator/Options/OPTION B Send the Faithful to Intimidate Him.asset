@@ -1,0 +1,96 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: OPTION B Send the Faithful to Intimidate Him
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  title: Send the Faithful to Intimidate Him
+  description: 'COST: 10 Flock'
+  icon: {fileID: 0}
+  modules:
+  - rid: 107151343762276449
+  - rid: 107151343762276450
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 107151343762276449
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        required: 10
+    - rid: 107151343762276450
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 50
+          module:
+          - rid: 107151343762276451
+          - rid: 107151343762276452
+          output: "Our followers discover where this \u201Corator\u201D dwells and
+            pay him a nocturnal visit. Coincidentally, he does not appear in the
+            plaza the following morning, nor any day thereafter.\r\n[Gained 20 Zeal
+            & 10 Flock]\r\n"
+        - weight: 40
+          module:
+          - rid: 107151343762276453
+          output: "What a disaster! Our followers ambush the orator as he concludes
+            one of his sermons. Yet, he stands his ground, even as our men begin
+            to threaten violence. They clearly misread the situation; the orator\u2019s
+            stoicism is enough to rouse his followers to his defense. Our men are
+            lynched on the spot.\r\n[Lost 20 Zeal]"
+        - weight: 10
+          module:
+          - rid: 107151343762276455
+          - rid: 107151343762276456
+          - rid: 107151343762276457
+          output: "A catastrophe! Matters have spiraled out of control. Our men were
+            meant only to give him a fright, but they overplayed their hand and ended
+            the poor devil's life! Worse, they did so before the eyes of all his
+            followers. Needless to say, our sect\u2019s reputation is left in tatters.\r\n[Lost
+            25 Zeal, 10 Bliss & 20 Flock]"
+    - rid: 107151343762276451
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: 20
+        maxAmount: 20
+    - rid: 107151343762276452
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: 10
+        maxAmount: 10
+    - rid: 107151343762276453
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: -20
+        maxAmount: -20
+    - rid: 107151343762276455
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: -25
+        maxAmount: -25
+    - rid: 107151343762276456
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: -10
+        maxAmount: -10
+    - rid: 107151343762276457
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: -20
+        maxAmount: -20

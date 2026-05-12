@@ -1,0 +1,115 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: OPTION B Offer Patronage
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  title: Offer Patronage
+  description: 'COST: 50 Wealth'
+  icon: {fileID: 0}
+  modules:
+  - rid: 107151359355650163
+  - rid: 107151359355650164
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 107151359355650163
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        required: 50
+    - rid: 107151359355650164
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 50
+          module:
+          - rid: 107151359355650165
+          output: 'Though the price is steep, can one truly place a value upon talent?
+            The prodigy accepts us as his new benefactors, and our priests are already
+            planning his first commission. Our sacred truths shall take form through
+            the hands of this youth. Through his art, we find immortality!
+
+            [Gained
+            40 Zeal & Boon]
+
+'
+        - weight: 40
+          module:
+          - rid: 107151359355650166
+          - rid: 107151359355650167
+          output: 'Curse it! Another sect outbid us, offering a sum far greater than
+            what we had planned. It does not appear we shall be able to recruit the
+            lad now. Our fold is devastated by the missed chance.
+
+            [Gained
+            50 Wealth Lost 15 Bliss]
+
+'
+        - weight: 10
+          module:
+          - rid: 107151359355650168
+          - rid: 107151359355650169
+          - rid: 107151359355650170
+          - rid: 107151359355650171
+          output: 'Grave trouble! The artist took offense at "men of God attempting
+            to purchase his spirit." It seems his zeal for the Beholder outweighs
+            his reason! Oh, what a loss... and worse still, he has vowed that his
+            next masterpiece shall be a depiction of our sins. What calamity!
+
+            [Gained
+            50 Wealth Lost 30 Zeal, 10 Bliss & 20 Flock]
+
+'
+    - rid: 107151359355650165
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: 40
+        maxAmount: 40
+    - rid: 107151359355650166
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        minAmount: 50
+        maxAmount: 50
+    - rid: 107151359355650167
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: -15
+        maxAmount: -15
+    - rid: 107151359355650168
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        minAmount: 50
+        maxAmount: 50
+    - rid: 107151359355650169
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: -30
+        maxAmount: -30
+    - rid: 107151359355650170
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: -10
+        maxAmount: -10
+    - rid: 107151359355650171
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: -20
+        maxAmount: -20

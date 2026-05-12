@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
+  m_Name: Sabotage!
+  m_EditorClassIdentifier: Assembly-CSharp::Seed
+  title: Sabotage!
+  description: High Pontiff, dire tidings have reached our ears. A rival sect has
+    infiltrated a workshop owned by one of the faithful. By tampering with the heavy
+    tools, they have caused a most grievous accident, claiming the life of a craftsman.
+    The remaining laborers refuse to return to their stations until their safety
+    is guaranteed. Should we fail to intervene, the foundry may close its doors forever.
+  icon: {fileID: 0}
+  ticks: 1
+  <Options>k__BackingField:
+  - {fileID: 11400000, guid: a02bdae1579eed346ae537caddc3137e, type: 2}
+  - {fileID: 11400000, guid: a22ceed04fc417e4eb3b692571122466, type: 2}
+  - {fileID: 11400000, guid: 4e892ea0698178e4a8f3840d9c1384e9, type: 2}
+  - {fileID: 11400000, guid: 040456fe01b86e844b182c23a3e22cdd, type: 2}

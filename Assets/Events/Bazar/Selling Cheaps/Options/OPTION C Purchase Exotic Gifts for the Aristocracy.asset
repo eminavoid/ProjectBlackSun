@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: OPTION C Purchase Exotic Gifts for the Aristocracy
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  title: Purchase Exotic Gifts for the Aristocracy
+  description: 'COST: 60 Wealth'
+  icon: {fileID: 0}
+  modules:
+  - rid: 107151359355650078
+  - rid: 107151359355650080
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 107151359355650078
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        required: 60
+    - rid: 107151359355650080
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 50
+          module:
+          - rid: 107151359355650081
+          output: 'Such reverence! The aristocrats are fascinated by our offerings.
+            The exotic nature of the gifts has given us the edge we required, as
+            it seems we have started a new trend among the nobility. They shall not
+            forget this gesture anytime soon.
+
+            [Gained 1 Authority]
+
+'
+        - weight: 50
+          module:
+          - rid: 107151359355650082
+          output: 'Horrible news! The gifts proved to be cheap counterfeits of the
+            true articles. The refined eyes of the aristocracy were quick to spot
+            the deception and were left indignant. They now believe us to be charlatans!
+            This is the price of trusting outlanders!
+
+            [Lost 1 Authority]
+
+'
+    - rid: 107151359355650081
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 2
+        minAmount: 1
+        maxAmount: 1
+    - rid: 107151359355650082
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 2
+        minAmount: 1
+        maxAmount: 1

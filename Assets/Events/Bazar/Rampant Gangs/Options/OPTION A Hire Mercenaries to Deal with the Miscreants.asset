@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: OPTION A Hire Mercenaries to Deal with the Miscreants
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  title: Hire Mercenaries to Deal with the Miscreants
+  description: 'COST: 40 Wealth'
+  icon: {fileID: 0}
+  modules:
+  - rid: 107151359355650048
+  - rid: 107151359355650049
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 107151359355650048
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        required: 40
+    - rid: 107151359355650049
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 80
+          module:
+          - rid: 107151359355650050
+          output: 'The mercenaries make short work of the scoundrels. In less than
+            a fortnight, order is restored to the bazaar, and the commoners rejoice.
+
+            [Gained
+            15 Bliss]
+
+'
+        - weight: 20
+          module:
+          - rid: 107151359355650051
+          output: 'Curse them! The mercenaries are efficient enough, yet they seem
+            unable or unwilling to deliver a killing blow to the gangs. It appears
+            we shall be forced to keep them on our coin for the foreseeable future.
+
+            [Gained
+            5 Bliss & Bane]
+
+'
+    - rid: 107151359355650050
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: 15
+        maxAmount: 15
+    - rid: 107151359355650051
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: 5
+        maxAmount: 5

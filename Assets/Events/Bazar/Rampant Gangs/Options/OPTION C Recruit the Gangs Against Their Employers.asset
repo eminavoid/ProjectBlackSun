@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: OPTION C Recruit the Gangs Against Their Employers
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  title: Recruit the Gangs Against Their Employers
+  description: 'COST: 60 Wealth'
+  icon: {fileID: 0}
+  modules:
+  - rid: 107151359355650058
+  - rid: 107151359355650059
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 107151359355650058
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        required: 60
+    - rid: 107151359355650059
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 50
+          module:
+          - rid: 107151359355650060
+          output: 'It was in vain; the ruffians refuse to even lend us an ear. One
+            wonders how much they were paid to secure such unwavering loyalty. May
+            the Beholder curse them!
+
+            [Gained Bane Lost 10 Bliss]
+
+'
+        - weight: 50
+          module:
+          - rid: 107151359355650061
+          output: 'The scoundrels accept our offer with grins upon their faces. After
+            all, we are paying them once more to perform the very same deeds they
+            were already committing. A fine trade for them, but at least they are
+            no longer our burden.
+
+            [Gained 10 Bliss]
+
+'
+    - rid: 107151359355650060
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: -10
+        maxAmount: -10
+    - rid: 107151359355650061
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: 10
+        maxAmount: 10

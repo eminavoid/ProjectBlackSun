@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: OPTION B Fund the Reconstruction
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  title: Fund the Reconstruction
+  description: 'COST: 30 Wealth'
+  icon: {fileID: 0}
+  modules:
+  - rid: 107151340257149008
+  - rid: 107151343762276440
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 107151340257149008
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 60
+          module:
+          - rid: 107151343762276435
+          output: 'The Overseer is grateful for the generous contribution, and the
+            men, vulnerable from the loss of their kin, seek refuge in the warmth
+            of our sect. The priests are already preparing the rites of initiation.
+
+            [Gained
+            10 Flock]
+
+'
+        - weight: 30
+          module:
+          - rid: 107151343762276436
+          output: 'The Overseer accepts our generosity with humility. However, the
+            men are too burdened by the loss of their friends and livelihood to take
+            notice. None shall join us today.
+
+'
+        - weight: 10
+          module:
+          - rid: 107151343762276437
+          - rid: 107151343762276438
+          output: "The Overseer spits upon our generosity and drives our men away,
+            accusing us of standing idle only to prey upon them in their moment of
+            vulnerability\u2026 he is not entirely mistaken.\r\n[Gained 30 Wealth
+            Lost 5 Zeal]\r\n\n"
+    - rid: 107151343762276435
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: 10
+        maxAmount: 10
+    - rid: 107151343762276436
+      type: {class: DoNothing, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 107151343762276437
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        minAmount: 30
+        maxAmount: 30
+    - rid: 107151343762276438
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: -5
+        maxAmount: -5
+    - rid: 107151343762276440
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        required: 30

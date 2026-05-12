@@ -23,7 +23,7 @@ public class DebugAI : MonoBehaviour
         {
             tickTimer += 1;
 
-            if (tickTimer < minTickCooldown)
+            if (tickTimer > minTickCooldown)
             {
                 inCooldown = false;
             }

@@ -1,0 +1,108 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: "OPTION B Arrange an \u201CAccident\u201D for Those Involved"
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  title: "Arrange an \u201CAccident\u201D for Those Involved"
+  description: 'COST: 30 Wealth'
+  icon: {fileID: 0}
+  modules:
+  - rid: 107151359355650094
+  - rid: 107151359355650095
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 107151359355650094
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        required: 30
+    - rid: 107151359355650095
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 40
+          module:
+          - rid: 107151359355650096
+          output: 'A bit of sabotage upon the podium where they preached and... Crack!
+            The entire structure came crashing down. The masses attributed it to
+            divine providence, and the survivors are now shunned for professing falsehoods.
+            Our sect stands vindicated.
+
+            [Gained 20 Zeal]
+
+'
+        - weight: 40
+          module:
+          - rid: 107151359355650097
+          - rid: 107151359355650098
+          output: 'Our attempt at sabotage does not go as planned. Though their podium
+            collapsed, by what can only be described as a miracle, no one was harmed.
+            Now the men speak with even greater conviction, and none can deny they
+            are favored by the Beholder. What a disaster!
+
+            [Lost 20
+            Zeal & 10 Bliss]
+
+'
+        - weight: 20
+          module:
+          - rid: 107151359355650099
+          - rid: 107151359355650100
+          - rid: 107151359355650101
+          output: 'Our attempt at sabotage is revealed when one of our agents is
+            captured in the act. The speakers argue that if their words were lies,
+            we would not need to resort to such desperate measures. The people believe
+            them. It will be a long road to recovery from this shame.
+
+            [Lost
+            30 Zeal, 10 Bliss & 20 Flock]
+
+'
+    - rid: 107151359355650096
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: 20
+        maxAmount: 20
+    - rid: 107151359355650097
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: -20
+        maxAmount: -20
+    - rid: 107151359355650098
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: -10
+        maxAmount: -10
+    - rid: 107151359355650099
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: -30
+        maxAmount: -30
+    - rid: 107151359355650100
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: -10
+        maxAmount: -10
+    - rid: 107151359355650101
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: -20
+        maxAmount: -20

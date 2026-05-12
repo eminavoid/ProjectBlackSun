@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: OPTION D A Painter Are There Not More Pressing Matters
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  title: A Painter? Are There Not More Pressing Matters?
+  description: No cost
+  icon: {fileID: 0}
+  modules:
+  - rid: 107151359355650176
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 107151359355650176
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 50
+          module:
+          - rid: 107151359355650177
+          output: It seems the artist's faith transcends the need for sectarian ties.
+            He remains content to paint the Beholder and little else. We heard he
+            told the messengers of other folds that "his faith would be decided at
+            the next Faith Eclipse."
+        - weight: 50
+          module:
+          - rid: 107151359355650178
+          output: 'The artist was eventually captivated by one of our rivals. His
+            paintings were so awe-inspiring that we ended up losing followers to
+            their fold.
+
+            [Lost 20 Flock]
+
+'
+    - rid: 107151359355650177
+      type: {class: DoNothing, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 107151359355650178
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: -20
+        maxAmount: -20

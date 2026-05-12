@@ -3,7 +3,7 @@ using System;
 
 public class OptionDisplay : MonoBehaviour
 {
-    public Action onOptionSelected;
+    public Action<Option> onOptionSelected;
 
     private Option option;
 
@@ -14,12 +14,15 @@ public class OptionDisplay : MonoBehaviour
 
     public void ExecuteOptions()
     {
-        option.ExecuteOption();
-        OnOptionExecuted();
+        if (option.CanExecute())
+        {
+            option.ExecuteOption();
+            OnOptionExecuted();
+        }
     }
 
     private void OnOptionExecuted()
     {
-        onOptionSelected?.Invoke();
+        onOptionSelected?.Invoke(option);
     }
 }

@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
+  m_Name: The Deluge
+  m_EditorClassIdentifier: Assembly-CSharp::Seed
+  title: The Deluge
+  description: "Pontiff, urgent news! The tears of the Beholder have been falling
+    without cease for the past few days, and the city\u2019s sewers can no longer
+    contain the flow. The people are whispering of a coming flood! We could mobilize
+    the faithful to protect our temples, for if they are damaged, restoring them
+    will cost a fortune. Yet, we cannot simply abandon the common folk, can we?"
+  icon: {fileID: 0}
+  ticks: 1
+  <Options>k__BackingField:
+  - {fileID: 11400000, guid: 1f9e062b628a73b4594c6fa2246fc3ab, type: 2}
+  - {fileID: 11400000, guid: 00a0025b3c9357f4bbaa5b7c4d734ff4, type: 2}
+  - {fileID: 11400000, guid: 808991eadb7300141a70444a2f663131, type: 2}
+  - {fileID: 11400000, guid: d0becdea6c4c5cb4c90df932fe250566, type: 2}

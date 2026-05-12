@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: "OPTION A Two Can Play at That Game! Send Men to \u201CReason\u201D With
+    Them"
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  title: "Two Can Play at That Game! Send Men to \u201CReason\u201D With Them"
+  description: 'COST: 20 Flock'
+  icon: {fileID: 0}
+  modules:
+  - rid: 107151359355650088
+  - rid: 107151359355650089
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 107151359355650088
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        required: 20
+    - rid: 107151359355650089
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 50
+          module:
+          - rid: 107151359355650090
+          - rid: 107151359355650091
+          output: 'We dispatched our faithful to demonstrate the error of their ways...
+            with their fists! Clearly, we are the superior sect, for our men gave
+            them a thorough thrashing. They shall think twice before crossing us
+            again.
+
+            [Gained 20 Zeal & 20 Flock]
+
+'
+        - weight: 50
+          module:
+          - rid: 107151359355650092
+          - rid: 107151359355650093
+          output: "Ill tidings! The rival speakers proved to be hardier than we anticipated.
+            They delivered a terrible beating to our men\u2014not all of whom survived.
+            We have been exposed as a weak fold in the eyes of the public!\r\n[Gained
+            10 Flock Lost 30 Zeal]\r\n"
+    - rid: 107151359355650090
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: 20
+        maxAmount: 20
+    - rid: 107151359355650091
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: 20
+        maxAmount: 20
+    - rid: 107151359355650092
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: 10
+        maxAmount: 10
+    - rid: 107151359355650093
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: -30
+        maxAmount: -30

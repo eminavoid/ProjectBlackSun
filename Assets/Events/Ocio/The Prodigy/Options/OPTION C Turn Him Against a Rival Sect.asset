@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: OPTION C Turn Him Against a Rival Sect
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  title: Turn Him Against a Rival Sect
+  description: No cost
+  icon: {fileID: 0}
+  modules:
+  - rid: 107151359355650172
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 107151359355650172
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 45
+          module:
+          - rid: 107151359355650173
+          output: 'What is better than having a talented painter under our sway?
+            Having that same artist dedicate his skills to slandering our primary
+            rival!
+
+            [Gained 40 Zeal]
+
+'
+        - weight: 45
+          module:
+          - rid: 107151359355650174
+          output: 'The artist is horrified by our attempt at slander. It seems we
+            have caused him to become disillusioned with all sects. It could have
+            been worse; at least now he shall not paint for anyone!
+
+            [Lost
+            10 Bliss]
+
+'
+        - weight: 10
+          module:
+          - rid: 107151359355650175
+          output: "What a tragedy! It appears our rivals had the very same idea.
+            The painter found himself at the center of the worst aspects of our warring
+            folds. Such was the chaos that the youth eventually lost his faith\u2014and
+            with it, his will to live. Today, the city loses a rising star.\r\n[Lost
+            55 Zeal]\r\n"
+    - rid: 107151359355650173
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: 40
+        maxAmount: 40
+    - rid: 107151359355650174
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: -10
+        maxAmount: -10
+    - rid: 107151359355650175
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: -55
+        maxAmount: -55
