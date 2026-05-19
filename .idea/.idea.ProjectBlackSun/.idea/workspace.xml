@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a42c9136-0aac-4f8a-91a6-2854c1038143" name="Changes" comment="" />
+    <list default="true" id="a42c9136-0aac-4f8a-91a6-2854c1038143" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.ProjectBlackSun/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ProjectBlackSun/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/OptionDisplay.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/OptionDisplay.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SceneClone.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SceneClone.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Resources/Resources.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Resources/Resources.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -90,6 +97,7 @@
       <workItem from="1777329544542" duration="2362000" />
       <workItem from="1777345390658" duration="1369000" />
       <workItem from="1777413119663" duration="308000" />
+      <workItem from="1779154965835" duration="1246000" />
     </task>
     <servers />
   </component>
