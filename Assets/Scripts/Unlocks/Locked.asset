@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 147a71ea19008d346a554183fc1dac37, type: 3}
+  m_Name: Locked
+  m_EditorClassIdentifier: Assembly-CSharp::Locked
+  locked:
+  - {fileID: 11400000, guid: 4bace0462460a7d41a4426820434964e, type: 2}
