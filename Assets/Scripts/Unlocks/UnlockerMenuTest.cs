@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using Zeke.UI;
 
@@ -14,18 +15,28 @@ public class UnlockerMenuTest : MonoBehaviour
     [SerializeField] private int amount = 3;
     [SerializeField] private UIWindow windowPrefab;
 
+    [Space]
+
+    [SerializeField] private UnityEvent onOptionSelected;
+
     private List<Unlockeable> unlockeables;
 
-    private void Start()
+    public void GenerateUnlocks()
+    {
+        CreateWindows(GenerateOptions());
+    }
+
+    private void Awake()
     {
         unlockeables = locked.GetCopy();
-        CreateWindows(GenerateOptions());
     }
 
     private void OnOptionSelected(Unlockeable unlockeable)
     {
         unlockeable.Unlock();
         ClearRoot();
+
+        onOptionSelected?.Invoke();
     }
 
     private void ClearRoot()

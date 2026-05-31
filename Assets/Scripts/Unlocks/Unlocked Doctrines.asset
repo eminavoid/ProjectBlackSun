@@ -10,7 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 91e512d48a47ef344adfd48af7cfc35e, type: 3}
-  m_Name: Unlocked Seeds
+  m_Name: Unlocked Doctrines
   m_EditorClassIdentifier: Assembly-CSharp::Unlocked
-  unlocked:
-  - {fileID: 11400000, guid: a0f28d300b0eb054b83d202dd75970ed, type: 2}
+  unlocked: []

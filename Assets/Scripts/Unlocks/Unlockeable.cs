@@ -12,9 +12,9 @@ public class Unlockeable : ScriptableObject
 
     public void Unlock()
     {
-        if (!target.Contains(this))
+        if (!target.Contains(scriptable))
         {
-            target.Add(this);
+            target.Add(scriptable);
         }
     }
 

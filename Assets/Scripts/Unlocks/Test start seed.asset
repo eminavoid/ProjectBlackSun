@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0b895d6ccfe5cef419fa652b5c64a8df, type: 3}
-  m_Name: Test seed
+  m_Name: Test start seed
   m_EditorClassIdentifier: Assembly-CSharp::Unlockeable
-  scriptable: {fileID: 11400000, guid: d75ebdaf9fadad942a84bf2103a6d83a, type: 2}
+  scriptable: {fileID: 11400000, guid: a0f28d300b0eb054b83d202dd75970ed, type: 2}
   target: {fileID: 11400000, guid: 4614166d5d34a4b4e8a155aa5c87e740, type: 2}
   requeriments: []
