@@ -12,9 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
   m_Name: Seed
   m_EditorClassIdentifier: Assembly-CSharp::Seed
-  title: Seed1
-  description: esta es la seed 1
-  icon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
   ticks: 1
   <Options>k__BackingField:
   - {fileID: 11400000, guid: 3a9806e3d5cede14e97f83d2198294e3, type: 2}

@@ -45,8 +45,7 @@ public class DebugAI : MonoBehaviour
             Seed seed = GetRandomAllowedSeed();
             if (seed == null) return;
 
-            bool planted = node.AddSeed(seed);
-            if (!planted) return;
+            node.AddSeed(seed);
 
             inCooldown = true;
             tickTimer = 0;
