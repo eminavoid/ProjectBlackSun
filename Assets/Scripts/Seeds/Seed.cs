@@ -36,18 +36,18 @@ public class Seed : ScriptableObject
     public string Title => string.IsNullOrWhiteSpace(title) ? name : title;
     public string Description => description;
     public Sprite Icon => icon;
-    public Node CurrentNode => currentNode;
-    public Districts? CurrentDistrict => currentNode != null ? currentNode.District : null;
+    public DistrictZone CurrentZone => currentZone;
+    public Districts? CurrentDistrict => currentZone != null ? currentZone.District : null;
 
     public bool CanPlantInDistrict(Districts district) => true;
 
-    private Node currentNode;
+    private DistrictZone currentZone;
 
     private int currentTicks = 0;
 
-    public void Initialize(Node node)
+    public void Initialize(DistrictZone zone)
     {
-        currentNode = node;
+        currentZone = zone;
         currentTicks = 0;
 
         for (int i = 0; i < Options.Count; i++)
@@ -62,9 +62,9 @@ public class Seed : ScriptableObject
 
         if (currentTicks >= ticks)
         {
-            Debug.Log($"Seed '{Title}' completed in node '{currentNode?.name ?? "Unknown"}' after {ticks} turn(s).");
+            Debug.Log($"Seed '{Title}' completed in sector '{currentZone?.SectorName ?? "Unknown"}' after {ticks} turn(s).");
             SeedEventManager.EnqueueSeedEvent(this);
-            currentNode.RemoveSeed(this);
+            currentZone.RemoveSeed(this);
         }
     }
 }

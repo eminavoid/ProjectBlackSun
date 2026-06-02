@@ -9,22 +9,36 @@ namespace Zeke.UI
 
         public UIElement TryGetElement(string name)
         {
-            if (elements.TryGetValue(name, out UIElement uiElement))
+            if (TryGetCachedElement(name, out UIElement uiElement))
             {
                 return uiElement;
             }
 
-            return null;
+            RegisterChildElements();
+            TryGetCachedElement(name, out uiElement);
+            return uiElement;
         }
 
         public T TryGetElement<T>(string name) where T : Component
         {
-            if (elements.TryGetValue(name, out UIElement uiElement))
-            {
-                return uiElement.GetElement<T>();
-            }
+            UIElement uiElement = TryGetElement(name);
+            return uiElement != null ? uiElement.GetElement<T>() : null;
+        }
 
-            return null;
+        private bool TryGetCachedElement(string name, out UIElement uiElement)
+        {
+            return elements.TryGetValue(name, out uiElement);
+        }
+
+        private void RegisterChildElements()
+        {
+            UIElement[] childElements = GetComponentsInChildren<UIElement>(true);
+            for (int i = 0; i < childElements.Length; i++)
+            {
+                UIElement element = childElements[i];
+                if (element == null || element.Window != this) continue;
+                elements[element.Name] = element;
+            }
         }
 
         public void Add(UIElement element)
@@ -34,7 +48,7 @@ namespace Zeke.UI
                 Debug.LogWarning($"Duplicate '{element.Name}' UIElement naming:", element);
             }
 
-            elements.Add(element.Name, element);
+            elements[element.Name] = element;
         }
 
         public void DestroyWindow()

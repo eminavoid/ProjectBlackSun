@@ -1,35 +1,36 @@
+using System;
 using UnityEngine;
 
+/// <summary>
+/// Obsoleto: el gameplay usa <see cref="DistrictZone"/> (sectores del mapa 3D).
+/// </summary>
+[Obsolete("Use DistrictZone on map sector meshes instead of Node.")]
 public class Node : MonoBehaviour
 {
     [field: SerializeField] public Districts District { get; private set; }
 
-    private Seed seed = null;
+    private DistrictZone Zone => GetComponent<DistrictZone>();
+
+    public void SetDistrict(Districts district)
+    {
+        District = district;
+        if (Zone != null) Zone.SetDistrict(district);
+    }
 
     public bool AddSeed(Seed seed)
     {
-        if (this.seed != null) return false;
-        if (seed == null) return false;
+        DistrictZone zone = Zone;
+        if (zone == null)
+        {
+            Debug.LogWarning($"Node on '{name}' has no DistrictZone; add DistrictZone or use map bootstrap.", this);
+            return false;
+        }
 
-        seed.Initialize(this);
-        this.seed = seed;
-        return true;
+        return zone.AddSeed(seed);
     }
 
     public void RemoveSeed(Seed seed)
     {
-        if (this.seed != seed) return;
-        this.seed = null;
-    }
-
-    private void Start()
-    {
-        GameTime.OnTurnEnded += Tick;
-    }
-
-    private void Tick()
-    {
-        if (seed == null) return;
-        seed.Tick();
+        Zone?.RemoveSeed(seed);
     }
 }

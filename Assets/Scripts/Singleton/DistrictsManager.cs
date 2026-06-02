@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 public class DistrictsManager : Singleton<DistrictsManager>
 {
@@ -10,9 +12,9 @@ public class DistrictsManager : Singleton<DistrictsManager>
 
     private readonly Dictionary<Districts, DistrictData> districts = new Dictionary<Districts, DistrictData>();
 
-    public static DistrictData GetDistrictData(Node node)
+    public static DistrictData GetDistrictData(DistrictZone zone)
     {
-        return GetDistrictData(node.District);
+        return GetDistrictData(zone.District);
     }
 
     public static DistrictData GetDistrictData(Districts district)
@@ -25,47 +27,57 @@ public class DistrictsManager : Singleton<DistrictsManager>
         return Instance.districts.TryGetValue(district, out data) && data != null;
     }
 
-    public static List<Node> GetDistrictNodes(Districts district)
+    public static List<DistrictZone> GetDistrictZones(Districts district)
     {
-        if (!TryGetDistrictData(district, out DistrictData data)) return new List<Node>();
-        return data.GetNodes();
+        if (!TryGetDistrictData(district, out DistrictData data)) return new List<DistrictZone>();
+        return data.GetZones();
     }
 
-    public static bool TryGetRandomNodeInDistrict(Districts district, out Node node)
+    public static bool TryGetRandomZoneInDistrict(Districts district, out DistrictZone zone)
     {
-        node = null;
-        List<Node> nodes = GetDistrictNodes(district);
-        if (nodes.Count == 0) return false;
-
-        int randomIndex = UnityEngine.Random.Range(0, nodes.Count);
-        node = nodes[randomIndex];
-        return node != null;
+        zone = null;
+        if (!TryGetDistrictData(district, out DistrictData data)) return false;
+        return data.TryGetRandomZone(out zone);
     }
 
-    public static bool TryGetRandomNodeAnyDistrict(out Node node)
+    public static bool TryGetRandomFreeZoneInDistrict(Districts district, out DistrictZone zone)
     {
-        node = null;
-        List<Node> allNodes = new List<Node>();
+        zone = null;
+        if (!TryGetDistrictData(district, out DistrictData data)) return false;
+        return data.TryGetRandomFreeZone(out zone);
+    }
+
+    public static bool TryGetRandomFreeZoneAnyDistrict(out DistrictZone zone)
+    {
+        zone = null;
+        List<DistrictZone> freeZones = new List<DistrictZone>();
 
         foreach (Districts district in Enum.GetValues(typeof(Districts)))
         {
-            List<Node> districtNodes = GetDistrictNodes(district);
-            for (int i = 0; i < districtNodes.Count; i++)
+            List<DistrictZone> districtZones = GetDistrictZones(district);
+            for (int i = 0; i < districtZones.Count; i++)
             {
-                if (districtNodes[i] == null) continue;
-                allNodes.Add(districtNodes[i]);
+                DistrictZone candidate = districtZones[i];
+                if (candidate != null && !candidate.IsOccupied)
+                {
+                    freeZones.Add(candidate);
+                }
             }
         }
 
-        if (allNodes.Count == 0) return false;
+        if (freeZones.Count == 0) return false;
 
-        int randomIndex = UnityEngine.Random.Range(0, allNodes.Count);
-        node = allNodes[randomIndex];
-        return node != null;
+        zone = freeZones[UnityEngine.Random.Range(0, freeZones.Count)];
+        return zone != null;
     }
 
     public static DistrictData GetRandomDistrict()
     {
+        if (TryGetRandomDistrictWithZones(out DistrictData data))
+        {
+            return data;
+        }
+
         Array array = Enum.GetValues(typeof(Districts));
         int randomIndex = UnityEngine.Random.Range(0, array.Length);
         Districts randomDistrict = (Districts)array.GetValue(randomIndex);
@@ -73,19 +85,57 @@ public class DistrictsManager : Singleton<DistrictsManager>
         return Instance.districts[randomDistrict];
     }
 
+    public static bool TryGetRandomDistrictWithZones(out DistrictData data)
+    {
+        data = null;
+        if (IsNull) return false;
+
+        List<DistrictData> candidates = new List<DistrictData>();
+
+        foreach (KeyValuePair<Districts, DistrictData> entry in Instance.districts)
+        {
+            if (entry.Value != null && entry.Value.ZoneCount > 0)
+            {
+                candidates.Add(entry.Value);
+            }
+        }
+
+        if (candidates.Count == 0) return false;
+
+        data = candidates[UnityEngine.Random.Range(0, candidates.Count)];
+        return data != null;
+    }
+
+    public static void RefreshZones()
+    {
+        if (IsNull) return;
+        Instance.RefreshZonesInternal();
+    }
+
     protected override sealed void OnInitialization()
     {
         for (int i = 0; i < districtsConfig.Count; i++)
         {
             districts.Add(districtsConfig[i].district, districtsConfig[i].data);
-            if (districtsConfig[i].data != null) districtsConfig[i].data.ClearNodes();
         }
 
-        Node[] nodes = FindObjectsByType<Node>(FindObjectsSortMode.None);
+        RefreshZonesInternal();
+    }
 
-        for (int i = 0; i < nodes.Length; i++)
+    private void RefreshZonesInternal()
+    {
+        foreach (DistrictData data in districts.Values)
         {
-            districts[nodes[i].District].AddNode(nodes[i]);
+            data?.ClearZones();
+        }
+
+        DistrictZone[] zones = FindObjectsByType<DistrictZone>(FindObjectsSortMode.None);
+
+        for (int i = 0; i < zones.Length; i++)
+        {
+            if (zones[i] == null) continue;
+            if (!districts.TryGetValue(zones[i].District, out DistrictData data) || data == null) continue;
+            data.AddZone(zones[i]);
         }
     }
 
@@ -146,21 +196,24 @@ public class DistrictsManager : Singleton<DistrictsManager>
     {
         Gizmos.color = Color.yellow;
 
-        List<Node> nodes = districtData.GetNodes();
+        List<DistrictZone> zones = districtData.GetZones();
+        if (zones.Count == 0) return;
+
         Vector3 districtCenter = Vector3.zero;
 
-        for (int i = 0; i < nodes.Count; i++)
+        for (int i = 0; i < zones.Count; i++)
         {
-            districtCenter += nodes[i].transform.position;
+            if (zones[i] == null) continue;
+            districtCenter += zones[i].transform.position;
 
-            for (int x = 0; x < nodes.Count; x++)
+            for (int x = 0; x < zones.Count; x++)
             {
-                if (nodes[i] == nodes[x]) continue;
-                Gizmos.DrawLine(nodes[i].transform.position, nodes[x].transform.position);
+                if (zones[i] == zones[x]) continue;
+                Gizmos.DrawLine(zones[i].transform.position, zones[x].transform.position);
             }
         }
 
-        districtCenter /= nodes.Count;
+        districtCenter /= zones.Count;
 
         Handles.Label(districtCenter, districtData.name);
     }

@@ -1,18 +1,38 @@
 using UnityEngine;
 
 /// <summary>
-/// Selectable mesh zone. District comes from a parent DistrictPart, or from legacy name parsing (Red.001).
+/// Sector jugable del mapa (mesh del distrito). Aquí se plantan seeds; reemplaza el antiguo Node.
 /// </summary>
 [DisallowMultipleComponent]
 public class DistrictZone : MonoBehaviour
 {
     [SerializeField] private Districts district;
 
+    private Seed plantedSeed;
+
     public Districts District => district;
+    public bool IsOccupied => plantedSeed != null;
+    public string SectorName => gameObject.name;
 
     public void SetDistrict(Districts value)
     {
         district = value;
+    }
+
+    public bool AddSeed(Seed seed)
+    {
+        if (plantedSeed != null) return false;
+        if (seed == null) return false;
+
+        seed.Initialize(this);
+        plantedSeed = seed;
+        return true;
+    }
+
+    public void RemoveSeed(Seed seed)
+    {
+        if (plantedSeed != seed) return;
+        plantedSeed = null;
     }
 
     public void ResolveDistrictFromHierarchy(DistrictColorMapping mapping)
@@ -44,6 +64,22 @@ public class DistrictZone : MonoBehaviour
         meshCollider.sharedMesh = meshFilter.sharedMesh;
         meshCollider.convex = false;
         meshCollider.isTrigger = false;
+    }
+
+    private void OnEnable()
+    {
+        GameTime.OnTurnEnded += OnTurnEnded;
+    }
+
+    private void OnDisable()
+    {
+        GameTime.OnTurnEnded -= OnTurnEnded;
+    }
+
+    private void OnTurnEnded()
+    {
+        if (plantedSeed == null) return;
+        plantedSeed.Tick();
     }
 
     private void OnValidate()

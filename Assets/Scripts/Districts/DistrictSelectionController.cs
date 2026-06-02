@@ -6,9 +6,11 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 #endif
 
+[DefaultExecutionOrder(-20)]
 public class DistrictSelectionController : MonoBehaviour
 {
     public static Districts? SelectedDistrict { get; private set; }
+    public static DistrictZone SelectedZone { get; private set; }
     public static string LastSelectedZoneName { get; private set; } = string.Empty;
     public static string LastSelectedPartColorName { get; private set; } = string.Empty;
     public static event Action<Districts?> OnSelectionChanged;
@@ -30,7 +32,7 @@ public class DistrictSelectionController : MonoBehaviour
     private bool warnedMissingCamera;
     private readonly List<RaycastResult> uiRaycastResults = new List<RaycastResult>();
 
-    private void Start()
+    private void Awake()
     {
         if (!autoSetupMapOnStart) return;
         TrySetupMapInScene();
@@ -50,6 +52,7 @@ public class DistrictSelectionController : MonoBehaviour
 
         bootstrap.Configure(mapObject.transform, colorMapping);
         bootstrap.SetupMap();
+        DistrictsManager.RefreshZones();
 
         if (verboseLogs)
         {
@@ -97,7 +100,7 @@ public class DistrictSelectionController : MonoBehaviour
 
         if (hits == null || hits.Length == 0)
         {
-            SetSelectedDistrict(null);
+            SetSelectedDistrict(null, null);
             return;
         }
 
@@ -109,7 +112,7 @@ public class DistrictSelectionController : MonoBehaviour
             if (zone == null) continue;
 
             string partColorName = ResolvePartColorName(zone);
-            SetSelectedDistrict(zone.District, zone.name, partColorName);
+            SetSelectedDistrict(zone.District, zone, zone.name, partColorName);
 
             if (verboseLogs)
             {
@@ -119,22 +122,29 @@ public class DistrictSelectionController : MonoBehaviour
             return;
         }
 
-        SetSelectedDistrict(null, string.Empty, string.Empty);
+        SetSelectedDistrict(null, null, string.Empty, string.Empty);
         if (verboseLogs) Debug.Log("DistrictSelectionController: click sin DistrictZone.", this);
     }
 
     public static void SetSelectedDistrict(Districts? district)
     {
-        SetSelectedDistrict(district, null, null);
+        SetSelectedDistrict(district, null, null, null);
     }
 
     public static void SetSelectedDistrict(Districts? district, string hitObjectName)
     {
-        SetSelectedDistrict(district, hitObjectName, null);
+        SetSelectedDistrict(district, null, hitObjectName, null);
     }
 
     public static void SetSelectedDistrict(Districts? district, string hitObjectName, string partColorName)
     {
+        SetSelectedDistrict(district, null, hitObjectName, partColorName);
+    }
+
+    public static void SetSelectedDistrict(Districts? district, DistrictZone zone, string hitObjectName, string partColorName)
+    {
+        SelectedZone = zone;
+
         if (!string.IsNullOrEmpty(hitObjectName))
         {
             LastSelectedZoneName = hitObjectName;

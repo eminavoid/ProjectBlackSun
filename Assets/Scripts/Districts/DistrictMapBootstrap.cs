@@ -27,6 +27,7 @@ public class DistrictMapBootstrap : MonoBehaviour
 
         SetupDistrictParts(mapRoot);
         SetupZones(mapRoot);
+        DistrictsManager.RefreshZones();
     }
 
     private void SetupDistrictParts(Transform root)

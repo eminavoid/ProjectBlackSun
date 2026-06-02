@@ -6,6 +6,8 @@ namespace Zeke.UI
     {
         [SerializeField] private UIWindow window;
 
+        public UIWindow Window => window;
+
         [field: Space]
 
         [field: SerializeField] public string Name { get; private set; }

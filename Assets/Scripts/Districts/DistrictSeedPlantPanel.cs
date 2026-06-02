@@ -145,21 +145,25 @@ public class DistrictSeedPlantPanel : MonoBehaviour
         Districts targetDistrict = DistrictSelectionController.SelectedDistrict.Value;
         Seed selectedSeed = cachedSeeds[selectedSeedIndex];
 
-        if (!DistrictsManager.TryGetRandomNodeInDistrict(targetDistrict, out Node targetNode) || targetNode == null)
+        DistrictZone targetZone = DistrictSelectionController.SelectedZone;
+        if (targetZone == null || targetZone.District != targetDistrict)
         {
-            statusMessage = $"El distrito {targetDistrict} no tiene nodos disponibles.";
+            if (!DistrictsManager.TryGetRandomFreeZoneInDistrict(targetDistrict, out targetZone) || targetZone == null)
+            {
+                statusMessage = $"El distrito {targetDistrict} no tiene sectores libres.";
+                UpdatePanelTexts();
+                return;
+            }
+        }
+
+        if (!targetZone.AddSeed(selectedSeed))
+        {
+            statusMessage = $"No se pudo plantar en '{targetZone.SectorName}' (sector ocupado).";
             UpdatePanelTexts();
             return;
         }
 
-        if (!targetNode.AddSeed(selectedSeed))
-        {
-            statusMessage = $"No se pudo plantar en '{targetNode.name}' (nodo ocupado).";
-            UpdatePanelTexts();
-            return;
-        }
-
-        statusMessage = $"Seed '{selectedSeed.Title}' plantada en {targetDistrict}.";
+        statusMessage = $"Seed '{selectedSeed.Title}' plantada en {targetZone.SectorName} ({targetDistrict}).";
         UpdatePanelTexts();
 
         if (showDebugLogs)
@@ -237,9 +241,19 @@ public class DistrictSeedPlantPanel : MonoBehaviour
     {
         if (districtLabel != null)
         {
-            districtLabel.text = DistrictSelectionController.SelectedDistrict.HasValue
-                ? $"District: {DistrictSelectionController.SelectedDistrict.Value}"
-                : "District: (ninguno)";
+            if (!DistrictSelectionController.SelectedDistrict.HasValue)
+            {
+                districtLabel.text = "District: (ninguno)";
+            }
+            else if (DistrictSelectionController.SelectedZone != null)
+            {
+                districtLabel.text =
+                    $"District: {DistrictSelectionController.SelectedDistrict.Value} | Sector: {DistrictSelectionController.SelectedZone.SectorName}";
+            }
+            else
+            {
+                districtLabel.text = $"District: {DistrictSelectionController.SelectedDistrict.Value}";
+            }
         }
 
         if (statusLabel != null) statusLabel.text = statusMessage;

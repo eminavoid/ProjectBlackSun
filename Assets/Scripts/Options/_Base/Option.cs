@@ -67,48 +67,48 @@ public class Option : ScriptableObject
             FollowUpSeedConfig config = followUpSeeds[i];
             if (config.followUpSeed == null) continue;
 
-            if (!TryResolveTargetNode(config, out Node targetNode))
+            if (!TryResolveTargetZone(config, out DistrictZone targetZone))
             {
-                Debug.LogWarning($"Option '{name}': could not resolve target node for follow-up seed '{config.followUpSeed.Title}'.");
+                Debug.LogWarning($"Option '{name}': could not resolve target sector for follow-up seed '{config.followUpSeed.Title}'.");
                 continue;
             }
 
-            bool planted = targetNode.AddSeed(config.followUpSeed);
+            bool planted = targetZone.AddSeed(config.followUpSeed);
             if (planted)
             {
-                Debug.Log($"Option '{name}': planted follow-up seed '{config.followUpSeed.Title}' on node '{targetNode.name}' (district: {targetNode.District}).");
+                Debug.Log($"Option '{name}': planted follow-up seed '{config.followUpSeed.Title}' on sector '{targetZone.SectorName}' (district: {targetZone.District}).");
             }
             else
             {
-                Debug.LogWarning($"Option '{name}': skipped follow-up seed '{config.followUpSeed.Title}' because node '{targetNode.name}' is already occupied.");
+                Debug.LogWarning($"Option '{name}': skipped follow-up seed '{config.followUpSeed.Title}' because sector '{targetZone.SectorName}' is already occupied.");
             }
         }
     }
 
-    private bool TryResolveTargetNode(FollowUpSeedConfig config, out Node targetNode)
+    private bool TryResolveTargetZone(FollowUpSeedConfig config, out DistrictZone targetZone)
     {
-        targetNode = null;
+        targetZone = null;
 
-        if (config.useCurrentSeedNode)
+        if (config.useCurrentSeedZone)
         {
-            targetNode = seed?.CurrentNode;
-            return targetNode != null;
+            targetZone = seed?.CurrentZone;
+            return targetZone != null;
         }
 
-        if (config.useSpecificNode)
+        if (config.useSpecificZone)
         {
-            targetNode = config.specificNode;
-            return targetNode != null;
+            targetZone = config.specificZone;
+            return targetZone != null;
         }
 
         if (config.randomInSameDistrict)
         {
             Districts? district = seed?.CurrentDistrict;
             if (!district.HasValue) return false;
-            return DistrictsManager.TryGetRandomNodeInDistrict(district.Value, out targetNode);
+            return DistrictsManager.TryGetRandomFreeZoneInDistrict(district.Value, out targetZone);
         }
 
-        return DistrictsManager.TryGetRandomNodeAnyDistrict(out targetNode);
+        return DistrictsManager.TryGetRandomFreeZoneAnyDistrict(out targetZone);
     }
 
     [Serializable]
@@ -118,9 +118,9 @@ public class Option : ScriptableObject
         public Seed followUpSeed;
 
         [Header("Target selection")]
-        public bool useCurrentSeedNode;
-        public bool useSpecificNode;
-        public Node specificNode;
+        public bool useCurrentSeedZone;
+        public bool useSpecificZone;
+        public DistrictZone specificZone;
         public bool randomInSameDistrict = true;
     }
 }

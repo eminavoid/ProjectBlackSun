@@ -2,11 +2,19 @@ using UnityEngine;
 
 public class DebugCreateSeed : MonoBehaviour
 {
-    [SerializeField] private Node node;
+    [SerializeField] private DistrictZone sector;
     [SerializeField] private Seed seed;
 
     private void Start()
     {
-        node.AddSeed(seed);
+        if (sector == null)
+        {
+            sector = GetComponent<DistrictZone>();
+        }
+
+        if (sector != null)
+        {
+            sector.AddSeed(seed);
+        }
     }
 }
