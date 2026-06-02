@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 #endif
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
+[System.Obsolete("Use DistrictPart, DistrictZone and DistrictSelectionController with the 3D map prefab.")]
 public class DistrictMeshView : MonoBehaviour
 {
     public enum DistrictAction

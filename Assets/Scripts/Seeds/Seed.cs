@@ -39,6 +39,8 @@ public class Seed : ScriptableObject
     public Node CurrentNode => currentNode;
     public Districts? CurrentDistrict => currentNode != null ? currentNode.District : null;
 
+    public bool CanPlantInDistrict(Districts district) => true;
+
     private Node currentNode;
 
     private int currentTicks = 0;
