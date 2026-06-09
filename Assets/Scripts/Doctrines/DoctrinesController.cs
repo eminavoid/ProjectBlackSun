@@ -122,10 +122,15 @@ public class DoctrinesController : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        GameTime.OnTurnEnded -= Tick;
+    }
+
     private void Start()
     {
-        selectorMenu.gameObject.SetActive(false);
-        window.gameObject.SetActive(false);
+        if (selectorMenu != null) selectorMenu.gameObject.SetActive(false);
+        if (window != null) window.gameObject.SetActive(false);
         UpdateAddDoctrineMenuState();
     }
 
@@ -190,10 +195,19 @@ public class DoctrinesController : MonoBehaviour
 
     private void UpdateAddDoctrineMenuState()
     {
-        addDoctrineSlot.gameObject.SetActive(doctrineSlots.Count < maxDoctrines);
-        addDoctrineSlot.transform.SetSiblingIndex(9999);
+        if (addDoctrineSlot != null)
+        {
+            addDoctrineSlot.gameObject.SetActive(doctrineSlots.Count < maxDoctrines);
+            addDoctrineSlot.transform.SetSiblingIndex(9999);
+        }
 
-        window.TryGetElement<TextMeshProUGUI>("ReplacesLeft").text = $"Add Left: {GetFreeSlotsAmount()}";
+        if (window == null) return;
+
+        TextMeshProUGUI replacesLeftLabel = window.TryGetElement<TextMeshProUGUI>("ReplacesLeft");
+        if (replacesLeftLabel != null)
+        {
+            replacesLeftLabel.text = $"Add Left: {GetFreeSlotsAmount()}";
+        }
     }
 
     private void CreateDoctrineSlot(Doctrine doctrine)

@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 #endif
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
+[System.Obsolete("Use DistrictPart, DistrictZone and DistrictSelectionController with the 3D map prefab.")]
 public class DistrictMeshView : MonoBehaviour
 {
     public enum DistrictAction
@@ -345,20 +346,20 @@ public class DistrictMeshView : MonoBehaviour
     {
         polygon = new List<Vector2>();
 
-        List<Node> nodes = GetNodesForDistrict(targetDistrict);
-        if (nodes.Count < 3)
+        List<DistrictZone> zones = GetZonesForDistrict(targetDistrict);
+        if (zones.Count < 3)
         {
-            Debug.LogWarning($"DistrictMeshView: district {targetDistrict} has fewer than 3 nodes.", this);
+            Debug.LogWarning($"DistrictMeshView: district {targetDistrict} has fewer than 3 sectors.", this);
             return false;
         }
 
         float mergeSqr = pointMergeEpsilon * pointMergeEpsilon;
-        for (int i = 0; i < nodes.Count; i++)
+        for (int i = 0; i < zones.Count; i++)
         {
-            Node node = nodes[i];
-            if (node == null) continue;
+            DistrictZone zone = zones[i];
+            if (zone == null) continue;
 
-            Vector3 pos = node.transform.position;
+            Vector3 pos = zone.transform.position;
             Vector2 point = new Vector2(pos.x, pos.z);
 
             bool duplicate = false;
@@ -398,25 +399,25 @@ public class DistrictMeshView : MonoBehaviour
         return true;
     }
 
-    private List<Node> GetNodesForDistrict(Districts targetDistrict)
+    private List<DistrictZone> GetZonesForDistrict(Districts targetDistrict)
     {
-        List<Node> nodes = DistrictsManager.GetDistrictNodes(targetDistrict);
-        if (nodes.Count >= 3) return nodes;
+        List<DistrictZone> zones = DistrictsManager.GetDistrictZones(targetDistrict);
+        if (zones.Count >= 3) return zones;
 
         // Rebuild can be invoked from inspector/context menu in edit mode, before runtime caches are populated.
-        if (Application.isPlaying) return nodes;
+        if (Application.isPlaying) return zones;
 
-        Node[] sceneNodes = FindObjectsByType<Node>(FindObjectsSortMode.None);
-        List<Node> fallbackNodes = new List<Node>(sceneNodes.Length);
-        for (int i = 0; i < sceneNodes.Length; i++)
+        DistrictZone[] sceneZones = FindObjectsByType<DistrictZone>(FindObjectsSortMode.None);
+        List<DistrictZone> fallbackZones = new List<DistrictZone>(sceneZones.Length);
+        for (int i = 0; i < sceneZones.Length; i++)
         {
-            Node node = sceneNodes[i];
-            if (node == null) continue;
-            if (node.District != targetDistrict) continue;
-            fallbackNodes.Add(node);
+            DistrictZone zone = sceneZones[i];
+            if (zone == null) continue;
+            if (zone.District != targetDistrict) continue;
+            fallbackZones.Add(zone);
         }
 
-        return fallbackNodes.Count > 0 ? fallbackNodes : nodes;
+        return fallbackZones.Count > 0 ? fallbackZones : zones;
     }
 
     private void BuildMesh(Districts targetDistrict, List<Vector2> polygon, List<int> triangles, out Mesh mesh)
