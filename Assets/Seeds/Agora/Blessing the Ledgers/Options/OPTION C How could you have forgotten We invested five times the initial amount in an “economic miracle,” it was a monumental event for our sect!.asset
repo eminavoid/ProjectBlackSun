@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: "OPTION C How could you have forgotten We invested five times the initial
+    amount in an \u201Ceconomic miracle,\u201D it was a monumental event for our
+    sect!"
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
+  title: "How could you have forgotten? We invested five times the initial amount
+    in an \u201Ceconomic miracle,\u201D it was a monumental event for our sect!"
+  description: 'COST: 200 Wealth'
+  icon: {fileID: 0}
+  modules:
+  - rid: 1516066228257685668
+  - rid: 1516066228257685669
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 1516066228257685668
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        required: 200
+    - rid: 1516066228257685669
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 20
+          module:
+          - rid: 1516066228257685670
+          statUsed: 3
+          output: 'Stake high and win high! If this is not a glorious testament to
+            the Beholder''s favor, then naught is!
+
+            [Gained 375 Wealth]
+
+'
+        - weight: 40
+          module:
+          - rid: 1516066228257685671
+          statUsed: 0
+          output: 'Perhaps market speculation is not our trade. In the end, despite
+            pouring so much coin into the venture, we merely broke even. At least
+            a crisis was averted; the mere thought of what would have become of us
+            had we lost this sum is enough to steal one''s sleep.
+
+            [Gained
+            250 Wealth]
+
+'
+        - weight: 40
+          module: []
+          statUsed: 0
+          output: "We are ruined! Utterly ruined! We have lost the entirety of our
+            investment\u2014this \u201Cmiracle\u201D was little more than a grand
+            swindle! Are we certain none of our rival sects were behind this villainy?!"
+    - rid: 1516066228257685670
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        minAmount: 375
+        maxAmount: 375
+    - rid: 1516066228257685671
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        minAmount: 250
+        maxAmount: 250

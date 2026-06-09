@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: OPTION D The initial investment was sufficient, there was no reason to
+    invite further risk.
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
+  title: The initial investment was sufficient, there was no reason to invite further
+    risk.
+  description: 'COST: No cost'
+  icon: {fileID: 0}
+  modules:
+  - rid: 1516066228257685672
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 1516066228257685672
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 50
+          module:
+          - rid: 1516066228257685673
+          statUsed: 3
+          output: "\u201CRisk little, gain little,\u201D so muttered the bolder members
+            of our fold. Yet, a gain is a gain. What would have befallen us had we
+            gambled all and lost?\r\n[Gained 75 Wealth]\r\n"
+        - weight: 40
+          module:
+          - rid: 1516066228257685674
+          statUsed: 0
+          output: 'We were conservative, and with good reason! Our meager investment
+            barely managed to break even. Crisis averted!
+
+            [Gained 50
+            Wealth]
+
+'
+        - weight: 10
+          module:
+          - rid: 1516066228257685675
+          statUsed: 0
+          output: 'What a disgrace. Even with the slight risk we took, we managed
+            to lose coin nonetheless. Perhaps we should dedicate ourselves to other
+            endeavors.
+
+            [Gained 25 Wealth]
+
+'
+    - rid: 1516066228257685673
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        minAmount: 75
+        maxAmount: 75
+    - rid: 1516066228257685674
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        minAmount: 50
+        maxAmount: 50
+    - rid: 1516066228257685675
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        minAmount: 25
+        maxAmount: 25

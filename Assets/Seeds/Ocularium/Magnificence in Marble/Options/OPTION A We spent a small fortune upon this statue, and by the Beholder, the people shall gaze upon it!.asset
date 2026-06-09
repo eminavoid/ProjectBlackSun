@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: OPTION A We spent a small fortune upon this statue, and by the Beholder,
+    the people shall gaze upon it!
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
+  title: We spent a small fortune upon this statue, and by the Beholder, the people
+    shall gaze upon it! No matter with whom we must speak, we shall exhibit it within
+    the Imperial Garden!
+  description: 'COST: 1 Authority'
+  icon: {fileID: 0}
+  modules:
+  - rid: 1516066228257685504
+  - rid: 1516066228257685505
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 1516066228257685504
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 2
+        required: 1
+    - rid: 1516066228257685505
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 90
+          module: []
+          statUsed: 0
+          output: The Imperial Family accepts our offering and displays it within
+            their private gardens. From this day forth, all who visit them shall
+            bear witness to the magnificence of our fold.
+        - weight: 10
+          module:
+          - rid: 1516066228257685506
+          statUsed: 1
+          output: 'At first, the Imperial Family was reluctant to show favor to any
+            single sect, yet upon witnessing the grandeur of our sculpture, they
+            chose to make an exception. They practically declared that we were doing
+            them a service rather than the reverse!
+
+            [Gained 2 Authority]'
+    - rid: 1516066228257685506
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 2
+        minAmount: 2
+        maxAmount: 2

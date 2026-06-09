@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: Locked
   m_EditorClassIdentifier: Assembly-CSharp::Locked
   locked:
-  - {fileID: 11400000, guid: 4bace0462460a7d41a4426820434964e, type: 2}
+  - {fileID: 11400000, guid: f331c7c5c9ae34444984c7239a3847dc, type: 2}
+  - {fileID: 11400000, guid: 6c44ef5bd396c53419934013fe67b129, type: 2}
+  - {fileID: 11400000, guid: 19cd20e9afd65464cb7b308ce093b8fb, type: 2}

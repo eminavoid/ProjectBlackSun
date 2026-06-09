@@ -1,0 +1,92 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: OPTION B What place is more holy to erect it than upon the slopes oime.
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
+  title: What place is more holy to erect it than upon the slopes of Lacrimal Hill?
+    It shall be no simple task, but if we send our men to defend it, perhaps we might
+    keep it there for a time.
+  description: 'COST: 80 Flock'
+  icon: {fileID: 0}
+  modules:
+  - rid: 1516066228257685507
+  - rid: 1516066228257685508
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 1516066228257685507
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        required: 80
+    - rid: 1516066228257685508
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 90
+          module:
+          - rid: 1516066228257685509
+          - rid: 1516066228257685510
+          statUsed: 0
+          output: 'To erect an idol of our sect upon the most sacred ground in the
+            Empire? Such a decision truly demanded immense courage. Naturally, all
+            other cults forged a brittle alliance to ensure the monument was removed,
+            and after a bitter struggle, they emerged victorious. We lost many of
+            our people, yet our bravery shall be remembered, and along with it, our
+            statue!
+
+            [Gained 20 Flock & 60 Zeal]
+
+'
+        - weight: 10
+          module:
+          - rid: 1516066228257685511
+          - rid: 1516066228257685512
+          statUsed: 2
+          output: 'To erect an idol of our sect upon the most sacred ground in the
+            Empire? Such a decision truly demanded immense courage. Naturally, all
+            other cults forged a brittle alliance to ensure the monument was removed.
+            However, our sect is not like the rest. Each of our brothers fought with
+            the ferocity of ten men, and in the end, our casualties were light. The
+            remaining fragments of the statue shall be exhibited in our temple as
+            proof of our glory!
+
+            [Gained 40 Flock & 100 Zeal]
+
+'
+    - rid: 1516066228257685509
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: 20
+        maxAmount: 20
+    - rid: 1516066228257685510
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: 60
+        maxAmount: 60
+    - rid: 1516066228257685511
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: 40
+        maxAmount: 40
+    - rid: 1516066228257685512
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: 100
+        maxAmount: 100

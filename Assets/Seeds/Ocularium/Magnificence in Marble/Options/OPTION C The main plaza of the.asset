@@ -1,0 +1,118 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: OPTION C The main plaza of the
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
+  title: The main plaza of the Ocularium is the most crowded square in the district.
+    It may not be the most glamorous venue, but we shall ensure the greatest number
+    of commoners lay eyes upon it.
+  description: 'COST: 20 Flock'
+  icon: {fileID: 0}
+  modules:
+  - rid: 1516066228257685513
+  - rid: 1516066228257685514
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 1516066228257685513
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        required: 20
+    - rid: 1516066228257685514
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 50
+          module:
+          - rid: 1516066228257685515
+          - rid: 1516066228257685516
+          - rid: 1516066228257685517
+          statUsed: 0
+          output: 'The statue was eventually defaced, yet we believe it fulfilled
+            its sacred purpose. The masses were able to admire it, and our men feel
+            a deep sense of pride for having stood in its defense.
+
+            [Gained
+            40 Flock, 40 Zeal & 10 Bliss]
+
+'
+        - weight: 30
+          module:
+          - rid: 1516066228257685518
+          - rid: 1516066228257685519
+          statUsed: 0
+          output: 'The monument was swiftly reduced to rubble by our rivals. At the
+            very least, it was displayed before the masses, fleeting though that
+            moment was.
+
+            [Gained 20 Flock & 20 Zeal]
+
+'
+        - weight: 20
+          module:
+          - rid: 1516066228257685520
+          - rid: 1516066228257685521
+          statUsed: 0
+          output: 'To our surprise, the rival sects left the statue unmolested. In
+            time, it transformed into a prominent landmark of the plaza, bringing
+            us prestige with each passing day.
+
+            [Gained 40 Flock & 20
+            Zeal]
+
+'
+    - rid: 1516066228257685515
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: 40
+        maxAmount: 40
+    - rid: 1516066228257685516
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: 40
+        maxAmount: 40
+    - rid: 1516066228257685517
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: 10
+        maxAmount: 10
+    - rid: 1516066228257685518
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: 20
+        maxAmount: 20
+    - rid: 1516066228257685519
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: 20
+        maxAmount: 20
+    - rid: 1516066228257685520
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: 40
+        maxAmount: 40
+    - rid: 1516066228257685521
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: 20
+        maxAmount: 20
