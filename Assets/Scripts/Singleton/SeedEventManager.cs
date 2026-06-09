@@ -74,6 +74,12 @@ public class SeedEventManager : Singleton<SeedEventManager>
         {
             OptionDisplay display = Instantiate(optionDisplayPrefab, layout.transform);
 
+            if (display.TryGetComponent(out UIWindow uiWIndow))
+            {
+                uiWIndow.TryGetElement<TextMeshProUGUI>("Title").text = seed.Options[i].Title;
+                uiWIndow.TryGetElement<TextMeshProUGUI>("Description").text = seed.Options[i].Description;
+            }
+
             display.InitializeData(seed.Options[i]);
             display.onOptionSelected += OnOptionSelected;
         }
