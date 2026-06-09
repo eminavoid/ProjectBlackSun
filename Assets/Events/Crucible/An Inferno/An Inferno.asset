@@ -20,6 +20,8 @@ MonoBehaviour:
     the survivors into our fold.
   icon: {fileID: 0}
   ticks: 1
+  eventType: 0
+  difficulty: 1
   <Options>k__BackingField:
   - {fileID: 11400000, guid: 7a26731388ba86547bf800b9260a666d, type: 2}
   - {fileID: 11400000, guid: a52bb75779a68264599c3740ad4dcfbe, type: 2}

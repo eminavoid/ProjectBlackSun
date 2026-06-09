@@ -19,6 +19,8 @@ MonoBehaviour:
     a resounding success! Imagine the scandal!
   icon: {fileID: 0}
   ticks: 1
+  eventType: 0
+  difficulty: 1
   <Options>k__BackingField:
   - {fileID: 11400000, guid: c4311a5de2fcb4f41acc41ad88c8d1b2, type: 2}
   - {fileID: 11400000, guid: 3fa282a61360bed4ab6ee92c5e580fbd, type: 2}

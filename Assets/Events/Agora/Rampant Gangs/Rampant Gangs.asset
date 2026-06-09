@@ -19,6 +19,8 @@ MonoBehaviour:
     We have traced the root of this malice to a rival sect. How shall we act?
   icon: {fileID: 0}
   ticks: 1
+  eventType: 0
+  difficulty: 1
   <Options>k__BackingField:
   - {fileID: 11400000, guid: 0fb25096e5e059543b57756a0d1eff7b, type: 2}
   - {fileID: 11400000, guid: 45c7e323ffe532940acf900907c5b5c9, type: 2}

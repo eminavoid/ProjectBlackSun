@@ -20,6 +20,8 @@ MonoBehaviour:
     will cost a fortune. Yet, we cannot simply abandon the common folk, can we?"
   icon: {fileID: 0}
   ticks: 1
+  eventType: 0
+  difficulty: 1
   <Options>k__BackingField:
   - {fileID: 11400000, guid: 1f9e062b628a73b4594c6fa2246fc3ab, type: 2}
   - {fileID: 11400000, guid: 00a0025b3c9357f4bbaa5b7c4d734ff4, type: 2}

@@ -20,6 +20,8 @@ MonoBehaviour:
     risk the situation spiraling beyond our control!
   icon: {fileID: 0}
   ticks: 1
+  eventType: 0
+  difficulty: 1
   <Options>k__BackingField:
   - {fileID: 11400000, guid: c229407e04533c645a606807c272c545, type: 2}
   - {fileID: 11400000, guid: 1541f5edcaf4a3d4d87967623b82147f, type: 2}

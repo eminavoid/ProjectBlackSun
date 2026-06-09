@@ -19,6 +19,8 @@ MonoBehaviour:
     wares at a pittance. This could truly be the bargain of the century!
   icon: {fileID: 0}
   ticks: 1
+  eventType: 0
+  difficulty: 1
   <Options>k__BackingField:
   - {fileID: 11400000, guid: a3965378324fccf45a10288366ab0bdc, type: 2}
   - {fileID: 11400000, guid: 324d13eac0f50124cbd85c0075d1a4aa, type: 2}

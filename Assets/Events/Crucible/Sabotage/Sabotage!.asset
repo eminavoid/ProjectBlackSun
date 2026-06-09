@@ -20,6 +20,8 @@ MonoBehaviour:
     is guaranteed. Should we fail to intervene, the foundry may close its doors forever.
   icon: {fileID: 0}
   ticks: 1
+  eventType: 0
+  difficulty: 1
   <Options>k__BackingField:
   - {fileID: 11400000, guid: a02bdae1579eed346ae537caddc3137e, type: 2}
   - {fileID: 11400000, guid: a22ceed04fc417e4eb3b692571122466, type: 2}

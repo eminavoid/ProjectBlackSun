@@ -20,6 +20,8 @@ MonoBehaviour:
     many more remain skeptical. How shall we proceed?
   icon: {fileID: 0}
   ticks: 1
+  eventType: 0
+  difficulty: 1
   <Options>k__BackingField:
   - {fileID: 11400000, guid: c64a2e087473d7548b0989590f12e895, type: 2}
   - {fileID: 11400000, guid: 9e7bd0b0141c21745a68b6215c129f01, type: 2}

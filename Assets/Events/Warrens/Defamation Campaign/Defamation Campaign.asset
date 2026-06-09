@@ -19,6 +19,8 @@ MonoBehaviour:
     folk cannot help but listen. We must take action!
   icon: {fileID: 0}
   ticks: 1
+  eventType: 0
+  difficulty: 1
   <Options>k__BackingField:
   - {fileID: 11400000, guid: b9b0d15e8af4ce44d98cb09e0e12a53d, type: 2}
   - {fileID: 11400000, guid: 0089b4dc980463941aacb06307811471, type: 2}

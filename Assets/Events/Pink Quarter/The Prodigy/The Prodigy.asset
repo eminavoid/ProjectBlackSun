@@ -21,6 +21,8 @@ MonoBehaviour:
     fold?
   icon: {fileID: 0}
   ticks: 1
+  eventType: 0
+  difficulty: 1
   <Options>k__BackingField:
   - {fileID: 11400000, guid: b6b949a3b91b4ee4997b61ee4286bb53, type: 2}
   - {fileID: 11400000, guid: a298caf2f6840d04eb81e47a0d028061, type: 2}
