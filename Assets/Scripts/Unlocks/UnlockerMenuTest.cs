@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -9,26 +10,29 @@ public class UnlockerMenuTest : MonoBehaviour
 {
     [SerializeField] private Locked locked;
     [SerializeField] private UIWindow window;
+    [SerializeField] private UIWindow windowPrefab;
 
     [Space]
 
     [SerializeField] private int amount = 3;
-    [SerializeField] private UIWindow windowPrefab;
+    [SerializeField] private List<RarityChance> drops;
 
     [Space]
 
     [SerializeField] private UnityEvent onOptionSelected;
 
-    private List<Unlockeable> unlockeables;
+    [Serializable]
+    private struct RarityChance : IWeighted
+    {
+        public Rarity rarity;
+        [Min(1)] public int weight;
+
+        public readonly int Weight => weight;
+    }
 
     public void GenerateUnlocks()
     {
         CreateWindows(GenerateOptions());
-    }
-
-    private void Awake()
-    {
-        unlockeables = locked.GetCopy();
     }
 
     private void OnOptionSelected(Unlockeable unlockeable)
@@ -51,13 +55,15 @@ public class UnlockerMenuTest : MonoBehaviour
 
     private List<Unlockeable> GenerateOptions()
     {
-        //debug, make random with rarity
-
         List<Unlockeable> options = new List<Unlockeable>();
 
         for (int i = 0; i < amount; i++)
         {
-            options.Add(unlockeables[0]);
+            Rarity randomRarity = WeightedSelect.SelectElement(drops).rarity;
+            List<Unlockeable> unlockeables = locked.GetRarity(randomRarity);
+            Unlockeable randomUnlockeable = unlockeables[UnityEngine.Random.Range(0, unlockeables.Count)];
+
+            options.Add(randomUnlockeable);
         }
 
         return options;

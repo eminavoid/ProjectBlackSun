@@ -7,14 +7,16 @@ public class Unlockeable : ScriptableObject
     [SerializeField] private ScriptableObject scriptable;
     [SerializeField] private Unlocked target;
     [SerializeField] private List<ScriptableObject> requeriments;
+    [SerializeField] private Rarity rarity;
 
     public ScriptableObject Scriptable => scriptable;
+    public Rarity Rarity => rarity;
 
     public void Unlock()
     {
         if (!target.Contains(scriptable))
         {
-            target.Add(scriptable);
+            target.Add(scriptable, rarity);
         }
     }
 

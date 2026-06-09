@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -6,6 +7,7 @@ using Zeke.UI;
 
 public class UnlockCodex : MonoBehaviour
 {
+    [SerializeField] private PlayerResources resources;
     [SerializeField] private UIWindow window;
 
     [Space]
@@ -16,6 +18,21 @@ public class UnlockCodex : MonoBehaviour
     [SerializeField] private Unlocked doctrines;
     [SerializeField] private UIWindow doctrineWindowPrefab;
 
+    [Space]
+
+    [SerializeField] private TextMeshProUGUI costText;
+
+    [Space]
+
+    [SerializeField] private UnlockerMenuTest unlockerMenu;
+
+    [Space]
+
+    [SerializeField] private int startCost = 0;
+    [SerializeField] private Resource resource;
+
+    private int currentCost = 0;
+
     private Menu currentMenu = Menu.None;
 
     private enum Menu
@@ -23,6 +40,17 @@ public class UnlockCodex : MonoBehaviour
         None,
         Seeds,
         Doctrines
+    }
+
+    public void TryPurchaseUnlock()
+    {
+        if (resources.GetResourceAmount(resource) >= currentCost)
+        {
+            resources.AddResource(resource, -currentCost);
+            unlockerMenu.gameObject.SetActive(true);
+            unlockerMenu.GenerateUnlocks();
+            currentCost += 15;
+        }
     }
 
     public void LoadUnlockedSeeds()
@@ -57,6 +85,14 @@ public class UnlockCodex : MonoBehaviour
                 LoadUnlockedDoctrines();
                 break;
         }
+
+        costText.SetText($"UNLOCK - {(currentCost == 0 ? "Free" : currentCost.ToString())}");
+    }
+
+    private void Awake()
+    {
+        currentCost = startCost;
+        RefreshMenu();
     }
 
     private void ClearLayout()
