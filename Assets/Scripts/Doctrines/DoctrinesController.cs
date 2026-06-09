@@ -82,6 +82,9 @@ public class DoctrinesController : MonoBehaviour
             UIWindow slotWindow = Instantiate(selectorSlot, layout.transform);
             Button clickBox = slotWindow.TryGetElement<Button>("Clickbox");
 
+            slotWindow.TryGetElement<TextMeshProUGUI>("Name").text = stats.DoctrineInventory[i].Name;
+            slotWindow.TryGetElement<TextMeshProUGUI>("Description").text = stats.DoctrineInventory[i].Description;
+
             Doctrine doctrine = stats.DoctrineInventory[i];
 
             clickBox.onClick.AddListener(() => OnDoctrineSelected(doctrine));
@@ -215,6 +218,9 @@ public class DoctrinesController : MonoBehaviour
         LayoutGroup layout = window.TryGetElement<LayoutGroup>("Layout");
         UIWindow slotWindow = Instantiate(doctrineSlot, layout.transform);
         Button clickbox = slotWindow.TryGetElement<Button>("Clickbox");
+
+        slotWindow.TryGetElement<TextMeshProUGUI>("Name").text = doctrine.Name;
+        slotWindow.TryGetElement<TextMeshProUGUI>("Description").text = doctrine.Description;
 
         clickbox.onClick.AddListener(() => RemoveDoctrine(doctrine));
 

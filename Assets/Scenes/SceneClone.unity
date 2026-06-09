@@ -7931,7 +7931,7 @@ MonoBehaviour:
   window: {fileID: 1759510478}
   doctrineSlot: {fileID: -6815151641799162195, guid: 160e96bf48a84ca42b11814f0295d816, type: 3}
   selectorMenu: {fileID: 1445616539}
-  selectorSlot: {fileID: -3199415978322107455, guid: a279ee526aff22d4c87e4c51f3470f02, type: 3}
+  selectorSlot: {fileID: -6815151641799162195, guid: 160e96bf48a84ca42b11814f0295d816, type: 3}
   addDoctrineSlot: {fileID: 1234536380}
   maxDoctrines: 3
   changeCooldown: 3

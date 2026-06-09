@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c8663d018124b3449311023f4c288e6, type: 3}
   m_Name: Doctrine
   m_EditorClassIdentifier: Assembly-CSharp::Doctrine
-  <Name>k__BackingField: 
-  <Description>k__BackingField: 
+  <Name>k__BackingField: dsds
+  <Description>k__BackingField: dasdasdsa
   statUpdates:
   - playerStat: 1
     changeAmount: 10
