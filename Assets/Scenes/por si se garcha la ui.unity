@@ -4902,11 +4902,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b52d926f6eec8274aa15aa88c10cbafe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnlockCodex
+  resources: {fileID: 0}
   window: {fileID: 906717473}
   seeds: {fileID: 11400000, guid: 4614166d5d34a4b4e8a155aa5c87e740, type: 2}
   seedWindowPrefab: {fileID: 1394031796806285006, guid: dc9edaf075083274f82409bc66c0926f, type: 3}
   doctrines: {fileID: 11400000, guid: 2a8116ba0990db54d96a7a650250a416, type: 2}
   doctrineWindowPrefab: {fileID: -6815151641799162195, guid: 160e96bf48a84ca42b11814f0295d816, type: 3}
+  costText: {fileID: 0}
+  unlockerMenu: {fileID: 0}
+  startCost: 0
+  resource: 0
 --- !u!21 &913321708
 Material:
   serializedVersion: 8
@@ -7871,7 +7876,7 @@ RectTransform:
   m_GameObject: {fileID: 1537664938}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.4, y: 1.1314045, z: 1}
+  m_LocalScale: {x: 0.4, y: 1.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 897565010}
@@ -10436,8 +10441,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UnlockerMenuTest
   locked: {fileID: 11400000, guid: 9786add8a4e8444409a2ad9893cbf832, type: 2}
   window: {fileID: 1984627106}
-  amount: 3
   windowPrefab: {fileID: 1394031796806285006, guid: dc9edaf075083274f82409bc66c0926f, type: 3}
+  amount: 3
+  drops: []
   onOptionSelected:
     m_PersistentCalls:
       m_Calls:
