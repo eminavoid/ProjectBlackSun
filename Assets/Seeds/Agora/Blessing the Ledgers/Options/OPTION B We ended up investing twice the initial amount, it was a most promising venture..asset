@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: OPTION B We ended up investing twice the initial amount, it was a most
+    promising venture.
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
+  title: We ended up investing twice the initial amount, it was a most promising
+    venture.
+  description: 'COST: 50 Wealth'
+  icon: {fileID: 0}
+  modules:
+  - rid: 1516066228257685662
+  - rid: 1516066228257685663
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 1516066228257685662
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        required: 50
+    - rid: 1516066228257685663
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 30
+          module:
+          - rid: 1516066228257685664
+          statUsed: 3
+          output: 'It is said that one must venture to win. Today was one of those
+            fortunate days, for we have secured a bounty of wealth. [Gained 150 Wealth]'
+        - weight: 50
+          module:
+          - rid: 1516066228257685666
+          statUsed: 0
+          output: 'Perhaps speculating upon the markets is not our calling. We gained
+            not a single copper, yet we lost nothing either. What a relief!
+
+            [Gained
+            100 Wealth]
+
+'
+        - weight: 20
+          module:
+          - rid: 1516066228257685667
+          statUsed: 0
+          output: 'What a disgrace! So much wealth committed, only for us to lose
+            the greater part of it!
+
+            [Gained 35 Wealth]
+
+'
+    - rid: 1516066228257685664
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        minAmount: 150
+        maxAmount: 150
+    - rid: 1516066228257685666
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        minAmount: 100
+        maxAmount: 100
+    - rid: 1516066228257685667
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        minAmount: 35
+        maxAmount: 35

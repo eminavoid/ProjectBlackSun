@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
+  m_Name: Blessing the Ledgers
+  m_EditorClassIdentifier: Assembly-CSharp::Seed
+  title: Blessing the Ledgers
+  description: High Pontiff, the fruits of our investment are ripe for the reaping.
+    I only require you to remind me of one detail... do you recall how much coin
+    we ended up committing to the venture?
+  icon: {fileID: 0}
+  ticks: 1
+  <Options>k__BackingField:
+  - {fileID: 11400000, guid: f92d1bc94ba24f94cbd1e0b9772b75ec, type: 2}
+  - {fileID: 11400000, guid: 11c486172c52bbf4f9bfe65665296ed8, type: 2}
+  - {fileID: 11400000, guid: 86908c872fb969a40a5b4eea54044fa6, type: 2}
+  - {fileID: 11400000, guid: d87ae53ade46a734a91c220e0639f130, type: 2}

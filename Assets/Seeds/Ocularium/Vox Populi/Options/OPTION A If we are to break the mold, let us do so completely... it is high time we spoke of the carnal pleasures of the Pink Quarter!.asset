@@ -1,0 +1,100 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: OPTION A If we are to break the mold, let us do so completely... it is
+    high time we spoke of the carnal pleasures of the Pink Quarter!
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
+  title: If we are to break the mold, let us do so completely... it is high time
+    we spoke of the carnal pleasures of the Pink Quarter!
+  description: 'COST: No cost'
+  icon: {fileID: 0}
+  modules:
+  - rid: 1516066228257685524
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 1516066228257685524
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 70
+          module:
+          - rid: 1516066228257685525
+          - rid: 1516066228257685526
+          statUsed: 0
+          output: 'The licentious mass proves to be a resounding success among both
+            men and women. Such is the response that one could almost argue we should
+            continue utilizing this very strategy to recruit new followers.
+
+            [Gained
+            20 Flock & 30 Zeal]
+
+'
+        - weight: 20
+          module:
+          - rid: 1516066228257685527
+          statUsed: 0
+          output: 'The salacious service is an absolute disaster! The populace is
+            left horizontal with shock by the topics handled by the cleric, and many
+            flee in horror. Perhaps we should have kept the sermon more family friendly.
+
+            [Lost
+            10 Zeal]
+
+'
+        - weight: 10
+          module:
+          - rid: 1516066228257685528
+          - rid: 1516066228257685529
+          statUsed: 4
+          output: 'Our profound knowledge of the comings and goings of the Pink Quarter
+            grants us the edge we require to deliver a particularly memorable service.
+            The crowd stands hypnotized by the prospect of learning the most shameful
+            secrets of several of Beheld''s prominent celebrities.
+
+            [Gained
+            30 Flock & 60 Zeal]
+
+'
+    - rid: 1516066228257685525
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: 20
+        maxAmount: 20
+    - rid: 1516066228257685526
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: 30
+        maxAmount: 30
+    - rid: 1516066228257685527
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: -10
+        maxAmount: -10
+    - rid: 1516066228257685528
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: 30
+        maxAmount: 30
+    - rid: 1516066228257685529
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: 60
+        maxAmount: 60

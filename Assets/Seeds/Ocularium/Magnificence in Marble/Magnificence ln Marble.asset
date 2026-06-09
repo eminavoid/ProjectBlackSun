@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
+  m_Name: Magnificence ln Marble
+  m_EditorClassIdentifier: Assembly-CSharp::Seed
+  title: Magnificence in Marble
+  description: My Pontiff, the statue is complete! Now we must merely decide where
+    within the Ocularium it shall be placed. Whichever site we choose, we had best
+    dispatch men to guard it. The more prominent the location, the greater its impact
+    shall be, yet the higher the chances that a rival sect will seek to vandalize
+    it.
+  icon: {fileID: 0}
+  ticks: 1
+  <Options>k__BackingField:
+  - {fileID: 11400000, guid: 44fe39a2fc0f0494d8975307b2711169, type: 2}
+  - {fileID: 11400000, guid: fa7a13ab7d707bf43bfaa35d33884461, type: 2}
+  - {fileID: 11400000, guid: 7a1ae63e400b8d64d8662d3db3cc3f24, type: 2}
+  - {fileID: 11400000, guid: 724d9ae67c1248f4bbe4674ddbae02ae, type: 2}

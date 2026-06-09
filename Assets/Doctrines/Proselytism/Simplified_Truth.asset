@@ -10,8 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0c8663d018124b3449311023f4c288e6, type: 3}
-  m_Name: Doctrine
+  m_Name: Simplified_Truth
   m_EditorClassIdentifier: Assembly-CSharp::Doctrine
-  <Name>k__BackingField: 
-  <Description>k__BackingField: 
-  statUpdates: []
+  <Name>k__BackingField: 'Simplified Truth '
+  <Description>k__BackingField: '+6 Proselytism  -3 Erudition  -1 Administration  '
+  statUpdates:
+  - playerStat: 1
+    changeAmount: 6
+  - playerStat: 5
+    changeAmount: -3
+  - playerStat: 3
+    changeAmount: -1

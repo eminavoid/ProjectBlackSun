@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
+  m_Name: Vox Populli
+  m_EditorClassIdentifier: Assembly-CSharp::Seed
+  title: Vox Populi
+  description: Word of our "radical" mass has already spread throughout the city.
+    The populace seems eager to attend services for the first time since the last
+    Faith Eclipse. We hold the attention of the masses, but the question remains...
+    what shall be the theme of this popular mass?
+  icon: {fileID: 0}
+  ticks: 1
+  <Options>k__BackingField:
+  - {fileID: 11400000, guid: bd4d2df3c04a9254ba72979507cec99d, type: 2}
+  - {fileID: 11400000, guid: eff69fdce729f7741950797c0bea0bbb, type: 2}
+  - {fileID: 11400000, guid: 7813c28629d910c4e8fa0835603dd3ea, type: 2}
+  - {fileID: 11400000, guid: c9461b14a93216646a5c3b5f7b09ac86, type: 2}
