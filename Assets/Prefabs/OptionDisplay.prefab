@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 715048512099703443}
   - component: {fileID: 5757818618550307942}
   - component: {fileID: 1491726929824773882}
+  - component: {fileID: 1582197023296872707}
   m_Layer: 5
   m_Name: Title
   m_TagString: Untagged
@@ -137,6 +138,21 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &1582197023296872707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 365731207575034285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0eda2b0dda5ddc44baae6df7f05374c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Zeke.UI.UIElement
+  window: {fileID: 6789160431552908183}
+  <Name>k__BackingField: Title
+  <Element>k__BackingField: {fileID: 1491726929824773882}
 --- !u!1 &3667317216066010724
 GameObject:
   m_ObjectHideFlags: 0
@@ -148,6 +164,7 @@ GameObject:
   - component: {fileID: 935790896842296768}
   - component: {fileID: 4848594408361870911}
   - component: {fileID: 182564905533500940}
+  - component: {fileID: 3812966288041560554}
   m_Layer: 5
   m_Name: Description
   m_TagString: Untagged
@@ -268,12 +285,27 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 39.845215, y: 10, z: 41.290863, w: 44.28183}
+  m_margin: {x: 39.845215, y: 42.871124, z: 41.290863, w: 44.28183}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &3812966288041560554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3667317216066010724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0eda2b0dda5ddc44baae6df7f05374c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Zeke.UI.UIElement
+  window: {fileID: 6789160431552908183}
+  <Name>k__BackingField: Description
+  <Element>k__BackingField: {fileID: 182564905533500940}
 --- !u!1 &3691270410600279194
 GameObject:
   m_ObjectHideFlags: 0
@@ -287,6 +319,7 @@ GameObject:
   - component: {fileID: 5066697733318650451}
   - component: {fileID: 4553039971190504876}
   - component: {fileID: 8361523740710303735}
+  - component: {fileID: 6789160431552908183}
   m_Layer: 5
   m_Name: OptionDisplay
   m_TagString: Untagged
@@ -422,9 +455,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cf04d80fa23de74782683f2b3058ca4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OptionDisplay
-  titleText: {fileID: 1491726929824773882}
-  descriptionText: {fileID: 182564905533500940}
-  iconImage: {fileID: 8938289174282851485}
+--- !u!114 &6789160431552908183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3691270410600279194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be4feff47b6da7346b8c863c955de1b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Zeke.UI.UIWindow
 --- !u!1 &7241402641051545618
 GameObject:
   m_ObjectHideFlags: 0
@@ -459,7 +501,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 137}
+  m_AnchoredPosition: {x: 0, y: 124}
   m_SizeDelta: {x: -252.6227, y: 86.3404}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4390129492599720812
