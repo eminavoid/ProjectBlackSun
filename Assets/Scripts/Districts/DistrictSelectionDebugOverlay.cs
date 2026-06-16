@@ -19,11 +19,18 @@ public class DistrictSelectionDebugOverlay : MonoBehaviour
     private void OnEnable()
     {
         DistrictSelectionController.OnSelectionChanged += OnSelectionChanged;
+        GameTime.OnTurnEnded += OnTurnEnded;
     }
 
     private void OnDisable()
     {
         DistrictSelectionController.OnSelectionChanged -= OnSelectionChanged;
+        GameTime.OnTurnEnded -= OnTurnEnded;
+    }
+
+    private void OnTurnEnded()
+    {
+        RefreshDisplay(DistrictSelectionController.SelectedDistrict);
     }
 
     private void Start()
@@ -81,7 +88,48 @@ public class DistrictSelectionDebugOverlay : MonoBehaviour
             ? colorMapping.FormatDistrictWithColors(district.Value)
             : district.Value.ToString();
 
-        displayText = $"Distrito: {districtLabel}\nColor/carpeta: {lastPartColorName}\nZona: {lastHitObjectName}";
+        displayText = $"Distrito: {districtLabel}\nColor/carpeta: {lastPartColorName}\nZona: {lastHitObjectName}\n{BuildSeedStatusLine(district.Value)}";
+    }
+
+    private static string BuildSeedStatusLine(Districts district)
+    {
+        DistrictZone selectedZone = DistrictSelectionController.SelectedZone;
+        if (selectedZone != null && selectedZone.District == district)
+        {
+            return FormatZoneSeedStatus(selectedZone);
+        }
+
+        List<DistrictZone> zones = DistrictsManager.GetDistrictZones(district);
+        int plantedCount = 0;
+        for (int i = 0; i < zones.Count; i++)
+        {
+            if (zones[i] != null && zones[i].IsOccupied) plantedCount++;
+        }
+
+        if (plantedCount == 0)
+        {
+            return "Seed: (ninguna en el distrito)";
+        }
+
+        return $"Seeds en distrito: {plantedCount} sector(es) ocupado(s)";
+    }
+
+    private static string FormatZoneSeedStatus(DistrictZone zone)
+    {
+        if (zone == null || !zone.IsOccupied)
+        {
+            return "Seed: (ninguna en este sector)";
+        }
+
+        Seed seed = zone.PlantedSeed;
+        if (seed == null)
+        {
+            return "Seed: (ocupado, sin datos)";
+        }
+
+        int remaining = seed.TurnsRemaining;
+        string turnLabel = remaining == 1 ? "turno" : "turnos";
+        return $"Seed: {seed.Title} | {remaining} {turnLabel} restante(s) ({seed.CurrentTicks}/{seed.Ticks})";
     }
 
     private void OnGUI()
@@ -95,7 +143,7 @@ public class DistrictSelectionDebugOverlay : MonoBehaviour
         };
         style.normal.textColor = Color.white;
 
-        GUI.Box(new Rect(12f, 12f, 420f, 88f), displayText, style);
+        GUI.Box(new Rect(12f, 12f, 480f, 118f), displayText, style);
     }
 
     [ContextMenu("Log District Setup Report")]

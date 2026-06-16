@@ -14,6 +14,7 @@ public class DistrictSeedPlantPanel : MonoBehaviour
     [SerializeField] private TMP_Text districtLabel;
     [SerializeField] private TMP_Text statusLabel;
     [SerializeField] private Transform seedListContent;
+    [SerializeField] private ScrollRect seedListScrollRect;
     [SerializeField] private Button seedItemButtonPrefab;
     [SerializeField] private Button plantButton;
     [SerializeField] private Button closeButton;
@@ -42,6 +43,8 @@ public class DistrictSeedPlantPanel : MonoBehaviour
     private void Start()
     {
         ResolveOpenMenuButton();
+        ResolveSeedListScrollRect();
+        EnsureScrollContentLayout();
         WireButtons();
         SetPanelVisible(false);
     }
@@ -68,6 +71,7 @@ public class DistrictSeedPlantPanel : MonoBehaviour
         BuildSeedButtons();
         UpdatePanelTexts();
         UpdatePlantButtonState();
+        ResetScrollToTop();
         SetPanelVisible(true);
 
         if (showDebugLogs)
@@ -284,6 +288,57 @@ public class DistrictSeedPlantPanel : MonoBehaviour
         }
 
         UpdateSelectionVisuals();
+        RefreshScrollContentLayout();
+    }
+
+    private void ResolveSeedListScrollRect()
+    {
+        if (seedListScrollRect != null) return;
+        if (seedListContent == null) return;
+
+        seedListScrollRect = seedListContent.GetComponentInParent<ScrollRect>();
+    }
+
+    private void EnsureScrollContentLayout()
+    {
+        if (seedListContent is not RectTransform content) return;
+
+        content.anchorMin = new Vector2(0f, 1f);
+        content.anchorMax = new Vector2(1f, 1f);
+        content.pivot = new Vector2(0f, 1f);
+        content.anchoredPosition = Vector2.zero;
+
+        if (!content.TryGetComponent(out ContentSizeFitter fitter))
+        {
+            fitter = content.gameObject.AddComponent<ContentSizeFitter>();
+        }
+
+        fitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
+        fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
+        if (seedListScrollRect != null && seedListScrollRect.viewport != null)
+        {
+            RectTransform viewport = seedListScrollRect.viewport;
+            viewport.anchorMin = Vector2.zero;
+            viewport.anchorMax = Vector2.one;
+            viewport.offsetMin = Vector2.zero;
+            viewport.offsetMax = Vector2.zero;
+        }
+    }
+
+    private void RefreshScrollContentLayout()
+    {
+        if (seedListContent is not RectTransform content) return;
+
+        Canvas.ForceUpdateCanvases();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(content);
+    }
+
+    private void ResetScrollToTop()
+    {
+        if (seedListScrollRect == null) return;
+        seedListScrollRect.StopMovement();
+        seedListScrollRect.verticalNormalizedPosition = 1f;
     }
 
     private void ClearSeedButtons()

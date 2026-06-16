@@ -12,6 +12,7 @@ public class DistrictZone : MonoBehaviour
 
     public Districts District => district;
     public bool IsOccupied => plantedSeed != null;
+    public Seed PlantedSeed => plantedSeed;
     public string SectorName => gameObject.name;
 
     public void SetDistrict(Districts value)

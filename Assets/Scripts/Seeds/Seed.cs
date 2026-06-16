@@ -38,6 +38,9 @@ public class Seed : ScriptableObject
     public Sprite Icon => icon;
     public DistrictZone CurrentZone => currentZone;
     public Districts? CurrentDistrict => currentZone != null ? currentZone.District : null;
+    public int CurrentTicks => currentTicks;
+    public int TurnsRemaining => Mathf.Max(0, ticks - currentTicks);
+    public bool IsPlanted => currentZone != null;
 
     public bool CanPlantInDistrict(Districts district) => true;
 
