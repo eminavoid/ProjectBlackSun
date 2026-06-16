@@ -57,14 +57,55 @@ public class DistrictZone : MonoBehaviour
         if (meshFilter == null) meshFilter = GetComponentInChildren<MeshFilter>();
         if (meshFilter == null || meshFilter.sharedMesh == null) return;
 
+        Mesh mesh = meshFilter.sharedMesh;
+
+        if (TryUseMeshCollider(mesh))
+        {
+            return;
+        }
+
+        EnsureBoxColliderFromMesh(mesh);
+    }
+
+    private bool TryUseMeshCollider(Mesh mesh)
+    {
+        if (mesh == null) return false;
+        if (!mesh.isReadable) return false;
+
+        if (TryGetComponent(out BoxCollider boxCollider))
+        {
+            if (Application.isPlaying) Destroy(boxCollider);
+            else DestroyImmediate(boxCollider);
+        }
+
         if (!TryGetComponent(out MeshCollider meshCollider))
         {
             meshCollider = gameObject.AddComponent<MeshCollider>();
         }
 
-        meshCollider.sharedMesh = meshFilter.sharedMesh;
+        meshCollider.sharedMesh = mesh;
         meshCollider.convex = false;
         meshCollider.isTrigger = false;
+
+        return meshCollider.sharedMesh != null;
+    }
+
+    private void EnsureBoxColliderFromMesh(Mesh mesh)
+    {
+        if (TryGetComponent(out MeshCollider meshCollider))
+        {
+            if (Application.isPlaying) Destroy(meshCollider);
+            else DestroyImmediate(meshCollider);
+        }
+
+        if (!TryGetComponent(out BoxCollider boxCollider))
+        {
+            boxCollider = gameObject.AddComponent<BoxCollider>();
+        }
+
+        boxCollider.center = mesh.bounds.center;
+        boxCollider.size = mesh.bounds.size;
+        boxCollider.isTrigger = false;
     }
 
     private void OnEnable()

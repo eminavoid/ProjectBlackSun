@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
@@ -29,13 +30,34 @@ public class DistrictSelectionController : MonoBehaviour
     [SerializeField] private string mapObjectName = "mapa por distritos 1";
     [SerializeField] private DistrictColorMapping colorMapping;
 
+    private bool mapSetupComplete;
     private bool warnedMissingCamera;
     private readonly List<RaycastResult> uiRaycastResults = new List<RaycastResult>();
 
     private void Awake()
     {
+        ResolveSelectionCamera();
         if (!autoSetupMapOnStart) return;
         TrySetupMapInScene();
+    }
+
+    private void Start()
+    {
+        ResolveSelectionCamera();
+        if (!mapSetupComplete && autoSetupMapOnStart)
+        {
+            TrySetupMapInScene();
+        }
+    }
+
+    private void ResolveSelectionCamera()
+    {
+        if (selectionCamera != null) return;
+        selectionCamera = Camera.main;
+        if (selectionCamera == null)
+        {
+            selectionCamera = FindAnyObjectByType<Camera>();
+        }
     }
 
     public void TrySetupMapInScene()
@@ -53,6 +75,7 @@ public class DistrictSelectionController : MonoBehaviour
         bootstrap.Configure(mapObject.transform, colorMapping);
         bootstrap.SetupMap();
         DistrictsManager.RefreshZones();
+        mapSetupComplete = true;
 
         if (verboseLogs)
         {
@@ -67,10 +90,21 @@ public class DistrictSelectionController : MonoBehaviour
         {
             GameObject byName = GameObject.Find(mapObjectName);
             if (byName != null) return byName;
+
+            string cloneName = mapObjectName + "(Clone)";
+            byName = GameObject.Find(cloneName);
+            if (byName != null) return byName;
         }
 
         DistrictMapBootstrap existing = FindAnyObjectByType<DistrictMapBootstrap>();
         if (existing != null) return existing.gameObject;
+
+        DistrictZone anyZone = FindAnyObjectByType<DistrictZone>();
+        if (anyZone != null)
+        {
+            DistrictPart part = anyZone.GetComponentInParent<DistrictPart>();
+            if (part != null) return part.transform.root.gameObject;
+        }
 
         return GameObject.Find("mapa");
     }
@@ -210,14 +244,30 @@ public class DistrictSelectionController : MonoBehaviour
     private static bool TryGetPrimaryClickDown(out Vector2 mousePosition)
     {
 #if ENABLE_INPUT_SYSTEM
-        if (Mouse.current == null || !Mouse.current.leftButton.wasPressedThisFrame)
+        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
         {
-            mousePosition = default;
-            return false;
+            mousePosition = Mouse.current.position.ReadValue();
+            return true;
         }
 
-        mousePosition = Mouse.current.position.ReadValue();
-        return true;
+        if (Touchscreen.current != null)
+        {
+            UnityEngine.InputSystem.Controls.TouchControl touch = Touchscreen.current.primaryTouch;
+            if (touch.press.wasPressedThisFrame)
+            {
+                mousePosition = touch.position.ReadValue();
+                return true;
+            }
+        }
+
+        if (Pointer.current != null && Pointer.current.press.wasPressedThisFrame)
+        {
+            mousePosition = Pointer.current.position.ReadValue();
+            return true;
+        }
+
+        mousePosition = default;
+        return false;
 #else
         if (!Input.GetMouseButtonDown(0))
         {
@@ -233,12 +283,21 @@ public class DistrictSelectionController : MonoBehaviour
     private bool IsPointerOverUi(Vector2 screenPosition)
     {
         if (EventSystem.current == null) return false;
-        if (EventSystem.current.IsPointerOverGameObject()) return true;
 
         PointerEventData pointerData = new PointerEventData(EventSystem.current) { position = screenPosition };
         uiRaycastResults.Clear();
         EventSystem.current.RaycastAll(pointerData, uiRaycastResults);
-        return uiRaycastResults.Count > 0;
+
+        for (int i = 0; i < uiRaycastResults.Count; i++)
+        {
+            RaycastResult result = uiRaycastResults[i];
+            if (result.gameObject == null) continue;
+            if (!result.gameObject.TryGetComponent(out Graphic graphic)) continue;
+            if (!graphic.raycastTarget) continue;
+            return true;
+        }
+
+        return false;
     }
 
     private Camera GetSelectionCamera()
