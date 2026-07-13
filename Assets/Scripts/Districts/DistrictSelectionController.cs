@@ -177,6 +177,12 @@ public class DistrictSelectionController : MonoBehaviour
 
     public static void SetSelectedDistrict(Districts? district, DistrictZone zone, string hitObjectName, string partColorName)
     {
+        DistrictZone previousZone = SelectedZone;
+        if (previousZone != null && previousZone != zone)
+        {
+            previousZone.SetSelected(false);
+        }
+
         SelectedZone = zone;
 
         if (!string.IsNullOrEmpty(hitObjectName))
@@ -198,6 +204,12 @@ public class DistrictSelectionController : MonoBehaviour
         }
 
         SelectedDistrict = district;
+
+        if (SelectedZone != null)
+        {
+            SelectedZone.SetSelected(true);
+        }
+
         OnSelectionChanged?.Invoke(SelectedDistrict);
     }
 

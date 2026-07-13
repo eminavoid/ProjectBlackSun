@@ -131,9 +131,18 @@ public class DistrictSeedPlantPanel : MonoBehaviour
             return;
         }
 
-        if (!DistrictSelectionController.SelectedDistrict.HasValue)
+        DistrictZone targetZone = DistrictSelectionController.SelectedZone;
+        if (targetZone == null)
         {
-            statusMessage = "Selecciona un distrito en el mapa antes de plantar.";
+            statusMessage = "Selecciona un nodo/sector en el mapa antes de plantar.";
+            UpdatePanelTexts();
+            UpdatePlantButtonState();
+            return;
+        }
+
+        if (targetZone.IsOccupied)
+        {
+            statusMessage = $"El nodo '{targetZone.SectorName}' ya está ocupado.";
             UpdatePanelTexts();
             UpdatePlantButtonState();
             return;
@@ -146,33 +155,21 @@ public class DistrictSeedPlantPanel : MonoBehaviour
             return;
         }
 
-        Districts targetDistrict = DistrictSelectionController.SelectedDistrict.Value;
         Seed selectedSeed = cachedSeeds[selectedSeedIndex];
-
-        DistrictZone targetZone = DistrictSelectionController.SelectedZone;
-        if (targetZone == null || targetZone.District != targetDistrict)
-        {
-            if (!DistrictsManager.TryGetRandomFreeZoneInDistrict(targetDistrict, out targetZone) || targetZone == null)
-            {
-                statusMessage = $"El distrito {targetDistrict} no tiene sectores libres.";
-                UpdatePanelTexts();
-                return;
-            }
-        }
 
         if (!targetZone.AddSeed(selectedSeed))
         {
-            statusMessage = $"No se pudo plantar en '{targetZone.SectorName}' (sector ocupado).";
+            statusMessage = $"No se pudo plantar en '{targetZone.SectorName}' (nodo ocupado).";
             UpdatePanelTexts();
             return;
         }
 
-        statusMessage = $"Seed '{selectedSeed.Title}' plantada en {targetZone.SectorName} ({targetDistrict}).";
+        statusMessage = $"Seed '{selectedSeed.Title}' plantada en {targetZone.SectorName} ({targetZone.District}).";
         UpdatePanelTexts();
 
         if (showDebugLogs)
         {
-            Debug.Log($"DistrictSeedPlantPanel: planted '{selectedSeed.Title}' in {targetDistrict}.", this);
+            Debug.Log($"DistrictSeedPlantPanel: planted '{selectedSeed.Title}' in {targetZone.SectorName} ({targetZone.District}).", this);
         }
 
         CloseMenu();
@@ -235,8 +232,10 @@ public class DistrictSeedPlantPanel : MonoBehaviour
     {
         if (plantButton == null) return;
 
+        DistrictZone selectedZone = DistrictSelectionController.SelectedZone;
         plantButton.interactable = isOpen
-            && DistrictSelectionController.SelectedDistrict.HasValue
+            && selectedZone != null
+            && !selectedZone.IsOccupied
             && selectedSeedIndex >= 0
             && selectedSeedIndex < cachedSeeds.Count;
     }
@@ -245,18 +244,14 @@ public class DistrictSeedPlantPanel : MonoBehaviour
     {
         if (districtLabel != null)
         {
-            if (!DistrictSelectionController.SelectedDistrict.HasValue)
+            DistrictZone selectedZone = DistrictSelectionController.SelectedZone;
+            if (selectedZone == null)
             {
-                districtLabel.text = "District: (ninguno)";
-            }
-            else if (DistrictSelectionController.SelectedZone != null)
-            {
-                districtLabel.text =
-                    $"District: {DistrictSelectionController.SelectedDistrict.Value} | Sector: {DistrictSelectionController.SelectedZone.SectorName}";
+                districtLabel.text = "Nodo: (ninguno)";
             }
             else
             {
-                districtLabel.text = $"District: {DistrictSelectionController.SelectedDistrict.Value}";
+                districtLabel.text = $"Nodo: {selectedZone.SectorName} ({selectedZone.District})";
             }
         }
 
