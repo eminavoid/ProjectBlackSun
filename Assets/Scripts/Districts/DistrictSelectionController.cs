@@ -15,6 +15,7 @@ public class DistrictSelectionController : MonoBehaviour
     public static string LastSelectedZoneName { get; private set; } = string.Empty;
     public static string LastSelectedPartColorName { get; private set; } = string.Empty;
     public static event Action<Districts?> OnSelectionChanged;
+    public static event Action<DistrictZone> OnZoneDoubleClicked;
 
     public DistrictColorMapping ColorMapping => colorMapping;
 
@@ -24,6 +25,7 @@ public class DistrictSelectionController : MonoBehaviour
     [SerializeField] private Camera selectionCamera;
     [SerializeField] private bool blockClicksOverUI = true;
     [SerializeField] private bool verboseLogs;
+    [SerializeField] private float doubleClickMaxDelay = 0.35f;
 
     [Header("Map")]
     [SerializeField] private bool autoSetupMapOnStart = true;
@@ -33,6 +35,8 @@ public class DistrictSelectionController : MonoBehaviour
     private bool mapSetupComplete;
     private bool warnedMissingCamera;
     private readonly List<RaycastResult> uiRaycastResults = new List<RaycastResult>();
+    private float lastZoneClickTime = -999f;
+    private DistrictZone lastClickedZone;
 
     private void Awake()
     {
@@ -44,6 +48,7 @@ public class DistrictSelectionController : MonoBehaviour
     private void Start()
     {
         ResolveSelectionCamera();
+        MapCameraController.EnsureOnCamera(GetSelectionCamera());
         if (!mapSetupComplete && autoSetupMapOnStart)
         {
             TrySetupMapInScene();
@@ -135,6 +140,7 @@ public class DistrictSelectionController : MonoBehaviour
         if (hits == null || hits.Length == 0)
         {
             SetSelectedDistrict(null, null);
+            lastClickedZone = null;
             return;
         }
 
@@ -147,6 +153,7 @@ public class DistrictSelectionController : MonoBehaviour
 
             string partColorName = ResolvePartColorName(zone);
             SetSelectedDistrict(zone.District, zone, zone.name, partColorName);
+            RegisterZoneClick(zone);
 
             if (verboseLogs)
             {
@@ -157,7 +164,24 @@ public class DistrictSelectionController : MonoBehaviour
         }
 
         SetSelectedDistrict(null, null, string.Empty, string.Empty);
+        lastClickedZone = null;
         if (verboseLogs) Debug.Log("DistrictSelectionController: click sin DistrictZone.", this);
+    }
+
+    private void RegisterZoneClick(DistrictZone zone)
+    {
+        float now = Time.unscaledTime;
+        bool isDoubleClick = zone != null
+            && zone == lastClickedZone
+            && (now - lastZoneClickTime) <= doubleClickMaxDelay;
+
+        lastZoneClickTime = now;
+        lastClickedZone = zone;
+
+        if (isDoubleClick)
+        {
+            OnZoneDoubleClicked?.Invoke(zone);
+        }
     }
 
     public static void SetSelectedDistrict(Districts? district)
