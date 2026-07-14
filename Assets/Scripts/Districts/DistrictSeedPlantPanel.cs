@@ -140,14 +140,6 @@ public class DistrictSeedPlantPanel : MonoBehaviour
             return;
         }
 
-        if (targetZone.IsOccupied)
-        {
-            statusMessage = $"El nodo '{targetZone.SectorName}' ya está ocupado.";
-            UpdatePanelTexts();
-            UpdatePlantButtonState();
-            return;
-        }
-
         if (selectedSeedIndex < 0 || selectedSeedIndex >= cachedSeeds.Count)
         {
             statusMessage = "Selecciona una seed primero.";
@@ -157,22 +149,24 @@ public class DistrictSeedPlantPanel : MonoBehaviour
 
         Seed selectedSeed = cachedSeeds[selectedSeedIndex];
 
-        if (!targetZone.AddSeed(selectedSeed))
+        if (targetZone.IsOccupied || !targetZone.AddSeed(selectedSeed))
         {
-            statusMessage = $"No se pudo plantar en '{targetZone.SectorName}' (nodo ocupado).";
-            UpdatePanelTexts();
+            ShowPlantPopup($"No se puede plantar: el nodo '{targetZone.SectorName}' ya está ocupado.");
             return;
         }
-
-        statusMessage = $"Seed '{selectedSeed.Title}' plantada en {targetZone.SectorName} ({targetZone.District}).";
-        UpdatePanelTexts();
 
         if (showDebugLogs)
         {
             Debug.Log($"DistrictSeedPlantPanel: planted '{selectedSeed.Title}' in {targetZone.SectorName} ({targetZone.District}).", this);
         }
 
+        ShowPlantPopup($"Seed '{selectedSeed.Title}' plantada en {targetZone.SectorName} ({targetZone.District}).");
+    }
+
+    private void ShowPlantPopup(string message)
+    {
         CloseMenu();
+        TopScreenNotification.Show(message, 10f);
     }
 
     private void ResolveOpenMenuButton()
@@ -235,7 +229,6 @@ public class DistrictSeedPlantPanel : MonoBehaviour
         DistrictZone selectedZone = DistrictSelectionController.SelectedZone;
         plantButton.interactable = isOpen
             && selectedZone != null
-            && !selectedZone.IsOccupied
             && selectedSeedIndex >= 0
             && selectedSeedIndex < cachedSeeds.Count;
     }
