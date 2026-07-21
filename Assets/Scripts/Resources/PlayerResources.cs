@@ -25,6 +25,14 @@ public class PlayerResources : ScriptableObject
 
         int happiness = resources[Resource.Happiness];
         resources[Resource.Happiness] = Math.Clamp(happiness, 0, 100);
+
+        int flock = resources[Resource.Flock];
+        resources[Resource.Flock] = Math.Clamp(flock, 0, int.MaxValue);
+
+        if (flock == 0)
+        {
+            GlobalEventBus.Invoke(new LoseEvent("TEST MESSAGE"));
+        }
     }
 
     public int GetResourceAmount(Resource resource)
