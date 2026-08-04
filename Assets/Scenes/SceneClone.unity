@@ -1422,6 +1422,9 @@ MonoBehaviour:
   blockClicksOverUI: 1
   verboseLogs: 1
   doubleClickMaxDelay: 0.35
+  pickDepthSlack: 0.35
+  pickDepthTieBreak: 8
+  nearestZoneMaxDistance: 0.0001
   autoSetupMapOnStart: 1
   mapObjectName: mapa new
   colorMapping: {fileID: 11400000, guid: 9a5f3b2c1d0e4f8a7b6c5d4e3f2a1b0c, type: 2}

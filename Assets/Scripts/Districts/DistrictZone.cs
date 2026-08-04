@@ -29,6 +29,11 @@ public class DistrictZone : MonoBehaviour
     public Seed PlantedSeed => plantedSeed;
     public string SectorName => gameObject.name;
 
+    /// <summary>
+    /// True for playable cuadras under a DistrictPart. False for map props like Plane.122.
+    /// </summary>
+    public bool IsPlayable => GetComponentInParent<DistrictPart>() != null;
+
     public void SetDistrict(Districts value)
     {
         district = value;
@@ -36,6 +41,7 @@ public class DistrictZone : MonoBehaviour
 
     public void SetSelected(bool selected)
     {
+        if (selected && !IsPlayable) return;
         if (isSelected == selected) return;
         isSelected = selected;
         RefreshVisual();
@@ -103,7 +109,6 @@ public class DistrictZone : MonoBehaviour
     private bool TryUseMeshCollider(Mesh mesh)
     {
         if (mesh == null) return false;
-        if (!mesh.isReadable) return false;
 
         if (TryGetComponent(out BoxCollider boxCollider))
         {
@@ -116,9 +121,15 @@ public class DistrictZone : MonoBehaviour
             meshCollider = gameObject.AddComponent<MeshCollider>();
         }
 
+        // Imported meshes often work as colliders even when !isReadable.
+        // Boxes overlap neighbors and steal clicks; only fall back if assignment fails.
+        meshCollider.sharedMesh = null;
         meshCollider.sharedMesh = mesh;
         meshCollider.convex = false;
         meshCollider.isTrigger = false;
+        meshCollider.cookingOptions = MeshColliderCookingOptions.CookForFasterSimulation
+            | MeshColliderCookingOptions.EnableMeshCleaning
+            | MeshColliderCookingOptions.WeldColocatedVertices;
 
         return meshCollider.sharedMesh != null;
     }
