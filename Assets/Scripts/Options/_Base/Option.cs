@@ -1,6 +1,7 @@
-using System.Collections.Generic;
-using UnityEngine;
 using System;
+using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Option", menuName = "Options/New Option", order = 1)]
 public class Option : ScriptableObject
@@ -109,6 +110,17 @@ public class Option : ScriptableObject
         }
 
         return DistrictsManager.TryGetRandomFreeZoneAnyDistrict(out targetZone);
+    }
+
+    [MenuItem("CONTEXT/Option/Print Log")]
+    private static void ResetRigidbodyMass(MenuCommand command)
+    {
+        Option option = (Option)command.context;
+        Undo.RecordObject(option, "Print Log");
+
+        // Execute your custom logic
+
+        Debug.Log($"test");
     }
 
     [Serializable]
