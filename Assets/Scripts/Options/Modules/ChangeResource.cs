@@ -8,6 +8,18 @@ public class ChangeResource : OptionModule
     [SerializeField] private int minAmount;
     [SerializeField] private int maxAmount;
 
+    public override string GetDescription()
+    {
+        if (minAmount != maxAmount)
+        {
+            return $"{minAmount} {resource}";
+        }
+        else
+        {
+            return $"{minAmount} to {maxAmount} {resource}";
+        }
+    }
+
     public override bool CanExecute() => true;
 
     public override void Execute(Option option, Seed seed)

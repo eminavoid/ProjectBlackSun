@@ -7,6 +7,11 @@ public class RequireResource : OptionModule
     [SerializeField] private Resource resource;
     [SerializeField] private int required;
 
+    public override string GetDescription()
+    {
+        return $"Requires {required} {resource}";
+    }
+
     public override bool CanExecute()
     {
         int amount = ResourceManager.Resources.GetResourceAmount(resource);

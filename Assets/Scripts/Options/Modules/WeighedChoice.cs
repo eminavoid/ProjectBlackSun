@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 [Serializable]
@@ -8,6 +9,18 @@ public class WeighedChoice : OptionModule
     [SerializeField] private List<WeightedElement> modules;
 
     private readonly List<WeightedElementWrapper> tempModules = new List<WeightedElementWrapper>();
+
+    public override string GetDescription()
+    {
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < modules.Count; i++)
+        {
+            sb.AppendLine(modules[i].GetDescription());
+        }
+
+        return sb.ToString();
+    }
 
     public override bool CanExecute() => true;
 
@@ -33,7 +46,7 @@ public class WeighedChoice : OptionModule
     }
 
     [Serializable]
-    private struct WeightedElement : IWeighted
+    public struct WeightedElement : IWeighted
     {
         public int weight;
         [SerializeReferenceDropdown, SerializeReference] public List<OptionModule> module;
@@ -44,6 +57,18 @@ public class WeighedChoice : OptionModule
         [SerializeField, TextArea(3, 5)] public string output;
 
         public readonly int Weight => weight;
+
+        public readonly string GetDescription()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < module.Count; i++)
+            {
+                sb.AppendLine(module[i].GetDescription());
+            }
+
+            return sb.ToString();
+        }
     }
 
     //Wrapper so we don't have to redo all the options after this change

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using UnityEditor;
 using UnityEngine;
 
@@ -118,9 +119,15 @@ public class Option : ScriptableObject
         Option option = (Option)command.context;
         Undo.RecordObject(option, "Print Log");
 
-        // Execute your custom logic
+        StringBuilder stringBuilder = new StringBuilder();
 
-        Debug.Log($"test");
+        for (int i = 0; i < option.modules.Count; i++)
+        {
+            if (!option.modules[i].DisplayDescription) continue;
+            stringBuilder.AppendLine(option.modules[i].GetDescription());
+        }
+
+        Debug.Log(stringBuilder.ToString());
     }
 
     [Serializable]
