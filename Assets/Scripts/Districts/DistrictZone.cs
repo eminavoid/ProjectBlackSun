@@ -18,6 +18,8 @@ public class DistrictZone : MonoBehaviour
 
     private Seed plantedSeed;
     private bool isSelected;
+    private ZoneInfluenceState influence;
+    private ZoneControlMarker controlMarker;
 
     private MeshRenderer cachedRenderer;
     private Material[] originalSharedMaterials;
@@ -28,6 +30,7 @@ public class DistrictZone : MonoBehaviour
     public bool IsSelected => isSelected;
     public Seed PlantedSeed => plantedSeed;
     public string SectorName => gameObject.name;
+    public ZoneInfluenceState Influence => influence;
 
     /// <summary>
     /// True for playable cuadras under a DistrictPart. False for map props like Plane.122.
@@ -37,6 +40,34 @@ public class DistrictZone : MonoBehaviour
     public void SetDistrict(Districts value)
     {
         district = value;
+    }
+
+    public void EnsureInfluenceState(int cap = ZoneInfluenceState.DefaultCap)
+    {
+        if (influence == null)
+        {
+            influence = new ZoneInfluenceState { Cap = cap };
+        }
+        else
+        {
+            influence.Cap = cap;
+        }
+    }
+
+    public void EnsureControlMarker()
+    {
+        if (controlMarker == null)
+        {
+            controlMarker = GetComponent<ZoneControlMarker>();
+            if (controlMarker == null) controlMarker = gameObject.AddComponent<ZoneControlMarker>();
+        }
+    }
+
+    public void RefreshControlVisual()
+    {
+        if (!IsPlayable) return;
+        EnsureControlMarker();
+        if (influence != null) controlMarker.Refresh(influence);
     }
 
     public void SetSelected(bool selected)

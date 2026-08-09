@@ -92,6 +92,14 @@ public class DistrictSelectionController : MonoBehaviour
         DistrictsManager.RefreshZones();
         mapSetupComplete = true;
 
+        InfluenceSystemBootstrap.EnsureInScene();
+        if (!InfluenceManager.IsNull)
+        {
+            InfluenceManager.Get.RefreshZoneCache();
+            InfluenceManager.Get.EnsureZonesInitialized();
+            InfluenceManager.Get.RebuildAdjacency();
+        }
+
         if (verboseLogs)
         {
             Debug.Log($"DistrictSelectionController: map setup complete on '{mapObject.name}'.", this);
@@ -500,6 +508,9 @@ public class DistrictSelectionController : MonoBehaviour
 
     private bool IsPointerOverUi(Vector2 screenPosition)
     {
+        // OnGUI panels (influence debug / cleric assign) are not EventSystem graphics.
+        if (OnGuiClickBlocker.IsPointerOverBlockedArea(screenPosition)) return true;
+
         if (EventSystem.current == null) return false;
 
         PointerEventData pointerData = new PointerEventData(EventSystem.current) { position = screenPosition };
