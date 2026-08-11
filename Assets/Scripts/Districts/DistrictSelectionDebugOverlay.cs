@@ -164,7 +164,8 @@ public class DistrictSelectionDebugOverlay : MonoBehaviour
         };
         style.normal.textColor = Color.white;
 
-        Rect rect = new Rect(12f, 12f, 520f, 150f);
+        // Inset from left sidebar UI; keep readable without covering doctrines rail.
+        Rect rect = new Rect(146f, 12f, 420f, 150f);
         OnGuiClickBlocker.RegisterGuiRect(rect);
         GUI.Box(rect, displayText, style);
     }

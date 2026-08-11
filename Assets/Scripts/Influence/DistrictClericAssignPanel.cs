@@ -32,7 +32,11 @@ public class DistrictClericAssignPanel : MonoBehaviour
         InfluenceManager manager = InfluenceManager.Get;
         ZoneInfluenceState state = zone.Influence;
 
-        Rect rect = new Rect(12f, 170f, 280f, 120f);
+        float width = 280f;
+        float height = 120f;
+        float x = (Screen.width - width) * 0.5f;
+        float y = 340f;
+        Rect rect = new Rect(x, y, width, height);
         OnGuiClickBlocker.RegisterGuiRect(rect);
         GUILayout.BeginArea(rect, GUI.skin.box);
         GUILayout.Label($"Clérigos → {zone.SectorName} (C)");

@@ -38,7 +38,10 @@ public class InfluenceDebugPanel : MonoBehaviour
 
         float width = 420f;
         float height = showFaithEclipse ? 260f : 200f;
-        Rect rect = new Rect(Screen.width - width - 12f, 12f, width, height);
+        // Centered so side UIs (resources / doctrines) stay clickable.
+        float x = (Screen.width - width) * 0.5f;
+        float y = 72f;
+        Rect rect = new Rect(x, y, width, height);
         OnGuiClickBlocker.RegisterGuiRect(rect);
         GUILayout.BeginArea(rect, box);
 
