@@ -6,7 +6,7 @@ using TMPro;
 public class DistrictSeedPlantPanel : MonoBehaviour
 {
     [Header("Data")]
-    [SerializeField] private SeedsPool seedsPool;
+    [SerializeField] private SeedsPool loadSeeds;
 
     [Header("UI")]
     [SerializeField] private bool showDebugLogs;
@@ -23,6 +23,7 @@ public class DistrictSeedPlantPanel : MonoBehaviour
     [SerializeField] private string optionsRectName = "OptionsRect";
     [SerializeField] private string optionsOpenButtonName = "Button (2)";
 
+    private readonly Dictionary<Seed, int> currentSeeds = new Dictionary<Seed, int>();
     private readonly List<Seed> cachedSeeds = new List<Seed>();
     private readonly List<Button> runtimeSeedButtons = new List<Button>();
 
@@ -33,6 +34,20 @@ public class DistrictSeedPlantPanel : MonoBehaviour
     private void Awake()
     {
         SetPanelVisible(false);
+        DebugLoadSeedsFromPool();
+    }
+
+    private void DebugLoadSeedsFromPool()
+    {
+        for (int i = 0; i < loadSeeds.EvilSeeds.Count; i++)
+        {
+            if (!currentSeeds.ContainsKey(loadSeeds.EvilSeeds[i]))
+            {
+                currentSeeds.Add(loadSeeds.EvilSeeds[i], 0);
+            }
+
+            currentSeeds[loadSeeds.EvilSeeds[i]] += 1;
+        }
     }
 
     private void OnEnable()
@@ -107,13 +122,11 @@ public class DistrictSeedPlantPanel : MonoBehaviour
     private void RefreshSeedList()
     {
         cachedSeeds.Clear();
-        if (seedsPool == null || seedsPool.EvilSeeds == null) return;
 
         Districts? filterDistrict = DistrictSelectionController.SelectedDistrict;
 
-        for (int i = 0; i < seedsPool.EvilSeeds.Count; i++)
+        foreach (Seed seed in currentSeeds.Keys)
         {
-            Seed seed = seedsPool.EvilSeeds[i];
             if (seed == null) continue;
 
             if (filterDistrict.HasValue && !seed.CanPlantInDistrict(filterDistrict.Value)) continue;
@@ -161,6 +174,21 @@ public class DistrictSeedPlantPanel : MonoBehaviour
         }
 
         ShowPlantPopup($"Seed '{selectedSeed.Title}' plantada en {targetZone.SectorName} ({targetZone.District}).");
+
+        UpdateSeedInventory(selectedSeed, -1);
+        RefreshSeedList();
+    }
+
+    private void UpdateSeedInventory(Seed seed, int amount)
+    {
+        currentSeeds[seed] += amount;
+
+        if (currentSeeds[seed] <= 0)
+        {
+            currentSeeds.Remove(seed);
+
+            ShowPlantPopup($"removed {seed} from inventory");
+        }
     }
 
     private void ShowPlantPopup(string message)
