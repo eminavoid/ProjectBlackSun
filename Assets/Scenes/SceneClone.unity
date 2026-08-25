@@ -3813,6 +3813,8 @@ MonoBehaviour:
   spawnOptionsWindow: {fileID: 478184976}
   eventOutputWindowPrefab: {fileID: 6986076241118867485, guid: 26ede2eefc574e0458ee06d975b56568, type: 3}
   optionDisplayPrefab: {fileID: 8361523740710303735, guid: 91a741170ced58643a73efea27a88975, type: 3}
+  wealthSeedPool: {fileID: 11400000, guid: 4838434b73cac6849b45d776f401133f, type: 2}
+  wealthSeedChance: 100
 --- !u!1 &1118011050
 GameObject:
   m_ObjectHideFlags: 0

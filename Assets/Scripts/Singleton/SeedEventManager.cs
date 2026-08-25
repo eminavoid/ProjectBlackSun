@@ -6,9 +6,16 @@ using TMPro;
 
 public class SeedEventManager : Singleton<SeedEventManager>
 {
+    [SerializeField] private PlayerResources resources;
+
     [SerializeField] private UIWindow spawnOptionsWindow;
     [SerializeField] private UIWindow eventOutputWindowPrefab;
     [SerializeField] private OptionDisplay optionDisplayPrefab;
+
+    [Space]
+
+    [SerializeField] private SeedsPool wealthSeedPool;
+    [SerializeField] private int wealthSeedChance = 100;
 
     private readonly Queue<Seed> seedEvents = new Queue<Seed>();
 
@@ -51,6 +58,29 @@ public class SeedEventManager : Singleton<SeedEventManager>
     private void OnTurnStarted()
     {
         StartChoosingOptionsPhase();
+
+        if (resources.GetResourceAmount(Resource.Wealth) < 0 && wealthSeedChance > Random.Range(0, 99))
+        {
+            TryPlantSeed(wealthSeedPool.EvilSeeds[Random.Range(0, wealthSeedPool.EvilSeeds.Count)]);
+        }
+    }
+
+    private bool TryPlantSeed(Seed seed)
+    {
+        if (!DistrictsManager.TryGetRandomFreeZoneAnyDistrict(out DistrictZone zone) || zone == null)
+        {
+            Debug.LogWarning("No hay sectores libres para plantar wealth seed.", this);
+            return false;
+        }
+
+        //TODO: que se fije las allowed seeds
+        if (seed == null) return false;
+
+        if (!seed.CanPlantInDistrict(zone.District)) return false;
+
+        if (!zone.AddSeed(seed)) return false;
+
+        return true;
     }
 
     private void StartChoosingOptionsPhase()
