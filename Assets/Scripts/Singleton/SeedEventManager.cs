@@ -62,6 +62,7 @@ public class SeedEventManager : Singleton<SeedEventManager>
         if (resources.GetResourceAmount(Resource.Wealth) < 0 && wealthSeedChance > Random.Range(0, 99))
         {
             TryPlantSeed(wealthSeedPool.EvilSeeds[Random.Range(0, wealthSeedPool.EvilSeeds.Count)]);
+            Debug.Log("Played seed due to negative wealth");
         }
     }
 
