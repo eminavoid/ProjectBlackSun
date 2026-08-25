@@ -2875,7 +2875,6 @@ GameObject:
   - component: {fileID: 613333958}
   - component: {fileID: 613333961}
   - component: {fileID: 613333960}
-  - component: {fileID: 613333959}
   m_Layer: 5
   m_Name: Background (1)
   m_TagString: Untagged
@@ -2902,21 +2901,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -0.000038146973, y: -0.00002670288}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &613333959
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 613333957}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0eda2b0dda5ddc44baae6df7f05374c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Zeke.UI.UIElement
-  window: {fileID: 478184976}
-  <Name>k__BackingField: Background
-  <Element>k__BackingField: {fileID: 613333960}
 --- !u!114 &613333960
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -25,6 +25,8 @@ Shader "Custom/InfluenceOverlay"
         _SmokeStrength("Smoke Strength", Range(0, 1)) = 0.72
         _SmokeScale("Smoke Scale", Range(0.001, 20)) = 0.12
         _SmokeSpeed("Smoke Speed", Range(0, 2)) = 0.55
+        _ColorNoise("Color Noise", Range(0, 1)) = 0.78
+        _ColorPulseSpeed("Color Pulse Speed", Range(0, 3)) = 0.7
         _ContestedStrength("Contested Strength", Range(0, 2)) = 0.9
         _BreathAmp("Breath Amplitude", Range(0, 20)) = 0.25
         _BreathSpeed("Breath Speed", Range(0, 8)) = 1.4
@@ -81,6 +83,8 @@ Shader "Custom/InfluenceOverlay"
                 half _SmokeStrength;
                 half _SmokeScale;
                 half _SmokeSpeed;
+                half _ColorNoise;
+                half _ColorPulseSpeed;
                 half _ContestedStrength;
                 half _BreathAmp;
                 half _BreathSpeed;
@@ -190,6 +194,75 @@ Shader "Custom/InfluenceOverlay"
                 return saturate(n1 * 0.48 + n2 * 0.32 + sparkle * 0.2);
             }
 
+            // Manchas de color que derivan con seno/coseno, no sólo con scroll.
+            float ColorNoiseField(float2 worldXZ, float time)
+            {
+                float scale = max(_SmokeScale, 0.0001) * 0.55;
+                float speed = max(_ColorPulseSpeed, 0.0);
+                float2 q = worldXZ * scale;
+                float2 drift = float2(
+                    sin(time * speed * 0.28 + q.y * 0.85),
+                    cos(time * speed * 0.24 - q.x * 0.9)) * 0.65;
+                float2 warp = float2(
+                    ValueNoise(q * 0.72 + drift + float2(time * speed * 0.07, 11.3)),
+                    ValueNoise(q * 0.72 - drift + float2(19.1, -time * speed * 0.06)));
+                warp = (warp * 2.0 - 1.0) * 0.8;
+                return Fbm(q + warp + drift);
+            }
+
+            float3 HueRotate(float3 color, float radians)
+            {
+                const float3 axis = float3(0.57735027, 0.57735027, 0.57735027);
+                float s;
+                float c;
+                sincos(radians, s, c);
+                return color * c + cross(axis, color) * s + axis * dot(axis, color) * (1.0 - c);
+            }
+
+            half3 VaryFactionColor(half3 chroma, float2 worldXZ, float time, half smoke, half grain)
+            {
+                half mixAmt = saturate(_ColorNoise);
+                if (mixAmt < 0.001h) return chroma;
+
+                float scale = max(_SmokeScale, 0.0001);
+                float speed = max(_ColorPulseSpeed, 0.0);
+                float2 q = worldXZ * scale;
+
+                float blotch = ColorNoiseField(worldXZ, time);
+                float vein = ValueNoise(q * 2.35 + float2(
+                    sin(time * speed * 0.22),
+                    cos(time * speed * 0.19)) * 0.85);
+
+                // Fases distintas: tono y saturación no viajan juntos, y cada punto del mapa
+                // está desfasado para que se lea una ola y no un pulso global.
+                float huePhase = q.x * 2.1 + q.y * 1.4 + blotch * 6.2831853;
+                float satPhase = q.y * 2.4 - q.x * 1.1 + vein * 6.2831853;
+
+                float hueOsc =
+                    sin(time * speed * 1.05 + huePhase) * 0.62 +
+                    cos(time * speed * 0.53 + huePhase * 0.7) * 0.38 +
+                    sin(time * speed * 1.71 - huePhase * 1.25) * 0.22;
+
+                float satOsc =
+                    cos(time * speed * 0.87 + satPhase) * 0.55 +
+                    sin(time * speed * 1.33 - satPhase * 0.8) * 0.35 +
+                    cos(time * speed * 0.41 + satPhase * 1.35) * 0.28;
+
+                float hue = hueOsc * mixAmt * 0.42 + (blotch * 2.0 - 1.0) * mixAmt * 0.16;
+                float3 shifted = HueRotate((float3)chroma, hue);
+
+                float luma = dot(shifted, float3(0.22, 0.67, 0.11));
+                float satWave = saturate(0.5 + satOsc * 0.48);
+                float sat = lerp(0.5, 1.48, satWave) * lerp(0.86, 1.16, vein);
+                shifted = lerp((float3)luma, shifted, sat);
+
+                float3 dusk = lerp((float3)chroma, (float3)luma, 0.38) * 0.82;
+                float3 painted = lerp(dusk, shifted, lerp(0.4, 1.0, smoke));
+                painted += HueRotate((float3)chroma, hue + grain * 0.55) * grain * mixAmt * 0.2;
+
+                return (half3)lerp((float3)chroma, max(painted, 0.0), mixAmt);
+            }
+
             // Evita el blowout a blanco sin re-saturar colores apagados (el azul del jugador).
             half3 FactionChroma(half3 c)
             {
@@ -264,7 +337,7 @@ Shader "Custom/InfluenceOverlay"
                 float3 viewDirWS = normalize(input.viewDirWS);
                 half fresnel = pow(1.0h - saturate(abs(dot(normalWS, viewDirWS))), _RimPower);
 
-                half3 chroma = FactionChroma(field.rgb);
+                half3 chroma = VaryFactionColor(FactionChroma(field.rgb), input.positionWS.xz, time, smoke, grain);
                 half energy = saturate(_Intensity * 0.25h);
                 half pattern = 0.62h + hex * 0.2h + scan * 0.12h + fill * 0.08h;
 

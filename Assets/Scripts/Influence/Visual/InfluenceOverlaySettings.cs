@@ -37,6 +37,12 @@ public class InfluenceOverlaySettings : ScriptableObject
     [Tooltip("Velocidad del humo y el grano procedural.")]
     [Range(0f, 2f)]
     public float smokeSpeed = 0.55f;
+    [Tooltip("Variación de matiz y saturación por ruido. Hace más legible el volumen de cada facción.")]
+    [Range(0f, 1f)]
+    public float colorNoiseStrength = 0.78f;
+    [Tooltip("Velocidad del pulso de tono y saturación (seno/coseno).")]
+    [Range(0f, 3f)]
+    public float colorPulseSpeed = 0.7f;
     public float transitionSeconds = 0.6f;
     public float fadeSeconds = 0.25f;
     public bool startVisible = true;
