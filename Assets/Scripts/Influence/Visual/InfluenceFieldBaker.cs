@@ -263,7 +263,7 @@ public class InfluenceFieldBaker
                 Splat(
                     (a.center + b.center) * 0.5f,
                     radius,
-                    FactionPalette.For(controller.Value),
+                    FactionPalette.Glow(controller.Value),
                     strength,
                     1f,
                     DistrictKey(zone.District));
@@ -404,7 +404,7 @@ public class InfluenceFieldBaker
             if (weights[i] <= 0f) continue;
 
             float ratio = weights[i] / totalWeight;
-            Color color = FactionPalette.For(FactionIdUtil.All[i]);
+            Color color = FactionPalette.Glow(FactionIdUtil.All[i]);
             blended.r += color.r * ratio;
             blended.g += color.g * ratio;
             blended.b += color.b * ratio;

@@ -174,7 +174,7 @@ public class AIIntentOverlay : MonoBehaviour
             view.BuildArc(origin, target, color, style);
             view.SetLabel(
                 LabelFor(intent),
-                color,
+                intent.LabelColor,
                 (target - origin) * 0.5f + Vector3.up * (style.ArcHeight + labelPadding),
                 labelScale);
             return;
@@ -183,7 +183,7 @@ public class AIIntentOverlay : MonoBehaviour
         view.BuildDrop(target, color, style);
         view.SetLabel(
             LabelFor(intent),
-            color,
+            intent.LabelColor,
             Vector3.up * (style.DropHeight + labelPadding),
             labelScale);
     }

@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 /// <summary>
 /// Capa de influencia sobre el mapa: clona el mesh de cada cuadra, lo eleva y lo pinta con
 /// Custom/InfluenceOverlay muestreando el campo global de InfluenceFieldBaker.
+/// Los sliders viven en InfluenceOverlaySettings (Resources) para no perderse al salir de Play.
 /// </summary>
 [DefaultExecutionOrder(30)]
 public class InfluenceOverlayRenderer : MonoBehaviour
@@ -15,26 +16,7 @@ public class InfluenceOverlayRenderer : MonoBehaviour
     private const string ShaderName = "Custom/InfluenceOverlay";
     private const string OverlayChildName = "InfluenceOverlay";
 
-    [Header("Campo")]
-    [SerializeField] private int fieldResolution = 160;
-    [SerializeField] private float splatRadiusScale = 1.5f;
-    [Tooltip("Radio del puente que fusiona cuadras vecinas del mismo distrito y mismo dueño.")]
-    [SerializeField] private float bridgeRadiusScale = 1.15f;
-    [SerializeField] private int blurPasses = 2;
-    [SerializeField] private int blurRadius = 2;
-    [Tooltip("Cuánta presencia aporta un clérigo estacionado, en puntos de influencia.")]
-    [SerializeField] private float clericWeight = 0.6f;
-    [Tooltip("Presencia mínima visible en una zona ocupada.")]
-    [SerializeField] private float minPresence = 0.14f;
-
-    [Header("Visual")]
-    [Tooltip("Elevación sobre el mapa, en fracciones del tamaño de una cuadra.")]
-    [SerializeField] private float liftFactor = 0.35f;
-    [Tooltip("Celdas del patrón hexagonal a lo ancho de una cuadra.")]
-    [SerializeField] private float patternCellsPerZone = 3.5f;
-    [SerializeField] private float transitionSeconds = 0.6f;
-    [SerializeField] private float fadeSeconds = 0.25f;
-    [SerializeField] private bool startVisible = true;
+    [SerializeField] private InfluenceOverlaySettings settings;
 
     private readonly List<ZoneOverlay> overlays = new List<ZoneOverlay>();
 
@@ -42,20 +24,37 @@ public class InfluenceOverlayRenderer : MonoBehaviour
     private Material overlayMaterial;
 
     private int builtZoneCount = -1;
+    private float zoneExtent = 1f;
     private bool rebakeQueued;
     private float transitionTimer;
     private bool transitioning;
     private bool visible = true;
     private float alpha;
 
+    public InfluenceOverlaySettings Settings
+    {
+        get
+        {
+            EnsureSettings();
+            return settings;
+        }
+    }
+
     public void QueueRebake()
     {
         rebakeQueued = true;
     }
 
+    private void OnEnable()
+    {
+        EnsureSettings();
+    }
+
     private void Start()
     {
-        visible = startVisible;
+        EnsureSettings();
+
+        visible = settings.startVisible;
         alpha = visible ? 1f : 0f;
 
         overlayMaterial = ResolveMaterial();
@@ -68,10 +67,11 @@ public class InfluenceOverlayRenderer : MonoBehaviour
             return;
         }
 
-        baker = new InfluenceFieldBaker(fieldResolution);
+        baker = new InfluenceFieldBaker(settings.fieldResolution);
 
         Rebake();
         baker.Publish(1f);
+        ApplyVolumeSettings();
         ApplyAlpha();
 
         if (!InfluenceManager.IsNull)
@@ -81,8 +81,15 @@ public class InfluenceOverlayRenderer : MonoBehaviour
         }
     }
 
+    private void OnDisable()
+    {
+        if (settings != null) settings.Persist();
+    }
+
     private void OnDestroy()
     {
+        if (settings != null) settings.Persist();
+
         if (!InfluenceManager.IsNull)
         {
             InfluenceManager.Get.OnControlChanged -= QueueRebake;
@@ -97,11 +104,12 @@ public class InfluenceOverlayRenderer : MonoBehaviour
     private void Update()
     {
         ReadToggleInput();
+        ApplyVolumeSettings();
 
         float targetAlpha = visible ? 1f : 0f;
         if (!Mathf.Approximately(alpha, targetAlpha))
         {
-            float step = fadeSeconds > 0f ? Time.unscaledDeltaTime / fadeSeconds : 1f;
+            float step = settings.fadeSeconds > 0f ? Time.unscaledDeltaTime / settings.fadeSeconds : 1f;
             alpha = Mathf.MoveTowards(alpha, targetAlpha, step);
             ApplyAlpha();
         }
@@ -111,16 +119,22 @@ public class InfluenceOverlayRenderer : MonoBehaviour
             rebakeQueued = false;
             Rebake();
             transitionTimer = 0f;
-            transitioning = transitionSeconds > 0f;
+            transitioning = settings.transitionSeconds > 0f;
             if (!transitioning) baker.Publish(1f);
         }
 
         if (!transitioning) return;
 
         transitionTimer += Time.deltaTime;
-        float blend = Mathf.Clamp01(transitionTimer / transitionSeconds);
+        float blend = Mathf.Clamp01(transitionTimer / settings.transitionSeconds);
         baker.Publish(blend);
         if (blend >= 1f) transitioning = false;
+    }
+
+    private void EnsureSettings()
+    {
+        if (settings != null) return;
+        settings = InfluenceOverlaySettings.LoadOrCreate();
     }
 
     private void ReadToggleInput()
@@ -148,23 +162,21 @@ public class InfluenceOverlayRenderer : MonoBehaviour
 
     private void Rebake()
     {
-        if (InfluenceManager.IsNull) return;
+        if (InfluenceManager.IsNull || settings == null) return;
 
         InfluenceManager manager = InfluenceManager.Get;
         IReadOnlyList<DistrictZone> zones = manager.GetPlayableZones();
 
-        // Comparar contra el conteo de zonas del último build: algunas cuadras pueden no
-        // tener mesh y nunca generar overlay, así que overlays.Count no sirve como referencia.
         if (zones.Count != builtZoneCount) BuildOverlays();
 
         baker.Bake(zones, manager.Adjacency, new InfluenceFieldBaker.Settings
         {
-            SplatRadiusScale = splatRadiusScale,
-            BridgeRadiusScale = bridgeRadiusScale,
-            BlurPasses = blurPasses,
-            BlurRadius = blurRadius,
-            ClericWeight = clericWeight,
-            MinPresence = minPresence
+            SplatRadiusScale = settings.splatRadiusScale,
+            BridgeRadiusScale = settings.bridgeRadiusScale,
+            BlurPasses = settings.blurPasses,
+            BlurRadius = settings.blurRadius,
+            ClericWeight = settings.clericWeight,
+            MinPresence = settings.minPresence
         });
 
         RefreshVisibility();
@@ -211,11 +223,18 @@ public class InfluenceOverlayRenderer : MonoBehaviour
             extentCount++;
         }
 
-        // El mapa está escalado ~100x: elevación y patrón se derivan del tamaño real de una cuadra.
-        float zoneExtent = extentCount > 0 ? Mathf.Max(extentSum / extentCount, 0.01f) : 1f;
-        overlayMaterial.SetFloat("_Lift", zoneExtent * liftFactor);
-        overlayMaterial.SetFloat("_PatternScale", patternCellsPerZone / zoneExtent);
-        overlayMaterial.SetFloat("_BreathAmp", zoneExtent * 0.05f);
+        zoneExtent = extentCount > 0 ? Mathf.Max(extentSum / extentCount, 0.01f) : 1f;
+        ApplyVolumeSettings();
+    }
+
+    private void ApplyVolumeSettings()
+    {
+        if (overlayMaterial == null || settings == null) return;
+
+        overlayMaterial.SetFloat("_Lift", zoneExtent * settings.volumeHeight);
+        overlayMaterial.SetFloat("_BreathAmp", zoneExtent * settings.volumeBreath);
+        overlayMaterial.SetFloat("_Intensity", settings.overlayIntensity);
+        overlayMaterial.SetFloat("_PatternScale", settings.patternCellsPerZone / zoneExtent);
     }
 
     private MeshRenderer CreateOverlayFor(DistrictZone zone)
@@ -259,7 +278,6 @@ public class InfluenceOverlayRenderer : MonoBehaviour
         overlays.Clear();
     }
 
-    /// <summary>Siempre devuelve una instancia: el overlay escribe propiedades y no debe ensuciar el asset.</summary>
     private static Material ResolveMaterial()
     {
         Material template = Resources.Load<Material>(MaterialResourcePath);

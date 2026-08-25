@@ -6,7 +6,7 @@ Shader "Custom/InfluenceOverlay"
         // deriva estos valores del tamaño real de una cuadra.
         _Lift("World Lift", Range(0, 200)) = 1.6
         _GlobalAlpha("Global Alpha", Range(0, 1)) = 1
-        _Intensity("Intensity", Range(0, 4)) = 1.35
+        _Intensity("Intensity", Range(0, 4)) = 1.75
         _MinFill("Min Fill", Range(0, 0.5)) = 0.02
         _FillPower("Fill Power", Range(0.2, 4)) = 0.75
 

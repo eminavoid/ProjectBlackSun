@@ -24,7 +24,8 @@ public class AIIntent
     public Seed Seed;
     public string Label;
 
-    public Color Color => Faction.HasValue ? FactionPalette.For(Faction.Value) : FactionPalette.Corruption;
+    public Color Color => Faction.HasValue ? FactionPalette.Glow(Faction.Value) : FactionPalette.Corruption;
+    public Color LabelColor => Faction.HasValue ? FactionPalette.For(Faction.Value) : FactionPalette.CorruptionLabel;
 
     public bool IsValid => Target != null && Target.IsPlayable;
 }
