@@ -3810,6 +3810,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08e5575640adef24985802ee42ed5edd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SeedEventManager
+  resources: {fileID: 11400000, guid: b6189538476b6ff4eba1374d56e45c58, type: 2}
   spawnOptionsWindow: {fileID: 478184976}
   eventOutputWindowPrefab: {fileID: 6986076241118867485, guid: 26ede2eefc574e0458ee06d975b56568, type: 3}
   optionDisplayPrefab: {fileID: 8361523740710303735, guid: 91a741170ced58643a73efea27a88975, type: 3}
