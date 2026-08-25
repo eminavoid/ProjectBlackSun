@@ -1,0 +1,3 @@
+Improve district click feel and camera focus on the map.
+
+Pitch-correct focus, smarter zone picking with a max street-gap range, and keep selection shaders on playable cuadras only (not Plane/map props).

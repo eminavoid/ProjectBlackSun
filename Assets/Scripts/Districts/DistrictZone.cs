@@ -18,6 +18,8 @@ public class DistrictZone : MonoBehaviour
 
     private Seed plantedSeed;
     private bool isSelected;
+    private ZoneInfluenceState influence;
+    private ZoneControlMarker controlMarker;
 
     private MeshRenderer cachedRenderer;
     private Material[] originalSharedMaterials;
@@ -28,14 +30,61 @@ public class DistrictZone : MonoBehaviour
     public bool IsSelected => isSelected;
     public Seed PlantedSeed => plantedSeed;
     public string SectorName => gameObject.name;
+    public ZoneInfluenceState Influence => influence;
+
+    /// <summary>
+    /// True for playable cuadras under a DistrictPart. False for map props like Plane.122.
+    /// </summary>
+    public bool IsPlayable => GetComponentInParent<DistrictPart>() != null;
 
     public void SetDistrict(Districts value)
     {
         district = value;
     }
 
+    /// <summary>Bounds en mundo del sector; cae al transform si el mesh no está disponible.</summary>
+    public Bounds GetWorldBounds()
+    {
+        Collider col = GetComponent<Collider>();
+        if (col != null) return col.bounds;
+
+        Renderer meshRenderer = ResolveRenderer();
+        if (meshRenderer != null) return meshRenderer.bounds;
+
+        return new Bounds(transform.position, Vector3.one);
+    }
+
+    public void EnsureInfluenceState(int cap = ZoneInfluenceState.DefaultCap)
+    {
+        if (influence == null)
+        {
+            influence = new ZoneInfluenceState { Cap = cap };
+        }
+        else
+        {
+            influence.Cap = cap;
+        }
+    }
+
+    public void EnsureControlMarker()
+    {
+        if (controlMarker == null)
+        {
+            controlMarker = GetComponent<ZoneControlMarker>();
+            if (controlMarker == null) controlMarker = gameObject.AddComponent<ZoneControlMarker>();
+        }
+    }
+
+    public void RefreshControlVisual()
+    {
+        if (!IsPlayable) return;
+        EnsureControlMarker();
+        if (influence != null) controlMarker.Refresh(influence);
+    }
+
     public void SetSelected(bool selected)
     {
+        if (selected && !IsPlayable) return;
         if (isSelected == selected) return;
         isSelected = selected;
         RefreshVisual();
@@ -103,7 +152,6 @@ public class DistrictZone : MonoBehaviour
     private bool TryUseMeshCollider(Mesh mesh)
     {
         if (mesh == null) return false;
-        if (!mesh.isReadable) return false;
 
         if (TryGetComponent(out BoxCollider boxCollider))
         {
@@ -116,9 +164,15 @@ public class DistrictZone : MonoBehaviour
             meshCollider = gameObject.AddComponent<MeshCollider>();
         }
 
+        // Imported meshes often work as colliders even when !isReadable.
+        // Boxes overlap neighbors and steal clicks; only fall back if assignment fails.
+        meshCollider.sharedMesh = null;
         meshCollider.sharedMesh = mesh;
         meshCollider.convex = false;
         meshCollider.isTrigger = false;
+        meshCollider.cookingOptions = MeshColliderCookingOptions.CookForFasterSimulation
+            | MeshColliderCookingOptions.EnableMeshCleaning
+            | MeshColliderCookingOptions.WeldColocatedVertices;
 
         return meshCollider.sharedMesh != null;
     }

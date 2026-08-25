@@ -103,7 +103,7 @@ public class TopScreenNotification : MonoBehaviour
         label.alignment = TextAlignmentOptions.Center;
         label.fontSize = 28f;
         label.color = Color.white;
-        label.enableWordWrapping = true;
+        label.textWrappingMode = TextWrappingModes.Normal;
         label.raycastTarget = false;
         label.text = string.Empty;
     }

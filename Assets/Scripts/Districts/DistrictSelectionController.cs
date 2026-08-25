@@ -27,6 +27,16 @@ public class DistrictSelectionController : MonoBehaviour
     [SerializeField] private bool verboseLogs;
     [SerializeField] private float doubleClickMaxDelay = 0.35f;
 
+    [Header("Pick Feel")]
+    [Tooltip("Near-ties along the ray: hits within this distance of the closest zone compete by screen proximity.")]
+    [SerializeField] private float pickDepthSlack = 0.35f;
+    [Tooltip("Small depth penalty so clearly closer hits still win inside the slack window.")]
+    [SerializeField] private float pickDepthTieBreak = 8f;
+
+    [Header("Street / Gap Pick")]
+    [Tooltip("Max world distance outside a cuadra (past its size) to still select it from a street/gap click.")]
+    [SerializeField] private float nearestZoneMaxDistance = 1.25f;
+
     [Header("Map")]
     [SerializeField] private bool autoSetupMapOnStart = true;
     [SerializeField] private string mapObjectName = "mapa por distritos 1";
@@ -81,6 +91,14 @@ public class DistrictSelectionController : MonoBehaviour
         bootstrap.SetupMap();
         DistrictsManager.RefreshZones();
         mapSetupComplete = true;
+
+        InfluenceSystemBootstrap.EnsureInScene();
+        if (!InfluenceManager.IsNull)
+        {
+            InfluenceManager.Get.RefreshZoneCache();
+            InfluenceManager.Get.EnsureZonesInitialized();
+            InfluenceManager.Get.RebuildAdjacency();
+        }
 
         if (verboseLogs)
         {
@@ -137,35 +155,205 @@ public class DistrictSelectionController : MonoBehaviour
         int mask = selectionMask.value == 0 ? Physics.DefaultRaycastLayers : selectionMask.value;
         RaycastHit[] hits = Physics.RaycastAll(ray, Mathf.Infinity, mask, QueryTriggerInteraction.Collide);
 
-        if (hits == null || hits.Length == 0)
+        DistrictZone zone = null;
+        bool hitZone = hits != null
+            && hits.Length > 0
+            && TryPickBestZone(hits, targetCamera, mousePosition, out zone);
+
+        if (!hitZone && !TryPickNearestZoneFromMapPoint(ray, hits, out zone))
         {
-            SetSelectedDistrict(null, null);
+            SetSelectedDistrict(null, null, string.Empty, string.Empty);
             lastClickedZone = null;
+            if (verboseLogs) Debug.Log("DistrictSelectionController: click sin DistrictZone.", this);
             return;
         }
 
-        Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+        string partColorName = ResolvePartColorName(zone);
+        SetSelectedDistrict(zone.District, zone, zone.name, partColorName);
+        RegisterZoneClick(zone);
 
+        if (verboseLogs)
+        {
+            Debug.Log(FormatSelectionLog(zone.District, partColorName, zone.name, colorMapping), this);
+        }
+    }
+
+    /// <summary>
+    /// Each cuadra is its own Curve mesh. On street/gap misses, project the click onto the map
+    /// and select the nearest DistrictZone only if it is within nearestZoneMaxDistance.
+    /// </summary>
+    private bool TryPickNearestZoneFromMapPoint(Ray ray, RaycastHit[] hits, out DistrictZone nearestZone)
+    {
+        nearestZone = null;
+
+        DistrictZone[] zones = FindObjectsByType<DistrictZone>(FindObjectsSortMode.None);
+        if (zones == null || zones.Length == 0) return false;
+        if (!TryResolveMapHitPoint(ray, hits, zones, out Vector3 point)) return false;
+
+        float maxDistance = Mathf.Max(0.01f, nearestZoneMaxDistance);
+        DistrictZone best = null;
+        float bestOutsideDist = float.PositiveInfinity;
+        float bestCenterDist = float.PositiveInfinity;
+
+        for (int i = 0; i < zones.Length; i++)
+        {
+            DistrictZone candidate = zones[i];
+            if (candidate == null || !candidate.isActiveAndEnabled) continue;
+            if (!candidate.IsPlayable) continue;
+
+            Bounds bounds = ResolveZoneBounds(candidate);
+            float centerDist = HorizontalDistance(point, bounds.center);
+            float halfExtent = 0.5f * Mathf.Max(bounds.size.x, bounds.size.z);
+            // How far the click is past the cuadra's footprint (0 = on/inside the block).
+            float outsideDist = Mathf.Max(0f, centerDist - halfExtent);
+            if (outsideDist > maxDistance) continue;
+
+            if (outsideDist < bestOutsideDist - 0.0001f
+                || (Mathf.Abs(outsideDist - bestOutsideDist) <= 0.0001f && centerDist < bestCenterDist))
+            {
+                best = candidate;
+                bestOutsideDist = outsideDist;
+                bestCenterDist = centerDist;
+            }
+        }
+
+        if (best == null) return false;
+
+        nearestZone = best;
+        return true;
+    }
+
+    private static bool TryResolveMapHitPoint(Ray ray, RaycastHit[] hits, DistrictZone[] zones, out Vector3 point)
+    {
+        point = default;
+
+        // Prefer a real collider hit on the map that isn't a district cuadra (e.g. ground plane).
+        if (hits != null && hits.Length > 0)
+        {
+            float bestDist = float.PositiveInfinity;
+            bool found = false;
+            Vector3 bestPoint = default;
+
+            for (int i = 0; i < hits.Length; i++)
+            {
+                if (hits[i].collider == null) continue;
+                if (hits[i].collider.GetComponentInParent<DistrictZone>() != null) continue;
+                if (hits[i].distance >= bestDist) continue;
+
+                bestDist = hits[i].distance;
+                bestPoint = hits[i].point;
+                found = true;
+            }
+
+            if (found)
+            {
+                point = bestPoint;
+                return true;
+            }
+        }
+
+        float groundY = EstimateMapGroundY(zones);
+        Plane ground = new Plane(Vector3.up, new Vector3(0f, groundY, 0f));
+        if (ground.Raycast(ray, out float enter) && enter >= 0f)
+        {
+            point = ray.GetPoint(enter);
+            return true;
+        }
+
+        ground = new Plane(Vector3.up, Vector3.zero);
+        if (ground.Raycast(ray, out enter) && enter >= 0f)
+        {
+            point = ray.GetPoint(enter);
+            return true;
+        }
+
+        return false;
+    }
+
+    private static float EstimateMapGroundY(DistrictZone[] zones)
+    {
+        float sum = 0f;
+        int count = 0;
+        for (int i = 0; i < zones.Length; i++)
+        {
+            if (zones[i] == null) continue;
+            sum += ResolveZoneBounds(zones[i]).min.y;
+            count++;
+            if (count >= 8) break;
+        }
+
+        return count > 0 ? sum / count : 0f;
+    }
+
+    private static float HorizontalDistance(Vector3 a, Vector3 b)
+    {
+        float dx = a.x - b.x;
+        float dz = a.z - b.z;
+        return Mathf.Sqrt(dx * dx + dz * dz);
+    }
+
+    private bool TryPickBestZone(RaycastHit[] hits, Camera cam, Vector2 clickScreen, out DistrictZone bestZone)
+    {
+        bestZone = null;
+
+        float closestDistance = float.PositiveInfinity;
         for (int i = 0; i < hits.Length; i++)
         {
             DistrictZone zone = hits[i].collider.GetComponentInParent<DistrictZone>();
-            if (zone == null) continue;
-
-            string partColorName = ResolvePartColorName(zone);
-            SetSelectedDistrict(zone.District, zone, zone.name, partColorName);
-            RegisterZoneClick(zone);
-
-            if (verboseLogs)
-            {
-                Debug.Log(FormatSelectionLog(zone.District, partColorName, zone.name, colorMapping), this);
-            }
-
-            return;
+            if (zone == null || !zone.IsPlayable) continue;
+            if (hits[i].distance < closestDistance) closestDistance = hits[i].distance;
         }
 
-        SetSelectedDistrict(null, null, string.Empty, string.Empty);
-        lastClickedZone = null;
-        if (verboseLogs) Debug.Log("DistrictSelectionController: click sin DistrictZone.", this);
+        if (float.IsPositiveInfinity(closestDistance)) return false;
+
+        float bestScore = float.PositiveInfinity;
+        float depthLimit = closestDistance + Mathf.Max(0f, pickDepthSlack);
+
+        for (int i = 0; i < hits.Length; i++)
+        {
+            RaycastHit hit = hits[i];
+            if (hit.distance > depthLimit) continue;
+
+            DistrictZone zone = hit.collider.GetComponentInParent<DistrictZone>();
+            if (zone == null || !zone.IsPlayable) continue;
+
+            float score = ScoreZoneHit(zone, hit, cam, clickScreen);
+            if (score >= bestScore) continue;
+
+            bestScore = score;
+            bestZone = zone;
+        }
+
+        return bestZone != null;
+    }
+
+    private float ScoreZoneHit(DistrictZone zone, RaycastHit hit, Camera cam, Vector2 clickScreen)
+    {
+        // Screen proximity breaks near-ties (angled cam / overlapping edges).
+        // Depth still matters so a clearly closer district keeps the click.
+        Bounds bounds = ResolveZoneBounds(zone);
+        Vector3 screenCenter = cam.WorldToScreenPoint(bounds.center);
+        float screenDist = Vector2.Distance(clickScreen, new Vector2(screenCenter.x, screenCenter.y));
+
+        float depthPenalty = (hit.distance) * Mathf.Max(0f, pickDepthTieBreak);
+        float colliderBias = hit.collider is MeshCollider ? 0f : 80f;
+        float facing = Mathf.Clamp01(Vector3.Dot(hit.normal.normalized, -cam.transform.forward));
+        float facingBias = (1f - facing) * 30f;
+
+        return screenDist + depthPenalty + colliderBias + facingBias;
+    }
+
+    private static Bounds ResolveZoneBounds(DistrictZone zone)
+    {
+        Renderer renderer = zone.GetComponent<Renderer>();
+        if (renderer == null) renderer = zone.GetComponentInChildren<Renderer>();
+        if (renderer != null) return renderer.bounds;
+
+        Collider col = zone.GetComponent<Collider>();
+        if (col == null) col = zone.GetComponentInChildren<Collider>();
+        if (col != null) return col.bounds;
+
+        return new Bounds(zone.transform.position, Vector3.one);
     }
 
     private void RegisterZoneClick(DistrictZone zone)
@@ -201,6 +389,8 @@ public class DistrictSelectionController : MonoBehaviour
 
     public static void SetSelectedDistrict(Districts? district, DistrictZone zone, string hitObjectName, string partColorName)
     {
+        if (zone != null && !zone.IsPlayable) zone = null;
+
         DistrictZone previousZone = SelectedZone;
         if (previousZone != null && previousZone != zone)
         {
@@ -318,6 +508,9 @@ public class DistrictSelectionController : MonoBehaviour
 
     private bool IsPointerOverUi(Vector2 screenPosition)
     {
+        // OnGUI panels (influence debug / cleric assign) are not EventSystem graphics.
+        if (OnGuiClickBlocker.IsPointerOverBlockedArea(screenPosition)) return true;
+
         if (EventSystem.current == null) return false;
 
         PointerEventData pointerData = new PointerEventData(EventSystem.current) { position = screenPosition };

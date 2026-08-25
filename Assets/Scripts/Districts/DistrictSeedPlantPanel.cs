@@ -321,8 +321,18 @@ public class DistrictSeedPlantPanel : MonoBehaviour
 
         content.anchorMin = new Vector2(0f, 1f);
         content.anchorMax = new Vector2(1f, 1f);
-        content.pivot = new Vector2(0f, 1f);
+        content.pivot = new Vector2(0.5f, 1f);
         content.anchoredPosition = Vector2.zero;
+
+        if (content.TryGetComponent(out GridLayoutGroup _))
+        {
+            if (content.TryGetComponent(out ContentSizeFitter gridFitter))
+            {
+                Destroy(gridFitter);
+            }
+
+            return;
+        }
 
         if (!content.TryGetComponent(out ContentSizeFitter fitter))
         {
@@ -346,8 +356,34 @@ public class DistrictSeedPlantPanel : MonoBehaviour
     {
         if (seedListContent is not RectTransform content) return;
 
+        if (content.TryGetComponent(out GridLayoutGroup grid))
+        {
+            FitGridContentHeight(content, grid);
+            return;
+        }
+
         Canvas.ForceUpdateCanvases();
         LayoutRebuilder.ForceRebuildLayoutImmediate(content);
+    }
+
+    private static void FitGridContentHeight(RectTransform content, GridLayoutGroup grid)
+    {
+        int visible = 0;
+        for (int i = 0; i < content.childCount; i++)
+        {
+            if (content.GetChild(i).gameObject.activeSelf) visible++;
+        }
+
+        int columns = grid.constraint == GridLayoutGroup.Constraint.FixedColumnCount
+            ? Mathf.Max(1, grid.constraintCount)
+            : Mathf.Max(1, visible);
+        int rows = visible <= 0 ? 1 : Mathf.CeilToInt(visible / (float)columns);
+
+        float height = grid.padding.top + grid.padding.bottom
+            + rows * grid.cellSize.y
+            + Mathf.Max(0, rows - 1) * grid.spacing.y;
+
+        content.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, height);
     }
 
     private void ResetScrollToTop()

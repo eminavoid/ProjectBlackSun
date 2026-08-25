@@ -133,7 +133,7 @@ public class DistrictsManager : Singleton<DistrictsManager>
 
         for (int i = 0; i < zones.Length; i++)
         {
-            if (zones[i] == null) continue;
+            if (zones[i] == null || !zones[i].IsPlayable) continue;
             if (!districts.TryGetValue(zones[i].District, out DistrictData data) || data == null) continue;
             data.AddZone(zones[i]);
         }

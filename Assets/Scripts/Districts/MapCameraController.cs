@@ -35,6 +35,8 @@ public class MapCameraController : MonoBehaviour
     [Header("Focus")]
     [SerializeField] private float focusPadding = 1.35f;
     [SerializeField] private bool adjustHeightOnFocus = true;
+    [Tooltip("Extra ground-plane nudge after pitch compensation (e.g. Z negativo si sigue un poco alto).")]
+    [SerializeField] private Vector3 focusOffset = Vector3.zero;
 
     private Camera cam;
     private Vector3 targetPosition;
@@ -45,6 +47,8 @@ public class MapCameraController : MonoBehaviour
     private readonly List<RaycastResult> uiRaycastResults = new List<RaycastResult>();
 
     public static MapCameraController Instance { get; private set; }
+
+    public float CurrentHeight => transform.position.y;
 
     private void Awake()
     {
@@ -91,7 +95,7 @@ public class MapCameraController : MonoBehaviour
         if (zone == null) return;
 
         Bounds bounds = ResolveZoneBounds(zone);
-        Vector3 center = bounds.center;
+        Vector3 lookAt = bounds.center + focusOffset;
 
         float height = targetPosition.y;
         if (adjustHeightOnFocus && cam != null)
@@ -102,7 +106,20 @@ public class MapCameraController : MonoBehaviour
             height = Mathf.Clamp(height, minHeight, maxHeight);
         }
 
-        targetPosition = new Vector3(center.x, height, center.z);
+        // Angled top-down: place the camera so the view ray hits lookAt, not directly above it.
+        targetPosition = ResolveFocusCameraPosition(lookAt, height);
+    }
+
+    private Vector3 ResolveFocusCameraPosition(Vector3 lookAt, float height)
+    {
+        Vector3 forward = transform.forward;
+        if (Mathf.Abs(forward.y) < 0.0001f)
+            return new Vector3(lookAt.x, height, lookAt.z);
+
+        float t = (lookAt.y - height) / forward.y;
+        Vector3 position = lookAt - forward * t;
+        position.y = height;
+        return position;
     }
 
     public static MapCameraController EnsureOnCamera(Camera camera)

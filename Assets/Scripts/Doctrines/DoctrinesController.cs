@@ -8,6 +8,8 @@ public class DoctrinesController : MonoBehaviour
 {
     [SerializeField] private PlayerStats stats;
 
+    public PlayerStats Stats => stats;
+
     [Header("Windows")]
 
     [SerializeField] private UIWindow window;

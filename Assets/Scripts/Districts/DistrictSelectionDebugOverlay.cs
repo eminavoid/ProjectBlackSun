@@ -88,7 +88,28 @@ public class DistrictSelectionDebugOverlay : MonoBehaviour
             ? colorMapping.FormatDistrictWithColors(district.Value)
             : district.Value.ToString();
 
-        displayText = $"Distrito: {districtLabel}\nColor/carpeta: {lastPartColorName}\nZona: {lastHitObjectName}\n{BuildSeedStatusLine(district.Value)}";
+        displayText =
+            $"Distrito: {districtLabel}\nColor/carpeta: {lastPartColorName}\nZona: {lastHitObjectName}\n" +
+            $"{BuildSeedStatusLine(district.Value)}\n{BuildInfluenceStatusLine()}";
+    }
+
+    private static string BuildInfluenceStatusLine()
+    {
+        DistrictZone zone = DistrictSelectionController.SelectedZone;
+        if (zone == null || !zone.IsPlayable)
+        {
+            return "Influencia: (sin zona)";
+        }
+
+        zone.EnsureInfluenceState();
+        ZoneInfluenceState state = zone.Influence;
+        string control = state.Status == ZoneControlStatus.Controlled && state.Controller.HasValue
+            ? $"Controlled {FactionIdUtil.ShortLabel(state.Controller.Value)}"
+            : "Contested";
+
+        return
+            $"Influencia: {control} {state.TotalInfluence}/{state.Cap} | " +
+            $"P c{state.GetClerics(FactionId.Player)}/s{state.GetShare(FactionId.Player)}";
     }
 
     private static string BuildSeedStatusLine(Districts district)
@@ -143,7 +164,10 @@ public class DistrictSelectionDebugOverlay : MonoBehaviour
         };
         style.normal.textColor = Color.white;
 
-        GUI.Box(new Rect(12f, 12f, 480f, 118f), displayText, style);
+        // Inset from left sidebar UI; keep readable without covering doctrines rail.
+        Rect rect = new Rect(146f, 12f, 420f, 150f);
+        OnGuiClickBlocker.RegisterGuiRect(rect);
+        GUI.Box(rect, displayText, style);
     }
 
     [ContextMenu("Log District Setup Report")]

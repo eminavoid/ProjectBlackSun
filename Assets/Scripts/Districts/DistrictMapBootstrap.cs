@@ -55,19 +55,36 @@ public class DistrictMapBootstrap : MonoBehaviour
             if (meshFilter == null || meshFilter.sharedMesh == null) continue;
 
             GameObject target = meshFilter.gameObject;
-            DistrictZone zone = target.GetComponent<DistrictZone>();
-            if (zone == null) zone = target.AddComponent<DistrictZone>();
+            DistrictZone existingZone = target.GetComponent<DistrictZone>();
 
-            zone.ResolveDistrictFromHierarchy(colorMapping);
-
-            DistrictPart parentPart = target.GetComponentInParent<DistrictPart>();
-            if (parentPart == null && colorMapping != null &&
-                !colorMapping.TryGetDistrictFromZoneName(target.name, out _))
+            // Only cuadras under a color DistrictPart (or legacy color-named meshes) are playable.
+            // Skip map root meshes like Plane.122 / Cylinder — they must not get selection shaders.
+            if (!IsPlayableZoneObject(target, colorMapping))
             {
+                RemoveDistrictZone(existingZone);
                 continue;
             }
 
+            DistrictZone zone = existingZone;
+            if (zone == null) zone = target.AddComponent<DistrictZone>();
+
+            zone.ResolveDistrictFromHierarchy(colorMapping);
             zone.EnsureCollider();
         }
+    }
+
+    public static bool IsPlayableZoneObject(GameObject target, DistrictColorMapping mapping)
+    {
+        if (target == null) return false;
+        if (target.GetComponentInParent<DistrictPart>() != null) return true;
+        return mapping != null && mapping.TryGetDistrictFromZoneName(target.name, out _);
+    }
+
+    private static void RemoveDistrictZone(DistrictZone zone)
+    {
+        if (zone == null) return;
+
+        if (Application.isPlaying) Destroy(zone);
+        else DestroyImmediate(zone);
     }
 }
