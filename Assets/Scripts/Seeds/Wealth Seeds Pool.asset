@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Wealth Seeds Pool
   m_EditorClassIdentifier: Assembly-CSharp::SeedsPool
   EvilSeeds:
-  - {fileID: 11400000, guid: 2af08cea8f7d008498e6261c99df4715, type: 2}
+  - {fileID: 11400000, guid: 4931a8fa28e58ab4aacdcca6d4a88a32, type: 2}

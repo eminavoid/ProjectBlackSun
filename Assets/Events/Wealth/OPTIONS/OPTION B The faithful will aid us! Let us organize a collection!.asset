@@ -1,0 +1,97 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: OPTION B The faithful will aid us! Let us organize a collection!
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
+  title: The faithful will aid us! Let us organize a collection!
+  description: 'COST: 100 Zeal'
+  icon: {fileID: 0}
+  modules:
+  - rid: 5841915870972215299
+  - rid: 5841915870972215300
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 5841915870972215299
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        required: 100
+    - rid: 5841915870972215300
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 10
+          module:
+          - rid: 5841915870972215301
+          statUsed: 0
+          output: 'The collection is a resounding success! The faithful flock to
+            our aid and fill our coffers with tribute! [Gained 60 Wealth] '
+        - weight: 60
+          module:
+          - rid: 5841915870972215302
+          statUsed: 0
+          output: 'The faithful do their part! Though they possess little, our flock
+            recognizes the crisis we are facing. May the Beholder bless them! [Gained
+            30 Wealth] '
+        - weight: 20
+          module:
+          - rid: 5841915870972215303
+          statUsed: 0
+          output: 'Miserly wretches! Our "faithful" offer nothing more than paltry
+            alms. At this rate, we will never recover. [Gained 10 Wealth]'
+        - weight: 10
+          module:
+          - rid: 5841915870972215304
+          - rid: 5841915870972215305
+          statUsed: 0
+          output: 'A rival cult seized upon our plea for aid to aggrandize themselves,
+            even donating to our cause! We collected very little, and worse still,
+            they lured away our followers! Curse them!
+
+            [Gained 10 Wealth,
+            Lost 30 Flock]
+
+'
+    - rid: 5841915870972215301
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        minAmount: 60
+        maxAmount: 60
+    - rid: 5841915870972215302
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        minAmount: 30
+        maxAmount: 30
+    - rid: 5841915870972215303
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        minAmount: 10
+        maxAmount: 10
+    - rid: 5841915870972215304
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        minAmount: 10
+        maxAmount: 10
+    - rid: 5841915870972215305
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: -30
+        maxAmount: -30

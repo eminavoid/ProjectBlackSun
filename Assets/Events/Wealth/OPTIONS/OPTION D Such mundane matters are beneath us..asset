@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: OPTION D Such mundane matters are beneath us.
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
+  title: Such mundane matters are beneath us.
+  description: 'COST: No change'
+  icon: {fileID: 0}
+  modules:
+  - rid: 5841915870972215311
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 5841915870972215311
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 100
+          module:
+          - rid: 5841915870972215312
+          statUsed: 0
+          output: "This crisis shall pass, and from its ashes will rise those who
+            are truly devout\u2014leaving behind all who are swayed only by the glint
+            of coin!\r\n[Lost 50 Flock]\r\n"
+    - rid: 5841915870972215312
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: -50
+        maxAmount: -50

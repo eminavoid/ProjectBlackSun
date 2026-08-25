@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
+  m_Name: Empty Coffers
+  m_EditorClassIdentifier: Assembly-CSharp::Seed
+  title: Empty Coffers
+  description: 'My Pontiff! Dire news! Our coffers! The clerics report they have
+    been drained completely bare! How could we have allowed this? Surely foul play
+    is afoot! Or were we truly so reckless with our treasury? One thing is certain:
+    we must resolve this crisis before it is too late.'
+  icon: {fileID: 0}
+  ticks: 1
+  eventType: 0
+  difficulty: 1
+  <Options>k__BackingField:
+  - {fileID: 11400000, guid: 39d723c3e43f4c046aba53299d2ef0d4, type: 2}
+  - {fileID: 11400000, guid: db36f10f00e06cd4b92839e8705a691b, type: 2}
+  - {fileID: 11400000, guid: 773e95d6b355a9d448a05d65ed99bfcf, type: 2}
+  - {fileID: 11400000, guid: 3b7e8a53db6233943bb1ed8cceea01d2, type: 2}
