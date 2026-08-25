@@ -10,6 +10,8 @@ public class InfluenceSystemBootstrap : MonoBehaviour
     [SerializeField] private PlayerStats playerStats;
     [SerializeField] private bool ensureAiController = true;
     [SerializeField] private bool ensureDebugPanel = true;
+    [SerializeField] private bool ensureInfluenceOverlay = true;
+    [SerializeField] private bool ensureIntentOverlay = true;
 
     public static void EnsureInScene()
     {
@@ -50,6 +52,17 @@ public class InfluenceSystemBootstrap : MonoBehaviour
         if (FindAnyObjectByType<DistrictClericAssignPanel>() == null)
         {
             gameObject.AddComponent<DistrictClericAssignPanel>();
+        }
+
+        if (ensureInfluenceOverlay && FindAnyObjectByType<InfluenceOverlayRenderer>() == null)
+        {
+            gameObject.AddComponent<InfluenceOverlayRenderer>();
+        }
+
+        if (ensureIntentOverlay)
+        {
+            if (FindAnyObjectByType<AIIntentBoard>() == null) gameObject.AddComponent<AIIntentBoard>();
+            if (FindAnyObjectByType<AIIntentOverlay>() == null) gameObject.AddComponent<AIIntentOverlay>();
         }
 
         manager.RefreshZoneCache();

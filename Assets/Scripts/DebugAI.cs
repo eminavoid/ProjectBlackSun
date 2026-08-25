@@ -1,6 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Antagonista global que planta seeds. Decide en la fase de plan y planta al commitear,
+/// para que el jugador vea venir la plantación (AIIntentBoard dispara ambas fases).
+/// </summary>
 [DefaultExecutionOrder(50)]
 public class DebugAI : MonoBehaviour
 {
@@ -21,17 +25,10 @@ public class DebugAI : MonoBehaviour
 
     private void Start()
     {
-        GameTime.OnTurnStarted += OnTurnStarted;
-
         if (showStartupReport)
         {
             LogStartupReport();
         }
-    }
-
-    private void OnDestroy()
-    {
-        GameTime.OnTurnStarted -= OnTurnStarted;
     }
 
     private void LogStartupReport()
@@ -67,7 +64,8 @@ public class DebugAI : MonoBehaviour
         }
     }
 
-    private void OnTurnStarted()
+    /// <summary>Tira el dado y elige zona + seed sin plantar todavía.</summary>
+    public void PlanIntents(List<AIIntent> intents)
     {
         if (inCooldown)
         {
@@ -84,17 +82,6 @@ public class DebugAI : MonoBehaviour
         bool rollSuccess = spawnTickChanceRatio > Random.Range(0f, 1f - Mathf.Epsilon);
         if (!rollSuccess) return;
 
-        if (!TryPlantRandomSeed())
-        {
-            return;
-        }
-
-        inCooldown = true;
-        tickTimer = 0;
-    }
-
-    private bool TryPlantRandomSeed()
-    {
         if (!DistrictsManager.TryGetRandomFreeZoneAnyDistrict(out DistrictZone zone) || zone == null)
         {
             if (!warnedNoZones)
@@ -103,18 +90,36 @@ public class DebugAI : MonoBehaviour
                 Debug.LogWarning("DebugAI: no hay sectores libres para plantar.", this);
             }
 
-            return false;
+            return;
         }
 
         Seed seed = GetRandomAllowedSeed(zone.District);
-        if (seed == null) return false;
+        if (seed == null) return;
+        if (!seed.CanPlantInDistrict(zone.District)) return;
 
-        if (!seed.CanPlantInDistrict(zone.District))
+        intents.Add(new AIIntent
         {
-            return false;
-        }
+            Kind = AIIntentKind.PlantSeed,
+            Target = zone,
+            Seed = seed,
+            Amount = 1,
+            Label = seed.Title
+        });
 
-        if (!zone.AddSeed(seed))
+        // El cooldown arranca al decidir: la tirada del turno ya se consumió.
+        inCooldown = true;
+        tickTimer = 0;
+    }
+
+    public bool ExecuteIntent(AIIntent intent)
+    {
+        if (intent == null || intent.Kind != AIIntentKind.PlantSeed) return false;
+
+        DistrictZone zone = intent.Target;
+        Seed seed = intent.Seed;
+        if (zone == null || seed == null) return false;
+
+        if (zone.IsOccupied)
         {
             if (showPlantLogs)
             {
@@ -123,6 +128,8 @@ public class DebugAI : MonoBehaviour
 
             return false;
         }
+
+        if (!zone.AddSeed(seed)) return false;
 
         if (showPlantLogs)
         {

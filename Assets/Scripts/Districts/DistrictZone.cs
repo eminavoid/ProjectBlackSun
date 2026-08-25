@@ -42,6 +42,18 @@ public class DistrictZone : MonoBehaviour
         district = value;
     }
 
+    /// <summary>Bounds en mundo del sector; cae al transform si el mesh no está disponible.</summary>
+    public Bounds GetWorldBounds()
+    {
+        Collider col = GetComponent<Collider>();
+        if (col != null) return col.bounds;
+
+        Renderer meshRenderer = ResolveRenderer();
+        if (meshRenderer != null) return meshRenderer.bounds;
+
+        return new Bounds(transform.position, Vector3.one);
+    }
+
     public void EnsureInfluenceState(int cap = ZoneInfluenceState.DefaultCap)
     {
         if (influence == null)

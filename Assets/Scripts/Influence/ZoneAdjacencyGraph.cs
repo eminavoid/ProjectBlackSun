@@ -35,13 +35,13 @@ public class ZoneAdjacencyGraph
         for (int i = 0; i < keys.Count; i++)
         {
             DistrictZone a = keys[i];
-            Bounds boundsA = GetWorldBounds(a);
+            Bounds boundsA = a.GetWorldBounds();
             boundsA.Expand(contactPadding);
 
             for (int j = i + 1; j < keys.Count; j++)
             {
                 DistrictZone b = keys[j];
-                Bounds boundsB = GetWorldBounds(b);
+                Bounds boundsB = b.GetWorldBounds();
                 boundsB.Expand(contactPadding);
 
                 if (!boundsA.Intersects(boundsB)) continue;
@@ -50,16 +50,5 @@ public class ZoneAdjacencyGraph
                 neighbors[b].Add(a);
             }
         }
-    }
-
-    private static Bounds GetWorldBounds(DistrictZone zone)
-    {
-        Collider col = zone.GetComponent<Collider>();
-        if (col != null) return col.bounds;
-
-        Renderer renderer = zone.GetComponentInChildren<Renderer>();
-        if (renderer != null) return renderer.bounds;
-
-        return new Bounds(zone.transform.position, Vector3.one);
     }
 }

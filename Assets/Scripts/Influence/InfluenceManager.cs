@@ -196,6 +196,7 @@ public class InfluenceManager : Singleton<InfluenceManager>
         }
 
         zone.RefreshControlVisual();
+        OnControlChanged?.Invoke();
         return true;
     }
 

@@ -36,7 +36,24 @@ public class ZoneInfluenceState
         }
     }
 
+    public int TotalClerics
+    {
+        get
+        {
+            int total = 0;
+            foreach (KeyValuePair<FactionId, int> pair in clerics)
+            {
+                total += Mathf.Max(0, pair.Value);
+            }
+
+            return total;
+        }
+    }
+
     public bool IsAtCap => TotalInfluence >= Cap;
+
+    /// <summary>Alguna secta tiene influencia o clérigos en la zona.</summary>
+    public bool HasAnyPresence => TotalInfluence > 0 || TotalClerics > 0;
 
     public int GetShare(FactionId faction)
     {
