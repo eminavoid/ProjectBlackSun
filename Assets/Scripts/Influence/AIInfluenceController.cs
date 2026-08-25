@@ -211,6 +211,43 @@ public class AIInfluenceController : MonoBehaviour
         return best;
     }
 
+    /// <summary>Secta que “dueña” una plantación: la que prefiere el distrito, o la de más presencia.</summary>
+    public FactionId PickPlanter(DistrictZone zone)
+    {
+        EnsureInitialized();
+
+        AIInfluenceProfile preferred = null;
+        AIInfluenceProfile present = null;
+        int preferredPresence = int.MinValue;
+        int presentScore = int.MinValue;
+
+        for (int i = 0; i < rivalProfiles.Count; i++)
+        {
+            AIInfluenceProfile profile = rivalProfiles[i];
+            if (profile == null) continue;
+
+            int presence = zone != null && zone.Influence != null
+                ? zone.Influence.GetClerics(profile.Faction) + zone.Influence.GetShare(profile.Faction)
+                : 0;
+
+            if (presence > presentScore)
+            {
+                presentScore = presence;
+                present = profile;
+            }
+
+            if (zone != null && profile.Prefers(zone.District) && presence >= preferredPresence)
+            {
+                preferredPresence = presence;
+                preferred = profile;
+            }
+        }
+
+        if (preferred != null) return preferred.Faction;
+        if (present != null) return present.Faction;
+        return FactionId.Rival1;
+    }
+
     private AIInfluenceProfile FindProfile(FactionId faction)
     {
         for (int i = 0; i < rivalProfiles.Count; i++)

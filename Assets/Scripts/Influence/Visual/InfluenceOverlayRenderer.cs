@@ -235,6 +235,9 @@ public class InfluenceOverlayRenderer : MonoBehaviour
         overlayMaterial.SetFloat("_BreathAmp", zoneExtent * settings.volumeBreath);
         overlayMaterial.SetFloat("_Intensity", settings.overlayIntensity);
         overlayMaterial.SetFloat("_PatternScale", settings.patternCellsPerZone / zoneExtent);
+        overlayMaterial.SetFloat("_SmokeStrength", settings.smokeStrength);
+        overlayMaterial.SetFloat("_SmokeScale", settings.smokeCellsPerZone / zoneExtent);
+        overlayMaterial.SetFloat("_SmokeSpeed", settings.smokeSpeed);
     }
 
     private MeshRenderer CreateOverlayFor(DistrictZone zone)

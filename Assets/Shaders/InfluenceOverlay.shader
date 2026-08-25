@@ -7,8 +7,8 @@ Shader "Custom/InfluenceOverlay"
         _Lift("World Lift", Range(0, 200)) = 1.6
         _GlobalAlpha("Global Alpha", Range(0, 1)) = 1
         _Intensity("Intensity", Range(0, 4)) = 1.75
-        _MinFill("Min Fill", Range(0, 0.5)) = 0.02
-        _FillPower("Fill Power", Range(0.2, 4)) = 0.75
+        _MinFill("Min Fill", Range(0, 0.5)) = 0.01
+        _FillPower("Fill Power", Range(0.2, 4)) = 0.4
 
         [HDR] _RimColor("Rim Color", Color) = (1.1, 1.1, 1.4, 1)
         _RimPower("Rim Power", Range(0.4, 8)) = 1.8
@@ -22,6 +22,9 @@ Shader "Custom/InfluenceOverlay"
         _PatternStrength("Pattern Strength", Range(0, 1)) = 0.45
         _FlowSpeed("Flow Speed", Range(0, 4)) = 0.35
         _ScanSpeed("Scan Speed", Range(0, 6)) = 0.9
+        _SmokeStrength("Smoke Strength", Range(0, 1)) = 0.72
+        _SmokeScale("Smoke Scale", Range(0.001, 20)) = 0.12
+        _SmokeSpeed("Smoke Speed", Range(0, 2)) = 0.55
         _ContestedStrength("Contested Strength", Range(0, 2)) = 0.9
         _BreathAmp("Breath Amplitude", Range(0, 20)) = 0.25
         _BreathSpeed("Breath Speed", Range(0, 8)) = 1.4
@@ -75,6 +78,9 @@ Shader "Custom/InfluenceOverlay"
                 half _PatternStrength;
                 half _FlowSpeed;
                 half _ScanSpeed;
+                half _SmokeStrength;
+                half _SmokeScale;
+                half _SmokeSpeed;
                 half _ContestedStrength;
                 half _BreathAmp;
                 half _BreathSpeed;
@@ -123,7 +129,73 @@ Shader "Custom/InfluenceOverlay"
 
             float Hash(float2 p)
             {
-                return frac(sin(dot(p, float2(41.13, 289.7))) * 43758.5453);
+                float3 p3 = frac(float3(p.xyx) * 0.1031);
+                p3 += dot(p3, p3.yzx + 33.33);
+                return frac((p3.x + p3.y) * p3.z);
+            }
+
+            float ValueNoise(float2 p)
+            {
+                float2 i = floor(p);
+                float2 f = frac(p);
+                f = f * f * f * (f * (f * 6.0 - 15.0) + 10.0);
+                float a = Hash(i);
+                float b = Hash(i + float2(1.0, 0.0));
+                float c = Hash(i + float2(0.0, 1.0));
+                float d = Hash(i + float2(1.0, 1.0));
+                return lerp(lerp(a, b, f.x), lerp(c, d, f.x), f.y);
+            }
+
+            float Fbm(float2 p)
+            {
+                float n = ValueNoise(p);
+                n += ValueNoise(p * 2.03 + 17.2) * 0.5;
+                n += ValueNoise(p * 4.07 - 8.4) * 0.25;
+                return n * 0.5714;
+            }
+
+            float SmokeField(float2 worldXZ, float time)
+            {
+                float scale = max(_SmokeScale, 0.0001);
+                float speed = max(_SmokeSpeed, 0.0);
+                float2 q = worldXZ * scale;
+
+                // Warp de dominio: las nubes se deforman en vez de deslizar rígidas.
+                float2 warp = float2(
+                    ValueNoise(q * 0.85 + float2(time * speed * 0.08, time * speed * 0.05)),
+                    ValueNoise(q * 0.85 + float2(31.2, 17.8) - float2(time * speed * 0.06, time * speed * 0.09)));
+                warp = (warp * 2.0 - 1.0) * 0.9;
+
+                float2 r = q + warp;
+
+                float clouds = Fbm(r + float2(time * speed * 0.11, -time * speed * 0.06));
+                float layer2 = Fbm(r * 1.35 - float2(time * speed * 0.07, time * speed * 0.1) + 9.1);
+                float ridges = 1.0 - abs(layer2 * 2.0 - 1.0);
+
+                float pulse = 0.9 + 0.1 * sin(time * speed * 1.35 + clouds * 6.2831);
+                return saturate((clouds * 0.58 + ridges * 0.42) * pulse);
+            }
+
+            float GrainField(float2 worldXZ, float time)
+            {
+                float scale = max(_SmokeScale, 0.0001);
+                float speed = max(_SmokeSpeed, 0.0);
+                float2 p = worldXZ * scale * 6.5;
+
+                float n1 = ValueNoise(p + float2(time * speed * 0.42, -time * speed * 0.31));
+                float n2 = ValueNoise(p * 2.25 + float2(-time * speed * 0.58, time * speed * 0.47));
+
+                float sparkle = sin((n1 * 10.0 + n2 * 7.0 + time * speed * 2.8) * 6.2831853) * 0.5 + 0.5;
+                sparkle = sparkle * sparkle * sparkle;
+                return saturate(n1 * 0.48 + n2 * 0.32 + sparkle * 0.2);
+            }
+
+            // Evita el blowout a blanco sin re-saturar colores apagados (el azul del jugador).
+            half3 FactionChroma(half3 c)
+            {
+                c = max(c, 0.0h);
+                half peak = max(c.r, max(c.g, c.b));
+                return peak > 1.0h ? c / peak : c;
             }
 
             Varyings vert(Attributes input)
@@ -150,8 +222,9 @@ Shader "Custom/InfluenceOverlay"
                 float2 uv = FieldUV(input.positionWS.xz);
                 half4 field = SampleField(uv);
 
+                half coverage = smoothstep(_MinFill, 0.12h, saturate(field.a));
                 half fill = pow(saturate(field.a), _FillPower);
-                clip(fill - _MinFill);
+                clip(coverage - 0.001h);
 
                 half4 aux = SAMPLE_TEXTURE2D(_InfluenceFieldAux, sampler_InfluenceFieldAux, uv);
                 half dominance = saturate(aux.r);
@@ -172,29 +245,48 @@ Shader "Custom/InfluenceOverlay"
 
                 float time = _Time.y;
                 float2 worldPattern = input.positionWS.xz * _PatternScale;
-                worldPattern += float2(time * _FlowSpeed * 0.35, time * _FlowSpeed * 0.2);
+                float2 swirl = float2(
+                    sin(time * _FlowSpeed * 0.35 + input.positionWS.z * _PatternScale * 0.55),
+                    cos(time * _FlowSpeed * 0.28 + input.positionWS.x * _PatternScale * 0.55)) * 0.18;
+                worldPattern += float2(time * _FlowSpeed * 0.12, -time * _FlowSpeed * 0.08) + swirl;
 
                 half hex = HexCells(worldPattern) * _PatternStrength;
 
-                // Barrido diagonal, también en mundo, para que cruce las cuadras sin cortes.
                 float scanPhase = frac((input.positionWS.x + input.positionWS.z) * _PatternScale * 0.25 - time * _ScanSpeed * 0.12);
                 half scan = pow(saturate(1.0h - abs(scanPhase - 0.5h) * 2.0h), 6.0h);
 
-                // Disputa: interferencia granulada que rompe el color uniforme.
-                half noise = Hash(floor(worldPattern * 6.0) + floor(time * 9.0));
-                half interference = contested * noise * 0.6h;
+                half smoke = SmokeField(input.positionWS.xz, time);
+                half grain = GrainField(input.positionWS.xz, time);
+
+                half interference = contested * grain * 0.55h;
 
                 float3 normalWS = normalize(input.normalWS);
                 float3 viewDirWS = normalize(input.viewDirWS);
                 half fresnel = pow(1.0h - saturate(abs(dot(normalWS, viewDirWS))), _RimPower);
 
-                half3 baseRgb = field.rgb * _Intensity * (0.55h + hex * 0.9h + scan * 0.7h);
-                baseRgb += _FrontierColor.rgb * frontier;
-                baseRgb += _RimColor.rgb * fresnel * _RimStrength * fill;
-                baseRgb += field.rgb * interference * 1.4h;
+                half3 chroma = FactionChroma(field.rgb);
+                half energy = saturate(_Intensity * 0.25h);
+                half pattern = 0.62h + hex * 0.2h + scan * 0.12h + fill * 0.08h;
 
-                half alpha = fill * (0.42h + hex * 0.45h + scan * 0.35h + frontier * 0.5h + fresnel * 0.55h);
-                alpha = saturate(alpha + interference * 0.3h) * _GlobalAlpha;
+                // El ruido texturiza; el piso alto conserva el fluor.
+                half smokeMix = saturate(_SmokeStrength);
+                half textureBreak = smoke * 0.62h + grain * 0.38h;
+                half fluor = lerp(0.72h, 1.0h, saturate(energy * pattern));
+                half value = fluor * lerp(1.0h, 0.62h + textureBreak * 0.5h, smokeMix);
+
+                half3 baseRgb = chroma * value;
+                baseRgb += chroma * frontier * 0.28h;
+                baseRgb += chroma * fresnel * _RimStrength * 0.22h;
+                baseRgb += chroma * interference * 0.45h;
+                baseRgb += chroma * grain * smokeMix * 0.16h;
+
+                half peak = max(baseRgb.r, max(baseRgb.g, baseRgb.b));
+                if (peak > 1.0h) baseRgb /= peak;
+
+                half alpha = coverage * lerp(0.52h, 0.88h, energy)
+                    * (0.8h + hex * 0.08h + scan * 0.05h + frontier * 0.08h + fresnel * 0.1h);
+                alpha *= lerp(1.0h, 0.42h + smoke * 0.52h + grain * 0.18h, smokeMix);
+                alpha = saturate(alpha + interference * 0.2h) * _GlobalAlpha;
 
                 return half4(baseRgb, alpha);
             }

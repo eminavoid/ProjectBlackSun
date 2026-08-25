@@ -40,11 +40,11 @@ public static class FactionIdUtil
     {
         switch (id)
         {
-            case FactionId.Player: return "Player";
-            case FactionId.Rival1: return "Rival 1";
-            case FactionId.Rival2: return "Rival 2";
-            case FactionId.Rival3: return "Rival 3";
-            case FactionId.Rival4: return "Rival 4";
+            case FactionId.Player: return "Jugador";
+            case FactionId.Rival1: return "Crimson Choir";
+            case FactionId.Rival2: return "Azure Ledger";
+            case FactionId.Rival3: return "Verdant Flock";
+            case FactionId.Rival4: return "Violet Veil";
             default: return id.ToString();
         }
     }

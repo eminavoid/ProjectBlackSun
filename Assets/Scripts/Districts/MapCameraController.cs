@@ -48,6 +48,8 @@ public class MapCameraController : MonoBehaviour
 
     public static MapCameraController Instance { get; private set; }
 
+    public float CurrentHeight => transform.position.y;
+
     private void Awake()
     {
         cam = GetComponent<Camera>();

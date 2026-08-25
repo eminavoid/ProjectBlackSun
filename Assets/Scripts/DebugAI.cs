@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Antagonista global que planta seeds. Decide en la fase de plan y planta al commitear,
-/// para que el jugador vea venir la plantación (AIIntentBoard dispara ambas fases).
+/// Antagonista que planta seeds a nombre de una de las cuatro sectas.
+/// El color de la flecha es el de esa IA, igual que con los clérigos.
 /// </summary>
 [DefaultExecutionOrder(50)]
 public class DebugAI : MonoBehaviour
@@ -100,6 +100,7 @@ public class DebugAI : MonoBehaviour
         intents.Add(new AIIntent
         {
             Kind = AIIntentKind.PlantSeed,
+            Faction = ResolvePlanter(zone),
             Target = zone,
             Seed = seed,
             Amount = 1,
@@ -172,5 +173,11 @@ public class DebugAI : MonoBehaviour
         }
 
         return candidates[Random.Range(0, candidates.Count)];
+    }
+
+    private static FactionId ResolvePlanter(DistrictZone zone)
+    {
+        AIInfluenceController controller = FindAnyObjectByType<AIInfluenceController>();
+        return controller != null ? controller.PickPlanter(zone) : FactionId.Rival1;
     }
 }

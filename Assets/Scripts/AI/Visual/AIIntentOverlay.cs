@@ -20,8 +20,6 @@ public class AIIntentOverlay : MonoBehaviour
     [SerializeField] private float arcHeightFactor = 0.9f;
     [SerializeField] private float dropHeightFactor = 2.2f;
     [SerializeField] private float ringRadiusFactor = 0.7f;
-    [SerializeField] private float labelPaddingFactor = 0.5f;
-    [SerializeField] private float labelScaleFactor = 0.06f;
 
     [Header("Forma")]
     [SerializeField] private float headRatio = 0.18f;
@@ -37,6 +35,7 @@ public class AIIntentOverlay : MonoBehaviour
     private Transform root;
     private Material arrowMaterial;
     private AIIntentBoard board;
+    private InfluenceOverlaySettings settings;
     private float referenceSize = 1f;
     private bool visible = true;
     private float alpha;
@@ -45,7 +44,9 @@ public class AIIntentOverlay : MonoBehaviour
     private void Start()
     {
         visible = startVisible;
-        alpha = visible ? 1f : 0f;
+        settings = InfluenceOverlaySettings.LoadOrCreate();
+        MapViewLod.Weights(settings, out float arrows, out _);
+        alpha = visible ? arrows : 0f;
 
         arrowMaterial = ResolveMaterial();
         if (arrowMaterial == null)
@@ -81,7 +82,8 @@ public class AIIntentOverlay : MonoBehaviour
     {
         ReadToggleInput();
 
-        float targetAlpha = visible ? 1f : 0f;
+        MapViewLod.Weights(settings, out float arrows, out _);
+        float targetAlpha = visible ? arrows : 0f;
         if (!Mathf.Approximately(alpha, targetAlpha))
         {
             float step = fadeSeconds > 0f ? Time.unscaledDeltaTime / fadeSeconds : 1f;
@@ -163,34 +165,18 @@ public class AIIntentOverlay : MonoBehaviour
             ? intent.Origin.GetWorldBounds().center + Vector3.up * lift
             : target;
 
-        float labelPadding = referenceSize * labelPaddingFactor;
-        float labelScale = referenceSize * labelScaleFactor;
-
         if (hasOrigin && (target - origin).sqrMagnitude > referenceSize * referenceSize * 0.04f)
         {
             float distance = Vector3.Distance(origin, target);
             style.ArcHeight = referenceSize * arcHeightFactor + distance * arcLengthInfluence;
 
             view.BuildArc(origin, target, color, style);
-            view.SetLabel(
-                LabelFor(intent),
-                intent.LabelColor,
-                (target - origin) * 0.5f + Vector3.up * (style.ArcHeight + labelPadding),
-                labelScale);
+            view.SetLabel(string.Empty, intent.LabelColor, Vector3.zero, 1f);
             return;
         }
 
         view.BuildDrop(target, color, style);
-        view.SetLabel(
-            LabelFor(intent),
-            intent.LabelColor,
-            Vector3.up * (style.DropHeight + labelPadding),
-            labelScale);
-    }
-
-    private static string LabelFor(AIIntent intent)
-    {
-        return intent.Kind == AIIntentKind.AssignClerics ? $"+{intent.Amount}" : "SEED";
+        view.SetLabel(string.Empty, intent.LabelColor, Vector3.zero, 1f);
     }
 
     private IntentArrowView GetView(int index)

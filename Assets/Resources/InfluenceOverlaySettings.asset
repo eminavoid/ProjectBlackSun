@@ -13,16 +13,21 @@ MonoBehaviour:
   m_Name: InfluenceOverlaySettings
   m_EditorClassIdentifier: Assembly-CSharp::InfluenceOverlaySettings
   fieldResolution: 160
-  splatRadiusScale: 1.5
+  splatRadiusScale: 1.25
   bridgeRadiusScale: 1.15
-  blurPasses: 2
-  blurRadius: 2
+  blurPasses: 1
+  blurRadius: 1
   clericWeight: 0.6
   minPresence: 0.14
   patternCellsPerZone: 3.5
+  smokeStrength: 0.62
+  smokeCellsPerZone: 1.2
+  smokeSpeed: 0.55
   transitionSeconds: 0.6
   fadeSeconds: 0.25
   startVisible: 1
-  volumeHeight: 0.02
-  volumeBreath: 0.01
+  detailMaxHeight: 3
+  detailFontSize: 0.0655
+  volumeHeight: 0.03
+  volumeBreath: 0.015
   overlayIntensity: 4

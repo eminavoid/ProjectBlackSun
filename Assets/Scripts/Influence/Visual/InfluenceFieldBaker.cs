@@ -205,7 +205,8 @@ public class InfluenceFieldBaker
             if (totalWeight <= 0f) continue;
 
             Bounds bounds = zone.GetWorldBounds();
-            float radius = Mathf.Max(bounds.extents.x, bounds.extents.z) * settings.SplatRadiusScale;
+            float radius = Mathf.Sqrt(bounds.extents.x * bounds.extents.x + bounds.extents.z * bounds.extents.z)
+                * settings.SplatRadiusScale;
 
             // Piso de presencia: un clérigo recién asignado ya tiene que verse aunque
             // todavía no haya generado influencia.
@@ -263,7 +264,7 @@ public class InfluenceFieldBaker
                 Splat(
                     (a.center + b.center) * 0.5f,
                     radius,
-                    FactionPalette.Glow(controller.Value),
+                    FactionPalette.For(controller.Value),
                     strength,
                     1f,
                     DistrictKey(zone.District));
@@ -299,9 +300,10 @@ public class InfluenceFieldBaker
                 float distSqr = dx * dx + dy * dy;
                 if (distSqr > radiusSqr) continue;
 
-                float falloff = 1f - Mathf.Sqrt(distSqr / radiusSqr);
-                float weight = falloff * falloff * strength;
-                if (weight <= 0f) continue;
+                float t = Mathf.Sqrt(distSqr / radiusSqr);
+                // Meseta: el peso se mantiene alto hasta el borde y recién ahí cae.
+                float weight = strength * (1f - Mathf.SmoothStep(0.82f, 1f, t));
+                if (weight <= 0.001f) continue;
 
                 int index = row + x;
 
@@ -404,7 +406,7 @@ public class InfluenceFieldBaker
             if (weights[i] <= 0f) continue;
 
             float ratio = weights[i] / totalWeight;
-            Color color = FactionPalette.Glow(FactionIdUtil.All[i]);
+            Color color = FactionPalette.For(FactionIdUtil.All[i]);
             blended.r += color.r * ratio;
             blended.g += color.g * ratio;
             blended.b += color.b * ratio;
