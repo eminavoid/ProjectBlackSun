@@ -43,8 +43,9 @@ namespace Zeke.UI
 
         public void Add(UIElement element)
         {
-            if (elements.ContainsKey(element.Name))
+            if (elements.TryGetValue(element.Name, out UIElement existing))
             {
+                if (existing == element) return;
                 Debug.LogWarning($"Duplicate '{element.Name}' UIElement naming:", element);
             }
 

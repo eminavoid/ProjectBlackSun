@@ -22,7 +22,9 @@ MonoBehaviour:
   patternCellsPerZone: 3.5
   smokeStrength: 0.62
   smokeCellsPerZone: 1.2
-  smokeSpeed: 0.55
+  smokeSpeed: 1
+  colorNoiseStrength: 1
+  colorPulseSpeed: 2
   transitionSeconds: 0.6
   fadeSeconds: 0.25
   startVisible: 1
