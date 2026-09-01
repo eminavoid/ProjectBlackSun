@@ -16,4 +16,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6152b2d7bceba4142b340f96fc1ef1af, type: 2}
   - {fileID: 11400000, guid: 94ebb60075fff954f84ad588e1d3573a, type: 2}
   - {fileID: 11400000, guid: 5edc7d97f8a3e53459ad1b1540b234fb, type: 2}
+  - {fileID: 11400000, guid: 1dd91229b2f175345a6691742869d274, type: 2}
   <ExtraWeightPerStat>k__BackingField: 10

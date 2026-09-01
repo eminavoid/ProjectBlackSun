@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c8663d018124b3449311023f4c288e6, type: 3}
+  m_Name: Greed
+  m_EditorClassIdentifier: Assembly-CSharp::Doctrine
+  <Name>k__BackingField: Greed (test)
+  <Description>k__BackingField: Gain 10 wealth at the start of your turn but you
+    lose 1 flock each time this happens.
+  statUpdates: []
+  behaviours:
+  - {fileID: 11400000, guid: 5d71d07454a23fb4191b4c6608e97edd, type: 2}
+  - {fileID: 11400000, guid: 467eba8d27db9e740b8df218f9042bca, type: 2}

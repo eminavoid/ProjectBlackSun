@@ -26,6 +26,9 @@ public class DoctrinesController : MonoBehaviour
     [SerializeField] private int maxDoctrines = 3;
     [SerializeField] private int changeCooldown = 3;
 
+    [Header("Debug")]
+    [SerializeField] private bool logging = false;
+
     private readonly List<DoctrineSlot> doctrineSlots = new List<DoctrineSlot>();
     private readonly List<PlaceSlotsData> placeSlots = new List<PlaceSlotsData>();
 
@@ -81,6 +84,8 @@ public class DoctrinesController : MonoBehaviour
 
         for (int i = 0; i < stats.DoctrineInventory.Count; i++)
         {
+            if (!CanDisplayInventoryDoctrine(stats.DoctrineInventory[i])) continue;
+
             UIWindow slotWindow = Instantiate(selectorSlot, layout.transform);
             Button clickBox = slotWindow.TryGetElement<Button>("Clickbox");
 
@@ -119,7 +124,8 @@ public class DoctrinesController : MonoBehaviour
 
     private void Awake()
     {
-        GameTime.OnTurnEnded += Tick;
+        GameTime.OnTurnEnded += OnTickEnd;
+        GameTime.OnTurnStarted += OnTickStart;
 
         for (int i = 0; i < maxDoctrines; i++)
         {
@@ -129,7 +135,8 @@ public class DoctrinesController : MonoBehaviour
 
     private void OnDestroy()
     {
-        GameTime.OnTurnEnded -= Tick;
+        GameTime.OnTurnEnded -= OnTickEnd;
+        GameTime.OnTurnStarted -= OnTickStart;
     }
 
     private void Start()
@@ -139,7 +146,15 @@ public class DoctrinesController : MonoBehaviour
         UpdateAddDoctrineMenuState();
     }
 
-    private void Tick()
+    private void OnTickStart()
+    {
+        for (int i = 0; i < doctrineSlots.Count; i++)
+        {
+            doctrineSlots[i].doctrine.OnTickStart();
+        }
+    }
+
+    private void OnTickEnd()
     {
         for (int i = placeSlots.Count - 1; i >= 0; i--)
         {
@@ -149,6 +164,11 @@ public class DoctrinesController : MonoBehaviour
             {
                 placeSlots[i].canPlace = true;
             }
+        }
+
+        for (int i = 0; i < doctrineSlots.Count; i++)
+        {
+            doctrineSlots[i].doctrine.OnTickEnd();
         }
 
         UpdateAddDoctrineMenuState();
@@ -190,11 +210,14 @@ public class DoctrinesController : MonoBehaviour
             }
         }
 
-        Debug.Log("---------------------------------");
-
-        for (int i = 0; i < placeSlots.Count; i++)
+        if (logging)
         {
-            Debug.Log($"{placeSlots[i].canPlace} timer: {placeSlots[i].ticks} / {placeSlots[i].ticksRequired}");
+            Debug.Log("---------------------------------");
+
+            for (int i = 0; i < placeSlots.Count; i++)
+            {
+                Debug.Log($"{placeSlots[i].canPlace} timer: {placeSlots[i].ticks} / {placeSlots[i].ticksRequired}");
+            }
         }
     }
 
@@ -241,6 +264,19 @@ public class DoctrinesController : MonoBehaviour
                 break;
             }
         }
+    }
+
+    private bool CanDisplayInventoryDoctrine(Doctrine doctrine)
+    {
+        for (int i = 0; i < doctrineSlots.Count; i++)
+        {
+            if (doctrine == doctrineSlots[i].doctrine)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private class DoctrineSlot
