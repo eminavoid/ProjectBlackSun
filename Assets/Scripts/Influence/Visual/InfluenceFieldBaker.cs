@@ -246,7 +246,7 @@ public class InfluenceFieldBaker
                 if (neighbor == null || neighbor.Influence == null) continue;
 
                 // Cada par se procesa una sola vez.
-                if (neighbor.GetInstanceID() <= zone.GetInstanceID()) continue;
+                if (neighbor.GetEntityId() <= zone.GetEntityId()) continue;
                 if (neighbor.District != zone.District) continue;
                 if (neighbor.Influence.Controller != controller) continue;
 
