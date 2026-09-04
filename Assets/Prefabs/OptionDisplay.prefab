@@ -320,6 +320,7 @@ GameObject:
   - component: {fileID: 4553039971190504876}
   - component: {fileID: 8361523740710303735}
   - component: {fileID: 6789160431552908183}
+  - component: {fileID: 6079696836741356350}
   m_Layer: 5
   m_Name: OptionDisplay
   m_TagString: Untagged
@@ -346,7 +347,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 151.4115, y: -0.3122}
+  m_AnchoredPosition: {x: 151.4115, y: -0.31219482}
   m_SizeDelta: {x: 1661.3217, y: 73.3503}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &149950895176539887
@@ -468,6 +469,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be4feff47b6da7346b8c863c955de1b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Zeke.UI.UIWindow
+--- !u!114 &6079696836741356350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3691270410600279194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20ccf1b5a53f50d4eb2d788887cbd352, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIClickSound
 --- !u!1 &7241402641051545618
 GameObject:
   m_ObjectHideFlags: 0

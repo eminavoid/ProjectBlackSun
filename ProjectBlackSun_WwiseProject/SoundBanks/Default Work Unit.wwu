@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WwiseDocument Type="WorkUnit" ID="{889875DD-A1E3-4613-866F-73348AD6AB7C}" SchemaVersion="133">
 	<SoundBanks>
-		<WorkUnit Name="Default Work Unit" ID="{889875DD-A1E3-4613-866F-73348AD6AB7C}" PersistMode="Standalone"/>
+		<WorkUnit Name="Default Work Unit" ID="{889875DD-A1E3-4613-866F-73348AD6AB7C}" PersistMode="Standalone">
+			<ChildrenList>
+				<SoundBank Name="UI" ID="{87650D7E-134E-4921-881A-FE8CF49829E8}">
+					<ObjectInclusionList>
+						<ObjectRef Name="Play_UI_X" ID="{09C55EC6-A144-46C1-952E-76D145CFF88C}" WorkUnitID="{1EFD0EC7-14A6-4BBA-AFC4-13C2B0F1D017}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="Play_UI_Click_Generic" ID="{62956597-BD25-47C5-83B8-D567B5DCEE69}" WorkUnitID="{1EFD0EC7-14A6-4BBA-AFC4-13C2B0F1D017}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="Play_UI_ResourceIcon" ID="{045C1454-3079-47D8-ADCD-3A1BD4D478EF}" WorkUnitID="{1EFD0EC7-14A6-4BBA-AFC4-13C2B0F1D017}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="Play_UI_EventPopup" ID="{71FDB37C-6317-4A77-B7FC-B14DACC66E33}" WorkUnitID="{1EFD0EC7-14A6-4BBA-AFC4-13C2B0F1D017}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="Play_UI_MenuOpen" ID="{2A0FBF8D-90D3-4F55-9D75-479A414FF6BF}" WorkUnitID="{1EFD0EC7-14A6-4BBA-AFC4-13C2B0F1D017}" Origin="Manual" Filter="7"/>
+					</ObjectInclusionList>
+					<ObjectExclusionList/>
+					<GameSyncExclusionList/>
+				</SoundBank>
+				<SoundBank Name="Gameplay" ID="{F9E3C8AA-A049-4218-A43F-69743DC98A74}">
+					<ObjectInclusionList>
+						<ObjectRef Name="Play_UI_SeedPlant" ID="{95E9633A-8CCA-4D36-9075-C0D858E308F3}" WorkUnitID="{1EFD0EC7-14A6-4BBA-AFC4-13C2B0F1D017}" Origin="Manual" Filter="7"/>
+					</ObjectInclusionList>
+					<ObjectExclusionList/>
+					<GameSyncExclusionList/>
+				</SoundBank>
+			</ChildrenList>
+		</WorkUnit>
 	</SoundBanks>
 </WwiseDocument>

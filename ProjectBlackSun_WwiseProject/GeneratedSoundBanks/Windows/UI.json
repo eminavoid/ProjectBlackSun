@@ -1,0 +1,412 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Windows",
+  "BasePlatform": "Windows",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "1551306167",
+    "Type": "User",
+    "GUID": "{87650D7E-134E-4921-881A-FE8CF49829E8}",
+    "Language": "SFX",
+    "Hash": "{9E32866D-1261-9B81-D18D-767E2D6AD48B}",
+    "ObjectPath": "\\SoundBanks\\Default Work Unit\\UI",
+    "ShortName": "UI",
+    "Path": "UI.bnk",
+    "Media": [
+     {
+      "Id": "84805321",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "martillo.wav",
+      "CachePath": "D7/{D73F9B2C-F442-4E83-D8DC-859BB1486296}.wem"
+     },
+     {
+      "Id": "110163737",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "shh.wav",
+      "CachePath": "1E/{1E3A15EC-0774-55F1-BC64-6B7A11661331}.wem"
+     },
+     {
+      "Id": "191446474",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "clicks.wav",
+      "CachePath": "AA/{AAF132D6-1349-091B-A477-8524F12AF2ED}.wem"
+     },
+     {
+      "Id": "201427095",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "stomp (mp3cut.net).wav",
+      "CachePath": "7F/{7FE5E0CD-76F5-7A10-F98C-C16DE9DDB433}.wem"
+     },
+     {
+      "Id": "291359590",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "stomp (mp3cut.net).wav",
+      "CachePath": "D2/{D2AAF1F2-778F-4D6A-FD2C-D28DE1762A62}.wem"
+     },
+     {
+      "Id": "293503004",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "evento.wav",
+      "CachePath": "17/{1701F1F2-5214-F60A-2804-A32C14F4F093}.wem"
+     },
+     {
+      "Id": "331828716",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "slimy.wav",
+      "CachePath": "F8/{F88C254F-AEB6-05C7-705D-654DD9C79DE2}.wem"
+     },
+     {
+      "Id": "339411233",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "piedra moviendose.wav",
+      "CachePath": "AA/{AA2189DB-1787-28E3-F741-602C2C5C48A5}.wem"
+     },
+     {
+      "Id": "385529597",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "stomp (mp3cut.net).wav",
+      "CachePath": "A0/{A096BABA-2398-6C49-D049-D3B2DD61626C}.wem"
+     },
+     {
+      "Id": "418679705",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "monedas.wav",
+      "CachePath": "A5/{A5A7E2C6-E6D1-5A4D-56EA-77D2583B8EA1}.wem"
+     },
+     {
+      "Id": "425360030",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "harp.wav",
+      "CachePath": "26/{2661EE58-2483-D872-E01A-3FCF89D18F98}.wem"
+     },
+     {
+      "Id": "486770492",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "clicks.wav",
+      "CachePath": "7C/{7CEA23BE-EB72-2125-B779-31720B2FAB95}.wem"
+     },
+     {
+      "Id": "618709796",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "clicks.wav",
+      "CachePath": "1F/{1F18B7CF-D0CF-AFB1-6752-54C510E7578C}.wem"
+     },
+     {
+      "Id": "643663808",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "clicks.wav",
+      "CachePath": "29/{294553E7-E353-3C0B-C5CD-8ADABC9F1D2C}.wem"
+     },
+     {
+      "Id": "679110554",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "clicks.wav",
+      "CachePath": "9F/{9FF8EF43-1363-4F1A-950B-45B8F09C73A4}.wem"
+     },
+     {
+      "Id": "742586315",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "gente.wav",
+      "CachePath": "37/{3770504F-CE23-E40A-5CE4-591F0BA409DA}.wem"
+     },
+     {
+      "Id": "803979847",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "stomp (mp3cut.net).wav",
+      "CachePath": "D2/{D23D2F7B-4136-F727-F156-56A812A83B64}.wem"
+     },
+     {
+      "Id": "889823418",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "stomp (mp3cut.net).wav",
+      "CachePath": "31/{3122B0F5-C499-F373-B10D-F13032837E5F}.wem"
+     },
+     {
+      "Id": "968728685",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "choir.wav",
+      "CachePath": "73/{738A1D01-B57F-BF96-D1CA-A576401F827C}.wem"
+     }
+    ],
+    "Events": [
+     {
+      "Id": "1757779431",
+      "Name": "Play_UI_Click_Generic",
+      "ObjectPath": "\\Events\\Default Work Unit\\Play_UI_Click_Generic",
+      "GUID": "{62956597-BD25-47C5-83B8-D567B5DCEE69}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.29715994",
+      "DurationMax": "0.43803",
+      "MediaRefs": [
+       {
+        "Id": "191446474"
+       },
+       {
+        "Id": "486770492"
+       },
+       {
+        "Id": "618709796"
+       },
+       {
+        "Id": "643663808"
+       },
+       {
+        "Id": "679110554"
+       }
+      ]
+     },
+     {
+      "Id": "2491688701",
+      "Name": "Play_UI_EventPopup",
+      "ObjectPath": "\\Events\\Default Work Unit\\Play_UI_EventPopup",
+      "GUID": "{71FDB37C-6317-4A77-B7FC-B14DACC66E33}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.7141331",
+      "DurationMax": "0.8997513",
+      "MediaRefs": [
+       {
+        "Id": "293503004"
+       }
+      ]
+     },
+     {
+      "Id": "4024968670",
+      "Name": "Play_UI_MenuOpen",
+      "ObjectPath": "\\Events\\Default Work Unit\\Play_UI_MenuOpen",
+      "GUID": "{2A0FBF8D-90D3-4F55-9D75-479A414FF6BF}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.600608",
+      "DurationMax": "0.600608",
+      "MediaRefs": [
+       {
+        "Id": "339411233"
+       }
+      ]
+     },
+     {
+      "Id": "2292035624",
+      "Name": "Play_UI_ResourceIcon",
+      "ObjectPath": "\\Events\\Default Work Unit\\Play_UI_ResourceIcon",
+      "GUID": "{045C1454-3079-47D8-ADCD-3A1BD4D478EF}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.7401882",
+      "DurationMax": "3.1539576",
+      "SwitchContainers": [
+       {
+        "SwitchValue": {
+         "GroupType": "Switch",
+         "GroupId": "2782438801",
+         "Id": "602637060",
+         "GUID": "{25C5DD08-F2A3-4E9D-853D-8E2015E8A32C}"
+        },
+        "MediaRefs": [
+         {
+          "Id": "201427095"
+         },
+         {
+          "Id": "291359590"
+         },
+         {
+          "Id": "385529597"
+         },
+         {
+          "Id": "803979847"
+         },
+         {
+          "Id": "889823418"
+         }
+        ]
+       },
+       {
+        "SwitchValue": {
+         "GroupType": "Switch",
+         "GroupId": "2782438801",
+         "Id": "3337908740",
+         "GUID": "{97FD151A-6195-4EBC-AAB0-230B0DAAAB9A}"
+        },
+        "MediaRefs": [
+         {
+          "Id": "110163737"
+         }
+        ]
+       },
+       {
+        "SwitchValue": {
+         "GroupType": "Switch",
+         "GroupId": "2782438801",
+         "Id": "651855279",
+         "GUID": "{0C154C30-8E51-4C89-A732-0A600B08372F}"
+        },
+        "MediaRefs": [
+         {
+          "Id": "418679705"
+         }
+        ]
+       },
+       {
+        "SwitchValue": {
+         "GroupType": "Switch",
+         "GroupId": "2782438801",
+         "Id": "2369156619",
+         "GUID": "{A7906A60-950F-4935-BD19-AFA82E1B02C7}"
+        },
+        "MediaRefs": [
+         {
+          "Id": "968728685"
+         }
+        ]
+       },
+       {
+        "SwitchValue": {
+         "GroupType": "Switch",
+         "GroupId": "2782438801",
+         "Id": "1289540828",
+         "GUID": "{A04295AC-6045-4FD3-A19F-034A73429AD7}"
+        },
+        "MediaRefs": [
+         {
+          "Id": "742586315"
+         }
+        ]
+       },
+       {
+        "SwitchValue": {
+         "GroupType": "Switch",
+         "GroupId": "2782438801",
+         "Id": "4050929301",
+         "GUID": "{3BFDACD9-413C-4DCB-B4DF-38E5E76C4C55}"
+        },
+        "MediaRefs": [
+         {
+          "Id": "84805321"
+         }
+        ]
+       },
+       {
+        "SwitchValue": {
+         "GroupType": "Switch",
+         "GroupId": "2782438801",
+         "Id": "3732256594",
+         "GUID": "{E5CBE8E1-BE76-4385-95A1-AA676024B35A}",
+         "Default": "true"
+        },
+        "MediaRefs": [
+         {
+          "Id": "425360030"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "Id": "1188404357",
+      "Name": "Play_UI_X",
+      "ObjectPath": "\\Events\\Default Work Unit\\Play_UI_X",
+      "GUID": "{09C55EC6-A144-46C1-952E-76D145CFF88C}",
+      "DurationType": "OneShot",
+      "DurationMin": "4.416009",
+      "DurationMax": "4.416009",
+      "MediaRefs": [
+       {
+        "Id": "331828716"
+       }
+      ]
+     }
+    ],
+    "SwitchGroups": [
+     {
+      "Id": "2782438801",
+      "Name": "ResourceType",
+      "ObjectPath": "\\Switches\\Default Work Unit\\ResourceType",
+      "GUID": "{798655D0-1128-4553-9ECD-50D9FE9A191C}",
+      "Switches": [
+       {
+        "Id": "602637060",
+        "Name": "Authority",
+        "ObjectPath": "\\Switches\\Default Work Unit\\ResourceType\\Authority",
+        "GUID": "{25C5DD08-F2A3-4E9D-853D-8E2015E8A32C}"
+       },
+       {
+        "Id": "651855279",
+        "Name": "Gold",
+        "ObjectPath": "\\Switches\\Default Work Unit\\ResourceType\\Gold",
+        "GUID": "{0C154C30-8E51-4C89-A732-0A600B08372F}"
+       },
+       {
+        "Id": "1289540828",
+        "Name": "Flock",
+        "ObjectPath": "\\Switches\\Default Work Unit\\ResourceType\\Flock",
+        "GUID": "{A04295AC-6045-4FD3-A19F-034A73429AD7}"
+       },
+       {
+        "Id": "2369156619",
+        "Name": "Faith",
+        "ObjectPath": "\\Switches\\Default Work Unit\\ResourceType\\Faith",
+        "GUID": "{A7906A60-950F-4935-BD19-AFA82E1B02C7}"
+       },
+       {
+        "Id": "3337908740",
+        "Name": "Secrets",
+        "ObjectPath": "\\Switches\\Default Work Unit\\ResourceType\\Secrets",
+        "GUID": "{97FD151A-6195-4EBC-AAB0-230B0DAAAB9A}"
+       },
+       {
+        "Id": "3732256594",
+        "Name": "Bliss",
+        "ObjectPath": "\\Switches\\Default Work Unit\\ResourceType\\Bliss",
+        "GUID": "{E5CBE8E1-BE76-4385-95A1-AA676024B35A}"
+       },
+       {
+        "Id": "4050929301",
+        "Name": "Materials",
+        "ObjectPath": "\\Switches\\Default Work Unit\\ResourceType\\Materials",
+        "GUID": "{3BFDACD9-413C-4DCB-B4DF-38E5E76C4C55}"
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "FileHash": "{55E4B1E8-E790-C59A-65E5-9A6E4606B6C7}"
+ }
+}

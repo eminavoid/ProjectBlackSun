@@ -4,7 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a42c9136-0aac-4f8a-91a6-2854c1038143" name="Changes" comment="" />
+    <list default="true" id="a42c9136-0aac-4f8a-91a6-2854c1038143" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.ProjectBlackSun/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ProjectBlackSun/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Event Output Window.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Event Output Window.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/OptionDisplay.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/OptionDisplay.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/seedItemButtonPrefab.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/seedItemButtonPrefab.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SceneClone.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SceneClone.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Resources/Resources.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Resources/Resources.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/Busses/Default Work Unit.wwu" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/Busses/Default Work Unit.wwu" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/Containers/Default Work Unit.wwu" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/Containers/Default Work Unit.wwu" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/Events/Default Work Unit.wwu" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/Events/Default Work Unit.wwu" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/SoundBanks/Default Work Unit.wwu" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/SoundBanks/Default Work Unit.wwu" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/Soundcaster Sessions/Default Work Unit.wwu" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/Soundcaster Sessions/Default Work Unit.wwu" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/Switches/Default Work Unit.wwu" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/Switches/Default Work Unit.wwu" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -25,6 +38,7 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -95,6 +109,8 @@
       <workItem from="1780979468084" duration="602000" />
       <workItem from="1781040884324" duration="1039000" />
       <workItem from="1788306486876" duration="1497000" />
+      <workItem from="1788504074347" duration="412000" />
+      <workItem from="1788504501532" duration="2515000" />
     </task>
     <servers />
   </component>

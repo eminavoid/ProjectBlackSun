@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WwiseDocument Type="WorkUnit" ID="{2F8F7B71-68EC-47A1-8773-EA4828B0D730}" SchemaVersion="133">
 	<SoundcasterSessions>
-		<WorkUnit Name="Default Work Unit" ID="{2F8F7B71-68EC-47A1-8773-EA4828B0D730}" PersistMode="Standalone"/>
+		<WorkUnit Name="Default Work Unit" ID="{2F8F7B71-68EC-47A1-8773-EA4828B0D730}" PersistMode="Standalone">
+			<ChildrenList>
+				<SoundcasterSession Name="New Soundcaster Session" ID="{2B0F04B3-8D27-41A1-A9E8-0C6A971BDB9F}">
+					<ModuleList>
+						<Module>
+							<ObjectRef Name="Play_UI_Click_Generic" ID="{62956597-BD25-47C5-83B8-D567B5DCEE69}" WorkUnitID="{1EFD0EC7-14A6-4BBA-AFC4-13C2B0F1D017}"/>
+							<Position X="0" Y="0"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Play_UI_X" ID="{09C55EC6-A144-46C1-952E-76D145CFF88C}" WorkUnitID="{1EFD0EC7-14A6-4BBA-AFC4-13C2B0F1D017}"/>
+							<Position X="0" Y="1"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Play_UI_EventPopup" ID="{71FDB37C-6317-4A77-B7FC-B14DACC66E33}" WorkUnitID="{1EFD0EC7-14A6-4BBA-AFC4-13C2B0F1D017}"/>
+							<Position X="1" Y="0"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Play_UI_SeedPlant" ID="{95E9633A-8CCA-4D36-9075-C0D858E308F3}" WorkUnitID="{1EFD0EC7-14A6-4BBA-AFC4-13C2B0F1D017}"/>
+							<Position X="1" Y="1"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Play_UI_MenuOpen" ID="{2A0FBF8D-90D3-4F55-9D75-479A414FF6BF}" WorkUnitID="{1EFD0EC7-14A6-4BBA-AFC4-13C2B0F1D017}"/>
+							<Position X="2" Y="0"/>
+						</Module>
+						<Module>
+							<ObjectRef Name="Play_UI_ResourceIcon" ID="{045C1454-3079-47D8-ADCD-3A1BD4D478EF}" WorkUnitID="{1EFD0EC7-14A6-4BBA-AFC4-13C2B0F1D017}"/>
+							<Position X="3" Y="0"/>
+						</Module>
+					</ModuleList>
+				</SoundcasterSession>
+			</ChildrenList>
+		</WorkUnit>
 	</SoundcasterSessions>
 </WwiseDocument>

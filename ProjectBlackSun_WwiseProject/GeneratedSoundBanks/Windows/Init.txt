@@ -1,0 +1,11 @@
+Audio Bus	ID	Name			Wwise Object Path	Notes
+	1502772432	SFX Bus			\Default Work Unit\Main Audio Bus\SFX Bus	
+	2246998526	Main Audio Bus			\Default Work Unit\Main Audio Bus	
+	2294735213	World Bus			\Default Work Unit\Main Audio Bus\SFX Bus\World Bus	
+	3127962312	Music Bus			\Default Work Unit\Main Audio Bus\Music Bus	
+	3600729941	UI Bus			\Default Work Unit\Main Audio Bus\SFX Bus\UI Bus	
+
+Audio Devices	ID	Name	Type				Notes
+	2317455096	No_Output	No Output			
+	3859886410	System	System			
+

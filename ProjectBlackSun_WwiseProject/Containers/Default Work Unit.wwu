@@ -28,7 +28,7 @@
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{53BC1063-D44E-4BC8-8599-75E59AC25903}"/>
 										</Reference>
 										<Reference Name="OutputBus">
-											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{5B620076-8548-4615-B6BF-D06492A4D622}"/>
+											<ObjectRef Name="UI Bus" ID="{C291DD3F-FF56-4624-97BA-B9A4FEE59028}" WorkUnitID="{5B620076-8548-4615-B6BF-D06492A4D622}"/>
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
@@ -66,7 +66,7 @@
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{53BC1063-D44E-4BC8-8599-75E59AC25903}"/>
 										</Reference>
 										<Reference Name="OutputBus">
-											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{5B620076-8548-4615-B6BF-D06492A4D622}"/>
+											<ObjectRef Name="UI Bus" ID="{C291DD3F-FF56-4624-97BA-B9A4FEE59028}" WorkUnitID="{5B620076-8548-4615-B6BF-D06492A4D622}"/>
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
@@ -98,7 +98,7 @@
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{53BC1063-D44E-4BC8-8599-75E59AC25903}"/>
 										</Reference>
 										<Reference Name="OutputBus">
-											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{5B620076-8548-4615-B6BF-D06492A4D622}"/>
+											<ObjectRef Name="UI Bus" ID="{C291DD3F-FF56-4624-97BA-B9A4FEE59028}" WorkUnitID="{5B620076-8548-4615-B6BF-D06492A4D622}"/>
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
@@ -275,7 +275,7 @@
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{53BC1063-D44E-4BC8-8599-75E59AC25903}"/>
 										</Reference>
 										<Reference Name="OutputBus">
-											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{5B620076-8548-4615-B6BF-D06492A4D622}"/>
+											<ObjectRef Name="UI Bus" ID="{C291DD3F-FF56-4624-97BA-B9A4FEE59028}" WorkUnitID="{5B620076-8548-4615-B6BF-D06492A4D622}"/>
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
@@ -300,8 +300,14 @@
 										<Reference Name="Conversion">
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{53BC1063-D44E-4BC8-8599-75E59AC25903}"/>
 										</Reference>
+										<Reference Name="DefaultSwitchOrState">
+											<ObjectRef Name="Bliss" ID="{E5CBE8E1-BE76-4385-95A1-AA676024B35A}" WorkUnitID="{C5C6F0B9-4476-4083-985C-85A4A7C12D00}"/>
+										</Reference>
 										<Reference Name="OutputBus">
-											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{5B620076-8548-4615-B6BF-D06492A4D622}"/>
+											<ObjectRef Name="UI Bus" ID="{C291DD3F-FF56-4624-97BA-B9A4FEE59028}" WorkUnitID="{5B620076-8548-4615-B6BF-D06492A4D622}"/>
+										</Reference>
+										<Reference Name="SwitchGroupOrStateGroup">
+											<ObjectRef Name="ResourceType" ID="{798655D0-1128-4553-9ECD-50D9FE9A191C}" WorkUnitID="{C5C6F0B9-4476-4083-985C-85A4A7C12D00}"/>
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
@@ -316,8 +322,7 @@
 															<Modifier Name="" ID="{0679827F-00D0-47A2-9A1F-B66703E0C1B0}">
 																<PropertyList>
 																	<Property Name="Enabled" Type="bool" Value="True"/>
-																	<Property Name="Max" Type="Real64" Value="200"/>
-																	<Property Name="Min" Type="Real64" Value="-200"/>
+																	<Property Name="Min" Type="Real64" Value="-100"/>
 																</PropertyList>
 															</Modifier>
 														</ModifierInfo>
@@ -754,6 +759,50 @@
 												<ItemRef Name="Authority" ID="{F5F6FEFD-8460-4D6D-A975-B79EBC69043E}"/>
 											</GroupingBehavior>
 										</GroupingBehaviorList>
+										<GroupingList>
+											<Grouping>
+												<SwitchRef Name="Authority" ID="{25C5DD08-F2A3-4E9D-853D-8E2015E8A32C}"/>
+												<ItemList>
+													<ItemRef Name="Authority" ID="{F5F6FEFD-8460-4D6D-A975-B79EBC69043E}"/>
+												</ItemList>
+											</Grouping>
+											<Grouping>
+												<SwitchRef Name="Secrets" ID="{97FD151A-6195-4EBC-AAB0-230B0DAAAB9A}"/>
+												<ItemList>
+													<ItemRef Name="Secrets_Shh" ID="{7E066C2C-0174-401D-8617-5AFD0B87C4B7}"/>
+												</ItemList>
+											</Grouping>
+											<Grouping>
+												<SwitchRef Name="Gold" ID="{0C154C30-8E51-4C89-A732-0A600B08372F}"/>
+												<ItemList>
+													<ItemRef Name="Gold_Coins" ID="{E2E0C09D-386D-470B-BEA7-C038B211E759}"/>
+												</ItemList>
+											</Grouping>
+											<Grouping>
+												<SwitchRef Name="Faith" ID="{A7906A60-950F-4935-BD19-AFA82E1B02C7}"/>
+												<ItemList>
+													<ItemRef Name="Faith_Choir" ID="{D04C55B4-6860-4AFB-ACB4-4C8CD339BB03}"/>
+												</ItemList>
+											</Grouping>
+											<Grouping>
+												<SwitchRef Name="Flock" ID="{A04295AC-6045-4FD3-A19F-034A73429AD7}"/>
+												<ItemList>
+													<ItemRef Name="Flock_Crowd" ID="{D6887840-8F5C-445C-BE60-6AA6BB15599A}"/>
+												</ItemList>
+											</Grouping>
+											<Grouping>
+												<SwitchRef Name="Materials" ID="{3BFDACD9-413C-4DCB-B4DF-38E5E76C4C55}"/>
+												<ItemList>
+													<ItemRef Name="Materials_Hammer" ID="{F04895CA-6D2F-4445-B1E7-D44C656085E5}"/>
+												</ItemList>
+											</Grouping>
+											<Grouping>
+												<SwitchRef Name="Bliss" ID="{E5CBE8E1-BE76-4385-95A1-AA676024B35A}"/>
+												<ItemList>
+													<ItemRef Name="Bliss_Harp" ID="{67BC8DC3-06C1-4914-A5BC-8D442865714D}"/>
+												</ItemList>
+											</Grouping>
+										</GroupingList>
 									</GroupingInfo>
 								</SwitchContainer>
 							</ChildrenList>
@@ -770,7 +819,7 @@
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{53BC1063-D44E-4BC8-8599-75E59AC25903}"/>
 										</Reference>
 										<Reference Name="OutputBus">
-											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{5B620076-8548-4615-B6BF-D06492A4D622}"/>
+											<ObjectRef Name="World Bus" ID="{F9E37682-99DE-484F-A2FE-C62A7D5E22EF}" WorkUnitID="{5B620076-8548-4615-B6BF-D06492A4D622}"/>
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>

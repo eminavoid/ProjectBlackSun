@@ -1,0 +1,40 @@
+Event	ID	Name			Wwise Object Path	Notes
+	1188404357	Play_UI_X			\Default Work Unit\Play_UI_X	
+	1757779431	Play_UI_Click_Generic			\Default Work Unit\Play_UI_Click_Generic	
+	2292035624	Play_UI_ResourceIcon			\Default Work Unit\Play_UI_ResourceIcon	
+	2491688701	Play_UI_EventPopup			\Default Work Unit\Play_UI_EventPopup	
+	4024968670	Play_UI_MenuOpen			\Default Work Unit\Play_UI_MenuOpen	
+
+Switch Group	ID	Name			Wwise Object Path	Notes
+	2782438801	ResourceType			\Default Work Unit\ResourceType	
+
+Switch	ID	Name	Switch Group			Notes
+	602637060	Authority	ResourceType			
+	651855279	Gold	ResourceType			
+	1289540828	Flock	ResourceType			
+	2369156619	Faith	ResourceType			
+	3337908740	Secrets	ResourceType			
+	3732256594	Bliss	ResourceType			
+	4050929301	Materials	ResourceType			
+
+In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
+	84805321	Materials_Hammer	.cache\D7\{D73F9B2C-F442-4E83-D8DC-859BB1486296}.wem		\Containers\Default Work Unit\UI\ResourceIcons\ResourceIcon_Click\Materials_Hammer		216240
+	110163737	Secrets_Shh	.cache\1E\{1E3A15EC-0774-55F1-BC64-6B7A11661331}.wem		\Containers\Default Work Unit\UI\ResourceIcons\ResourceIcon_Click\Secrets_Shh		363432
+	191446474	click	.cache\AA\{AAF132D6-1349-091B-A477-8524F12AF2ED}.wem		\Containers\Default Work Unit\UI\Click\Click_Generic\click		77352
+	201427095	Authority_March_04	.cache\7F\{7FE5E0CD-76F5-7A10-F98C-C16DE9DDB433}.wem		\Containers\Default Work Unit\UI\ResourceIcons\ResourceIcon_Click\Authority\Authority_March_04		130664
+	291359590	Authority_March_03	.cache\D2\{D2AAF1F2-778F-4D6A-FD2C-D28DE1762A62}.wem		\Containers\Default Work Unit\UI\ResourceIcons\ResourceIcon_Click\Authority\Authority_March_03		185764
+	293503004	EventPopup_Paper	.cache\17\{1701F1F2-5214-F60A-2804-A32C14F4F093}.wem		\Containers\Default Work Unit\UI\Events\EventPopup_Paper		141496
+	331828716	Slimy	.cache\F8\{F88C254F-AEB6-05C7-705D-654DD9C79DE2}.wem		\Containers\Default Work Unit\UI\Feedback\Slimy		779080
+	339411233	MenuOpen_Stone	.cache\AA\{AA2189DB-1787-28E3-F741-602C2C5C48A5}.wem		\Containers\Default Work Unit\UI\Menus\MenuOpen_Stone		97252
+	385529597	Authority_March_02	.cache\A0\{A096BABA-2398-6C49-D049-D3B2DD61626C}.wem		\Containers\Default Work Unit\UI\ResourceIcons\ResourceIcon_Click\Authority\Authority_March_02		188820
+	418679705	Gold_Coins	.cache\A5\{A5A7E2C6-E6D1-5A4D-56EA-77D2583B8EA1}.wem		\Containers\Default Work Unit\UI\ResourceIcons\ResourceIcon_Click\Gold_Coins		811104
+	425360030	Bliss_Harp	.cache\26\{2661EE58-2483-D872-E01A-3FCF89D18F98}.wem		\Containers\Default Work Unit\UI\ResourceIcons\ResourceIcon_Click\Bliss_Harp		669408
+	486770492	click_05	.cache\7C\{7CEA23BE-EB72-2125-B779-31720B2FAB95}.wem		\Containers\Default Work Unit\UI\Click\Click_Generic\click_05		61612
+	618709796	click_04	.cache\1F\{1F18B7CF-D0CF-AFB1-6752-54C510E7578C}.wem		\Containers\Default Work Unit\UI\Click\Click_Generic\click_04		77436
+	643663808	click_01	.cache\29\{294553E7-E353-3C0B-C5CD-8ADABC9F1D2C}.wem		\Containers\Default Work Unit\UI\Click\Click_Generic\click_01		77364
+	679110554	click_03	.cache\9F\{9FF8EF43-1363-4F1A-950B-45B8F09C73A4}.wem		\Containers\Default Work Unit\UI\Click\Click_Generic\click_03		55632
+	742586315	Flock_Crowd	.cache\37\{3770504F-CE23-E40A-5CE4-591F0BA409DA}.wem		\Containers\Default Work Unit\UI\ResourceIcons\ResourceIcon_Click\Flock_Crowd		479260
+	803979847	Authority_March	.cache\D2\{D23D2F7B-4136-F727-F156-56A812A83B64}.wem		\Containers\Default Work Unit\UI\ResourceIcons\ResourceIcon_Click\Authority\Authority_March		182704
+	889823418	Authority_March_01	.cache\31\{3122B0F5-C499-F373-B10D-F13032837E5F}.wem		\Containers\Default Work Unit\UI\ResourceIcons\ResourceIcon_Click\Authority\Authority_March_01		184732
+	968728685	Faith_Choir	.cache\73\{738A1D01-B57F-BF96-D1CA-A576401F827C}.wem		\Containers\Default Work Unit\UI\ResourceIcons\ResourceIcon_Click\Faith_Choir		444312
+

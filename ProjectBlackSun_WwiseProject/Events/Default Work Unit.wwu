@@ -1,6 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WwiseDocument Type="WorkUnit" ID="{1EFD0EC7-14A6-4BBA-AFC4-13C2B0F1D017}" SchemaVersion="133">
 	<Events>
-		<WorkUnit Name="Default Work Unit" ID="{1EFD0EC7-14A6-4BBA-AFC4-13C2B0F1D017}" PersistMode="Standalone"/>
+		<WorkUnit Name="Default Work Unit" ID="{1EFD0EC7-14A6-4BBA-AFC4-13C2B0F1D017}" PersistMode="Standalone">
+			<ChildrenList>
+				<Event Name="Play_UI_EventPopup" ID="{71FDB37C-6317-4A77-B7FC-B14DACC66E33}">
+					<ChildrenList>
+						<Action Name="" ID="{1987FABB-92E8-4333-AD82-7AB065230221}" ShortID="707945308">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="EventPopup_Paper" ID="{0CDA9C22-89A3-4457-9DEE-5297C8FE8770}" WorkUnitID="{85ECF510-36BD-49F2-8F1A-496BB22358A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_UI_SeedPlant" ID="{95E9633A-8CCA-4D36-9075-C0D858E308F3}">
+					<ChildrenList>
+						<Action Name="" ID="{6B04D09A-DB8C-4595-9191-805F32878F9C}" ShortID="786665655">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="SeedPlant" ID="{30368CF4-BBDA-4113-9FC5-DE9C9FFF162D}" WorkUnitID="{85ECF510-36BD-49F2-8F1A-496BB22358A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_UI_Click_Generic" ID="{62956597-BD25-47C5-83B8-D567B5DCEE69}">
+					<ChildrenList>
+						<Action Name="" ID="{5075CBA9-7E7D-4960-90AE-725EF4A722A1}" ShortID="91522953">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Click_Generic" ID="{99E5D281-2691-4DA5-A5B3-A27691AA777F}" WorkUnitID="{85ECF510-36BD-49F2-8F1A-496BB22358A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_UI_MenuOpen" ID="{2A0FBF8D-90D3-4F55-9D75-479A414FF6BF}">
+					<ChildrenList>
+						<Action Name="" ID="{92F6263B-9F4C-43D4-892D-D870E2880CA2}" ShortID="199098198">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="MenuOpen_Stone" ID="{9D730D30-BA65-46AA-9D26-03D1F9FE657C}" WorkUnitID="{85ECF510-36BD-49F2-8F1A-496BB22358A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_UI_X" ID="{09C55EC6-A144-46C1-952E-76D145CFF88C}">
+					<ChildrenList>
+						<Action Name="" ID="{60DAD5DB-45F2-40B3-8A1E-8197D2C594E1}" ShortID="339882779">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Slimy" ID="{B1B79064-2D06-4B79-A409-A00989DA4535}" WorkUnitID="{85ECF510-36BD-49F2-8F1A-496BB22358A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_UI_ResourceIcon" ID="{045C1454-3079-47D8-ADCD-3A1BD4D478EF}">
+					<ChildrenList>
+						<Action Name="" ID="{80B54638-DC28-473A-A343-2B5525E6DCF0}" ShortID="214563412">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="ResourceIcon_Click" ID="{D4E6702E-DD63-4279-931C-058DF3BBDFEB}" WorkUnitID="{85ECF510-36BD-49F2-8F1A-496BB22358A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+			</ChildrenList>
+		</WorkUnit>
 	</Events>
 </WwiseDocument>

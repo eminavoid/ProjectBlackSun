@@ -1,0 +1,125 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Windows",
+  "BasePlatform": "Windows",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "1355168291",
+    "Type": "User",
+    "GUID": "{701ECBBD-9C7B-4030-8CDB-749EE5D1C7B9}",
+    "Language": "SFX",
+    "Hash": "{45A39618-CDB8-C17C-42C8-463E37C51B1B}",
+    "ObjectPath": "Init",
+    "ShortName": "Init",
+    "Path": "Init.bnk",
+    "Plugins": {
+     "AudioDevices": [
+      {
+       "Id": "2317455096",
+       "Name": "No_Output",
+       "ObjectPath": "\\Devices\\Default Work Unit\\No_Output",
+       "GUID": "{4ACFAD39-FBBC-42C1-97CF-89C7D5BDE9AA}",
+       "LibName": "No Output",
+       "LibId": "11862023"
+      },
+      {
+       "Id": "3859886410",
+       "Name": "System",
+       "ObjectPath": "\\Devices\\Default Work Unit\\System",
+       "GUID": "{66BC4D62-EA4A-448B-803C-E30EF2C494B3}",
+       "LibName": "System",
+       "LibId": "11403271"
+      }
+     ]
+    },
+    "Busses": [
+     {
+      "Id": "1502772432",
+      "Name": "SFX Bus",
+      "ObjectPath": "\\Busses\\Default Work Unit\\Main Audio Bus\\SFX Bus",
+      "GUID": "{42B84E0B-15A4-4FE7-A930-AB2A818FDF6F}"
+     },
+     {
+      "Id": "2246998526",
+      "Name": "Main Audio Bus",
+      "ObjectPath": "\\Busses\\Default Work Unit\\Main Audio Bus",
+      "GUID": "{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}"
+     },
+     {
+      "Id": "2294735213",
+      "Name": "World Bus",
+      "ObjectPath": "\\Busses\\Default Work Unit\\Main Audio Bus\\SFX Bus\\World Bus",
+      "GUID": "{F9E37682-99DE-484F-A2FE-C62A7D5E22EF}"
+     },
+     {
+      "Id": "3127962312",
+      "Name": "Music Bus",
+      "ObjectPath": "\\Busses\\Default Work Unit\\Main Audio Bus\\Music Bus",
+      "GUID": "{34678E0E-A41A-4C3D-B809-73F3F9899A27}"
+     },
+     {
+      "Id": "3600729941",
+      "Name": "UI Bus",
+      "ObjectPath": "\\Busses\\Default Work Unit\\Main Audio Bus\\SFX Bus\\UI Bus",
+      "GUID": "{C291DD3F-FF56-4624-97BA-B9A4FEE59028}"
+     }
+    ],
+    "SwitchGroups": [
+     {
+      "Id": "2782438801",
+      "Name": "ResourceType",
+      "ObjectPath": "\\Switches\\Default Work Unit\\ResourceType",
+      "GUID": "{798655D0-1128-4553-9ECD-50D9FE9A191C}",
+      "Switches": [
+       {
+        "Id": "602637060",
+        "Name": "Authority",
+        "ObjectPath": "\\Switches\\Default Work Unit\\ResourceType\\Authority",
+        "GUID": "{25C5DD08-F2A3-4E9D-853D-8E2015E8A32C}"
+       },
+       {
+        "Id": "651855279",
+        "Name": "Gold",
+        "ObjectPath": "\\Switches\\Default Work Unit\\ResourceType\\Gold",
+        "GUID": "{0C154C30-8E51-4C89-A732-0A600B08372F}"
+       },
+       {
+        "Id": "1289540828",
+        "Name": "Flock",
+        "ObjectPath": "\\Switches\\Default Work Unit\\ResourceType\\Flock",
+        "GUID": "{A04295AC-6045-4FD3-A19F-034A73429AD7}"
+       },
+       {
+        "Id": "2369156619",
+        "Name": "Faith",
+        "ObjectPath": "\\Switches\\Default Work Unit\\ResourceType\\Faith",
+        "GUID": "{A7906A60-950F-4935-BD19-AFA82E1B02C7}"
+       },
+       {
+        "Id": "3337908740",
+        "Name": "Secrets",
+        "ObjectPath": "\\Switches\\Default Work Unit\\ResourceType\\Secrets",
+        "GUID": "{97FD151A-6195-4EBC-AAB0-230B0DAAAB9A}"
+       },
+       {
+        "Id": "3732256594",
+        "Name": "Bliss",
+        "ObjectPath": "\\Switches\\Default Work Unit\\ResourceType\\Bliss",
+        "GUID": "{E5CBE8E1-BE76-4385-95A1-AA676024B35A}"
+       },
+       {
+        "Id": "4050929301",
+        "Name": "Materials",
+        "ObjectPath": "\\Switches\\Default Work Unit\\ResourceType\\Materials",
+        "GUID": "{3BFDACD9-413C-4DCB-B4DF-38E5E76C4C55}"
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "FileHash": "{1875DFBC-7394-83E2-6C67-66AA6079F0CB}"
+ }
+}
