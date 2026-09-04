@@ -10,26 +10,18 @@
     "Type": "User",
     "GUID": "{F9E3C8AA-A049-4218-A43F-69743DC98A74}",
     "Language": "SFX",
-    "Hash": "{BE80C4BE-659F-058A-0C30-52ECEC306705}",
+    "Hash": "{C6EB6AE7-4FE5-C9F5-A138-5D6770FE5D1A}",
     "ObjectPath": "\\SoundBanks\\Default Work Unit\\Gameplay",
     "ShortName": "Gameplay",
     "Path": "Gameplay.bnk",
     "Media": [
      {
-      "Id": "133483065",
+      "Id": "343862084",
       "Language": "SFX",
       "Streaming": "false",
       "Location": "Memory",
-      "ShortName": "seed2.wav",
-      "CachePath": "DE/{DEB9AF1C-C2D8-94FD-1381-8DBCA6BAA345}.wem"
-     },
-     {
-      "Id": "156294630",
-      "Language": "SFX",
-      "Streaming": "false",
-      "Location": "Memory",
-      "ShortName": "seed1.wav",
-      "CachePath": "B2/{B263EB41-A72C-56C6-9B89-D1762EF3384C}.wem"
+      "ShortName": "seed1 (mp3cut.net).wav",
+      "CachePath": "7F/{7F574929-7A19-95F8-057E-E8BE3629E7DE}.wem"
      }
     ],
     "Events": [
@@ -39,20 +31,17 @@
       "ObjectPath": "\\Events\\Default Work Unit\\Play_UI_SeedPlant",
       "GUID": "{95E9633A-8CCA-4D36-9075-C0D858E308F3}",
       "DurationType": "OneShot",
-      "DurationMin": "0.6393424",
-      "DurationMax": "0.81492066",
+      "DurationMin": "0.92201537",
+      "DurationMax": "1.1285962",
       "MediaRefs": [
        {
-        "Id": "133483065"
-       },
-       {
-        "Id": "156294630"
+        "Id": "343862084"
        }
       ]
      }
     ]
    }
   ],
-  "FileHash": "{5A16927E-44E4-EF99-D946-FD97B05D082E}"
+  "FileHash": "{BA926071-9A77-E257-2A38-6D5F4399242E}"
  }
 }

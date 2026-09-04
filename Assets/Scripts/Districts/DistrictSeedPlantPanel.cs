@@ -173,6 +173,11 @@ public class DistrictSeedPlantPanel : MonoBehaviour
             Debug.Log($"DistrictSeedPlantPanel: planted '{selectedSeed.Title}' in {targetZone.SectorName} ({targetZone.District}).", this);
         }
 
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySeedPlant();
+        }
+
         ShowPlantPopup($"Seed '{selectedSeed.Title}' plantada en {targetZone.SectorName} ({targetZone.District}).");
 
         UpdateSeedInventory(selectedSeed, -1);

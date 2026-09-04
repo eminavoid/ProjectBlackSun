@@ -19,7 +19,7 @@
 						<Action Name="" ID="{6B04D09A-DB8C-4595-9191-805F32878F9C}" ShortID="786665655">
 							<ReferenceList>
 								<Reference Name="Target">
-									<ObjectRef Name="SeedPlant" ID="{30368CF4-BBDA-4113-9FC5-DE9C9FFF162D}" WorkUnitID="{85ECF510-36BD-49F2-8F1A-496BB22358A4}"/>
+									<ObjectRef Name="Seed" ID="{931B668C-B32C-4B25-9915-285E8600B25C}" WorkUnitID="{85ECF510-36BD-49F2-8F1A-496BB22358A4}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>

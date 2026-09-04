@@ -2,6 +2,5 @@ Event	ID	Name			Wwise Object Path	Notes
 	1900583491	Play_UI_SeedPlant			\Default Work Unit\Play_UI_SeedPlant	
 
 In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
-	133483065	seed2	.cache\DE\{DEB9AF1C-C2D8-94FD-1381-8DBCA6BAA345}.wem		\Containers\Default Work Unit\World\Map\SeedPlant\seed2		112876
-	156294630	seed1	.cache\B2\{B263EB41-A72C-56C6-9B89-D1762EF3384C}.wem		\Containers\Default Work Unit\World\Map\SeedPlant\seed1		143848
+	343862084	Seed	.cache\7F\{7F574929-7A19-95F8-057E-E8BE3629E7DE}.wem		\Containers\Default Work Unit\World\Map\Seed		88794
 

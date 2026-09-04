@@ -1627,6 +1627,7 @@ GameObject:
   - component: {fileID: 1664694414}
   - component: {fileID: 1664694413}
   - component: {fileID: 1664694412}
+  - component: {fileID: 1664694415}
   m_Layer: 5
   m_Name: UnlockCodexMenu
   m_TagString: Untagged
@@ -5899,6 +5900,7 @@ GameObject:
   - component: {fileID: 1445616538}
   - component: {fileID: 1445616537}
   - component: {fileID: 1445616539}
+  - component: {fileID: 1445616540}
   m_Layer: 5
   m_Name: DoctrineSelector
   m_TagString: Untagged
@@ -5977,6 +5979,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be4feff47b6da7346b8c863c955de1b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Zeke.UI.UIWindow
+--- !u!114 &1445616540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1445616535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ac1f5590ee26604e84b651fc1a29349, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MenuOpenSound
 --- !u!1 &1450177738
 GameObject:
   m_ObjectHideFlags: 0
@@ -6485,6 +6499,8 @@ MonoBehaviour:
   UIEmitter: {fileID: 1712302110}
   uiClickGenericEvent: Play_UI_Click_Generic
   resourceIconClickEvent: Play_UI_ResourceIcon
+  eventPopupEvent: Play_UI_EventPopup
+  menuOpenEvent: Play_UI_MenuOpen
   resourceTypeSwitchGroup: ResourceType
 --- !u!114 &1535116673
 MonoBehaviour:
@@ -7137,6 +7153,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 350326569}
   m_CullTransparentMesh: 1
+--- !u!114 &1664694415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 350326569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ac1f5590ee26604e84b651fc1a29349, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MenuOpenSound
 --- !u!1 &1675073772
 GameObject:
   m_ObjectHideFlags: 0
@@ -7714,6 +7742,7 @@ GameObject:
   - component: {fileID: 1759510480}
   - component: {fileID: 1759510479}
   - component: {fileID: 1759510478}
+  - component: {fileID: 1759510481}
   m_Layer: 5
   m_Name: DoctrineMenu
   m_TagString: Untagged
@@ -7793,6 +7822,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1759510476}
   m_CullTransparentMesh: 1
+--- !u!114 &1759510481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1759510476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ac1f5590ee26604e84b651fc1a29349, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MenuOpenSound
 --- !u!1 &1774865034
 GameObject:
   m_ObjectHideFlags: 0

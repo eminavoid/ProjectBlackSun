@@ -9,6 +9,7 @@
 							<ChildrenList>
 								<Sound Name="EventPopup_Paper" ID="{0CDA9C22-89A3-4457-9DEE-5297C8FE8770}" ShortID="994365070">
 									<PropertyList>
+										<Property Name="EnableLoudnessNormalization" Type="bool" Value="True"/>
 										<Property Name="Pitch" Type="int32">
 											<ModifierList>
 												<ModifierInfo>
@@ -55,6 +56,7 @@
 							<ChildrenList>
 								<Sound Name="MenuOpen_Stone" ID="{9D730D30-BA65-46AA-9D26-03D1F9FE657C}" ShortID="535776241">
 									<PropertyList>
+										<Property Name="EnableLoudnessNormalization" Type="bool" Value="True"/>
 										<Property Name="Pitch" Type="int32">
 											<ValueList>
 												<Value>-150</Value>
@@ -93,6 +95,9 @@
 						<Folder Name="Click" ID="{78D4D2DB-DB89-4AD4-B6C5-F565D5A87A49}" ShortID="930192873">
 							<ChildrenList>
 								<RandomSequenceContainer Name="Click_Generic" ID="{99E5D281-2691-4DA5-A5B3-A27691AA777F}" ShortID="259849399">
+									<PropertyList>
+										<Property Name="EnableLoudnessNormalization" Type="bool" Value="True"/>
+									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Conversion">
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{53BC1063-D44E-4BC8-8599-75E59AC25903}"/>
@@ -270,6 +275,9 @@
 						<Folder Name="Feedback" ID="{C1F3CB89-079F-4C4D-98F0-5E601C755059}" ShortID="557685601">
 							<ChildrenList>
 								<Sound Name="Slimy" ID="{B1B79064-2D06-4B79-A409-A00989DA4535}" ShortID="326607619">
+									<PropertyList>
+										<Property Name="EnableLoudnessNormalization" Type="bool" Value="True"/>
+									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Conversion">
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{53BC1063-D44E-4BC8-8599-75E59AC25903}"/>
@@ -296,6 +304,9 @@
 						<Folder Name="ResourceIcons" ID="{6E681145-06AD-452D-9238-18F12A76CA11}" ShortID="335996798">
 							<ChildrenList>
 								<SwitchContainer Name="ResourceIcon_Click" ID="{D4E6702E-DD63-4279-931C-058DF3BBDFEB}" ShortID="735369739">
+									<PropertyList>
+										<Property Name="EnableLoudnessNormalization" Type="bool" Value="True"/>
+									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Conversion">
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{53BC1063-D44E-4BC8-8599-75E59AC25903}"/>
@@ -813,62 +824,44 @@
 					<ChildrenList>
 						<Folder Name="Map" ID="{FA933E96-DE2F-4DB8-9A36-E1F996B268B1}" ShortID="213619286">
 							<ChildrenList>
-								<RandomSequenceContainer Name="SeedPlant" ID="{30368CF4-BBDA-4113-9FC5-DE9C9FFF162D}" ShortID="273298792">
+								<Sound Name="Seed" ID="{931B668C-B32C-4B25-9915-285E8600B25C}" ShortID="364231035">
+									<PropertyList>
+										<Property Name="EnableLoudnessNormalization" Type="bool" Value="True"/>
+										<Property Name="Pitch" Type="int32">
+											<ModifierList>
+												<ModifierInfo>
+													<Modifier Name="" ID="{C2B908D8-C145-43B5-9B0C-43BDF05B9D9F}">
+														<PropertyList>
+															<Property Name="Enabled" Type="bool" Value="True"/>
+															<Property Name="Max" Type="Real64" Value="150"/>
+															<Property Name="Min" Type="Real64" Value="-200"/>
+														</PropertyList>
+													</Modifier>
+												</ModifierInfo>
+											</ModifierList>
+										</Property>
+									</PropertyList>
 									<ReferenceList>
 										<Reference Name="Conversion">
 											<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{53BC1063-D44E-4BC8-8599-75E59AC25903}"/>
 										</Reference>
 										<Reference Name="OutputBus">
-											<ObjectRef Name="World Bus" ID="{F9E37682-99DE-484F-A2FE-C62A7D5E22EF}" WorkUnitID="{5B620076-8548-4615-B6BF-D06492A4D622}"/>
+											<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{5B620076-8548-4615-B6BF-D06492A4D622}"/>
 										</Reference>
 									</ReferenceList>
 									<ChildrenList>
-										<Sound Name="seed2" ID="{02894203-BAEC-44F8-9813-FD85EE6DC433}" ShortID="377198269">
-											<ReferenceList>
-												<Reference Name="Conversion">
-													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{53BC1063-D44E-4BC8-8599-75E59AC25903}"/>
-												</Reference>
-												<Reference Name="OutputBus">
-													<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{5B620076-8548-4615-B6BF-D06492A4D622}"/>
-												</Reference>
-											</ReferenceList>
-											<ChildrenList>
-												<AudioFileSource Name="seed2" ID="{E7F75CB8-27A1-4646-8273-AB174A05EEE2}">
-													<Language>SFX</Language>
-													<AudioFile>seed2.wav</AudioFile>
-													<MediaIDList>
-														<MediaID ID="133483065"/>
-													</MediaIDList>
-												</AudioFileSource>
-											</ChildrenList>
-											<ActiveSourceList>
-												<ActiveSource Name="seed2" ID="{E7F75CB8-27A1-4646-8273-AB174A05EEE2}" Platform="Linked"/>
-											</ActiveSourceList>
-										</Sound>
-										<Sound Name="seed1" ID="{058C2577-7467-4292-9569-15AA7948DD6F}" ShortID="377823123">
-											<ReferenceList>
-												<Reference Name="Conversion">
-													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{53BC1063-D44E-4BC8-8599-75E59AC25903}"/>
-												</Reference>
-												<Reference Name="OutputBus">
-													<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{5B620076-8548-4615-B6BF-D06492A4D622}"/>
-												</Reference>
-											</ReferenceList>
-											<ChildrenList>
-												<AudioFileSource Name="seed1" ID="{53EA89B7-38E2-401D-A416-89CE411144FE}">
-													<Language>SFX</Language>
-													<AudioFile>seed1.wav</AudioFile>
-													<MediaIDList>
-														<MediaID ID="156294630"/>
-													</MediaIDList>
-												</AudioFileSource>
-											</ChildrenList>
-											<ActiveSourceList>
-												<ActiveSource Name="seed1" ID="{53EA89B7-38E2-401D-A416-89CE411144FE}" Platform="Linked"/>
-											</ActiveSourceList>
-										</Sound>
+										<AudioFileSource Name="seed1 (mp3cut_net)" ID="{38D92350-A148-47C3-BE22-780EF35C188B}">
+											<Language>SFX</Language>
+											<AudioFile>seed1 (mp3cut.net).wav</AudioFile>
+											<MediaIDList>
+												<MediaID ID="343862084"/>
+											</MediaIDList>
+										</AudioFileSource>
 									</ChildrenList>
-								</RandomSequenceContainer>
+									<ActiveSourceList>
+										<ActiveSource Name="seed1 (mp3cut_net)" ID="{38D92350-A148-47C3-BE22-780EF35C188B}" Platform="Linked"/>
+									</ActiveSourceList>
+								</Sound>
 							</ChildrenList>
 						</Folder>
 					</ChildrenList>

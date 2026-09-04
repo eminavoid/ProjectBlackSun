@@ -18,23 +18,23 @@ Switch	ID	Name	Switch Group			Notes
 	4050929301	Materials	ResourceType			
 
 In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
-	84805321	Materials_Hammer	.cache\D7\{D73F9B2C-F442-4E83-D8DC-859BB1486296}.wem		\Containers\Default Work Unit\UI\ResourceIcons\ResourceIcon_Click\Materials_Hammer		216240
-	110163737	Secrets_Shh	.cache\1E\{1E3A15EC-0774-55F1-BC64-6B7A11661331}.wem		\Containers\Default Work Unit\UI\ResourceIcons\ResourceIcon_Click\Secrets_Shh		363432
-	191446474	click	.cache\AA\{AAF132D6-1349-091B-A477-8524F12AF2ED}.wem		\Containers\Default Work Unit\UI\Click\Click_Generic\click		77352
-	201427095	Authority_March_04	.cache\7F\{7FE5E0CD-76F5-7A10-F98C-C16DE9DDB433}.wem		\Containers\Default Work Unit\UI\ResourceIcons\ResourceIcon_Click\Authority\Authority_March_04		130664
-	291359590	Authority_March_03	.cache\D2\{D2AAF1F2-778F-4D6A-FD2C-D28DE1762A62}.wem		\Containers\Default Work Unit\UI\ResourceIcons\ResourceIcon_Click\Authority\Authority_March_03		185764
-	293503004	EventPopup_Paper	.cache\17\{1701F1F2-5214-F60A-2804-A32C14F4F093}.wem		\Containers\Default Work Unit\UI\Events\EventPopup_Paper		141496
-	331828716	Slimy	.cache\F8\{F88C254F-AEB6-05C7-705D-654DD9C79DE2}.wem		\Containers\Default Work Unit\UI\Feedback\Slimy		779080
-	339411233	MenuOpen_Stone	.cache\AA\{AA2189DB-1787-28E3-F741-602C2C5C48A5}.wem		\Containers\Default Work Unit\UI\Menus\MenuOpen_Stone		97252
-	385529597	Authority_March_02	.cache\A0\{A096BABA-2398-6C49-D049-D3B2DD61626C}.wem		\Containers\Default Work Unit\UI\ResourceIcons\ResourceIcon_Click\Authority\Authority_March_02		188820
-	418679705	Gold_Coins	.cache\A5\{A5A7E2C6-E6D1-5A4D-56EA-77D2583B8EA1}.wem		\Containers\Default Work Unit\UI\ResourceIcons\ResourceIcon_Click\Gold_Coins		811104
-	425360030	Bliss_Harp	.cache\26\{2661EE58-2483-D872-E01A-3FCF89D18F98}.wem		\Containers\Default Work Unit\UI\ResourceIcons\ResourceIcon_Click\Bliss_Harp		669408
-	486770492	click_05	.cache\7C\{7CEA23BE-EB72-2125-B779-31720B2FAB95}.wem		\Containers\Default Work Unit\UI\Click\Click_Generic\click_05		61612
-	618709796	click_04	.cache\1F\{1F18B7CF-D0CF-AFB1-6752-54C510E7578C}.wem		\Containers\Default Work Unit\UI\Click\Click_Generic\click_04		77436
-	643663808	click_01	.cache\29\{294553E7-E353-3C0B-C5CD-8ADABC9F1D2C}.wem		\Containers\Default Work Unit\UI\Click\Click_Generic\click_01		77364
-	679110554	click_03	.cache\9F\{9FF8EF43-1363-4F1A-950B-45B8F09C73A4}.wem		\Containers\Default Work Unit\UI\Click\Click_Generic\click_03		55632
-	742586315	Flock_Crowd	.cache\37\{3770504F-CE23-E40A-5CE4-591F0BA409DA}.wem		\Containers\Default Work Unit\UI\ResourceIcons\ResourceIcon_Click\Flock_Crowd		479260
-	803979847	Authority_March	.cache\D2\{D23D2F7B-4136-F727-F156-56A812A83B64}.wem		\Containers\Default Work Unit\UI\ResourceIcons\ResourceIcon_Click\Authority\Authority_March		182704
-	889823418	Authority_March_01	.cache\31\{3122B0F5-C499-F373-B10D-F13032837E5F}.wem		\Containers\Default Work Unit\UI\ResourceIcons\ResourceIcon_Click\Authority\Authority_March_01		184732
-	968728685	Faith_Choir	.cache\73\{738A1D01-B57F-BF96-D1CA-A576401F827C}.wem		\Containers\Default Work Unit\UI\ResourceIcons\ResourceIcon_Click\Faith_Choir		444312
+	84805321	Materials_Hammer	.cache\3F\{3FCA73F4-F9E2-B898-B027-6FE942C29AB1}.wem		\Containers\Default Work Unit\UI\ResourceIcons\ResourceIcon_Click\Materials_Hammer		216272
+	110163737	Secrets_Shh	.cache\AC\{AC1F3202-59E3-3F2F-ED5A-4D00967E3AFE}.wem		\Containers\Default Work Unit\UI\ResourceIcons\ResourceIcon_Click\Secrets_Shh		363448
+	191446474	click	.cache\A0\{A00CE5C9-39EF-D0ED-F1DE-B8C3FA62A346}.wem		\Containers\Default Work Unit\UI\Click\Click_Generic\click		77368
+	201427095	Authority_March_04	.cache\16\{16851CD5-A12C-8AED-B058-26299C3755AA}.wem		\Containers\Default Work Unit\UI\ResourceIcons\ResourceIcon_Click\Authority\Authority_March_04		130680
+	291359590	Authority_March_03	.cache\B6\{B62C050A-6CD2-BA27-7FAA-5B25464CBB8D}.wem		\Containers\Default Work Unit\UI\ResourceIcons\ResourceIcon_Click\Authority\Authority_March_03		185780
+	293503004	EventPopup_Paper	.cache\4B\{4B14DBA5-C411-A25E-B39B-E9CC8940C902}.wem		\Containers\Default Work Unit\UI\Events\EventPopup_Paper		141512
+	331828716	Slimy	.cache\7E\{7ED27CF5-76A5-0EB2-0D40-1C77F4591D01}.wem		\Containers\Default Work Unit\UI\Feedback\Slimy		779096
+	339411233	MenuOpen_Stone	.cache\4E\{4E91634B-A1A2-081C-1FCA-4F35BF278D3A}.wem		\Containers\Default Work Unit\UI\Menus\MenuOpen_Stone		97268
+	385529597	Authority_March_02	.cache\2D\{2D394AAA-67CA-0729-5966-4A9F3452B7FA}.wem		\Containers\Default Work Unit\UI\ResourceIcons\ResourceIcon_Click\Authority\Authority_March_02		188836
+	418679705	Gold_Coins	.cache\5C\{5C37D7A2-4A04-91F1-D399-36124CA9F806}.wem		\Containers\Default Work Unit\UI\ResourceIcons\ResourceIcon_Click\Gold_Coins		811120
+	425360030	Bliss_Harp	.cache\8A\{8AE578E0-C27A-B882-1E20-A30D88139219}.wem		\Containers\Default Work Unit\UI\ResourceIcons\ResourceIcon_Click\Bliss_Harp		669424
+	486770492	click_05	.cache\B5\{B5BBC747-1C49-8403-278C-30C1E64A3EB8}.wem		\Containers\Default Work Unit\UI\Click\Click_Generic\click_05		61628
+	618709796	click_04	.cache\57\{579EBE56-9C6C-D816-9ABC-735D73C41C01}.wem		\Containers\Default Work Unit\UI\Click\Click_Generic\click_04		77452
+	643663808	click_01	.cache\45\{45138EB3-9670-C2E1-89AF-45E98081222C}.wem		\Containers\Default Work Unit\UI\Click\Click_Generic\click_01		77380
+	679110554	click_03	.cache\E5\{E50FF95D-DB66-EA24-887C-F9FB8793F1EB}.wem		\Containers\Default Work Unit\UI\Click\Click_Generic\click_03		55648
+	742586315	Flock_Crowd	.cache\10\{10BD24AB-00EB-35D5-AA5E-958133B9B3A7}.wem		\Containers\Default Work Unit\UI\ResourceIcons\ResourceIcon_Click\Flock_Crowd		479276
+	803979847	Authority_March	.cache\30\{30C30012-D4F8-38C9-F02A-A15D3850C1E2}.wem		\Containers\Default Work Unit\UI\ResourceIcons\ResourceIcon_Click\Authority\Authority_March		182720
+	889823418	Authority_March_01	.cache\C7\{C764501B-F260-AFFB-147F-C53576CACE2D}.wem		\Containers\Default Work Unit\UI\ResourceIcons\ResourceIcon_Click\Authority\Authority_March_01		184748
+	968728685	Faith_Choir	.cache\EA\{EA4DEED4-97C8-731D-636A-10C61DD4F7C0}.wem		\Containers\Default Work Unit\UI\ResourceIcons\ResourceIcon_Click\Faith_Choir		444328
 

@@ -93,6 +93,11 @@ public class SeedEventManager : Singleton<SeedEventManager>
 
         SetOptionsWindowVisibility(true);
         CreateSeedOptionsInCanvas(seedEvents.Dequeue());
+
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayEventPopup();
+        }
     }
 
     private void CreateSeedOptionsInCanvas(Seed seed)
