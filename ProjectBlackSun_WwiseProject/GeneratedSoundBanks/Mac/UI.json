@@ -10,7 +10,7 @@
     "Type": "User",
     "GUID": "{87650D7E-134E-4921-881A-FE8CF49829E8}",
     "Language": "SFX",
-    "Hash": "{1D57378C-665A-DB04-CC34-C700953C742F}",
+    "Hash": "{2C6231BC-891D-4989-71BA-F009C75E8578}",
     "ObjectPath": "\\SoundBanks\\Default Work Unit\\UI",
     "ShortName": "UI",
     "Path": "UI.bnk",
@@ -183,8 +183,8 @@
       "ObjectPath": "\\Events\\Default Work Unit\\Play_UI_Click_Card",
       "GUID": "{9DAB172F-9E3D-458A-B050-0A6A31EC1070}",
       "DurationType": "OneShot",
-      "DurationMin": "0.8556656",
-      "DurationMax": "1.0175637",
+      "DurationMin": "0.8807385",
+      "DurationMax": "1.0473806",
       "MediaRefs": [
        {
         "Id": "689246954"
@@ -429,6 +429,6 @@
     ]
    }
   ],
-  "FileHash": "{3381DE81-2AAF-B19C-4A31-15A85FB687D9}"
+  "FileHash": "{B3EC6688-4F1D-374B-E24B-3EFF48E236C8}"
  }
 }
