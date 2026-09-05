@@ -1,6 +1,9 @@
 Event	ID	Name			Wwise Object Path	Notes
 	1900583491	Play_UI_SeedPlant			\Default Work Unit\Play_UI_SeedPlant	
+	2613978525	Play_World_DistrictClick			\Default Work Unit\Play_World_DistrictClick	
 
 In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
-	343862084	Seed	.cache\7F\{7F574929-7A19-95F8-057E-E8BE3629E7DE}.wem		\Containers\Default Work Unit\World\Map\Seed		88794
+	169696593	gente	.cache\05\{05795800-4172-9A9D-5808-DF447BF3AB6C}.wem		\Containers\Default Work Unit\World\Map\Districts\gente		505292
+	267750301	gente_01	.cache\2C\{2CCDF6DF-08B5-5087-B420-84273D2D498C}.wem		\Containers\Default Work Unit\World\Map\Districts\gente_01		501852
+	343862084	Seed	.cache\B5\{B56C772F-B466-075C-6257-6A2C613D74FA}.wem		\Containers\Default Work Unit\World\Map\Seed		88794
 

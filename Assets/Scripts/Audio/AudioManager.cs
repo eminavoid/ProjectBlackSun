@@ -14,6 +14,8 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private string eventPopupEvent = "Play_UI_EventPopup";
     [SerializeField] private string menuOpenEvent = "Play_UI_MenuOpen";
     [SerializeField] private string seedPlantEvent = "Play_UI_SeedPlant";
+    [SerializeField] private string districtClickEvent = "Play_World_DistrictClick";
+    [SerializeField] private string cardClickEvent = "Play_UI_Click_Card";
 
     [Header("Wwise Switch Group")]
     [SerializeField] private string resourceTypeSwitchGroup = "ResourceType";
@@ -95,5 +97,25 @@ public class AudioManager : MonoBehaviour
             return;
         }
         AkSoundEngine.PostEvent(seedPlantEvent, UIEmitter);
+    }
+    
+    public void PlayDistrictClick()
+    {
+        if (UIEmitter == null)
+        {
+            Debug.LogWarning("AudioManager: UIEmitter is not assigned. Assign the UI_AudioEmitter GameObject in the Inspector.");
+            return;
+        }
+        AkSoundEngine.PostEvent(districtClickEvent, UIEmitter);
+    }
+
+    public void PlayCardClick()
+    {
+        if (UIEmitter == null)
+        {
+            Debug.LogWarning("AudioManager: UIEmitter is not assigned. Assign the UI_AudioEmitter GameObject in the Inspector.");
+            return;
+        }
+        AkSoundEngine.PostEvent(cardClickEvent, UIEmitter);
     }
 }

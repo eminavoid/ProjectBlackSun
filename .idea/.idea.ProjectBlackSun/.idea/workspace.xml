@@ -5,13 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a42c9136-0aac-4f8a-91a6-2854c1038143" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SceneClone.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SceneClone.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/AudioManager.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/AudioManager.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Districts/DistrictSeedPlantPanel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Districts/DistrictSeedPlantPanel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Singleton/SeedEventManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Singleton/SeedEventManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UIClickSound.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UIClickSound.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.ProjectBlackSun/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ProjectBlackSun/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Audio/AudioManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Audio/AudioManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Districts/DistrictSelectionController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Districts/DistrictSelectionController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Doctrines/DoctrinesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Doctrines/DoctrinesController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Unlocks/Unlockable Option.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Unlocks/Unlockable Option.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/Containers/Default Work Unit.wwu" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/Containers/Default Work Unit.wwu" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/Events/Default Work Unit.wwu" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/Events/Default Work Unit.wwu" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/GeneratedSoundBanks/Mac/Gameplay.bnk" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/GeneratedSoundBanks/Mac/Gameplay.bnk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/GeneratedSoundBanks/Mac/Gameplay.json" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/GeneratedSoundBanks/Mac/Gameplay.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/GeneratedSoundBanks/Mac/Gameplay.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/GeneratedSoundBanks/Mac/Gameplay.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/GeneratedSoundBanks/Mac/UI.bnk" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/GeneratedSoundBanks/Mac/UI.bnk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/GeneratedSoundBanks/Mac/UI.json" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/GeneratedSoundBanks/Mac/UI.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/GeneratedSoundBanks/Mac/UI.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/GeneratedSoundBanks/Mac/UI.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/GeneratedSoundBanks/Windows/Gameplay.bnk" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/GeneratedSoundBanks/Windows/Gameplay.bnk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/GeneratedSoundBanks/Windows/Gameplay.json" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/GeneratedSoundBanks/Windows/Gameplay.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/GeneratedSoundBanks/Windows/Gameplay.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/GeneratedSoundBanks/Windows/Gameplay.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/GeneratedSoundBanks/Windows/UI.bnk" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/GeneratedSoundBanks/Windows/UI.bnk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/GeneratedSoundBanks/Windows/UI.json" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/GeneratedSoundBanks/Windows/UI.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/GeneratedSoundBanks/Windows/UI.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/GeneratedSoundBanks/Windows/UI.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/GeneratedSoundBanks/Wwise_IDs.h" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/GeneratedSoundBanks/Wwise_IDs.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/SoundBanks/Default Work Unit.wwu" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectBlackSun_WwiseProject/SoundBanks/Default Work Unit.wwu" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,7 +120,7 @@
       <workItem from="1788306486876" duration="1497000" />
       <workItem from="1788504074347" duration="412000" />
       <workItem from="1788504501532" duration="2515000" />
-      <workItem from="1788563051418" duration="704000" />
+      <workItem from="1788563051418" duration="1975000" />
     </task>
     <servers />
   </component>

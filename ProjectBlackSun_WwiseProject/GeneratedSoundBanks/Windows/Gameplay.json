@@ -10,18 +10,34 @@
     "Type": "User",
     "GUID": "{F9E3C8AA-A049-4218-A43F-69743DC98A74}",
     "Language": "SFX",
-    "Hash": "{C6EB6AE7-4FE5-C9F5-A138-5D6770FE5D1A}",
+    "Hash": "{1EF8A2D9-70CC-DFC6-CA2B-96BF5565A9FA}",
     "ObjectPath": "\\SoundBanks\\Default Work Unit\\Gameplay",
     "ShortName": "Gameplay",
     "Path": "Gameplay.bnk",
     "Media": [
+     {
+      "Id": "169696593",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "gente.wav",
+      "CachePath": "05/{05795800-4172-9A9D-5808-DF447BF3AB6C}.wem"
+     },
+     {
+      "Id": "267750301",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "gente.wav",
+      "CachePath": "2C/{2CCDF6DF-08B5-5087-B420-84273D2D498C}.wem"
+     },
      {
       "Id": "343862084",
       "Language": "SFX",
       "Streaming": "false",
       "Location": "Memory",
       "ShortName": "seed1 (mp3cut.net).wav",
-      "CachePath": "7F/{7F574929-7A19-95F8-057E-E8BE3629E7DE}.wem"
+      "CachePath": "B5/{B56C772F-B466-075C-6257-6A2C613D74FA}.wem"
      }
     ],
     "Events": [
@@ -38,10 +54,27 @@
         "Id": "343862084"
        }
       ]
+     },
+     {
+      "Id": "2613978525",
+      "Name": "Play_World_DistrictClick",
+      "ObjectPath": "\\Events\\Default Work Unit\\Play_World_DistrictClick",
+      "GUID": "{CD92A296-9643-459D-8C02-58EB9D268E1D}",
+      "DurationType": "OneShot",
+      "DurationMin": "2.534001",
+      "DurationMax": "3.2145405",
+      "MediaRefs": [
+       {
+        "Id": "169696593"
+       },
+       {
+        "Id": "267750301"
+       }
+      ]
      }
     ]
    }
   ],
-  "FileHash": "{70BC5C90-8EC0-ECC1-D203-C4A611791ED7}"
+  "FileHash": "{E4CD6AA3-2049-6FC5-6230-B05AE51C31E1}"
  }
 }

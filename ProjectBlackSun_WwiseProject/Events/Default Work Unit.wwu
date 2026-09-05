@@ -69,6 +69,28 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Event Name="Play_World_DistrictClick" ID="{CD92A296-9643-459D-8C02-58EB9D268E1D}">
+					<ChildrenList>
+						<Action Name="" ID="{8A886F44-35A2-4A58-A5FB-26BACA20FC62}" ShortID="1031073662">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Districts" ID="{F815897C-69FA-4D55-B5C3-E3FBC0FEB802}" WorkUnitID="{85ECF510-36BD-49F2-8F1A-496BB22358A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_UI_Click_Card" ID="{9DAB172F-9E3D-458A-B050-0A6A31EC1070}">
+					<ChildrenList>
+						<Action Name="" ID="{143B7452-1176-4441-AAAB-504E3BA59CDA}" ShortID="877673250">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Cards" ID="{4F6528C7-F6B3-4A59-92F6-7589A4EA628C}" WorkUnitID="{85ECF510-36BD-49F2-8F1A-496BB22358A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

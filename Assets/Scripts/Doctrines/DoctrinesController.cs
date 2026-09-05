@@ -95,6 +95,10 @@ public class DoctrinesController : MonoBehaviour
             Doctrine doctrine = stats.DoctrineInventory[i];
 
             clickBox.onClick.AddListener(() => OnDoctrineSelected(doctrine));
+            clickBox.onClick.AddListener(() =>
+            {
+                if (AudioManager.Instance != null) AudioManager.Instance.PlayCardClick();
+            });
         }
     }
 
@@ -248,6 +252,10 @@ public class DoctrinesController : MonoBehaviour
         slotWindow.TryGetElement<TextMeshProUGUI>("Description").text = doctrine.Description;
 
         clickbox.onClick.AddListener(() => RemoveDoctrine(doctrine));
+        clickbox.onClick.AddListener(() =>
+        {
+            if (AudioManager.Instance != null) AudioManager.Instance.PlayCardClick();
+        });
 
         doctrineSlots.Add(new DoctrineSlot(slotWindow, doctrine));
     }

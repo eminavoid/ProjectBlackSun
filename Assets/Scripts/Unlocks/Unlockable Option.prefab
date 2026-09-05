@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1394031796806285006}
   - component: {fileID: 3428690517512156393}
   - component: {fileID: 4775137323814725144}
+  - component: {fileID: 5861157906654608855}
   m_Layer: 5
   m_Name: Unlockable Option
   m_TagString: Untagged
@@ -150,6 +151,18 @@ MonoBehaviour:
   window: {fileID: 1394031796806285006}
   <Name>k__BackingField: Clickbox
   <Element>k__BackingField: {fileID: 3428690517512156393}
+--- !u!114 &5861157906654608855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1031141646598083602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e4eaba908a135f41a3680ffd3c801fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CardClickSound
 --- !u!1 &2666938531229785731
 GameObject:
   m_ObjectHideFlags: 0

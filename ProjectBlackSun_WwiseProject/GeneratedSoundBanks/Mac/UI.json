@@ -10,7 +10,7 @@
     "Type": "User",
     "GUID": "{87650D7E-134E-4921-881A-FE8CF49829E8}",
     "Language": "SFX",
-    "Hash": "{E12332E2-E323-8917-8646-0897397C4047}",
+    "Hash": "{1D57378C-665A-DB04-CC34-C700953C742F}",
     "ObjectPath": "\\SoundBanks\\Default Work Unit\\UI",
     "ShortName": "UI",
     "Path": "UI.bnk",
@@ -136,6 +136,14 @@
       "CachePath": "E5/{E50FF95D-DB66-EA24-887C-F9FB8793F1EB}.wem"
      },
      {
+      "Id": "689246954",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "card (mp3cut.net).wav",
+      "CachePath": "68/{682545B5-9568-8022-316D-2DBD7629E922}.wem"
+     },
+     {
       "Id": "742586315",
       "Language": "SFX",
       "Streaming": "false",
@@ -169,6 +177,20 @@
      }
     ],
     "Events": [
+     {
+      "Id": "1303835618",
+      "Name": "Play_UI_Click_Card",
+      "ObjectPath": "\\Events\\Default Work Unit\\Play_UI_Click_Card",
+      "GUID": "{9DAB172F-9E3D-458A-B050-0A6A31EC1070}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.8556656",
+      "DurationMax": "1.0175637",
+      "MediaRefs": [
+       {
+        "Id": "689246954"
+       }
+      ]
+     },
      {
       "Id": "1757779431",
       "Name": "Play_UI_Click_Generic",
@@ -407,6 +429,6 @@
     ]
    }
   ],
-  "FileHash": "{619A8F4D-75DA-2697-03F5-EEC83D1C641C}"
+  "FileHash": "{3381DE81-2AAF-B19C-4A31-15A85FB687D9}"
  }
 }

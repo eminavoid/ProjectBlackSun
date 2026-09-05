@@ -997,6 +997,7 @@ GameObject:
   - component: {fileID: 211345396}
   - component: {fileID: 211345395}
   - component: {fileID: 211345398}
+  - component: {fileID: 211345399}
   m_Layer: 5
   m_Name: seedItemButtonPrefab
   m_TagString: Untagged
@@ -1124,6 +1125,18 @@ MonoBehaviour:
   descriptionText: {fileID: 965053653}
   iconImage: {fileID: 2143880140}
   selectedPrefix: '> '
+--- !u!114 &211345399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 211345393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20ccf1b5a53f50d4eb2d788887cbd352, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIClickSound
 --- !u!1 &254152495
 GameObject:
   m_ObjectHideFlags: 0
@@ -6501,6 +6514,9 @@ MonoBehaviour:
   resourceIconClickEvent: Play_UI_ResourceIcon
   eventPopupEvent: Play_UI_EventPopup
   menuOpenEvent: Play_UI_MenuOpen
+  seedPlantEvent: Play_UI_SeedPlant
+  districtClickEvent: Play_World_DistrictClick
+  cardClickEvent: Play_UI_Click_Card
   resourceTypeSwitchGroup: ResourceType
 --- !u!114 &1535116673
 MonoBehaviour:

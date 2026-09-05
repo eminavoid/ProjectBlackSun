@@ -1,5 +1,6 @@
 Event	ID	Name			Wwise Object Path	Notes
 	1188404357	Play_UI_X			\Default Work Unit\Play_UI_X	
+	1303835618	Play_UI_Click_Card			\Default Work Unit\Play_UI_Click_Card	
 	1757779431	Play_UI_Click_Generic			\Default Work Unit\Play_UI_Click_Generic	
 	2292035624	Play_UI_ResourceIcon			\Default Work Unit\Play_UI_ResourceIcon	
 	2491688701	Play_UI_EventPopup			\Default Work Unit\Play_UI_EventPopup	
@@ -33,6 +34,7 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	618709796	click_04	.cache\57\{579EBE56-9C6C-D816-9ABC-735D73C41C01}.wem		\Containers\Default Work Unit\UI\Click\Click_Generic\click_04		77452
 	643663808	click_01	.cache\45\{45138EB3-9670-C2E1-89AF-45E98081222C}.wem		\Containers\Default Work Unit\UI\Click\Click_Generic\click_01		77380
 	679110554	click_03	.cache\E5\{E50FF95D-DB66-EA24-887C-F9FB8793F1EB}.wem		\Containers\Default Work Unit\UI\Click\Click_Generic\click_03		55648
+	689246954	Cards	.cache\68\{682545B5-9568-8022-316D-2DBD7629E922}.wem		\Containers\Default Work Unit\UI\Click\Cards		164696
 	742586315	Flock_Crowd	.cache\10\{10BD24AB-00EB-35D5-AA5E-958133B9B3A7}.wem		\Containers\Default Work Unit\UI\ResourceIcons\ResourceIcon_Click\Flock_Crowd		479276
 	803979847	Authority_March	.cache\30\{30C30012-D4F8-38C9-F02A-A15D3850C1E2}.wem		\Containers\Default Work Unit\UI\ResourceIcons\ResourceIcon_Click\Authority\Authority_March		182720
 	889823418	Authority_March_01	.cache\C7\{C764501B-F260-AFFB-147F-C53576CACE2D}.wem		\Containers\Default Work Unit\UI\ResourceIcons\ResourceIcon_Click\Authority\Authority_March_01		184748

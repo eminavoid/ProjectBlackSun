@@ -172,6 +172,11 @@ public class DistrictSelectionController : MonoBehaviour
         SetSelectedDistrict(zone.District, zone, zone.name, partColorName);
         RegisterZoneClick(zone);
 
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayDistrictClick();
+        }
+
         if (verboseLogs)
         {
             Debug.Log(FormatSelectionLog(zone.District, partColorName, zone.name, colorMapping), this);
