@@ -91,6 +91,17 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Event Name="Play_MUS_Background" ID="{7BF9012B-547D-4143-A42C-CDB86E6154AD}">
+					<ChildrenList>
+						<Action Name="" ID="{A002B49F-10D0-44D7-A245-EA96750A69B1}" ShortID="514621457">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Background Music" ID="{95735EA7-78D3-460D-86A0-0791E397EB74}" WorkUnitID="{85ECF510-36BD-49F2-8F1A-496BB22358A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

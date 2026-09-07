@@ -10,7 +10,7 @@
     "Type": "User",
     "GUID": "{F9E3C8AA-A049-4218-A43F-69743DC98A74}",
     "Language": "SFX",
-    "Hash": "{1EF8A2D9-70CC-DFC6-CA2B-96BF5565A9FA}",
+    "Hash": "{6AC9E324-D95B-96A6-7A80-57FFFF527AC6}",
     "ObjectPath": "\\SoundBanks\\Default Work Unit\\Gameplay",
     "ShortName": "Gameplay",
     "Path": "Gameplay.bnk",
@@ -21,7 +21,7 @@
       "Streaming": "false",
       "Location": "Memory",
       "ShortName": "gente.wav",
-      "CachePath": "05/{05795800-4172-9A9D-5808-DF447BF3AB6C}.wem"
+      "CachePath": "61/{61705018-E915-EE43-CE97-37BB1AD79935}.wem"
      },
      {
       "Id": "267750301",
@@ -29,7 +29,7 @@
       "Streaming": "false",
       "Location": "Memory",
       "ShortName": "gente.wav",
-      "CachePath": "2C/{2CCDF6DF-08B5-5087-B420-84273D2D498C}.wem"
+      "CachePath": "C7/{C7B2D7B6-39EF-F21A-8A87-D17F7FF7AB87}.wem"
      },
      {
       "Id": "343862084",
@@ -37,7 +37,7 @@
       "Streaming": "false",
       "Location": "Memory",
       "ShortName": "seed1 (mp3cut.net).wav",
-      "CachePath": "B5/{B56C772F-B466-075C-6257-6A2C613D74FA}.wem"
+      "CachePath": "6E/{6E9FAA38-ABC9-5351-B768-DC3460B7B7DA}.wem"
      }
     ],
     "Events": [
@@ -75,6 +75,6 @@
     ]
    }
   ],
-  "FileHash": "{E4CD6AA3-2049-6FC5-6230-B05AE51C31E1}"
+  "FileHash": "{0B21C51D-008A-1B56-829F-F0CA1E6F922B}"
  }
 }

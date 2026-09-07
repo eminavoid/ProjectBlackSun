@@ -1,0 +1,78 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Mac",
+  "BasePlatform": "Mac",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "3991942870",
+    "Type": "User",
+    "GUID": "{1B9A2F9A-7D50-4642-9770-EB99E5B56759}",
+    "Language": "SFX",
+    "Hash": "{DFEE66D6-8177-6DF8-0A7E-5D6E89EFCFB5}",
+    "ObjectPath": "\\SoundBanks\\Default Work Unit\\Music",
+    "ShortName": "Music",
+    "Path": "Music.bnk",
+    "Media": [
+     {
+      "Id": "240540494",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Shores-of-Avalon-Mystical-Music-_-No-Copyright-Music-_.wav",
+      "CachePath": "D8/{D85A36E6-3157-3EA9-5C21-595634DB4A49}.wem"
+     },
+     {
+      "Id": "300985840",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Long-Road-Ahead-Mystical-Music-_-No-Copyright-Music-_.wav",
+      "CachePath": "E9/{E9837508-75B2-BF72-1AFA-DBFDF31D4BBA}.wem"
+     },
+     {
+      "Id": "509945871",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Myst-On-The-Moor-Mystical-Music-_-No-Copyright-Music-_.wav",
+      "CachePath": "A4/{A47E0F3D-AD7F-0963-403C-3F5109214841}.wem"
+     },
+     {
+      "Id": "792271371",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Promise-Mystical-Music-_-No-Copyright-Music-_.wav",
+      "CachePath": "14/{14347F6C-F616-0796-A5AF-427C6215527F}.wem"
+     }
+    ],
+    "Events": [
+     {
+      "Id": "3649554266",
+      "Name": "Play_MUS_Background",
+      "ObjectPath": "\\Events\\Default Work Unit\\Play_MUS_Background",
+      "GUID": "{7BF9012B-547D-4143-A42C-CDB86E6154AD}",
+      "DurationType": "Infinite",
+      "MediaRefs": [
+       {
+        "Id": "240540494"
+       },
+       {
+        "Id": "300985840"
+       },
+       {
+        "Id": "509945871"
+       },
+       {
+        "Id": "792271371"
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "FileHash": "{4B4AB4F4-1727-0282-EFB3-27D86367201A}"
+ }
+}

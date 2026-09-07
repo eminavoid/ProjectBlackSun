@@ -3,7 +3,7 @@ Event	ID	Name			Wwise Object Path	Notes
 	2613978525	Play_World_DistrictClick			\Default Work Unit\Play_World_DistrictClick	
 
 In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
-	169696593	gente	.cache\05\{05795800-4172-9A9D-5808-DF447BF3AB6C}.wem		\Containers\Default Work Unit\World\Map\Districts\gente		505292
-	267750301	gente_01	.cache\2C\{2CCDF6DF-08B5-5087-B420-84273D2D498C}.wem		\Containers\Default Work Unit\World\Map\Districts\gente_01		501852
-	343862084	Seed	.cache\B5\{B56C772F-B466-075C-6257-6A2C613D74FA}.wem		\Containers\Default Work Unit\World\Map\Seed		88794
+	169696593	gente	.cache\61\{61705018-E915-EE43-CE97-37BB1AD79935}.wem		\Containers\Default Work Unit\SFX\World\Map\Districts\gente		38435
+	267750301	gente_01	.cache\C7\{C7B2D7B6-39EF-F21A-8A87-D17F7FF7AB87}.wem		\Containers\Default Work Unit\SFX\World\Map\Districts\gente_01		42064
+	343862084	Seed	.cache\6E\{6E9FAA38-ABC9-5351-B768-DC3460B7B7DA}.wem		\Containers\Default Work Unit\SFX\World\Map\Seed		9910
 

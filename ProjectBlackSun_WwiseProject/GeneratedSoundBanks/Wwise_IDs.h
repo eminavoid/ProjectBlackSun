@@ -13,6 +13,7 @@ namespace AK
 {
     namespace EVENTS
     {
+        static const AkUniqueID PLAY_MUS_BACKGROUND = 3649554266U;
         static const AkUniqueID PLAY_UI_CLICK_CARD = 1303835618U;
         static const AkUniqueID PLAY_UI_CLICK_GENERIC = 1757779431U;
         static const AkUniqueID PLAY_UI_EVENTPOPUP = 2491688701U;
@@ -43,10 +44,17 @@ namespace AK
 
     } // namespace SWITCHES
 
+    namespace GAME_PARAMETERS
+    {
+        static const AkUniqueID MUSIC_VOLUME = 1006694123U;
+        static const AkUniqueID SFX_VOLUME = 1564184899U;
+    } // namespace GAME_PARAMETERS
+
     namespace BANKS
     {
         static const AkUniqueID INIT = 1355168291U;
         static const AkUniqueID GAMEPLAY = 89505537U;
+        static const AkUniqueID MUSIC = 3991942870U;
         static const AkUniqueID UI = 1551306167U;
     } // namespace BANKS
 
