@@ -12,6 +12,8 @@ public class ResourceManager : Singleton<ResourceManager>
     [SerializeField] private int startFlock;
     [SerializeField] private int startAuthority;
     [SerializeField] private int startHappiness = 100;
+    [SerializeField] private int startMaterials;
+    [SerializeField] private int startSecrets;
 
     [Header("Modifiers")]
     [SerializeField] private float tithe = 0.5f;
@@ -35,6 +37,8 @@ public class ResourceManager : Singleton<ResourceManager>
         playerResources.AddResource(Resource.Flock, startFlock);
         playerResources.AddResource(Resource.Authority, startAuthority);
         playerResources.AddResource(Resource.Happiness, startHappiness);
+        playerResources.AddResource(Resource.Materials, startMaterials);
+        playerResources.AddResource(Resource.Secrets, startSecrets);
 
         resourceWindow = Instantiate(uiWindow, GlobalReferences.ScreenCanvas.transform);
 
