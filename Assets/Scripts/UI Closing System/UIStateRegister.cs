@@ -14,11 +14,12 @@ public class UIStateRegister : MonoBehaviour
 
     public void OnUIOpened(string ID)
     {
+        if (id == ID) return; //  avoid stack overflow, can sitll happen with circular dependency tho....
+
         if (closedByIDS.Contains(ID))
         {
             onClose?.Invoke();
             gameObject.SetActive(false);
-            UIStateController.MenuOpened(this);
         }
     }
 
@@ -30,5 +31,10 @@ public class UIStateRegister : MonoBehaviour
     private void OnDisable()
     {
         onClose?.Invoke();
+    }
+
+    private void OnEnable()
+    {
+        UIStateController.MenuOpened(this);
     }
 }
