@@ -6,7 +6,7 @@ public class UIStateRegister : MonoBehaviour
 {
     [SerializeField] private string id;
 
-    [SerializeField] private List<string> closedByIDs;
+    [SerializeField] private List<string> closedByIDS;
 
     [SerializeField] private UnityEvent onClose;
 
@@ -14,7 +14,7 @@ public class UIStateRegister : MonoBehaviour
 
     public void OnUIOpened(string ID)
     {
-        if (closedByIDs.Contains(ID))
+        if (closedByIDS.Contains(ID))
         {
             onClose?.Invoke();
             gameObject.SetActive(false);
