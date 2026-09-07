@@ -22,9 +22,13 @@ public class UIStateRegister : MonoBehaviour
         }
     }
 
+    private void Awake()
+    {
+        UIStateController.Register(this);
+    }
+
     private void OnDisable()
     {
         onClose?.Invoke();
-        UIStateController.MenuOpened(this);
     }
 }
