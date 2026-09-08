@@ -37,15 +37,21 @@ public class MapContextMenuView
 /// </summary>
 public static class MapStatsUiBuilder
 {
+    private const string UiFontResourcePath = "Fonts & Materials/LiberationSans SDF";
+
     public static readonly Color PanelColor = new Color(0.07f, 0.08f, 0.1f, 0.94f);
     public static readonly Color HeaderColor = new Color(0.12f, 0.13f, 0.16f, 1f);
     public static readonly Color TabIdleColor = new Color(0.16f, 0.17f, 0.2f, 1f);
     public static readonly Color TabSelectedColor = new Color(0.38f, 0.18f, 0.48f, 1f);
     public static readonly Color RowColor = new Color(0.11f, 0.12f, 0.15f, 1f);
     public static readonly Color ButtonColor = new Color(0.22f, 0.23f, 0.28f, 1f);
+    public static readonly Color BodyTextColor = new Color(0.92f, 0.93f, 0.94f, 1f);
+
+    private static TMP_FontAsset uiFont;
 
     public static MapStatsWindowView BindWindow(GameObject root)
     {
+        ApplyReadableFont(root);
         MapStatsWindowView view = new MapStatsWindowView
         {
             Root = root,
@@ -78,6 +84,7 @@ public static class MapStatsUiBuilder
 
     public static MapContextMenuView BindContextMenu(GameObject root)
     {
+        ApplyReadableFont(root);
         MapContextMenuView view = new MapContextMenuView
         {
             Root = root,
@@ -297,11 +304,11 @@ public static class MapStatsUiBuilder
         GameObject labelGo = CreateUiObject("Label", go.transform);
         Stretch(labelGo.GetComponent<RectTransform>()).offsetMin = new Vector2(2f, 2f);
         labelGo.GetComponent<RectTransform>().offsetMax = new Vector2(-2f, -2f);
-        TextMeshProUGUI tmp = AddTmp(labelGo, 12, TextAlignmentOptions.Center);
+        TextMeshProUGUI tmp = AddTmp(labelGo, 13, TextAlignmentOptions.Center);
         tmp.text = label;
         tmp.enableAutoSizing = true;
-        tmp.fontSizeMin = 9;
-        tmp.fontSizeMax = 13;
+        tmp.fontSizeMin = 11;
+        tmp.fontSizeMax = 14;
         return button;
     }
 
@@ -430,12 +437,12 @@ public static class MapStatsUiBuilder
         LayoutElement nameLe = nameGo.AddComponent<LayoutElement>();
         nameLe.preferredWidth = 140f;
         nameLe.flexibleWidth = 0.6f;
-        AddTmp(nameGo, 14, TextAlignmentOptions.MidlineLeft);
+        AddTmp(nameGo, 15, TextAlignmentOptions.MidlineLeft);
 
         GameObject valueGo = CreateUiObject("Value", go.transform);
         LayoutElement valueLe = valueGo.AddComponent<LayoutElement>();
         valueLe.flexibleWidth = 1f;
-        AddTmp(valueGo, 13, TextAlignmentOptions.MidlineRight);
+        AddTmp(valueGo, 14, TextAlignmentOptions.MidlineRight);
         return go;
     }
 
@@ -459,7 +466,7 @@ public static class MapStatsUiBuilder
 
         GameObject metaGo = CreateUiObject("Meta", go.transform);
         metaGo.AddComponent<LayoutElement>().preferredHeight = 18f;
-        TextMeshProUGUI meta = AddTmp(metaGo, 12, TextAlignmentOptions.MidlineLeft);
+        TextMeshProUGUI meta = AddTmp(metaGo, 13, TextAlignmentOptions.MidlineLeft);
         meta.color = new Color(0.75f, 0.76f, 0.8f);
         return go;
     }
@@ -484,11 +491,11 @@ public static class MapStatsUiBuilder
 
         GameObject controlGo = CreateUiObject("Control", go.transform);
         controlGo.AddComponent<LayoutElement>().preferredHeight = 14f;
-        AddTmp(controlGo, 12, TextAlignmentOptions.MidlineLeft);
+        AddTmp(controlGo, 13, TextAlignmentOptions.MidlineLeft);
 
         GameObject seedGo = CreateUiObject("Seed", go.transform);
         seedGo.AddComponent<LayoutElement>().preferredHeight = 14f;
-        TextMeshProUGUI seed = AddTmp(seedGo, 12, TextAlignmentOptions.MidlineLeft);
+        TextMeshProUGUI seed = AddTmp(seedGo, 13, TextAlignmentOptions.MidlineLeft);
         seed.color = new Color(0.75f, 0.76f, 0.8f);
         return go;
     }
@@ -513,7 +520,7 @@ public static class MapStatsUiBuilder
 
         GameObject controlGo = CreateUiObject("Control", go.transform);
         controlGo.AddComponent<LayoutElement>().preferredHeight = 16f;
-        AddTmp(controlGo, 12, TextAlignmentOptions.MidlineLeft);
+        AddTmp(controlGo, 13, TextAlignmentOptions.MidlineLeft);
         return go;
     }
 
@@ -533,7 +540,7 @@ public static class MapStatsUiBuilder
         le.minHeight = 18f;
         le.preferredHeight = 18f;
         le.flexibleHeight = 0f;
-        TextMeshProUGUI tmp = AddTmp(go, 14, TextAlignmentOptions.TopLeft);
+        TextMeshProUGUI tmp = AddTmp(go, 15, TextAlignmentOptions.TopLeft);
         tmp.textWrappingMode = TextWrappingModes.Normal;
         ContentSizeFitter fitter = go.AddComponent<ContentSizeFitter>();
         fitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
@@ -609,14 +616,48 @@ public static class MapStatsUiBuilder
     {
         TextMeshProUGUI tmp = go.GetComponent<TextMeshProUGUI>();
         if (tmp == null) tmp = go.AddComponent<TextMeshProUGUI>();
+        ApplyReadableFont(tmp);
         tmp.fontSize = size;
         tmp.alignment = align;
-        tmp.color = Color.white;
+        tmp.color = BodyTextColor;
         tmp.raycastTarget = false;
         tmp.textWrappingMode = TextWrappingModes.NoWrap;
         tmp.overflowMode = TextOverflowModes.Ellipsis;
         tmp.text = string.Empty;
         return tmp;
+    }
+
+    private static void ApplyReadableFont(GameObject root)
+    {
+        if (root == null) return;
+        TextMeshProUGUI[] labels = root.GetComponentsInChildren<TextMeshProUGUI>(true);
+        for (int i = 0; i < labels.Length; i++)
+        {
+            ApplyReadableFont(labels[i]);
+        }
+    }
+
+    private static void ApplyReadableFont(TextMeshProUGUI tmp)
+    {
+        if (tmp == null) return;
+
+        TMP_FontAsset font = ResolveUiFont();
+        if (font != null)
+        {
+            tmp.font = font;
+            if (font.material != null) tmp.fontSharedMaterial = font.material;
+        }
+
+        tmp.extraPadding = true;
+        tmp.characterSpacing = 2f;
+        tmp.lineSpacing = 8f;
+    }
+
+    private static TMP_FontAsset ResolveUiFont()
+    {
+        if (uiFont != null) return uiFont;
+        uiFont = Resources.Load<TMP_FontAsset>(UiFontResourcePath);
+        return uiFont;
     }
 
     private static Transform FindChild(Transform root, string name)
