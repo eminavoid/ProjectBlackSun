@@ -4,18 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a42c9136-0aac-4f8a-91a6-2854c1038143" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.ProjectBlackSun/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ProjectBlackSun/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Event Output Window.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Event Output Window.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/OptionDisplay.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/OptionDisplay.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/seedItemButtonPrefab.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/seedItemButtonPrefab.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Audio/AudioManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Audio/AudioManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Doctrines/Doctrine.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Doctrines/Doctrine.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Resources/Resources.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Resources/Resources.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UISystem/ConfigMenuController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UISystem/ConfigMenuController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Unlocks/Unlockable Option.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Unlocks/Unlockable Option.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Top Rect.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Top Rect.prefab" afterDir="false" />
-    </list>
+    <list default="true" id="a42c9136-0aac-4f8a-91a6-2854c1038143" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -26,6 +15,7 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ai.assistant@c0127625258e/Editor/Assistant/RunCommand/AgentRunCommand.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ai.assistant@c0127625258e/Modules/Unity.AI.Toolkit.Accounts/Services/States/ApiAccessibleState.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
@@ -114,7 +104,7 @@
       <workItem from="1788504501532" duration="2515000" />
       <workItem from="1788563051418" duration="2186000" />
       <workItem from="1788826329535" duration="61000" />
-      <workItem from="1788826401698" duration="572000" />
+      <workItem from="1788826401698" duration="1348000" />
     </task>
     <servers />
   </component>
