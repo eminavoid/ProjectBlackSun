@@ -8,7 +8,6 @@ using Zeke.UI;
 
 public class UnlockerMenuTest : MonoBehaviour
 {
-    [SerializeField] private Locked locked;
     [SerializeField] private UIWindow window;
     [SerializeField] private UIWindow windowPrefab;
 
@@ -33,6 +32,11 @@ public class UnlockerMenuTest : MonoBehaviour
     public void GenerateUnlocks()
     {
         CreateWindows(GenerateOptions());
+    }
+
+    private void Start()
+    {
+        window.gameObject.SetActive(false);
     }
 
     private void OnOptionSelected(Unlockeable unlockeable)
@@ -60,7 +64,8 @@ public class UnlockerMenuTest : MonoBehaviour
         for (int i = 0; i < amount; i++)
         {
             Rarity randomRarity = WeightedSelect.SelectElement(drops).rarity;
-            List<Unlockeable> unlockeables = locked.GetRarity(randomRarity);
+
+            List<Unlockeable> unlockeables = UnlockerManager.GetList(UnlockCategory.Seed, randomRarity);
             Unlockeable randomUnlockeable = unlockeables[UnityEngine.Random.Range(0, unlockeables.Count)];
 
             options.Add(randomUnlockeable);

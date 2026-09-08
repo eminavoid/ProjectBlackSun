@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace Zeke.UI
 {
+    [DefaultExecutionOrder(-1)]
     public class UIElement : MonoBehaviour
     {
         [SerializeField] private UIWindow window;

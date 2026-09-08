@@ -12,13 +12,11 @@ public class ResourceManager : Singleton<ResourceManager>
     [SerializeField] private int startFlock;
     [SerializeField] private int startAuthority;
     [SerializeField] private int startHappiness = 100;
+    [SerializeField] private int startMaterials;
+    [SerializeField] private int startSecrets;
 
     [Header("Modifiers")]
     [SerializeField] private float tithe = 0.5f;
-
-    [Header("Passive production")]
-    [SerializeField] private float monthlyWealthPerFlock;
-    [SerializeField] private float monthlyZealPerFlock;
 
     [Header("User Interface")]
     [SerializeField] private UIWindow uiWindow;
@@ -39,6 +37,8 @@ public class ResourceManager : Singleton<ResourceManager>
         playerResources.AddResource(Resource.Flock, startFlock);
         playerResources.AddResource(Resource.Authority, startAuthority);
         playerResources.AddResource(Resource.Happiness, startHappiness);
+        playerResources.AddResource(Resource.Materials, startMaterials);
+        playerResources.AddResource(Resource.Secrets, startSecrets);
 
         resourceWindow = Instantiate(uiWindow, GlobalReferences.ScreenCanvas.transform);
 
@@ -64,12 +64,6 @@ public class ResourceManager : Singleton<ResourceManager>
 
     private void OnTurnEnd()
     {
-        int flock = playerResources.GetResourceAmount(Resource.Flock);
-
-        int wealthGain = Mathf.FloorToInt(monthlyWealthPerFlock * flock * (1 - tithe));
-        int zealGain = Mathf.FloorToInt(monthlyZealPerFlock * flock * tithe);
-
-        playerResources.AddResource(Resource.Wealth, wealthGain);
-        playerResources.AddResource(Resource.Zeal, zealGain);
+        //Nothing
     }
 }
