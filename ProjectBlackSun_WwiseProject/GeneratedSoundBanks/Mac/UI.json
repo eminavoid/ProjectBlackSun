@@ -10,7 +10,7 @@
     "Type": "User",
     "GUID": "{87650D7E-134E-4921-881A-FE8CF49829E8}",
     "Language": "SFX",
-    "Hash": "{BD939E11-4FB8-1C90-9685-D525A5AF8268}",
+    "Hash": "{BF1FBB8B-E33E-C461-3513-254CFA2B38DC}",
     "ObjectPath": "\\SoundBanks\\Default Work Unit\\UI",
     "ShortName": "UI",
     "Path": "UI.bnk",
@@ -38,6 +38,14 @@
       "Location": "Memory",
       "ShortName": "shh.wav",
       "CachePath": "5E/{5E6DDD4E-7535-7664-C723-80D1699ADC41}.wem"
+     },
+     {
+      "Id": "156979451",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Stamp Sound Effect (mp3cut.net).wav",
+      "CachePath": "15/{15F16590-2554-77F0-A2EF-36C51BDDA12D}.wem"
      },
      {
       "Id": "191446474",
@@ -236,6 +244,20 @@
       ]
      },
      {
+      "Id": "254335113",
+      "Name": "Play_UI_Outcome",
+      "ObjectPath": "\\Events\\Default Work Unit\\Play_UI_Outcome",
+      "GUID": "{9FCDE33C-F27C-4CD1-82B1-793A031CF797}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.7032412",
+      "DurationMax": "0.76689",
+      "MediaRefs": [
+       {
+        "Id": "156979451"
+       }
+      ]
+     },
+     {
       "Id": "2292035624",
       "Name": "Play_UI_ResourceIcon",
       "ObjectPath": "\\Events\\Default Work Unit\\Play_UI_ResourceIcon",
@@ -407,6 +429,6 @@
     ]
    }
   ],
-  "FileHash": "{87FDC7B3-E970-D20E-1C92-034FD8471C20}"
+  "FileHash": "{BE2E5501-3A16-CB93-9661-F1C295367733}"
  }
 }

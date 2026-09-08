@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
+  m_Name: CR1
+  m_EditorClassIdentifier: Assembly-CSharp::Seed
+  title: A SURPLUS IN THE CRUCIBLE
+  description: My Pontiff, the Builders' Guild has approached us with an intriguing
+    offer. They are well aware that the primary bottleneck for our projects across
+    the city is a shortage of construction materials. As fate would have it, a clerical
+    error has left them with a massive surplus of these very supplies. They are eager
+    to sell, and it may wise for us to buy them out before a rival sect seizes the
+    opportunity instead.
+  icon: {fileID: 0}
+  ticks: 1
+  eventType: 0
+  difficulty: 0
+  <Options>k__BackingField:
+  - {fileID: 11400000, guid: cf58d35f4ccbb2a4387251dc860f7553, type: 2}
+  - {fileID: 11400000, guid: d4e9ff8d9e8f5544fb95e3ff8bec2cbb, type: 2}
+  - {fileID: 11400000, guid: 91e3fe40fe7c61b46864956d261654d4, type: 2}
+  - {fileID: 11400000, guid: a9c8c990336b41547b10a2940297e6a0, type: 2}

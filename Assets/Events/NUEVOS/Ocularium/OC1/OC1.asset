@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
+  m_Name: OC1
+  m_EditorClassIdentifier: Assembly-CSharp::Seed
+  title: THE YOUNG PREACHER
+  description: My Pontiff, a young acolyte from one of our temples has expressed
+    a fervent desire to deliver a sermon himself. While highly irregular, the cleric
+    overseeing the lad vouches for his rhetorical talent and an unusually profound
+    grasp of our scripture. What shall we do with the boy?
+  icon: {fileID: 0}
+  ticks: 1
+  eventType: 0
+  difficulty: 0
+  <Options>k__BackingField:
+  - {fileID: 11400000, guid: 21e338bb7f329fa43a2f5bda4ace37d6, type: 2}
+  - {fileID: 11400000, guid: 8e2c47380c453a24eaf7590b474cd24e, type: 2}
+  - {fileID: 11400000, guid: dd3c96fdc8bc050478218c764e44aaa6, type: 2}
+  - {fileID: 11400000, guid: 1d98a3675bf017b4c9efa3225bb51fc2, type: 2}

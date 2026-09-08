@@ -1,6 +1,9 @@
 using System.Collections;
 using UnityEngine;
 using System;
+#if ENABLE_INPUT_SYSTEM
+using UnityEngine.InputSystem;
+#endif
 
 public class GameTime : Singleton<GameTime>
 {
@@ -13,6 +16,27 @@ public class GameTime : Singleton<GameTime>
     public static Action OnTurnStarted;
 
     private static bool processingTurn = false;
+
+    private void Update()
+    {
+#if ENABLE_INPUT_SYSTEM
+        if (Keyboard.current?.escapeKey.wasPressedThisFrame == true)
+#else
+        if (Input.GetKeyDown(KeyCode.Escape))
+#endif
+        {
+            QuitGame();
+        }
+    }
+
+    private static void QuitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+    }
 
     public static void NextTurn()
     {

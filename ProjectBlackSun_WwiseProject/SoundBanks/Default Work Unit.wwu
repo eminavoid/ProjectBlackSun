@@ -11,6 +11,7 @@
 						<ObjectRef Name="Play_UI_Click_Generic" ID="{62956597-BD25-47C5-83B8-D567B5DCEE69}" WorkUnitID="{1EFD0EC7-14A6-4BBA-AFC4-13C2B0F1D017}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Play_UI_ResourceIcon" ID="{045C1454-3079-47D8-ADCD-3A1BD4D478EF}" WorkUnitID="{1EFD0EC7-14A6-4BBA-AFC4-13C2B0F1D017}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Play_UI_EventPopup" ID="{71FDB37C-6317-4A77-B7FC-B14DACC66E33}" WorkUnitID="{1EFD0EC7-14A6-4BBA-AFC4-13C2B0F1D017}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="Play_UI_Outcome" ID="{9FCDE33C-F27C-4CD1-82B1-793A031CF797}" WorkUnitID="{1EFD0EC7-14A6-4BBA-AFC4-13C2B0F1D017}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Play_UI_MenuOpen" ID="{2A0FBF8D-90D3-4F55-9D75-479A414FF6BF}" WorkUnitID="{1EFD0EC7-14A6-4BBA-AFC4-13C2B0F1D017}" Origin="Manual" Filter="7"/>
 					</ObjectInclusionList>
 					<ObjectExclusionList/>

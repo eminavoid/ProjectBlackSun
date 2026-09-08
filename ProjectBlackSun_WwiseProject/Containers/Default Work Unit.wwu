@@ -522,6 +522,52 @@
 												<ActiveSource Name="pluma (mp3cut_net)" ID="{E5BB4F8A-3CDF-464F-A802-3C2EA3C3A8FD}" Platform="Linked"/>
 											</ActiveSourceList>
 										</Sound>
+										<Sound Name="Stamp" ID="{B366F789-5208-4AFA-9364-216D05E63450}" ShortID="168454339">
+											<PropertyList>
+												<Property Name="Pitch" Type="int32">
+													<ValueList>
+														<Value>100</Value>
+													</ValueList>
+													<ModifierList>
+														<ModifierInfo>
+															<Modifier Name="" ID="{5964A10D-D32E-4C75-A87E-16DC56BE1377}">
+																<PropertyList>
+																	<Property Name="Enabled" Type="bool" Value="True"/>
+																	<Property Name="Max" Type="Real64" Value="50"/>
+																	<Property Name="Min" Type="Real64" Value="-100"/>
+																</PropertyList>
+															</Modifier>
+														</ModifierInfo>
+													</ModifierList>
+												</Property>
+											</PropertyList>
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{53BC1063-D44E-4BC8-8599-75E59AC25903}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{5B620076-8548-4615-B6BF-D06492A4D622}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="Stamp Sound Effect (mp3cut_net)" ID="{97CC4219-63E6-4E6A-8603-E086CB2EC2D2}">
+													<PropertyList>
+														<Property Name="FadeOutDuration" Type="Real64" Value="0.61915"/>
+														<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+														<Property Name="TrimBegin" Type="Real64" Value="0.29543"/>
+														<Property Name="TrimEnd" Type="Real64" Value="1.06232"/>
+													</PropertyList>
+													<Language>SFX</Language>
+													<AudioFile>Stamp Sound Effect (mp3cut.net).wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="156979451"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="Stamp Sound Effect (mp3cut_net)" ID="{97CC4219-63E6-4E6A-8603-E086CB2EC2D2}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
 									</ChildrenList>
 								</Folder>
 								<Folder Name="Feedback" ID="{C1F3CB89-079F-4C4D-98F0-5E601C755059}" ShortID="557685601">

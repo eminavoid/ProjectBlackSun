@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
+  m_Name: PQ2
+  m_EditorClassIdentifier: Assembly-CSharp::Seed
+  title: A SCANDALOUS SECRET
+  description: "My Pontiff, rumors have reached us from our little birds in the Pink
+    Quarter. I shall cut straight to the chase, as the mere act of writing this revolts
+    me: it appears an aristocrat from Iris harbors a peculiar erotic fondness for...
+    barn animals. Disturbing, I know, but we might yet turn this deviant\u2019s sins
+    to our advantage."
+  icon: {fileID: 0}
+  ticks: 1
+  eventType: 0
+  difficulty: 0
+  <Options>k__BackingField:
+  - {fileID: 11400000, guid: eb53850be75a6f64db552bedb3f47241, type: 2}
+  - {fileID: 11400000, guid: a150096d5c7965c4c9f37190f32ffe53, type: 2}
+  - {fileID: 11400000, guid: 2f56f3f3d72ecfe4ea9e68f315bd19e2, type: 2}
+  - {fileID: 11400000, guid: 47becb9ff306f194686a554a76ab7696, type: 2}

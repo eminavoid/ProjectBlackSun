@@ -1,4 +1,5 @@
 Event	ID	Name			Wwise Object Path	Notes
+	254335113	Play_UI_Outcome			\Default Work Unit\Play_UI_Outcome	
 	762812395	Play_UI_EventCard			\Default Work Unit\Play_UI_EventCard	
 	1188404357	Play_UI_X			\Default Work Unit\Play_UI_X	
 	1303835618	Play_UI_Click_Card			\Default Work Unit\Play_UI_Click_Card	
@@ -23,6 +24,7 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	73757830	Pluma	.cache\A1\{A16C843C-D889-0AB7-B0B0-A8505D12BFB6}.wem		\Containers\Default Work Unit\SFX\UI\Click\Pluma		24056
 	84805321	Materials_Hammer	.cache\7C\{7CBEC895-9F5B-0788-52AA-14A067EE56C5}.wem		\Containers\Default Work Unit\SFX\UI\ResourceIcons\ResourceIcon_Click\Materials_Hammer		20131
 	110163737	Secrets_Shh	.cache\5E\{5E6DDD4E-7535-7664-C723-80D1699ADC41}.wem		\Containers\Default Work Unit\SFX\UI\ResourceIcons\ResourceIcon_Click\Secrets_Shh		20638
+	156979451	Stamp	.cache\15\{15F16590-2554-77F0-A2EF-36C51BDDA12D}.wem		\Containers\Default Work Unit\SFX\UI\Click\Stamp		9325
 	191446474	click	.cache\AC\{ACD4B628-FE93-3E5E-F3B8-0FFF6A90B575}.wem		\Containers\Default Work Unit\SFX\UI\Click\Click_Generic\click		2683
 	293503004	EventPopup_Paper	.cache\EB\{EB794BCF-0DEE-0DAF-C64D-4146FFC113BF}.wem		\Containers\Default Work Unit\SFX\UI\Events\EventPopup_Paper		11120
 	331828716	Slimy	.cache\35\{358441DE-A351-7007-5118-92F94609DD34}.wem		\Containers\Default Work Unit\SFX\UI\Feedback\Slimy		73243

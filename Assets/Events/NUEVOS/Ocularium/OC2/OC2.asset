@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
+  m_Name: OC2
+  m_EditorClassIdentifier: Assembly-CSharp::Seed
+  title: THE PARTIAL ECLIPSE
+  description: My Pontiff, momentous news! Our stargazer-clerics report that a partial
+    eclipse will be visible from Beheld in the coming days. The astronomers of rival
+    sects are undoubtedly aware of this omen as well and must already be preparing
+    for its arrival. What should our response be?
+  icon: {fileID: 0}
+  ticks: 1
+  eventType: 0
+  difficulty: 0
+  <Options>k__BackingField:
+  - {fileID: 11400000, guid: 3d229b3561627fb45a8dafd6e48c9e70, type: 2}
+  - {fileID: 11400000, guid: 228b291fb39d92c4bbd70923961a5d07, type: 2}
+  - {fileID: 11400000, guid: bcb7f246ce49dbb45be5a91fdb26940a, type: 2}
+  - {fileID: 11400000, guid: 36159ae5cf727804b9861334e76d8516, type: 2}

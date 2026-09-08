@@ -19,6 +19,7 @@ namespace AK
         static const AkUniqueID PLAY_UI_EVENTCARD = 762812395U;
         static const AkUniqueID PLAY_UI_EVENTPOPUP = 2491688701U;
         static const AkUniqueID PLAY_UI_MENUOPEN = 4024968670U;
+        static const AkUniqueID PLAY_UI_OUTCOME = 254335113U;
         static const AkUniqueID PLAY_UI_RESOURCEICON = 2292035624U;
         static const AkUniqueID PLAY_UI_SEEDPLANT = 1900583491U;
         static const AkUniqueID PLAY_UI_X = 1188404357U;

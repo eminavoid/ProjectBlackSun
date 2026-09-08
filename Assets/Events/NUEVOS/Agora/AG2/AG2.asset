@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
+  m_Name: AG2
+  m_EditorClassIdentifier: Assembly-CSharp::Seed
+  title: CHEAP KNOCKOFFS
+  description: My Pontiff, concerning news. One of our clerics has brought to our
+    attention a stall in the Agora peddling cheap paraphernalia related to our sect.
+    Needless to say, we have no affiliation with this vendor, and our cleric notes
+    that the merchandise is of dreadful quality. Yet, the common folk seem to love
+    it. How should we respond?
+  icon: {fileID: 0}
+  ticks: 1
+  eventType: 0
+  difficulty: 0
+  <Options>k__BackingField:
+  - {fileID: 11400000, guid: 18e5a845f0f7bc346a0bf91d0c991981, type: 2}
+  - {fileID: 11400000, guid: 0b52a0b470ff376478d0e772d5619244, type: 2}
+  - {fileID: 11400000, guid: 7def75a94f04ad240ad2389005dce0aa, type: 2}
+  - {fileID: 11400000, guid: 1a37704f768b69a4da678cb2a7a1d32c, type: 2}
