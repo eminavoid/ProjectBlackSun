@@ -1,12 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-/// Controls the Config Menu's Music and SFX sliders. On enable, initializes
-/// each slider to the currently saved volume (without re-triggering a save),
-/// then listens for user changes and forwards them to AudioManager, which
-/// applies the Wwise RTPC and persists the value to PlayerPrefs.
-/// </summary>
 public class ConfigMenuController : MonoBehaviour
 {
     [SerializeField] private Slider musicSlider;
