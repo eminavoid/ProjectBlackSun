@@ -69,6 +69,8 @@ public class UnlockCodex : MonoBehaviour
 
     public void RefreshMenu()
     {
+        costText.SetText($"UNLOCK - {(currentCost == 0 ? "Free" : currentCost.ToString())}");
+
         if (currentMenu == Menu.None) return;
 
         Menu menu = currentMenu;
@@ -85,8 +87,6 @@ public class UnlockCodex : MonoBehaviour
                 LoadUnlockedDoctrines();
                 break;
         }
-
-        costText.SetText($"UNLOCK - {(currentCost == 0 ? "Free" : currentCost.ToString())}");
     }
 
     private void Awake()
@@ -117,8 +117,6 @@ public class UnlockCodex : MonoBehaviour
         Transform root = window.TryGetElement<LayoutGroup>("Layout Group").transform;
 
         List<ScriptableObject> scriptables = unlocked.GetCopy();
-
-        Debug.Log($"scriptables count: {scriptables.Count}");
 
         for (int i = 0; i < scriptables.Count; i++)
         {
