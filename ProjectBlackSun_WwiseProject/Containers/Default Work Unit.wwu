@@ -473,6 +473,55 @@
 												<ActiveSource Name="card (mp3cut_net)" ID="{185B542F-E0B9-4F3C-B6DE-5D1C6E29EF1B}" Platform="Linked"/>
 											</ActiveSourceList>
 										</Sound>
+										<Sound Name="Pluma" ID="{33D3FBF5-634C-4EB8-827E-B0EB92FB8766}" ShortID="1026620167">
+											<PropertyList>
+												<Property Name="EnableLoudnessNormalization" Type="bool" Value="True"/>
+												<Property Name="Pitch" Type="int32">
+													<ModifierList>
+														<ModifierInfo>
+															<Modifier Name="" ID="{58A4A017-AF67-46FD-875A-ECB42F25695E}">
+																<PropertyList>
+																	<Property Name="Enabled" Type="bool" Value="True"/>
+																	<Property Name="Max" Type="Real64" Value="75"/>
+																	<Property Name="Min" Type="Real64" Value="-100"/>
+																</PropertyList>
+															</Modifier>
+														</ModifierInfo>
+													</ModifierList>
+												</Property>
+												<Property Name="Volume" Type="Real64">
+													<ValueList>
+														<Value>-6</Value>
+													</ValueList>
+												</Property>
+											</PropertyList>
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{53BC1063-D44E-4BC8-8599-75E59AC25903}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="UI Bus" ID="{C291DD3F-FF56-4624-97BA-B9A4FEE59028}" WorkUnitID="{5B620076-8548-4615-B6BF-D06492A4D622}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<AudioFileSource Name="pluma (mp3cut_net)" ID="{E5BB4F8A-3CDF-464F-A802-3C2EA3C3A8FD}">
+													<PropertyList>
+														<Property Name="FadeOutDuration" Type="Real64" Value="1.38255"/>
+														<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+														<Property Name="TrimBegin" Type="Real64" Value="7.56885"/>
+														<Property Name="TrimEnd" Type="Real64" Value="9.45596"/>
+													</PropertyList>
+													<Language>SFX</Language>
+													<AudioFile>pluma (mp3cut.net).wav</AudioFile>
+													<MediaIDList>
+														<MediaID ID="73757830"/>
+													</MediaIDList>
+												</AudioFileSource>
+											</ChildrenList>
+											<ActiveSourceList>
+												<ActiveSource Name="pluma (mp3cut_net)" ID="{E5BB4F8A-3CDF-464F-A802-3C2EA3C3A8FD}" Platform="Linked"/>
+											</ActiveSourceList>
+										</Sound>
 									</ChildrenList>
 								</Folder>
 								<Folder Name="Feedback" ID="{C1F3CB89-079F-4C4D-98F0-5E601C755059}" ShortID="557685601">
@@ -634,7 +683,7 @@
 														</Property>
 														<Property Name="Volume" Type="Real64">
 															<ValueList>
-																<Value>-10</Value>
+																<Value>-16</Value>
 															</ValueList>
 														</Property>
 													</PropertyList>
@@ -965,9 +1014,53 @@
 														</Sound>
 													</ChildrenList>
 												</RandomSequenceContainer>
+												<Sound Name="Authority_March_05" ID="{3E6A4008-B761-47A0-886C-151706204816}" ShortID="387897632">
+													<PropertyList>
+														<Property Name="EnableLoudnessNormalization" Type="bool" Value="True"/>
+														<Property Name="Pitch" Type="int32">
+															<ValueList>
+																<Value>1000</Value>
+															</ValueList>
+														</Property>
+														<Property Name="Volume" Type="Real64">
+															<ValueList>
+																<Value>-6</Value>
+															</ValueList>
+														</Property>
+													</PropertyList>
+													<ReferenceList>
+														<Reference Name="Conversion">
+															<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{53BC1063-D44E-4BC8-8599-75E59AC25903}"/>
+														</Reference>
+														<Reference Name="OutputBus">
+															<ObjectRef Name="UI Bus" ID="{C291DD3F-FF56-4624-97BA-B9A4FEE59028}" WorkUnitID="{5B620076-8548-4615-B6BF-D06492A4D622}"/>
+														</Reference>
+													</ReferenceList>
+													<ChildrenList>
+														<AudioFileSource Name="stomp (mp3cut_net)" ID="{FC076950-E177-475F-8784-62E83B768458}">
+															<PropertyList>
+																<Property Name="FadeOutDuration" Type="Real64" Value="0.24961"/>
+																<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+																<Property Name="TrimBegin" Type="Real64" Value="1.08718"/>
+																<Property Name="TrimEnd" Type="Real64" Value="4.19889"/>
+															</PropertyList>
+															<Language>SFX</Language>
+															<AudioFile>stomp (mp3cut.net).wav</AudioFile>
+															<MediaIDList>
+																<MediaID ID="346723371"/>
+															</MediaIDList>
+														</AudioFileSource>
+													</ChildrenList>
+													<ActiveSourceList>
+														<ActiveSource Name="stomp (mp3cut_net)" ID="{FC076950-E177-475F-8784-62E83B768458}" Platform="Linked"/>
+													</ActiveSourceList>
+												</Sound>
 											</ChildrenList>
 											<GroupingInfo>
 												<GroupingBehaviorList>
+													<GroupingBehavior>
+														<ItemRef Name="Authority_March_05" ID="{3E6A4008-B761-47A0-886C-151706204816}"/>
+													</GroupingBehavior>
 													<GroupingBehavior>
 														<ItemRef Name="Secrets_Shh" ID="{7E066C2C-0174-401D-8617-5AFD0B87C4B7}"/>
 													</GroupingBehavior>
@@ -994,7 +1087,7 @@
 													<Grouping>
 														<SwitchRef Name="Authority" ID="{25C5DD08-F2A3-4E9D-853D-8E2015E8A32C}"/>
 														<ItemList>
-															<ItemRef Name="Authority" ID="{F5F6FEFD-8460-4D6D-A975-B79EBC69043E}"/>
+															<ItemRef Name="Authority_March_05" ID="{3E6A4008-B761-47A0-886C-151706204816}"/>
 														</ItemList>
 													</Grouping>
 													<Grouping>

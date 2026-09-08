@@ -16,6 +16,7 @@ namespace AK
         static const AkUniqueID PLAY_MUS_BACKGROUND = 3649554266U;
         static const AkUniqueID PLAY_UI_CLICK_CARD = 1303835618U;
         static const AkUniqueID PLAY_UI_CLICK_GENERIC = 1757779431U;
+        static const AkUniqueID PLAY_UI_EVENTCARD = 762812395U;
         static const AkUniqueID PLAY_UI_EVENTPOPUP = 2491688701U;
         static const AkUniqueID PLAY_UI_MENUOPEN = 4024968670U;
         static const AkUniqueID PLAY_UI_RESOURCEICON = 2292035624U;

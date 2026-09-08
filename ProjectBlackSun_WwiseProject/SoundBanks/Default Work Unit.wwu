@@ -7,6 +7,7 @@
 					<ObjectInclusionList>
 						<ObjectRef Name="Play_UI_Click_Card" ID="{9DAB172F-9E3D-458A-B050-0A6A31EC1070}" WorkUnitID="{1EFD0EC7-14A6-4BBA-AFC4-13C2B0F1D017}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Play_UI_X" ID="{09C55EC6-A144-46C1-952E-76D145CFF88C}" WorkUnitID="{1EFD0EC7-14A6-4BBA-AFC4-13C2B0F1D017}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="Play_UI_EventCard" ID="{76BB025F-2157-46DA-8775-6F4CFFCA53AA}" WorkUnitID="{1EFD0EC7-14A6-4BBA-AFC4-13C2B0F1D017}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Play_UI_Click_Generic" ID="{62956597-BD25-47C5-83B8-D567B5DCEE69}" WorkUnitID="{1EFD0EC7-14A6-4BBA-AFC4-13C2B0F1D017}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Play_UI_ResourceIcon" ID="{045C1454-3079-47D8-ADCD-3A1BD4D478EF}" WorkUnitID="{1EFD0EC7-14A6-4BBA-AFC4-13C2B0F1D017}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="Play_UI_EventPopup" ID="{71FDB37C-6317-4A77-B7FC-B14DACC66E33}" WorkUnitID="{1EFD0EC7-14A6-4BBA-AFC4-13C2B0F1D017}" Origin="Manual" Filter="7"/>

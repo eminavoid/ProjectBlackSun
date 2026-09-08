@@ -102,6 +102,17 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Event Name="Play_UI_EventCard" ID="{76BB025F-2157-46DA-8775-6F4CFFCA53AA}">
+					<ChildrenList>
+						<Action Name="" ID="{B091AB1A-B97E-4F7F-A22F-1DF2A0A14F71}" ShortID="147689165">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Pluma" ID="{33D3FBF5-634C-4EB8-827E-B0EB92FB8766}" WorkUnitID="{85ECF510-36BD-49F2-8F1A-496BB22358A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

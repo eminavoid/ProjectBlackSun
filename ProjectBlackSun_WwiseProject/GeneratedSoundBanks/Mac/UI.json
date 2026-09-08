@@ -10,11 +10,19 @@
     "Type": "User",
     "GUID": "{87650D7E-134E-4921-881A-FE8CF49829E8}",
     "Language": "SFX",
-    "Hash": "{020AC2F7-CF03-36E8-84AB-E2B8D6D91F5A}",
+    "Hash": "{BD939E11-4FB8-1C90-9685-D525A5AF8268}",
     "ObjectPath": "\\SoundBanks\\Default Work Unit\\UI",
     "ShortName": "UI",
     "Path": "UI.bnk",
     "Media": [
+     {
+      "Id": "73757830",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "pluma (mp3cut.net).wav",
+      "CachePath": "A1/{A16C843C-D889-0AB7-B0B0-A8505D12BFB6}.wem"
+     },
      {
       "Id": "84805321",
       "Language": "SFX",
@@ -38,22 +46,6 @@
       "Location": "Memory",
       "ShortName": "clicks.wav",
       "CachePath": "AC/{ACD4B628-FE93-3E5E-F3B8-0FFF6A90B575}.wem"
-     },
-     {
-      "Id": "201427095",
-      "Language": "SFX",
-      "Streaming": "false",
-      "Location": "Memory",
-      "ShortName": "stomp (mp3cut.net).wav",
-      "CachePath": "64/{64433284-C2E9-BF96-F408-669C0CF6C93D}.wem"
-     },
-     {
-      "Id": "291359590",
-      "Language": "SFX",
-      "Streaming": "false",
-      "Location": "Memory",
-      "ShortName": "stomp (mp3cut.net).wav",
-      "CachePath": "1D/{1DEB070A-FEBF-D09E-F910-3D032DC6B259}.wem"
      },
      {
       "Id": "293503004",
@@ -80,12 +72,12 @@
       "CachePath": "42/{4266F994-123E-4FE3-918C-AA1658A6F14B}.wem"
      },
      {
-      "Id": "385529597",
+      "Id": "346723371",
       "Language": "SFX",
       "Streaming": "false",
       "Location": "Memory",
       "ShortName": "stomp (mp3cut.net).wav",
-      "CachePath": "FA/{FA08280E-AACE-3434-890B-0486A8E812E2}.wem"
+      "CachePath": "0D/{0DF051DA-8CBA-65DD-9967-3EA7B5282F45}.wem"
      },
      {
       "Id": "418679705",
@@ -152,22 +144,6 @@
       "CachePath": "AB/{ABD65BAA-7536-0535-4F9D-793C5EC76009}.wem"
      },
      {
-      "Id": "803979847",
-      "Language": "SFX",
-      "Streaming": "false",
-      "Location": "Memory",
-      "ShortName": "stomp (mp3cut.net).wav",
-      "CachePath": "01/{015C05E0-8BA7-99DB-D019-238747EA5E5D}.wem"
-     },
-     {
-      "Id": "889823418",
-      "Language": "SFX",
-      "Streaming": "false",
-      "Location": "Memory",
-      "ShortName": "stomp (mp3cut.net).wav",
-      "CachePath": "44/{44BE4143-F910-55A2-A059-72ECCE959655}.wem"
-     },
-     {
       "Id": "968728685",
       "Language": "SFX",
       "Streaming": "false",
@@ -218,6 +194,20 @@
       ]
      },
      {
+      "Id": "762812395",
+      "Name": "Play_UI_EventCard",
+      "ObjectPath": "\\Events\\Default Work Unit\\Play_UI_EventCard",
+      "GUID": "{76BB025F-2157-46DA-8775-6F4CFFCA53AA}",
+      "DurationType": "OneShot",
+      "DurationMin": "1.8071028",
+      "DurationMax": "1.9993235",
+      "MediaRefs": [
+       {
+        "Id": "73757830"
+       }
+      ]
+     },
+     {
       "Id": "2491688701",
       "Name": "Play_UI_EventPopup",
       "ObjectPath": "\\Events\\Default Work Unit\\Play_UI_EventPopup",
@@ -251,7 +241,7 @@
       "ObjectPath": "\\Events\\Default Work Unit\\Play_UI_ResourceIcon",
       "GUID": "{045C1454-3079-47D8-ADCD-3A1BD4D478EF}",
       "DurationType": "OneShot",
-      "DurationMin": "0.7401882",
+      "DurationMin": "1.2247195",
       "DurationMax": "3.1539576",
       "SwitchContainers": [
        {
@@ -263,19 +253,7 @@
         },
         "MediaRefs": [
          {
-          "Id": "201427095"
-         },
-         {
-          "Id": "291359590"
-         },
-         {
-          "Id": "385529597"
-         },
-         {
-          "Id": "803979847"
-         },
-         {
-          "Id": "889823418"
+          "Id": "346723371"
          }
         ]
        },
@@ -429,6 +407,6 @@
     ]
    }
   ],
-  "FileHash": "{F5647564-4933-BAAE-5BFE-82CA9A954CBC}"
+  "FileHash": "{87FDC7B3-E970-D20E-1C92-034FD8471C20}"
  }
 }
