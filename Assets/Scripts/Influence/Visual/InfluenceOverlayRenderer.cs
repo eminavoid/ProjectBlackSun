@@ -22,6 +22,7 @@ public class InfluenceOverlayRenderer : MonoBehaviour
 
     private InfluenceFieldBaker baker;
     private Material overlayMaterial;
+    private MaterialPropertyBlock fieldBlock;
 
     private int builtZoneCount = -1;
     private float zoneExtent = 1f;
@@ -48,6 +49,7 @@ public class InfluenceOverlayRenderer : MonoBehaviour
     private void OnEnable()
     {
         EnsureSettings();
+        EnsureFieldBlock();
     }
 
     private void Start()
@@ -150,7 +152,10 @@ public class InfluenceOverlayRenderer : MonoBehaviour
     private void ApplyAlpha()
     {
         if (overlayMaterial == null) return;
+        EnsureFieldBlock();
         overlayMaterial.SetFloat("_GlobalAlpha", alpha);
+        fieldBlock.SetFloat("_GlobalAlpha", alpha);
+        ApplyPropertyBlock();
 
         for (int i = 0; i < overlays.Count; i++)
         {
@@ -231,6 +236,8 @@ public class InfluenceOverlayRenderer : MonoBehaviour
     {
         if (overlayMaterial == null || settings == null) return;
 
+        EnsureFieldBlock();
+
         overlayMaterial.SetFloat("_Lift", zoneExtent * settings.volumeHeight);
         overlayMaterial.SetFloat("_BreathAmp", zoneExtent * settings.volumeBreath);
         overlayMaterial.SetFloat("_Intensity", settings.overlayIntensity);
@@ -240,6 +247,17 @@ public class InfluenceOverlayRenderer : MonoBehaviour
         overlayMaterial.SetFloat("_SmokeSpeed", settings.smokeSpeed);
         overlayMaterial.SetFloat("_ColorNoise", settings.colorNoiseStrength);
         overlayMaterial.SetFloat("_ColorPulseSpeed", settings.colorPulseSpeed);
+
+        fieldBlock.SetFloat("_Lift", zoneExtent * settings.volumeHeight);
+        fieldBlock.SetFloat("_BreathAmp", zoneExtent * settings.volumeBreath);
+        fieldBlock.SetFloat("_Intensity", settings.overlayIntensity);
+        fieldBlock.SetFloat("_PatternScale", settings.patternCellsPerZone / zoneExtent);
+        fieldBlock.SetFloat("_SmokeStrength", settings.smokeStrength);
+        fieldBlock.SetFloat("_SmokeScale", settings.smokeCellsPerZone / zoneExtent);
+        fieldBlock.SetFloat("_SmokeSpeed", settings.smokeSpeed);
+        fieldBlock.SetFloat("_ColorNoise", settings.colorNoiseStrength);
+        fieldBlock.SetFloat("_ColorPulseSpeed", settings.colorPulseSpeed);
+        ApplyPropertyBlock();
     }
 
     private MeshRenderer CreateOverlayFor(DistrictZone zone)
@@ -267,6 +285,9 @@ public class InfluenceOverlayRenderer : MonoBehaviour
         meshRenderer.receiveShadows = false;
         meshRenderer.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
         meshRenderer.reflectionProbeUsage = UnityEngine.Rendering.ReflectionProbeUsage.Off;
+        meshRenderer.allowOcclusionWhenDynamic = false;
+        EnsureFieldBlock();
+        meshRenderer.SetPropertyBlock(fieldBlock);
         meshRenderer.enabled = false;
 
         return meshRenderer;
@@ -286,17 +307,43 @@ public class InfluenceOverlayRenderer : MonoBehaviour
     private void PublishField(float blend)
     {
         if (baker == null) return;
+        EnsureFieldBlock();
         baker.Publish(blend);
         baker.BindTo(overlayMaterial);
+        baker.BindTo(fieldBlock);
+        ApplyPropertyBlock();
+    }
+
+    private void EnsureFieldBlock()
+    {
+        if (fieldBlock == null) fieldBlock = new MaterialPropertyBlock();
+    }
+
+    private void ApplyPropertyBlock()
+    {
+        for (int i = 0; i < overlays.Count; i++)
+        {
+            MeshRenderer meshRenderer = overlays[i].Renderer;
+            if (meshRenderer != null) meshRenderer.SetPropertyBlock(fieldBlock);
+        }
     }
 
     private static Material ResolveMaterial()
     {
         Material template = Resources.Load<Material>(MaterialResourcePath);
-        Shader shader = template != null ? template.shader : Shader.Find(ShaderName);
-        if (shader == null || !shader.isSupported) return null;
+        Shader shader = template != null ? template.shader : null;
+        if (shader == null || shader.name != ShaderName)
+        {
+            shader = Shader.Find(ShaderName);
+        }
+
+        if (shader == null)
+        {
+            return null;
+        }
 
         Material material = template != null ? new Material(template) : new Material(shader);
+        material.shader = shader;
         material.name = "InfluenceOverlay_Runtime";
         material.hideFlags = HideFlags.HideAndDontSave;
         return material;

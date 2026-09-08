@@ -92,6 +92,7 @@ public class IntentArrowView : MonoBehaviour
         meshRenderer.receiveShadows = false;
         meshRenderer.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
         meshRenderer.reflectionProbeUsage = UnityEngine.Rendering.ReflectionProbeUsage.Off;
+        meshRenderer.allowOcclusionWhenDynamic = false;
     }
 
     private void OnDestroy()

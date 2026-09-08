@@ -42,14 +42,37 @@ public class DistrictZone : MonoBehaviour
         district = value;
     }
 
-    /// <summary>Bounds en mundo del sector; cae al transform si el mesh no está disponible.</summary>
+    /// <summary>
+    /// Bounds en mundo del sector. En player los MeshCollider no se cuecen (meshes sin Read/Write),
+    /// así que no se usa collider.bounds: el renderer y mesh.bounds sí están disponibles.
+    /// </summary>
     public Bounds GetWorldBounds()
     {
-        Collider col = GetComponent<Collider>();
-        if (col != null) return col.bounds;
+        MeshRenderer meshRenderer = ResolveRenderer();
+        if (meshRenderer != null)
+        {
+            Bounds rendered = meshRenderer.bounds;
+            if (rendered.size.sqrMagnitude > 1e-6f) return rendered;
+        }
 
-        Renderer meshRenderer = ResolveRenderer();
-        if (meshRenderer != null) return meshRenderer.bounds;
+        MeshFilter filter = GetComponent<MeshFilter>();
+        if (filter == null) filter = GetComponentInChildren<MeshFilter>();
+        if (filter != null && filter.sharedMesh != null)
+        {
+            Bounds local = filter.sharedMesh.bounds;
+            Vector3 worldSize = Vector3.Scale(local.size, filter.transform.lossyScale);
+            if (worldSize.sqrMagnitude > 1e-6f)
+            {
+                return new Bounds(filter.transform.TransformPoint(local.center), worldSize);
+            }
+        }
+
+        Collider col = GetComponent<Collider>();
+        if (col != null)
+        {
+            Bounds colliderBounds = col.bounds;
+            if (colliderBounds.size.sqrMagnitude > 1e-6f) return colliderBounds;
+        }
 
         return new Bounds(transform.position, Vector3.one);
     }
@@ -304,7 +327,13 @@ public class DistrictZone : MonoBehaviour
 
         if (!TryGetComponent(out cachedRenderer))
         {
-            cachedRenderer = GetComponentInChildren<MeshRenderer>();
+            MeshRenderer[] renderers = GetComponentsInChildren<MeshRenderer>(true);
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                if (renderers[i].name == "InfluenceOverlay") continue;
+                cachedRenderer = renderers[i];
+                break;
+            }
         }
 
         return cachedRenderer;

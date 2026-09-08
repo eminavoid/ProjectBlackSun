@@ -214,10 +214,19 @@ public class AIIntentOverlay : MonoBehaviour
     private static Material ResolveMaterial()
     {
         Material template = Resources.Load<Material>(MaterialResourcePath);
-        Shader shader = template != null ? template.shader : Shader.Find(ShaderName);
-        if (shader == null || !shader.isSupported) return null;
+        Shader shader = template != null ? template.shader : null;
+        if (shader == null || shader.name != ShaderName)
+        {
+            shader = Shader.Find(ShaderName);
+        }
+
+        if (shader == null)
+        {
+            return null;
+        }
 
         Material material = template != null ? new Material(template) : new Material(shader);
+        material.shader = shader;
         material.name = "IntentArrow_Runtime";
         material.hideFlags = HideFlags.HideAndDontSave;
         return material;

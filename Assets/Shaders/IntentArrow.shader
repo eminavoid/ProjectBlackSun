@@ -21,22 +21,23 @@ Shader "Custom/IntentArrow"
         {
             "RenderType" = "Transparent"
             "RenderPipeline" = "UniversalPipeline"
-            "Queue" = "Transparent"
+            "Queue" = "Transparent+50"
             "IgnoreProjector" = "True"
+            "UniversalMaterialType" = "Unlit"
         }
 
         Pass
         {
             Name "IntentArrow"
-            Tags { "LightMode" = "SRPDefaultUnlit" }
+            Tags { "LightMode" = "UniversalForward" }
 
-            // Aditivo con color premultiplicado por alpha en el fragment.
             Blend One One
             ZWrite Off
-            ZTest LEqual
+            ZTest Always
             Cull Off
 
             HLSLPROGRAM
+            #pragma target 4.5
             #pragma vertex vert
             #pragma fragment frag
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"

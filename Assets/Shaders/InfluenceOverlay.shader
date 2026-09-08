@@ -30,10 +30,6 @@ Shader "Custom/InfluenceOverlay"
         _ContestedStrength("Contested Strength", Range(0, 2)) = 0.9
         _BreathAmp("Breath Amplitude", Range(0, 20)) = 0.25
         _BreathSpeed("Breath Speed", Range(0, 8)) = 1.4
-
-        [HideInInspector] _InfluenceField("Influence Field", 2D) = "black" {}
-        [HideInInspector] _InfluenceFieldAux("Influence Field Aux", 2D) = "black" {}
-        [HideInInspector] _InfluenceFieldBounds("Influence Field Bounds", Vector) = (0, 0, 1, 64)
     }
 
     SubShader
@@ -42,21 +38,23 @@ Shader "Custom/InfluenceOverlay"
         {
             "RenderType" = "Transparent"
             "RenderPipeline" = "UniversalPipeline"
-            "Queue" = "Transparent"
+            "Queue" = "Transparent+50"
             "IgnoreProjector" = "True"
+            "UniversalMaterialType" = "Unlit"
         }
 
         Pass
         {
             Name "InfluenceOverlay"
-            Tags { "LightMode" = "SRPDefaultUnlit" }
+            Tags { "LightMode" = "UniversalForward" }
 
             Blend SrcAlpha OneMinusSrcAlpha
             ZWrite Off
-            ZTest LEqual
+            ZTest Always
             Cull Back
 
             HLSLPROGRAM
+            #pragma target 4.5
             #pragma vertex vert
             #pragma fragment frag
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
@@ -65,11 +63,9 @@ Shader "Custom/InfluenceOverlay"
             SAMPLER(sampler_InfluenceField);
             TEXTURE2D(_InfluenceFieldAux);
             SAMPLER(sampler_InfluenceFieldAux);
+            float4 _InfluenceFieldBounds;
 
             CBUFFER_START(UnityPerMaterial)
-                float4 _InfluenceField_ST;
-                float4 _InfluenceFieldAux_ST;
-                float4 _InfluenceFieldBounds;
                 half _Lift;
                 half _GlobalAlpha;
                 half _Intensity;

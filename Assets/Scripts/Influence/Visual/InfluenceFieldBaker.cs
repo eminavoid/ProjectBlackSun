@@ -120,6 +120,15 @@ public class InfluenceFieldBaker
         material.SetVector(BoundsProperty, BoundsVector);
     }
 
+    public void BindTo(MaterialPropertyBlock block)
+    {
+        if (block == null || fieldTexture == null || auxTexture == null) return;
+
+        block.SetTexture(FieldProperty, fieldTexture);
+        block.SetTexture(AuxProperty, auxTexture);
+        block.SetVector(BoundsProperty, BoundsVector);
+    }
+
     public void Release()
     {
         if (fieldTexture != null) Object.Destroy(fieldTexture);
