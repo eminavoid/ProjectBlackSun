@@ -151,16 +151,7 @@ public class DistrictSelectionController : MonoBehaviour
 
         warnedMissingCamera = false;
 
-        Ray ray = targetCamera.ScreenPointToRay(mousePosition);
-        int mask = selectionMask.value == 0 ? Physics.DefaultRaycastLayers : selectionMask.value;
-        RaycastHit[] hits = Physics.RaycastAll(ray, Mathf.Infinity, mask, QueryTriggerInteraction.Collide);
-
-        DistrictZone zone = null;
-        bool hitZone = hits != null
-            && hits.Length > 0
-            && TryPickBestZone(hits, targetCamera, mousePosition, out zone);
-
-        if (!hitZone && !TryPickNearestZoneFromMapPoint(ray, hits, out zone))
+        if (!TryPickPlayableZone(mousePosition, out DistrictZone zone))
         {
             SetSelectedDistrict(null, null, string.Empty, string.Empty);
             lastClickedZone = null;
@@ -181,6 +172,36 @@ public class DistrictSelectionController : MonoBehaviour
         {
             Debug.Log(FormatSelectionLog(zone.District, partColorName, zone.name, colorMapping), this);
         }
+    }
+
+    public bool TryPickPlayableZone(Vector2 screenPosition, out DistrictZone zone)
+    {
+        zone = null;
+
+        Camera targetCamera = GetSelectionCamera();
+        if (targetCamera == null) return false;
+
+        Ray ray = targetCamera.ScreenPointToRay(screenPosition);
+        int mask = selectionMask.value == 0 ? Physics.DefaultRaycastLayers : selectionMask.value;
+        RaycastHit[] hits = Physics.RaycastAll(ray, Mathf.Infinity, mask, QueryTriggerInteraction.Collide);
+
+        bool hitZone = hits != null
+            && hits.Length > 0
+            && TryPickBestZone(hits, targetCamera, screenPosition, out zone);
+
+        if (!hitZone && !TryPickNearestZoneFromMapPoint(ray, hits, out zone))
+        {
+            zone = null;
+            return false;
+        }
+
+        if (zone == null || !zone.IsPlayable)
+        {
+            zone = null;
+            return false;
+        }
+
+        return true;
     }
 
     /// <summary>
