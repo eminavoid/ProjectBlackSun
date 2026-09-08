@@ -1,23 +1,34 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-/// Attach this ONLY to prefabs containing a Button that get Instantiate()'d
-/// at runtime (e.g. a dynamically spawned list item like seedItemButtonPrefab).
-///
-/// Buttons that already exist in the scene at startup do NOT need this ---
-/// AudioManager hooks them automatically on its own Awake(). This component
-/// exists purely to cover buttons born AFTER that point.
-/// </summary>
 [RequireComponent(typeof(Button))]
 public class UIClickSound : MonoBehaviour
 {
+    [Tooltip("Wwise event posted when this button is clicked.")]
+    [SerializeField] private string clickEvent = "Play_UI_Click_Generic";
+
+    private Button button;
+
     private void Awake()
     {
-        Button btn = GetComponent<Button>();
+        button = GetComponent<Button>();
+        button.onClick.RemoveListener(PlayClickSound);
+        button.onClick.AddListener(PlayClickSound);
+    }
+
+    private void OnDestroy()
+    {
+        if (button != null)
+        {
+            button.onClick.RemoveListener(PlayClickSound);
+        }
+    }
+
+    private void PlayClickSound()
+    {
         if (AudioManager.Instance != null)
         {
-            AudioManager.Instance.HookButton(btn);
+            AudioManager.Instance.PlayUIEvent(clickEvent);
         }
         else
         {

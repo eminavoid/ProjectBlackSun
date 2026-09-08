@@ -481,6 +481,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20ccf1b5a53f50d4eb2d788887cbd352, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIClickSound
+  clickEvent: Play_UI_EventCard
 --- !u!1 &7241402641051545618
 GameObject:
   m_ObjectHideFlags: 0

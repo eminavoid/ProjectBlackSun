@@ -926,7 +926,13 @@ PlayerSettings:
   XboxOneXTitleMemory: 8
   XboxOneOverrideIdentityName: 
   XboxOneOverrideIdentityPublisher: 
-  cloudServicesEnabled: {}
+  cloudServicesEnabled:
+    Build: 0
+    Game Performance: 0
+    Legacy Analytics: 0
+    Purchasing: 0
+    UDP: 0
+    Unity Ads: 0
   luminIcon:
     m_Name: 
     m_ModelFolderPath: 
@@ -949,11 +955,11 @@ PlayerSettings:
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
   enableDirectStorage: 0
-  cloudProjectId: 2f0fa421-9b88-4110-88d8-ce3cb5aec413
+  cloudProjectId: adb7dcad-c13b-4225-bb03-b5ba43edbc65
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
   projectName: Test Nodes
-  organizationId: o0zeke0o
+  organizationId: picados-a-la-vuelta
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}

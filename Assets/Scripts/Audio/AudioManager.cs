@@ -52,7 +52,10 @@ public class AudioManager : MonoBehaviour
         Button[] allButtons = FindObjectsOfType<Button>(true);
         foreach (Button btn in allButtons)
         {
-            HookButton(btn);
+            if (!btn.TryGetComponent<UIClickSound>(out _))
+            {
+                HookButton(btn);
+            }
         }
     }
 
@@ -64,12 +67,23 @@ public class AudioManager : MonoBehaviour
 
     public void PlayUIClick()
     {
+        PlayUIEvent(uiClickGenericEvent);
+    }
+
+    public void PlayUIEvent(string eventName)
+    {
+        if (string.IsNullOrWhiteSpace(eventName))
+        {
+            Debug.LogWarning("AudioManager: A UI click event name is required.");
+            return;
+        }
+
         if (UIEmitter == null)
         {
             Debug.LogWarning("AudioManager: UIEmitter is not assigned. Assign the UI_AudioEmitter GameObject in the Inspector.");
             return;
         }
-        AkSoundEngine.PostEvent(uiClickGenericEvent, UIEmitter);
+        AkSoundEngine.PostEvent(eventName, UIEmitter);
     }
     
     public void PlayResourceIconClick(string resourceType)
