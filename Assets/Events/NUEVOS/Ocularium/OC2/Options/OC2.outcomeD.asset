@@ -28,18 +28,21 @@ MonoBehaviour:
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
         modules:
-        - weight: 30
+        - weight: 50
           module: []
           statUsed: 0
-          output: 
-        - weight: 70
+          output: The spectacle proved far less grand than the crowd anticipated...
+            and certainly void of divinity. How fortunate that we wasted no time
+            on it.
+        - weight: 50
           module:
           - rid: 2174037052531671153
           statUsed: 0
-          output: 
+          output: 'Curse it all! The eclipse bore no divine essence, yet the masses
+            took it as such. We squandered a magnificent opportunity! [-25 Zeal]'
     - rid: 2174037052531671153
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
-        resource: 0
-        minAmount: -50
-        maxAmount: -50
+        resource: 1
+        minAmount: -25
+        maxAmount: -25

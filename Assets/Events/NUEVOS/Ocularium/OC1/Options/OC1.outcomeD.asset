@@ -27,18 +27,8 @@ MonoBehaviour:
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
         modules:
-        - weight: 80
+        - weight: 100
           module: []
           statUsed: 0
-          output: 
-        - weight: 20
-          module:
-          - rid: 2174037052531671139
-          statUsed: 0
-          output: 
-    - rid: 2174037052531671139
-      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
-      data:
-        resource: 0
-        minAmount: -50
-        maxAmount: -50
+          output: The youth and his mentor are crestfallen, yet there is little they
+            can do.

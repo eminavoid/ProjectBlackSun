@@ -15,7 +15,7 @@ MonoBehaviour:
   playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
   title: Our sacred scriptures make no mention of such an event, yet we should hold
     some manner of vigil just to be safe.
-  description: 'COST: 25'
+  description: 'COST: 25 Wealth'
   icon: {fileID: 0}
   modules:
   - rid: 2174037052531671140
@@ -29,7 +29,7 @@ MonoBehaviour:
       type: {class: RequireResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 0
-        required: 0
+        required: 25
         consumeResource: 1
     - rid: 2174037052531671141
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
@@ -39,21 +39,25 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671142
           statUsed: 0
-          output: 
+          output: 'The eclipse bore no divine essence, yet the masses took it as
+            such. We enjoyed a splendid evening celebrating the Beholder, the true
+            divine entity. [50 Zeal]'
         - weight: 50
           module:
           - rid: 2174037052531671143
           statUsed: 0
-          output: 
+          output: The spectacle proved far less grand than the crowd anticipated...
+            and certainly void of divinity. At least we wasted few resources on the
+            farce.
     - rid: 2174037052531671142
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
-        minAmount: 25
-        maxAmount: 25
+        minAmount: 50
+        maxAmount: 50
     - rid: 2174037052531671143
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 0
-        minAmount: -25
-        maxAmount: -25
+        minAmount: 0
+        maxAmount: 0

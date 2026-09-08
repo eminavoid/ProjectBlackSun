@@ -28,7 +28,7 @@ MonoBehaviour:
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
         modules:
-        - weight: 80
+        - weight: 100
           module: []
           statUsed: 0
           output: Have faith, in time, another opportunity will present itself.

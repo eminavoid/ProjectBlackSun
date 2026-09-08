@@ -28,7 +28,7 @@ MonoBehaviour:
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
         modules:
-        - weight: 30
+        - weight: 100
           module: []
           statUsed: 0
           output: The unrest eventually subsides, but our material stockpiles were

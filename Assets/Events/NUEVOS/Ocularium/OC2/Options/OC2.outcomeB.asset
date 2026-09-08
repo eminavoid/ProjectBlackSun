@@ -15,7 +15,7 @@ MonoBehaviour:
   playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
   title: What a marvel! The Beholder cannot resist peering down upon our progress!
     Spare no expense for the celebration!
-  description: 'COST: 50'
+  description: 'COST: 75 Wealth'
   icon: {fileID: 0}
   modules:
   - rid: 2174037052531671144
@@ -29,7 +29,7 @@ MonoBehaviour:
       type: {class: RequireResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 0
-        required: 0
+        required: 75
         consumeResource: 1
     - rid: 2174037052531671145
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
@@ -39,12 +39,16 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671146
           statUsed: 0
-          output: 
+          output: The eclipse bore no divine essence, yet the masses took it as such.
+            It may have been somewhat extravagant, but our festival was warmly embraced
+            by the populace. [50 Zeal[
         - weight: 50
           module:
           - rid: 2174037052531671147
           statUsed: 0
-          output: 
+          output: 'The spectacle proved far less grand than the crowd anticipated...
+            and certainly void of divinity. We look like utter fools for staging
+            such a lavish feast in its name. [-10 Zeal]'
     - rid: 2174037052531671146
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
@@ -54,6 +58,6 @@ MonoBehaviour:
     - rid: 2174037052531671147
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
-        resource: 0
-        minAmount: -100
-        maxAmount: -100
+        resource: 1
+        minAmount: -10
+        maxAmount: -10

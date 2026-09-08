@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Option
   playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
   title: Assign our most diplomatic cleric to broker a peaceful resolution.
-  description: 'COST: 50'
+  description: 'COST: 10 Flock'
   icon: {fileID: 0}
   modules:
   - rid: 2174037052531671144
@@ -27,8 +27,8 @@ MonoBehaviour:
     - rid: 2174037052531671144
       type: {class: RequireResource, ns: , asm: Assembly-CSharp}
       data:
-        resource: 0
-        required: 0
+        resource: 3
+        required: 10
         consumeResource: 1
     - rid: 2174037052531671145
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
@@ -38,21 +38,29 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671146
           statUsed: 0
-          output: Our cleric successfully brokers a compromise between both factions.
+          output: 'Our cleric successfully brokers a compromise between both factions.
+            [50 Zeal]'
         - weight: 50
           module:
           - rid: 2174037052531671147
+          - rid: 2174037052531671255
           statUsed: 0
-          output: The strikers pay no heed to our cleric. Curse it all!
+          output: 'The strikers pay no heed to our cleric. Curse it all! [-10 Zeal]'
     - rid: 2174037052531671146
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
-        resource: 5
+        resource: 1
         minAmount: 50
         maxAmount: 50
     - rid: 2174037052531671147
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
-        resource: 0
-        minAmount: -100
-        maxAmount: -100
+        resource: 1
+        minAmount: -10
+        maxAmount: -10
+    - rid: 2174037052531671255
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: 10
+        maxAmount: 10

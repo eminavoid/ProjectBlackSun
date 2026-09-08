@@ -15,7 +15,7 @@ MonoBehaviour:
   playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
   title: A child touched by the Beholder? Arrange a general congregation at once!
     Everyone must hear his words!
-  description: 'COST: 25'
+  description: 'COST: 50 Wealth'
   icon: {fileID: 0}
   modules:
   - rid: 2174037052531671130
@@ -29,22 +29,26 @@ MonoBehaviour:
       type: {class: RequireResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 0
-        required: 0
+        required: 50
         consumeResource: 1
     - rid: 2174037052531671131
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
         modules:
-        - weight: 50
+        - weight: 25
           module:
           - rid: 2174037052531671132
           statUsed: 0
-          output: 
-        - weight: 50
+          output: 'The entire temple is brought to tears by the young prophet''s
+            stirring words! Faith in our sect has reached unprecedented heights!
+            [50 Zeal]'
+        - weight: 75
           module:
           - rid: 2174037052531671133
           statUsed: 0
-          output: 
+          output: 'What a disaster! The boy was seized by fright and could hardly
+            stop stammering! We are the laughingstock of all Beheld! Whatever possessed
+            us to entrust such a duty to a mere child!? [-50 Zeal]'
     - rid: 2174037052531671132
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
@@ -54,6 +58,6 @@ MonoBehaviour:
     - rid: 2174037052531671133
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
-        resource: 0
-        minAmount: -25
-        maxAmount: -25
+        resource: 1
+        minAmount: -50
+        maxAmount: -50

@@ -15,45 +15,54 @@ MonoBehaviour:
   playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
   title: This is sheer heresy! Organize a sermon immediately to explain to the populace
     why this event is nothing more than a coincidence.
-  description: 'COST: 10'
+  description: 'COST: No cost'
   icon: {fileID: 0}
   modules:
-  - rid: 2174037052531671148
+  - rid: 2174037052531671263
   - rid: 2174037052531671149
   endsQuestline: 1
   followUpSeeds: []
   references:
     version: 2
     RefIds:
-    - rid: 2174037052531671148
-      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
-      data:
-        resource: 0
-        required: 0
-        consumeResource: 1
     - rid: 2174037052531671149
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
         modules:
-        - weight: 15
+        - weight: 50
           module:
           - rid: 2174037052531671150
           statUsed: 0
-          output: 
-        - weight: 85
+          output: 'The spectacle proved far less grand than the crowd anticipated...
+            and certainly void of divinity. We won the people''s respect by standing
+            resolute while rival sects lost their minds over a phantom omen. [50
+            Zeal]'
+        - weight: 50
           module:
           - rid: 2174037052531671151
+          - rid: 2174037052531671264
           statUsed: 0
-          output: 
+          output: 'Curse it all! The eclipse bore no divine essence, yet the masses
+            took it as such. Our stance alienated the common folk, though the enlightened
+            revere our integrity. [-25 Zeal / +10 Flock]'
     - rid: 2174037052531671150
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
-        minAmount: 100
-        maxAmount: 100
+        minAmount: 50
+        maxAmount: 50
     - rid: 2174037052531671151
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
-        resource: 0
-        minAmount: -50
-        maxAmount: -50
+        resource: 1
+        minAmount: -25
+        maxAmount: -25
+    - rid: 2174037052531671263
+      type: {class: DoNothing, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2174037052531671264
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: 10
+        maxAmount: 10

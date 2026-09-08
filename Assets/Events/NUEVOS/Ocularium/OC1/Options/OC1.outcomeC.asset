@@ -15,45 +15,27 @@ MonoBehaviour:
   playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
   title: A prodigy, is he? His gifts are utterly wasted as an acolyte. Begin his
     clerical training immediately.
-  description: 'COST: 50'
+  description: 'COST: No cost'
   icon: {fileID: 0}
   modules:
-  - rid: 2174037052531671134
-  - rid: 2174037052531671135
+  - rid: 2174037052531671261
   endsQuestline: 1
   followUpSeeds: []
   references:
     version: 2
     RefIds:
-    - rid: 2174037052531671134
-      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
-      data:
-        resource: 0
-        required: 0
-        consumeResource: 1
-    - rid: 2174037052531671135
+    - rid: 2174037052531671261
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
         modules:
-        - weight: 50
+        - weight: 100
           module:
-          - rid: 2174037052531671136
+          - rid: 2174037052531671262
           statUsed: 0
-          output: 
-        - weight: 50
-          module:
-          - rid: 2174037052531671137
-          statUsed: 0
-          output: 
-    - rid: 2174037052531671136
+          output: 'You shall make a fine cleric one day, lad! [25 Zeal]'
+    - rid: 2174037052531671262
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
-        minAmount: 100
-        maxAmount: 100
-    - rid: 2174037052531671137
-      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
-      data:
-        resource: 0
-        minAmount: -100
-        maxAmount: -100
+        minAmount: 25
+        maxAmount: 25

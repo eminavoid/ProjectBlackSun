@@ -28,19 +28,26 @@ MonoBehaviour:
       data:
         modules:
         - weight: 30
-          module: []
+          module:
+          - rid: 2174037052531671252
           statUsed: 0
-          output: The fad eventually dies out, though we managed to gain some popularity
-            along the way.
+          output: 'The fad eventually dies out, though we managed to gain some popularity
+            along the way. [10 Flock]'
         - weight: 70
           module:
           - rid: 2174037052531671153
           statUsed: 0
           output: 'What a disgrace! The merchandise proved to be dreadful quality,
-            and worse yet: the people blame us!'
+            and worse yet: the people blame us! [-10 Flock]'
     - rid: 2174037052531671153
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
-        resource: 0
-        minAmount: -50
-        maxAmount: -50
+        resource: 3
+        minAmount: -10
+        maxAmount: -10
+    - rid: 2174037052531671252
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: 10
+        maxAmount: 10

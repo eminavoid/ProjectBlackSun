@@ -28,18 +28,19 @@ MonoBehaviour:
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
         modules:
-        - weight: 80
+        - weight: 60
+          module:
+          - rid: 2174037052531671281
+          statUsed: 0
+          output: 'Catastrophe! A rival sect unearths the truth and exposes our shame
+            to the city! [-75 Zeal]'
+        - weight: 40
           module: []
           statUsed: 0
-          output: 
-        - weight: 20
-          module:
-          - rid: 2174037052531671139
-          statUsed: 0
-          output: 
-    - rid: 2174037052531671139
+          output: In the end, it was nothing more than baseless gossip after all.
+    - rid: 2174037052531671281
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
-        resource: 0
-        minAmount: -50
-        maxAmount: -50
+        resource: 1
+        minAmount: -75
+        maxAmount: -75

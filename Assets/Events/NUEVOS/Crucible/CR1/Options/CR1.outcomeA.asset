@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Option
   playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
   title: Expanding our stockpile of materials is always a sound choice.
-  description: 'COST: 10'
+  description: 'COST: 50 Wealth'
   icon: {fileID: 0}
   modules:
   - rid: 2174037052531671126
@@ -28,7 +28,7 @@ MonoBehaviour:
       type: {class: RequireResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 0
-        required: 0
+        required: 50
         consumeResource: 1
     - rid: 2174037052531671127
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
@@ -38,21 +38,14 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671128
           statUsed: 0
-          output: More materials are always welcome.
+          output: 'More materials are always welcome. [50 Materials]'
         - weight: 25
-          module:
-          - rid: 2174037052531671129
+          module: []
           statUsed: 0
           output: Curse it all! The materials were shoddy! We have been swindled!
     - rid: 2174037052531671128
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 5
-        minAmount: 25
-        maxAmount: 25
-    - rid: 2174037052531671129
-      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
-      data:
-        resource: 0
-        minAmount: -25
-        maxAmount: -25
+        minAmount: 50
+        maxAmount: 50

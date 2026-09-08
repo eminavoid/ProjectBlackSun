@@ -15,7 +15,7 @@ MonoBehaviour:
   playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
   title: This is intolerable. If word spreads that one of our clerics is a heretic,
     every last one of us will come under scrutiny. We must... silence him.
-  description: 'COST: 10'
+  description: 'COST: 10 Secrets'
   icon: {fileID: 0}
   modules:
   - rid: 2174037052531671126
@@ -28,8 +28,8 @@ MonoBehaviour:
     - rid: 2174037052531671126
       type: {class: RequireResource, ns: , asm: Assembly-CSharp}
       data:
-        resource: 0
-        required: 0
+        resource: 6
+        required: 10
         consumeResource: 1
     - rid: 2174037052531671127
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
@@ -39,12 +39,14 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671128
           statUsed: 0
-          output: 
+          output: 'We deal with the cleric in total secrecy. No one shall ever uncover
+            what transpired here. [25 Secrets]'
         - weight: 25
           module:
           - rid: 2174037052531671129
           statUsed: 0
-          output: 
+          output: ' The cleric slips right through our fingers! Now we find ourselves
+            at his mercy! [-25 Secrets]'
     - rid: 2174037052531671128
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
@@ -54,6 +56,6 @@ MonoBehaviour:
     - rid: 2174037052531671129
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
-        resource: 0
+        resource: 6
         minAmount: -25
         maxAmount: -25

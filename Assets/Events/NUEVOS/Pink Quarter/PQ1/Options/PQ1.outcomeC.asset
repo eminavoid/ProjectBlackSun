@@ -15,7 +15,7 @@ MonoBehaviour:
   playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
   title: There is no need to dispose of him just yet. With this leverage, we can
     bend him entirely to our will!
-  description: 'COST: 50'
+  description: 'COST: 25 Secrets'
   icon: {fileID: 0}
   modules:
   - rid: 2174037052531671134
@@ -28,8 +28,8 @@ MonoBehaviour:
     - rid: 2174037052531671134
       type: {class: RequireResource, ns: , asm: Assembly-CSharp}
       data:
-        resource: 0
-        required: 0
+        resource: 6
+        required: 25
         consumeResource: 1
     - rid: 2174037052531671135
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
@@ -39,21 +39,24 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671136
           statUsed: 0
-          output: 
+          output: 'The heretic bends to our will. We shall make ample use of him
+            before casting him aside. [1 Authority]'
         - weight: 50
           module:
           - rid: 2174037052531671137
           statUsed: 0
-          output: 
+          output: 'The heretic refuses to be cowed! Worse yet, he threatens to reveal
+            his secret and drag us down with him if we lay a finger on him. We must
+            tread carefully. [-50 Secrets]'
     - rid: 2174037052531671136
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
-        resource: 6
-        minAmount: 100
-        maxAmount: 100
+        resource: 2
+        minAmount: 1
+        maxAmount: 1
     - rid: 2174037052531671137
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
-        resource: 0
-        minAmount: -100
-        maxAmount: -100
+        resource: 6
+        minAmount: -50
+        maxAmount: -50
