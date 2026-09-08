@@ -59,6 +59,36 @@ public class DistrictColorMapping : ScriptableObject
         return $"{district} ({string.Join(", ", partNames)})";
     }
 
+    /// <summary>Nombre de mapa (Red, Blue, …). Usa el mapping del asset, o el default del Vertical Slice.</summary>
+    public string GetDisplayName(Districts district)
+    {
+        if (TryGetPartNamesForDistrict(district, out List<string> partNames) && partNames.Count > 0)
+        {
+            return partNames.Count == 1 ? partNames[0] : string.Join(", ", partNames);
+        }
+
+        return GetDefaultDisplayName(district);
+    }
+
+    public static string GetDefaultDisplayName(Districts district)
+    {
+        switch (district)
+        {
+            case Districts.District1: return "Red";
+            case Districts.District2: return "Blue";
+            case Districts.District3: return "Green";
+            case Districts.District4: return "Yellow";
+            case Districts.District5: return "Purple";
+            case Districts.District6: return "White";
+            default: return district.ToString();
+        }
+    }
+
+    public static string GetDisplayName(Districts district, DistrictColorMapping mapping)
+    {
+        return mapping != null ? mapping.GetDisplayName(district) : GetDefaultDisplayName(district);
+    }
+
     /// <summary>Legacy zone names like Red.001</summary>
     public bool TryGetDistrictFromZoneName(string objectName, out Districts district)
     {

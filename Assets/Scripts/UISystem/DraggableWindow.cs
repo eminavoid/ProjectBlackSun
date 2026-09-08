@@ -7,9 +7,18 @@ namespace Zeke.UI
     {
         [SerializeField] private RectTransform grabBounds;
 
+        public void SetTarget(RectTransform target)
+        {
+            grabBounds = target;
+        }
+
         public void OnDrag(PointerEventData eventData)
         {
-            grabBounds.anchoredPosition += eventData.delta / GlobalReferences.ScreenCanvas.scaleFactor;
+            RectTransform target = grabBounds != null ? grabBounds : transform as RectTransform;
+            if (target == null) return;
+            if (GlobalReferences.IsNull || GlobalReferences.ScreenCanvas == null) return;
+
+            target.anchoredPosition += eventData.delta / GlobalReferences.ScreenCanvas.scaleFactor;
         }
     }
 }

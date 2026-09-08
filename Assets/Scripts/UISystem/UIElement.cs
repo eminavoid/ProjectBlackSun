@@ -2,7 +2,6 @@ using UnityEngine;
 
 namespace Zeke.UI
 {
-    [DefaultExecutionOrder(-1)]
     public class UIElement : MonoBehaviour
     {
         [SerializeField] private UIWindow window;
@@ -24,9 +23,18 @@ namespace Zeke.UI
             window = GetComponentInParent<UIWindow>();
         }
 
+        public void Bind(UIWindow owner, string elementName, Component element)
+        {
+            window = owner;
+            Name = elementName;
+            Element = element;
+            if (window != null) window.Add(this);
+        }
+
         private void Awake()
         {
-            window.Add(this);
+            if (window == null) window = GetComponentInParent<UIWindow>();
+            if (window != null) window.Add(this);
         }
     }
 }
