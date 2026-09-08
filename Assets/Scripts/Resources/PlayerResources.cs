@@ -11,7 +11,9 @@ public class PlayerResources : ScriptableObject
         { Resource.Zeal, 0 },
         { Resource.Flock, 0 },
         { Resource.Authority, 0 },
-        { Resource.Happiness, 0 }
+        { Resource.Happiness, 0 },
+        { Resource.Materials, 0 },
+        { Resource.Secrets, 0 },
     };
 
     public Action<Resource, int> onResourceGained;
