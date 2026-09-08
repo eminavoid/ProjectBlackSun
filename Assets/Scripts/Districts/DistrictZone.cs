@@ -66,20 +66,42 @@ public class DistrictZone : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Deprecated: the hover label was replaced by MapStatsPanel. Cleans leftover TMP if any.
+    /// </summary>
     public void EnsureControlMarker()
     {
-        if (controlMarker == null)
-        {
-            controlMarker = GetComponent<ZoneControlMarker>();
-            if (controlMarker == null) controlMarker = gameObject.AddComponent<ZoneControlMarker>();
-        }
+        DisableDeprecatedHoverLabel();
     }
 
     public void RefreshControlVisual()
     {
         if (!IsPlayable) return;
-        EnsureControlMarker();
-        if (influence != null) controlMarker.Refresh(influence);
+        DisableDeprecatedHoverLabel();
+    }
+
+    private void DisableDeprecatedHoverLabel()
+    {
+        if (controlMarker == null)
+        {
+            controlMarker = GetComponent<ZoneControlMarker>();
+        }
+
+        if (controlMarker != null)
+        {
+            controlMarker.Deprecate();
+        }
+
+        DestroyChildIfPresent("ControlMarker");
+        DestroyChildIfPresent("ControlMarkerOutline");
+    }
+
+    private void DestroyChildIfPresent(string childName)
+    {
+        Transform leftover = transform.Find(childName);
+        if (leftover == null) return;
+        if (Application.isPlaying) Destroy(leftover.gameObject);
+        else DestroyImmediate(leftover.gameObject);
     }
 
     public void SetSelected(bool selected)
