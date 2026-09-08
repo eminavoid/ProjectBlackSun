@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CR2.outcomeB
   m_EditorClassIdentifier: Assembly-CSharp::Option
   playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
-  title: 
+  title: Assign our most diplomatic cleric to broker a peaceful resolution.
   description: 'COST: 50'
   icon: {fileID: 0}
   modules:
@@ -38,16 +38,16 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671146
           statUsed: 0
-          output: 
+          output: Our cleric successfully brokers a compromise between both factions.
         - weight: 50
           module:
           - rid: 2174037052531671147
           statUsed: 0
-          output: 
+          output: The strikers pay no heed to our cleric. Curse it all!
     - rid: 2174037052531671146
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
-        resource: 0
+        resource: 5
         minAmount: 50
         maxAmount: 50
     - rid: 2174037052531671147

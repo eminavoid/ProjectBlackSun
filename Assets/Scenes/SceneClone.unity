@@ -535,7 +535,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -632636874, guid: e90fdf7687d875544ae8f8d1c84c8fca, type: 3}
+  m_Sprite: {fileID: -764602561, guid: b813d49a6af42d34a82de698cca65476, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1619,6 +1619,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20ccf1b5a53f50d4eb2d788887cbd352, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIClickSound
+  clickEvent: Play_UI_Click_Generic
 --- !u!1 &254152495
 GameObject:
   m_ObjectHideFlags: 0
@@ -1821,7 +1822,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1115581031, guid: e90fdf7687d875544ae8f8d1c84c8fca, type: 3}
+  m_Sprite: {fileID: -530203572, guid: b813d49a6af42d34a82de698cca65476, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3102,7 +3103,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1813252565, guid: e90fdf7687d875544ae8f8d1c84c8fca, type: 3}
+  m_Sprite: {fileID: -1595805718, guid: b813d49a6af42d34a82de698cca65476, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4530,14 +4531,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ResourceManager
   playerResources: {fileID: 11400000, guid: b6189538476b6ff4eba1374d56e45c58, type: 2}
-  startWealth: 0
-  startZeal: 0
-  startFlock: 50
-  startAuthority: 0
+  startWealth: 100
+  startZeal: 100
+  startFlock: 100
+  startAuthority: 1
   startHappiness: 100
+  startMaterials: 50
+  startSecrets: 50
   tithe: 0.5
-  monthlyWealthPerFlock: 1
-  monthlyZealPerFlock: 1
   uiWindow: {fileID: 8615628383825455374, guid: 778a8f7019ff05743b5ad1abc6c8d319, type: 3}
 --- !u!1 &962344488
 GameObject:
@@ -5924,7 +5925,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1988906992, guid: e90fdf7687d875544ae8f8d1c84c8fca, type: 3}
+  m_Sprite: {fileID: 347113522, guid: b813d49a6af42d34a82de698cca65476, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6259,7 +6260,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UnlockerManager
   unlocks:
   - {fileID: 11400000, guid: 4614166d5d34a4b4e8a155aa5c87e740, type: 2}
-  locked: {fileID: 11400000, guid: 9786add8a4e8444409a2ad9893cbf832, type: 2}
   startUnlocks:
   - {fileID: 11400000, guid: 894bb2f33b3a2ef4982bd58fbdd8a7ce, type: 2}
 --- !u!4 &1340745865
@@ -7126,7 +7126,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36b6686a99863ed45a3f244c51b7d083, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnlockerMenuTest
-  locked: {fileID: 11400000, guid: 9786add8a4e8444409a2ad9893cbf832, type: 2}
   window: {fileID: 2003735029}
   windowPrefab: {fileID: 1394031796806285006, guid: dc9edaf075083274f82409bc66c0926f, type: 3}
   amount: 3
@@ -7592,7 +7591,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 810570301, guid: e90fdf7687d875544ae8f8d1c84c8fca, type: 3}
+  m_Sprite: {fileID: 37749269, guid: b813d49a6af42d34a82de698cca65476, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -7975,7 +7974,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1323367970, guid: e90fdf7687d875544ae8f8d1c84c8fca, type: 3}
+  m_Sprite: {fileID: -1255909302, guid: b813d49a6af42d34a82de698cca65476, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -8171,7 +8170,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1413520775, guid: e90fdf7687d875544ae8f8d1c84c8fca, type: 3}
+  m_Sprite: {fileID: -440353551, guid: b813d49a6af42d34a82de698cca65476, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -8846,7 +8845,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: eebb37698b614664499d00f98c470536, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -11011,7 +11010,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -385639975, guid: e90fdf7687d875544ae8f8d1c84c8fca, type: 3}
+  m_Sprite: {fileID: 1261423579, guid: b813d49a6af42d34a82de698cca65476, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

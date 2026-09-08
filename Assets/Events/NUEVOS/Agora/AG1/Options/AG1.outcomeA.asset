@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: AG1.outcomeA
   m_EditorClassIdentifier: Assembly-CSharp::Option
   playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
-  title: 
-  description: 'COST: 10'
+  title: We shall dispatch a cleric to resolve the situation.
+  description: 'COST: 10 Flock'
   icon: {fileID: 0}
   modules:
   - rid: 2174037052531671126
@@ -27,8 +27,8 @@ MonoBehaviour:
     - rid: 2174037052531671126
       type: {class: RequireResource, ns: , asm: Assembly-CSharp}
       data:
-        resource: 0
-        required: 0
+        resource: 3
+        required: 10
         consumeResource: 1
     - rid: 2174037052531671127
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
@@ -37,13 +37,15 @@ MonoBehaviour:
         - weight: 75
           module:
           - rid: 2174037052531671128
+          - rid: 2174037052531671247
           statUsed: 0
-          output: 
+          output: 'The cleric successfully convinces the guards to release the goods.
+            [25 Wealth]'
         - weight: 25
           module:
           - rid: 2174037052531671129
           statUsed: 0
-          output: 
+          output: Our cleric is ignored, and the merchant seeks aid elsewhere.
     - rid: 2174037052531671128
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
@@ -53,6 +55,12 @@ MonoBehaviour:
     - rid: 2174037052531671129
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
-        resource: 0
-        minAmount: -25
-        maxAmount: -25
+        resource: 3
+        minAmount: 10
+        maxAmount: 10
+    - rid: 2174037052531671247
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: 10
+        maxAmount: 10

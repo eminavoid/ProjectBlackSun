@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: CR2.outcomeC
   m_EditorClassIdentifier: Assembly-CSharp::Option
   playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
-  title: 
+  title: Perhaps these laborers deserve better conditions! Let us become champions
+    the common folk!
   description: 'COST: 10'
   icon: {fileID: 0}
   modules:
@@ -38,16 +39,20 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671150
           statUsed: 0
-          output: 
+          output: The people stand with us! The guilds are forced to capitulate to
+            the strikers' demands, and the new leaders are more than willing to assist
+            our cause.
         - weight: 85
           module:
           - rid: 2174037052531671151
           statUsed: 0
-          output: 
+          output: Curse it all, a rival sect suppressed the strikers. Not only did
+            we fail to win over the mob, but the guilds now hold a grudge against
+            us.
     - rid: 2174037052531671150
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
-        resource: 0
+        resource: 5
         minAmount: 100
         maxAmount: 100
     - rid: 2174037052531671151

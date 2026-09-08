@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: CR2.outcomeA
   m_EditorClassIdentifier: Assembly-CSharp::Option
   playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
-  title: 
+  title: We will send our faithful to deal with the strikers. Let us prove our might
+    to the guilds!
   description: 'COST: 25'
   icon: {fileID: 0}
   modules:
@@ -38,16 +39,17 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671142
           statUsed: 0
-          output: 
+          output: Our men make short work of the strikers. The guilds are grateful
+            and eager to return the favor
         - weight: 50
           module:
           - rid: 2174037052531671143
           statUsed: 0
-          output: 
+          output: Our forces are beaten back. What an utter humiliation!
     - rid: 2174037052531671142
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
-        resource: 0
+        resource: 5
         minAmount: 25
         maxAmount: 25
     - rid: 2174037052531671143

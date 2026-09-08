@@ -10,7 +10,7 @@
     "Type": "User",
     "GUID": "{87650D7E-134E-4921-881A-FE8CF49829E8}",
     "Language": "SFX",
-    "Hash": "{BF1FBB8B-E33E-C461-3513-254CFA2B38DC}",
+    "Hash": "{17FF24D8-CD55-91BA-8FC3-738370CA6022}",
     "ObjectPath": "\\SoundBanks\\Default Work Unit\\UI",
     "ShortName": "UI",
     "Path": "UI.bnk",
@@ -45,7 +45,7 @@
       "Streaming": "false",
       "Location": "Memory",
       "ShortName": "Stamp Sound Effect (mp3cut.net).wav",
-      "CachePath": "15/{15F16590-2554-77F0-A2EF-36C51BDDA12D}.wem"
+      "CachePath": "BA/{BA93A808-7118-280F-86AF-0083A08D4A56}.wem"
      },
      {
       "Id": "191446474",
@@ -429,6 +429,6 @@
     ]
    }
   ],
-  "FileHash": "{BE2E5501-3A16-CB93-9661-F1C295367733}"
+  "FileHash": "{E10A4589-7F2D-2890-33CF-0A5A86DC3058}"
  }
 }
