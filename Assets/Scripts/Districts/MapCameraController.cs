@@ -1,7 +1,8 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using System.Collections.Generic;
 using TMPro;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
@@ -38,15 +39,23 @@ public class MapCameraController : MonoBehaviour
     [Tooltip("Extra ground-plane nudge after pitch compensation (e.g. Z negativo si sigue un poco alto).")]
     [SerializeField] private Vector3 focusOffset = Vector3.zero;
 
+    [Header("Context click")]
+    [SerializeField] private float contextClickDragThreshold = 8f;
+
     private Camera cam;
     private Vector3 targetPosition;
     private Vector3 moveVelocity;
     private float zoomVelocity;
     private bool isMousePanning;
+    private bool pendingRightContext;
+    private Vector2 rightPressPosition;
     private Vector2 lastPanPointerPosition;
     private readonly List<RaycastResult> uiRaycastResults = new List<RaycastResult>();
 
     public static MapCameraController Instance { get; private set; }
+
+    /// <summary>Click derecho corto sobre el mapa (no UI, sin arrastre). Screen-space.</summary>
+    public static event Action<Vector2> OnMapContextRequested;
 
     public float CurrentHeight => transform.position.y;
 
@@ -157,25 +166,66 @@ public class MapCameraController : MonoBehaviour
         if (!enableMousePan) return;
 
         Vector2 pointer = ReadPointerPosition();
-        bool panHeld = IsPanButtonHeld();
-        bool panPressedThisFrame = IsPanButtonPressedThisFrame();
 
-        if (panPressedThisFrame)
+        if (IsMiddleButtonPressedThisFrame())
         {
-            if (IsPointerOverUi(pointer))
+            if (IsPointerOverUi(pointer) || !panWithMiddleMouse)
             {
-                isMousePanning = false;
+                if (!IsRightButtonHeld()) isMousePanning = false;
             }
             else
             {
+                isMousePanning = true;
+                pendingRightContext = false;
+                lastPanPointerPosition = pointer;
+            }
+        }
+
+        if (IsRightButtonPressedThisFrame())
+        {
+            if (IsPointerOverUi(pointer))
+            {
+                pendingRightContext = false;
+            }
+            else
+            {
+                pendingRightContext = true;
+                rightPressPosition = pointer;
+                lastPanPointerPosition = pointer;
+            }
+        }
+
+        if (pendingRightContext && IsRightButtonHeld() && panWithRightMouse)
+        {
+            float threshold = Mathf.Max(1f, contextClickDragThreshold);
+            if ((pointer - rightPressPosition).sqrMagnitude >= threshold * threshold)
+            {
+                pendingRightContext = false;
                 isMousePanning = true;
                 lastPanPointerPosition = pointer;
             }
         }
 
+        if (IsRightButtonReleasedThisFrame())
+        {
+            if (pendingRightContext && !IsPointerOverUi(pointer))
+            {
+                OnMapContextRequested?.Invoke(pointer);
+            }
+
+            pendingRightContext = false;
+        }
+
+        bool panHeld = (panWithMiddleMouse && IsMiddleButtonHeld())
+            || (panWithRightMouse && IsRightButtonHeld() && isMousePanning && !pendingRightContext);
+
         if (!panHeld)
         {
-            isMousePanning = false;
+            if (!IsMiddleButtonHeld() && !IsRightButtonHeld())
+            {
+                isMousePanning = false;
+            }
+
             return;
         }
 
@@ -229,31 +279,48 @@ public class MapCameraController : MonoBehaviour
         return true;
     }
 
-    private bool IsPanButtonHeld()
+    private static bool IsMiddleButtonHeld()
     {
 #if ENABLE_INPUT_SYSTEM
-        if (Mouse.current == null) return false;
-        bool middle = panWithMiddleMouse && Mouse.current.middleButton.isPressed;
-        bool right = panWithRightMouse && Mouse.current.rightButton.isPressed;
-        return middle || right;
+        return Mouse.current != null && Mouse.current.middleButton.isPressed;
 #else
-        bool middle = panWithMiddleMouse && Input.GetMouseButton(2);
-        bool right = panWithRightMouse && Input.GetMouseButton(1);
-        return middle || right;
+        return Input.GetMouseButton(2);
 #endif
     }
 
-    private bool IsPanButtonPressedThisFrame()
+    private static bool IsRightButtonHeld()
     {
 #if ENABLE_INPUT_SYSTEM
-        if (Mouse.current == null) return false;
-        bool middle = panWithMiddleMouse && Mouse.current.middleButton.wasPressedThisFrame;
-        bool right = panWithRightMouse && Mouse.current.rightButton.wasPressedThisFrame;
-        return middle || right;
+        return Mouse.current != null && Mouse.current.rightButton.isPressed;
 #else
-        bool middle = panWithMiddleMouse && Input.GetMouseButtonDown(2);
-        bool right = panWithRightMouse && Input.GetMouseButtonDown(1);
-        return middle || right;
+        return Input.GetMouseButton(1);
+#endif
+    }
+
+    private static bool IsMiddleButtonPressedThisFrame()
+    {
+#if ENABLE_INPUT_SYSTEM
+        return Mouse.current != null && Mouse.current.middleButton.wasPressedThisFrame;
+#else
+        return Input.GetMouseButtonDown(2);
+#endif
+    }
+
+    private static bool IsRightButtonPressedThisFrame()
+    {
+#if ENABLE_INPUT_SYSTEM
+        return Mouse.current != null && Mouse.current.rightButton.wasPressedThisFrame;
+#else
+        return Input.GetMouseButtonDown(1);
+#endif
+    }
+
+    private static bool IsRightButtonReleasedThisFrame()
+    {
+#if ENABLE_INPUT_SYSTEM
+        return Mouse.current != null && Mouse.current.rightButton.wasReleasedThisFrame;
+#else
+        return Input.GetMouseButtonUp(1);
 #endif
     }
 
