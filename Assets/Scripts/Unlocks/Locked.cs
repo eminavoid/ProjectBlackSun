@@ -6,7 +6,13 @@ public class Locked : ScriptableObject
 {
     [SerializeField] private List<Unlockeable> locked;
 
-    [SerializeField] private readonly Dictionary<Rarity, List<Unlockeable>> filtered = new Dictionary<Rarity, List<Unlockeable>>();
+    [SerializeField]
+    private readonly Dictionary<Rarity, List<Unlockeable>> filtered = new Dictionary<Rarity, List<Unlockeable>>()
+    {
+        { Rarity.Common, new List<Unlockeable>() },
+        { Rarity.Rare, new List<Unlockeable>() },
+        { Rarity.Legendary, new List<Unlockeable>() }
+    };
 
     public List<Unlockeable> GetCopy() => new List<Unlockeable>(locked);
 

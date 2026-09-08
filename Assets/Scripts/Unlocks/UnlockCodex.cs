@@ -95,6 +95,11 @@ public class UnlockCodex : MonoBehaviour
         RefreshMenu();
     }
 
+    private void Start()
+    {
+        window.gameObject.SetActive(false);
+    }
+
     private void ClearLayout()
     {
         Transform root = window.TryGetElement<LayoutGroup>("Layout Group").transform;
@@ -112,6 +117,8 @@ public class UnlockCodex : MonoBehaviour
         Transform root = window.TryGetElement<LayoutGroup>("Layout Group").transform;
 
         List<ScriptableObject> scriptables = unlocked.GetCopy();
+
+        Debug.Log($"scriptables count: {scriptables.Count}");
 
         for (int i = 0; i < scriptables.Count; i++)
         {
