@@ -1,0 +1,80 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Windows",
+  "BasePlatform": "Windows",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "89505537",
+    "Type": "User",
+    "GUID": "{F9E3C8AA-A049-4218-A43F-69743DC98A74}",
+    "Language": "SFX",
+    "Hash": "{6AC9E324-D95B-96A6-7A80-57FFFF527AC6}",
+    "ObjectPath": "\\SoundBanks\\Default Work Unit\\Gameplay",
+    "ShortName": "Gameplay",
+    "Path": "Gameplay.bnk",
+    "Media": [
+     {
+      "Id": "169696593",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "gente.wav",
+      "CachePath": "61/{61705018-E915-EE43-CE97-37BB1AD79935}.wem"
+     },
+     {
+      "Id": "267750301",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "gente.wav",
+      "CachePath": "C7/{C7B2D7B6-39EF-F21A-8A87-D17F7FF7AB87}.wem"
+     },
+     {
+      "Id": "343862084",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "seed1 (mp3cut.net).wav",
+      "CachePath": "6E/{6E9FAA38-ABC9-5351-B768-DC3460B7B7DA}.wem"
+     }
+    ],
+    "Events": [
+     {
+      "Id": "1900583491",
+      "Name": "Play_UI_SeedPlant",
+      "ObjectPath": "\\Events\\Default Work Unit\\Play_UI_SeedPlant",
+      "GUID": "{95E9633A-8CCA-4D36-9075-C0D858E308F3}",
+      "DurationType": "OneShot",
+      "DurationMin": "0.92201537",
+      "DurationMax": "1.1285962",
+      "MediaRefs": [
+       {
+        "Id": "343862084"
+       }
+      ]
+     },
+     {
+      "Id": "2613978525",
+      "Name": "Play_World_DistrictClick",
+      "ObjectPath": "\\Events\\Default Work Unit\\Play_World_DistrictClick",
+      "GUID": "{CD92A296-9643-459D-8C02-58EB9D268E1D}",
+      "DurationType": "OneShot",
+      "DurationMin": "2.534001",
+      "DurationMax": "3.2145405",
+      "MediaRefs": [
+       {
+        "Id": "169696593"
+       },
+       {
+        "Id": "267750301"
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "FileHash": "{0B21C51D-008A-1B56-829F-F0CA1E6F922B}"
+ }
+}

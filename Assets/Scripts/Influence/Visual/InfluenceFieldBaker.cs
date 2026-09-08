@@ -108,7 +108,16 @@ public class InfluenceFieldBaker
 
         Shader.SetGlobalTexture(FieldProperty, fieldTexture);
         Shader.SetGlobalTexture(AuxProperty, auxTexture);
-        Shader.SetGlobalVector(BoundsProperty, new Vector4(fieldOrigin.x, fieldOrigin.y, fieldSize, resolution));
+        Shader.SetGlobalVector(BoundsProperty, BoundsVector);
+    }
+
+    public void BindTo(Material material)
+    {
+        if (material == null || fieldTexture == null || auxTexture == null) return;
+
+        material.SetTexture(FieldProperty, fieldTexture);
+        material.SetTexture(AuxProperty, auxTexture);
+        material.SetVector(BoundsProperty, BoundsVector);
     }
 
     public void Release()
@@ -132,9 +141,21 @@ public class InfluenceFieldBaker
         }
     }
 
+    private Vector4 BoundsVector => new Vector4(fieldOrigin.x, fieldOrigin.y, fieldSize, resolution);
+
     private Texture2D CreateTexture(string name)
     {
-        Texture2D tex = new Texture2D(resolution, resolution, TextureFormat.RGBAHalf, false, true)
+        TextureFormat format = TextureFormat.RGBA32;
+        if (SystemInfo.SupportsTextureFormat(TextureFormat.RGBAHalf))
+        {
+            format = TextureFormat.RGBAHalf;
+        }
+        else if (SystemInfo.SupportsTextureFormat(TextureFormat.RGBAFloat))
+        {
+            format = TextureFormat.RGBAFloat;
+        }
+
+        Texture2D tex = new Texture2D(resolution, resolution, format, false, true)
         {
             name = name,
             filterMode = FilterMode.Bilinear,

@@ -28,7 +28,7 @@ Shader "Custom/IntentArrow"
         Pass
         {
             Name "IntentArrow"
-            Tags { "LightMode" = "UniversalForward" }
+            Tags { "LightMode" = "SRPDefaultUnlit" }
 
             // Aditivo con color premultiplicado por alpha en el fragment.
             Blend One One

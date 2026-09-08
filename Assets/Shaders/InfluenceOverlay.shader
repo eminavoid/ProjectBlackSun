@@ -30,6 +30,10 @@ Shader "Custom/InfluenceOverlay"
         _ContestedStrength("Contested Strength", Range(0, 2)) = 0.9
         _BreathAmp("Breath Amplitude", Range(0, 20)) = 0.25
         _BreathSpeed("Breath Speed", Range(0, 8)) = 1.4
+
+        [HideInInspector] _InfluenceField("Influence Field", 2D) = "black" {}
+        [HideInInspector] _InfluenceFieldAux("Influence Field Aux", 2D) = "black" {}
+        [HideInInspector] _InfluenceFieldBounds("Influence Field Bounds", Vector) = (0, 0, 1, 64)
     }
 
     SubShader
@@ -45,7 +49,7 @@ Shader "Custom/InfluenceOverlay"
         Pass
         {
             Name "InfluenceOverlay"
-            Tags { "LightMode" = "UniversalForward" }
+            Tags { "LightMode" = "SRPDefaultUnlit" }
 
             Blend SrcAlpha OneMinusSrcAlpha
             ZWrite Off
@@ -57,14 +61,15 @@ Shader "Custom/InfluenceOverlay"
             #pragma fragment frag
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
-            // Campo global horneado por InfluenceFieldBaker (world-space XZ).
             TEXTURE2D(_InfluenceField);
             SAMPLER(sampler_InfluenceField);
             TEXTURE2D(_InfluenceFieldAux);
             SAMPLER(sampler_InfluenceFieldAux);
-            float4 _InfluenceFieldBounds; // xy = origen XZ, z = tamaño del cuadrado, w = resolución
 
             CBUFFER_START(UnityPerMaterial)
+                float4 _InfluenceField_ST;
+                float4 _InfluenceFieldAux_ST;
+                float4 _InfluenceFieldBounds;
                 half _Lift;
                 half _GlobalAlpha;
                 half _Intensity;

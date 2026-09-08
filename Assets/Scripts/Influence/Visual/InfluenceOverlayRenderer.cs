@@ -70,7 +70,7 @@ public class InfluenceOverlayRenderer : MonoBehaviour
         baker = new InfluenceFieldBaker(settings.fieldResolution);
 
         Rebake();
-        baker.Publish(1f);
+        PublishField(1f);
         ApplyVolumeSettings();
         ApplyAlpha();
 
@@ -120,14 +120,14 @@ public class InfluenceOverlayRenderer : MonoBehaviour
             Rebake();
             transitionTimer = 0f;
             transitioning = settings.transitionSeconds > 0f;
-            if (!transitioning) baker.Publish(1f);
+            if (!transitioning) PublishField(1f);
         }
 
         if (!transitioning) return;
 
         transitionTimer += Time.deltaTime;
         float blend = Mathf.Clamp01(transitionTimer / settings.transitionSeconds);
-        baker.Publish(blend);
+        PublishField(blend);
         if (blend >= 1f) transitioning = false;
     }
 
@@ -283,26 +283,23 @@ public class InfluenceOverlayRenderer : MonoBehaviour
         overlays.Clear();
     }
 
+    private void PublishField(float blend)
+    {
+        if (baker == null) return;
+        baker.Publish(blend);
+        baker.BindTo(overlayMaterial);
+    }
+
     private static Material ResolveMaterial()
     {
         Material template = Resources.Load<Material>(MaterialResourcePath);
-        if (template != null)
-        {
-            return new Material(template)
-            {
-                name = "InfluenceOverlay_Runtime",
-                hideFlags = HideFlags.HideAndDontSave
-            };
-        }
+        Shader shader = template != null ? template.shader : Shader.Find(ShaderName);
+        if (shader == null || !shader.isSupported) return null;
 
-        Shader shader = Shader.Find(ShaderName);
-        if (shader == null) return null;
-
-        return new Material(shader)
-        {
-            name = "InfluenceOverlay_Runtime",
-            hideFlags = HideFlags.HideAndDontSave
-        };
+        Material material = template != null ? new Material(template) : new Material(shader);
+        material.name = "InfluenceOverlay_Runtime";
+        material.hideFlags = HideFlags.HideAndDontSave;
+        return material;
     }
 
     private struct ZoneOverlay
