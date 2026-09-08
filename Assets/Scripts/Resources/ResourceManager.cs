@@ -46,6 +46,8 @@ public class ResourceManager : Singleton<ResourceManager>
         resourceWindow.TryGetElement<TextMeshProUGUI>("Zeal").text = playerResources.GetResourceAmount(Resource.Zeal).ToString();
         resourceWindow.TryGetElement<TextMeshProUGUI>("Flock").text = playerResources.GetResourceAmount(Resource.Flock).ToString();
         resourceWindow.TryGetElement<TextMeshProUGUI>("Authority").text = playerResources.GetResourceAmount(Resource.Authority).ToString();
+        resourceWindow.TryGetElement<TextMeshProUGUI>("Materials").text = playerResources.GetResourceAmount(Resource.Materials).ToString();
+        resourceWindow.TryGetElement<TextMeshProUGUI>("Secrets").text = playerResources.GetResourceAmount(Resource.Secrets).ToString();
 
         resourceWindow.TryGetElement<TextMeshProUGUI>("Happiness").text = playerResources.GetResourceAmount(Resource.Happiness).ToString() + "%";
 
