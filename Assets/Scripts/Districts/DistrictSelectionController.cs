@@ -103,7 +103,6 @@ public class DistrictSelectionController : MonoBehaviour
         if (verboseLogs)
         {
             Debug.Log($"DistrictSelectionController: map setup complete on '{mapObject.name}'.", this);
-            Debug.Log(DistrictSelectionDebugOverlay.BuildSetupReport(colorMapping), this);
         }
     }
 

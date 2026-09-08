@@ -1851,7 +1851,6 @@ GameObject:
   - component: {fileID: 268629324}
   - component: {fileID: 268629325}
   - component: {fileID: 268629326}
-  - component: {fileID: 268629327}
   m_Layer: 0
   m_Name: DistrictManager
   m_TagString: Untagged
@@ -1925,22 +1924,6 @@ MonoBehaviour:
   autoSetupMapOnStart: 1
   mapObjectName: mapa ordenado
   colorMapping: {fileID: 11400000, guid: 9a5f3b2c1d0e4f8a7b6c5d4e3f2a1b0c, type: 2}
---- !u!114 &268629327
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 268629323}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1e2d3c4b5a6978012345678abcdef01, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DistrictSelectionDebugOverlay
-  showOnScreenLabel: 1
-  logSelectionToConsole: 1
-  logSetupReportOnStart: 1
-  colorMapping: {fileID: 0}
 --- !u!1 &319581101
 GameObject:
   m_ObjectHideFlags: 0
