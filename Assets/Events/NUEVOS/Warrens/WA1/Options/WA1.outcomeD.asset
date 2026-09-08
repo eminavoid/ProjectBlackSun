@@ -31,15 +31,17 @@ MonoBehaviour:
         - weight: 80
           module: []
           statUsed: 0
-          output: 
+          output: The outbreak passes without much fuss; it truly was nothing worse
+            than a common cold.
         - weight: 20
           module:
           - rid: 2174037052531671139
           statUsed: 0
-          output: 
+          output: 'Curse it all! We grew far too reckless! Our clerics have fallen
+            ill. [-20 Flock]'
     - rid: 2174037052531671139
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
-        resource: 0
-        minAmount: -50
-        maxAmount: -50
+        resource: 3
+        minAmount: -20
+        maxAmount: -20

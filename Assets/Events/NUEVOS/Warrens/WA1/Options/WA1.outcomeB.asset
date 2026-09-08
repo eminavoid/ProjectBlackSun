@@ -15,22 +15,16 @@ MonoBehaviour:
   playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
   title: The sick shall be barred from entry, yet we will allow the uninfected to
     take shelter within our halls until this blows over.
-  description: 'COST: 25'
+  description: 'COST: No cost'
   icon: {fileID: 0}
   modules:
-  - rid: 2174037052531671130
+  - rid: 2174037052531671287
   - rid: 2174037052531671131
   endsQuestline: 1
   followUpSeeds: []
   references:
     version: 2
     RefIds:
-    - rid: 2174037052531671130
-      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
-      data:
-        resource: 0
-        required: 0
-        consumeResource: 1
     - rid: 2174037052531671131
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
@@ -39,21 +33,33 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671132
           statUsed: 0
-          output: 
+          output: 'Those with nowhere else to turn, or burdened by sick kin at home,
+            are deeply grateful for our sanctuary. [10 Flock]'
         - weight: 50
           module:
           - rid: 2174037052531671133
+          - rid: 2174037052531671288
           statUsed: 0
-          output: 
+          output: 'While the healthy appreciate our shelter, we are branded heartless
+            for turning away the afflicted. [-10 & -20 Zeal]'
     - rid: 2174037052531671132
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
-        minAmount: 50
-        maxAmount: 50
+        minAmount: 10
+        maxAmount: 10
     - rid: 2174037052531671133
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
-        resource: 0
-        minAmount: -25
-        maxAmount: -25
+        resource: 3
+        minAmount: -10
+        maxAmount: -10
+    - rid: 2174037052531671287
+      type: {class: DoNothing, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2174037052531671288
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: -20
+        maxAmount: -20

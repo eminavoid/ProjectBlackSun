@@ -28,18 +28,15 @@ MonoBehaviour:
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
         modules:
-        - weight: 30
-          module: []
-          statUsed: 0
-          output: 
-        - weight: 70
+        - weight: 100
           module:
-          - rid: 2174037052531671153
+          - rid: 2174037052531671303
           statUsed: 0
-          output: 
-    - rid: 2174037052531671153
+          output: 'The commoners resent our inaction, but there is precious little
+            to be done about it. [-10 Zeal]'
+    - rid: 2174037052531671303
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
-        resource: 0
-        minAmount: -50
-        maxAmount: -50
+        resource: 1
+        minAmount: -10
+        maxAmount: -10

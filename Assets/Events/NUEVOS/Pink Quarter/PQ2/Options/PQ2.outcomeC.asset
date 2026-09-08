@@ -16,22 +16,16 @@ MonoBehaviour:
   title: Let him know we are aware of his transgressions, but that we will keep it
     to ourselves. An aristocrat owing us a favor is far more valuable than anything
     he could offer.
-  description: 'COST: 10'
+  description: 'COST: No cost'
   icon: {fileID: 0}
   modules:
-  - rid: 2174037052531671148
+  - rid: 2174037052531671284
   - rid: 2174037052531671149
   endsQuestline: 1
   followUpSeeds: []
   references:
     version: 2
     RefIds:
-    - rid: 2174037052531671148
-      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
-      data:
-        resource: 0
-        required: 0
-        consumeResource: 1
     - rid: 2174037052531671149
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
@@ -40,21 +34,26 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671150
           statUsed: 0
-          output: 
+          output: 'The aristocrat is immensely grateful and pledges to assist our
+            endeavors in the future! [1 Authority]'
         - weight: 85
           module:
           - rid: 2174037052531671151
           statUsed: 0
-          output: 
+          output: 'The aristocrat threatens us outright. We had best drop the matter
+            entirely. [-50 Secrets]'
     - rid: 2174037052531671150
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
-        resource: 6
-        minAmount: 100
-        maxAmount: 100
+        resource: 2
+        minAmount: 1
+        maxAmount: 1
     - rid: 2174037052531671151
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
-        resource: 0
+        resource: 6
         minAmount: -50
         maxAmount: -50
+    - rid: 2174037052531671284
+      type: {class: DoNothing, ns: , asm: Assembly-CSharp}
+      data: 

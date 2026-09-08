@@ -28,18 +28,7 @@ MonoBehaviour:
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
         modules:
-        - weight: 30
+        - weight: 100
           module: []
           statUsed: 0
-          output: 
-        - weight: 70
-          module:
-          - rid: 2174037052531671153
-          statUsed: 0
-          output: 
-    - rid: 2174037052531671153
-      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
-      data:
-        resource: 0
-        minAmount: -50
-        maxAmount: -50
+          output: The less the Beholder knows, the more it forgives.

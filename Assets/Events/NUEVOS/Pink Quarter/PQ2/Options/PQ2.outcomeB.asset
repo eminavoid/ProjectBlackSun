@@ -14,22 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Option
   playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
   title: Perhaps we can squeeze a handsome sum of coin from his delicate predicament.
-  description: 'COST: 50'
+  description: 'COST: No cost'
   icon: {fileID: 0}
   modules:
-  - rid: 2174037052531671144
+  - rid: 2174037052531671283
   - rid: 2174037052531671145
   endsQuestline: 1
   followUpSeeds: []
   references:
     version: 2
     RefIds:
-    - rid: 2174037052531671144
-      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
-      data:
-        resource: 0
-        required: 0
-        consumeResource: 1
     - rid: 2174037052531671145
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
@@ -38,21 +32,26 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671146
           statUsed: 0
-          output: 
+          output: 'The deviant agrees to buy our silence. [100 Wealth]'
         - weight: 50
           module:
           - rid: 2174037052531671147
           statUsed: 0
-          output: 
+          output: 'The aristocrat cannot bear the shame... and takes his own life!
+            The other Iris nobles hold us accountable for the blood of their peer.
+            [-1 Authority]'
     - rid: 2174037052531671146
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
-        resource: 6
-        minAmount: 50
-        maxAmount: 50
+        resource: 0
+        minAmount: 100
+        maxAmount: 100
     - rid: 2174037052531671147
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
-        resource: 0
-        minAmount: -100
-        maxAmount: -100
+        resource: 2
+        minAmount: -1
+        maxAmount: -1
+    - rid: 2174037052531671283
+      type: {class: DoNothing, ns: , asm: Assembly-CSharp}
+      data: 

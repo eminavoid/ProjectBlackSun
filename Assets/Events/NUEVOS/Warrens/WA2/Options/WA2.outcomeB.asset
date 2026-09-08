@@ -15,7 +15,7 @@ MonoBehaviour:
   playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
   title: Perhaps these ruffians merely need to see the light. Send a cleric to convert
     them!
-  description: 'COST: 50'
+  description: 'COST: 10 Flock'
   icon: {fileID: 0}
   modules:
   - rid: 2174037052531671144
@@ -28,32 +28,41 @@ MonoBehaviour:
     - rid: 2174037052531671144
       type: {class: RequireResource, ns: , asm: Assembly-CSharp}
       data:
-        resource: 0
-        required: 0
+        resource: 3
+        required: 10
         consumeResource: 1
     - rid: 2174037052531671145
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
         modules:
-        - weight: 50
+        - weight: 10
           module:
           - rid: 2174037052531671146
+          - rid: 2174037052531671296
+          - rid: 2174037052531671297
           statUsed: 0
-          output: 
-        - weight: 50
-          module:
-          - rid: 2174037052531671147
+          output: 'The cleric persuades the cutthroats to forsake their wicked ways.
+            A true miracle! [25 Flock & 100 Zeal]'
+        - weight: 90
+          module: []
           statUsed: 0
-          output: 
+          output: The bandits beat our cleric within an inch of his life. Honestly,
+            what else did we expect?
     - rid: 2174037052531671146
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
-        minAmount: 50
-        maxAmount: 50
-    - rid: 2174037052531671147
+        minAmount: 25
+        maxAmount: 25
+    - rid: 2174037052531671296
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
-        resource: 0
-        minAmount: -100
-        maxAmount: -100
+        resource: 1
+        minAmount: 100
+        maxAmount: 100
+    - rid: 2174037052531671297
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: 10
+        maxAmount: 10
