@@ -15,11 +15,11 @@ public class AIIntentOverlay : MonoBehaviour
     private const string ShaderName = "Custom/IntentArrow";
 
     [Header("Escala (relativa al tamaño de una cuadra)")]
-    [SerializeField] private float liftFactor = 0.5f;
-    [SerializeField] private float widthFactor = 0.34f;
-    [SerializeField] private float arcHeightFactor = 0.9f;
-    [SerializeField] private float dropHeightFactor = 2.2f;
-    [SerializeField] private float ringRadiusFactor = 0.7f;
+    [SerializeField] private float liftFactor = 0.12f;
+    [SerializeField] private float widthFactor = 0.2f;
+    [SerializeField] private float arcHeightFactor = 0.55f;
+    [SerializeField] private float dropHeightFactor = 1.05f;
+    [SerializeField] private float ringRadiusFactor = 0.36f;
 
     [Header("Forma")]
     [SerializeField] private float headRatio = 0.18f;
@@ -148,7 +148,8 @@ public class AIIntentOverlay : MonoBehaviour
         view.SetVisible(true);
 
         float lift = referenceSize * liftFactor;
-        Vector3 target = intent.Target.GetWorldBounds().center + Vector3.up * lift;
+        Bounds targetBounds = intent.Target.GetWorldBounds();
+        Vector3 target = SurfacePoint(targetBounds, lift);
         Color color = intent.Color;
 
         IntentArrowView.ArrowStyle style = new IntentArrowView.ArrowStyle
@@ -162,7 +163,7 @@ public class AIIntentOverlay : MonoBehaviour
 
         bool hasOrigin = intent.Origin != null && intent.Origin != intent.Target;
         Vector3 origin = hasOrigin
-            ? intent.Origin.GetWorldBounds().center + Vector3.up * lift
+            ? SurfacePoint(intent.Origin.GetWorldBounds(), lift)
             : target;
 
         if (hasOrigin && (target - origin).sqrMagnitude > referenceSize * referenceSize * 0.04f)
@@ -209,6 +210,15 @@ public class AIIntentOverlay : MonoBehaviour
         }
 
         return count > 0 ? Mathf.Max(sum / count, 0.01f) : referenceSize;
+    }
+
+    /// <summary>
+    /// Punto sobre la cara de arriba de la cuadra. El centro del volumen queda
+    /// dentro del piso nuevo y las flechas z-fightean o flotan en el medio.
+    /// </summary>
+    private static Vector3 SurfacePoint(Bounds bounds, float lift)
+    {
+        return new Vector3(bounds.center.x, bounds.max.y + lift, bounds.center.z);
     }
 
     private static Material ResolveMaterial()
