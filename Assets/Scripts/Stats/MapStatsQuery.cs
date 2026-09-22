@@ -421,6 +421,11 @@ public static class MapStatsQuery
 
         if (entry.isImperial) return "Diezmo: — (imperial)";
 
+        if (entry.usesPerZoneAmount)
+        {
+            return FormatZoneShareTithe(zone, state, entry);
+        }
+
         string resources = FormatResourceAmounts(entry);
         if (state != null && state.Status == ZoneControlStatus.Controlled && state.Controller.HasValue)
         {
@@ -447,6 +452,12 @@ public static class MapStatsQuery
 
         if (entry.isImperial) return "Producción: sin diezmo (imperial)";
 
+        if (entry.usesPerZoneAmount)
+        {
+            return "Producción: " + FormatZoneAmountSpan(district, entry.primaryAmountPerZone)
+                + " " + entry.primaryResource + " por cuadra, según % de influencia";
+        }
+
         string resources = FormatResourceAmounts(entry);
         if (districtControlled)
         {
@@ -455,6 +466,58 @@ public static class MapStatsQuery
         }
 
         return "Producción: " + resources + " por nodo";
+    }
+
+    private static string FormatZoneShareTithe(
+        DistrictZone zone,
+        ZoneInfluenceState state,
+        DistrictProductionConfig.ProductionEntry entry)
+    {
+        int production = zone.ProductionAmount;
+        string resource = entry.primaryResource.ToString();
+        if (state == null || state.TotalInfluence <= 0)
+        {
+            return "Diezmo: " + production + " " + resource + " (sin influencia, se pierde)";
+        }
+
+        List<string> parts = new List<string>();
+        foreach (FactionId faction in state.FactionsWithShare())
+        {
+            int amount = DistrictProductionConfig.FloorShare(
+                production,
+                state.GetShare(faction),
+                state.TotalInfluence);
+            if (amount <= 0) continue;
+            parts.Add(FactionIdUtil.ShortLabel(faction) + " " + amount);
+        }
+
+        if (parts.Count == 0)
+        {
+            return "Diezmo: " + production + " " + resource + " (no llega a 1, se pierde)";
+        }
+
+        return "Diezmo: " + production + " " + resource + " → " + string.Join(", ", parts);
+    }
+
+    private static string FormatZoneAmountSpan(Districts district, int fallback)
+    {
+        List<DistrictZone> zones = GetDistrictZones(district, GetPlayableZones());
+        int min = int.MaxValue;
+        int max = int.MinValue;
+        int counted = 0;
+        for (int i = 0; i < zones.Count; i++)
+        {
+            DistrictZone zone = zones[i];
+            if (zone == null || !zone.IsPlayable) continue;
+            int amount = zone.ProductionAmount;
+            if (amount < min) min = amount;
+            if (amount > max) max = amount;
+            counted++;
+        }
+
+        if (counted == 0) return fallback.ToString();
+        if (min == max) return min.ToString();
+        return min + "-" + max;
     }
 
     private static string FormatResourceAmounts(DistrictProductionConfig.ProductionEntry entry)

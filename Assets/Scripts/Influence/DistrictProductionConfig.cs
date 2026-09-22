@@ -16,6 +16,21 @@ public class DistrictProductionConfig : ScriptableObject
         public Resource secondaryResource;
         public int secondaryAmountPerZone;
         public PlayerStats.PlayerStat influenceStat;
+
+        /// <summary>
+        /// True: el monto sale de DistrictZone.ProductionAmount y se reparte por % de influencia.
+        /// False: camino viejo (el centro). No cambiar esa entrada.
+        /// </summary>
+        public bool usesPerZoneAmount;
+    }
+
+    /// <summary>
+    /// floor(produccion * share / total), en enteros. Lo que no llega a 1 se pierde.
+    /// </summary>
+    public static int FloorShare(int production, int share, int total)
+    {
+        if (production <= 0 || share <= 0 || total <= 0) return 0;
+        return (int)((long)production * share / total);
     }
 
     [SerializeField] private float districtControlProductionMultiplier = 1.25f;
@@ -27,41 +42,42 @@ public class DistrictProductionConfig : ScriptableObject
             partColorName = "Yellow",
             district = Districts.District4,
             primaryResource = Resource.Wealth,
-            primaryAmountPerZone = 4,
-            influenceStat = PlayerStats.PlayerStat.Stewardship
+            primaryAmountPerZone = 10,
+            influenceStat = PlayerStats.PlayerStat.Stewardship,
+            usesPerZoneAmount = true
         },
         new ProductionEntry
         {
             partColorName = "Green",
             district = Districts.District3,
             primaryResource = Resource.Flock,
-            primaryAmountPerZone = 3,
-            influenceStat = PlayerStats.PlayerStat.Diplomacy
+            primaryAmountPerZone = 10,
+            influenceStat = PlayerStats.PlayerStat.Diplomacy,
+            usesPerZoneAmount = true
         },
         new ProductionEntry
         {
             partColorName = "White",
             district = Districts.District6,
             primaryResource = Resource.Zeal,
-            primaryAmountPerZone = 3,
-            influenceStat = PlayerStats.PlayerStat.Learning
+            primaryAmountPerZone = 10,
+            influenceStat = PlayerStats.PlayerStat.Learning,
+            usesPerZoneAmount = true
         },
         new ProductionEntry
         {
             partColorName = "Red",
             district = Districts.District1,
-            // Material pending → Flock + Wealth menor proporción
-            primaryResource = Resource.Flock,
-            primaryAmountPerZone = 1,
-            secondaryResource = Resource.Wealth,
-            secondaryAmountPerZone = 1,
-            influenceStat = PlayerStats.PlayerStat.Aggresion
+            primaryResource = Resource.Materials,
+            primaryAmountPerZone = 10,
+            influenceStat = PlayerStats.PlayerStat.Aggresion,
+            usesPerZoneAmount = true
         },
         new ProductionEntry
         {
             partColorName = "Purple",
             district = Districts.District5,
-            // Secrets pending → Wealth + Bliss
+            // Centro: no tocar. Sigue el reparto anterior.
             primaryResource = Resource.Wealth,
             primaryAmountPerZone = 2,
             secondaryResource = Resource.Happiness,
@@ -70,12 +86,12 @@ public class DistrictProductionConfig : ScriptableObject
         },
         new ProductionEntry
         {
-            partColorName = "Blue",
+            partColorName = "Pink",
             district = Districts.District2,
-            isImperial = true,
-            primaryResource = Resource.Wealth,
-            primaryAmountPerZone = 0,
-            influenceStat = PlayerStats.PlayerStat.None
+            primaryResource = Resource.Secrets,
+            primaryAmountPerZone = 10,
+            influenceStat = PlayerStats.PlayerStat.Intrigue,
+            usesPerZoneAmount = true
         }
     };
 

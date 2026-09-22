@@ -533,7 +533,7 @@ public class DistrictSelectionController : MonoBehaviour
 
     private bool IsPointerOverUi(Vector2 screenPosition)
     {
-        // OnGUI panels (influence debug / cleric assign) are not EventSystem graphics.
+        // OnGUI cleric assign is not an EventSystem graphic.
         if (OnGuiClickBlocker.IsPointerOverBlockedArea(screenPosition)) return true;
 
         if (EventSystem.current == null) return false;

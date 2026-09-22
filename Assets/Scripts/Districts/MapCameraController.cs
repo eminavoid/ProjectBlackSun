@@ -29,9 +29,16 @@ public class MapCameraController : MonoBehaviour
 
     [Header("Zoom")]
     [SerializeField] private float zoomStep = 0.45f;
-    [SerializeField] private float minHeight = 2f;
-    [SerializeField] private float maxHeight = 18f;
+    [Tooltip("Altura mínima. Más bajo = más zoom in.")]
+    [SerializeField] private float minHeight = 0.7f;
+    [Tooltip("Altura máxima. Más bajo = menos zoom out.")]
+    [SerializeField] private float maxHeight = 8f;
     [SerializeField] private bool blockZoomOverUi = true;
+
+    [Header("Map Bounds")]
+    [SerializeField] private bool clampPanToMap = true;
+    [Tooltip("Cuánto puede salir el centro de la vista del mapa. 0 lo deja dentro del contorno.")]
+    [SerializeField] private float mapBoundsPadding = 1.5f;
 
     [Header("Focus")]
     [SerializeField] private float focusPadding = 1.35f;
@@ -51,6 +58,8 @@ public class MapCameraController : MonoBehaviour
     private Vector2 rightPressPosition;
     private Vector2 lastPanPointerPosition;
     private readonly List<RaycastResult> uiRaycastResults = new List<RaycastResult>();
+    private Bounds mapBounds;
+    private bool hasMapBounds;
 
     public static MapCameraController Instance { get; private set; }
 
@@ -86,6 +95,8 @@ public class MapCameraController : MonoBehaviour
         HandleKeyboardPan();
         HandleMousePan();
         HandleZoomInput();
+        targetPosition.y = Mathf.Clamp(targetPosition.y, minHeight, maxHeight);
+        ClampTargetToMap();
     }
 
     private void LateUpdate()
@@ -117,6 +128,72 @@ public class MapCameraController : MonoBehaviour
 
         // Angled top-down: place the camera so the view ray hits lookAt, not directly above it.
         targetPosition = ResolveFocusCameraPosition(lookAt, height);
+        ClampTargetToMap();
+    }
+
+    private void ClampTargetToMap()
+    {
+        if (!clampPanToMap) return;
+        if (!EnsureMapBounds()) return;
+        if (!TryGetGroundLookAt(targetPosition, out Vector3 lookAt)) return;
+
+        float minX = mapBounds.min.x - mapBoundsPadding;
+        float maxX = mapBounds.max.x + mapBoundsPadding;
+        float minZ = mapBounds.min.z - mapBoundsPadding;
+        float maxZ = mapBounds.max.z + mapBoundsPadding;
+
+        float clampedX = Mathf.Clamp(lookAt.x, minX, maxX);
+        float clampedZ = Mathf.Clamp(lookAt.z, minZ, maxZ);
+        if (Mathf.Approximately(clampedX, lookAt.x) && Mathf.Approximately(clampedZ, lookAt.z)) return;
+
+        lookAt.x = clampedX;
+        lookAt.z = clampedZ;
+        targetPosition = ResolveFocusCameraPosition(lookAt, targetPosition.y);
+    }
+
+    private bool EnsureMapBounds()
+    {
+        if (hasMapBounds) return true;
+
+        bool found = false;
+        Bounds bounds = default;
+        DistrictZone[] zones = FindObjectsByType<DistrictZone>(FindObjectsSortMode.None);
+        for (int i = 0; i < zones.Length; i++)
+        {
+            DistrictZone zone = zones[i];
+            if (zone == null || !zone.IsPlayable) continue;
+
+            Bounds zoneBounds = zone.GetWorldBounds();
+            if (!found)
+            {
+                bounds = zoneBounds;
+                found = true;
+            }
+            else
+            {
+                bounds.Encapsulate(zoneBounds);
+            }
+        }
+
+        if (!found || bounds.size.sqrMagnitude < 0.01f) return false;
+
+        mapBounds = bounds;
+        hasMapBounds = true;
+        return true;
+    }
+
+    private bool TryGetGroundLookAt(Vector3 cameraPosition, out Vector3 lookAt)
+    {
+        lookAt = cameraPosition;
+        Vector3 forward = transform.forward;
+        if (Mathf.Abs(forward.y) < 0.0001f) return false;
+
+        float groundY = hasMapBounds ? mapBounds.center.y : 0f;
+        float distance = (groundY - cameraPosition.y) / forward.y;
+        if (distance <= 0f) return false;
+
+        lookAt = cameraPosition + forward * distance;
+        return true;
     }
 
     private Vector3 ResolveFocusCameraPosition(Vector3 lookAt, float height)

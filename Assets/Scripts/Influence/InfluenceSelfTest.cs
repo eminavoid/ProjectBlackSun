@@ -32,6 +32,12 @@ public class InfluenceSelfTest : MonoBehaviour
         state.RecalculateControl();
         Debug.Assert(state.Status == ZoneControlStatus.Contested, "50/50 contested");
 
+        Debug.Assert(DistrictProductionConfig.FloorShare(10, 100, 100) == 10, "100% of 10");
+        Debug.Assert(DistrictProductionConfig.FloorShare(10, 70, 100) == 7, "70% of 10");
+        Debug.Assert(DistrictProductionConfig.FloorShare(10, 30, 100) == 3, "30% of 10");
+        Debug.Assert(DistrictProductionConfig.FloorShare(10, 1, 3) == 3, "floor 10/3");
+        Debug.Assert(DistrictProductionConfig.FloorShare(10, 0, 100) == 0, "no share");
+
         Debug.Log("InfluenceSelfTest: OK", this);
     }
 }
