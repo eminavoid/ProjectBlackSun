@@ -28,7 +28,7 @@ MonoBehaviour:
   transitionSeconds: 0.6
   fadeSeconds: 0.25
   startVisible: 1
-  detailMaxHeight: 3
+  detailMaxHeight: 1.5
   detailFontSize: 0.0655
   volumeHeight: 0.03
   volumeBreath: 0.015
