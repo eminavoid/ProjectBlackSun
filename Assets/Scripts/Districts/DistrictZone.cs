@@ -11,7 +11,13 @@ public class DistrictZone : MonoBehaviour
     private const string SelectedMaterialResourcePath = "Materials/NodeSelectedShield";
     private const string SelectedShaderName = "Custom/NodeSelectedShield";
 
+    public const int DefaultProductionAmount = 10;
+
     [SerializeField] private Districts district;
+
+    [Tooltip("Producción base de esta cuadra. Se reparte según el % de influencia y se redondea hacia abajo; el resto se pierde. Temporal: ahora está en 10.")]
+    [Min(0)]
+    [SerializeField] private int productionAmount = DefaultProductionAmount;
 
     private static Material plantedTemplate;
     private static Material selectedTemplate;
@@ -26,6 +32,15 @@ public class DistrictZone : MonoBehaviour
     private Material[] runtimeVisualMaterials;
 
     public Districts District => district;
+
+    /// <summary>
+    /// Producción base de esta cuadra. Cada zona se edita por separado; el default es temporal.
+    /// </summary>
+    public int ProductionAmount
+    {
+        get => Mathf.Max(0, productionAmount);
+        set => productionAmount = Mathf.Max(0, value);
+    }
     public bool IsOccupied => plantedSeed != null;
     public bool IsSelected => isSelected;
     public Seed PlantedSeed => plantedSeed;

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 /// <summary>
-/// Asegura InfluenceManager + AI + panel debug en escena (VS bootstrap).
+/// Asegura InfluenceManager + AI en escena (VS bootstrap).
 /// </summary>
 [DefaultExecutionOrder(-30)]
 public class InfluenceSystemBootstrap : MonoBehaviour
@@ -9,7 +9,6 @@ public class InfluenceSystemBootstrap : MonoBehaviour
     [SerializeField] private DistrictProductionConfig productionConfig;
     [SerializeField] private PlayerStats playerStats;
     [SerializeField] private bool ensureAiController = true;
-    [SerializeField] private bool ensureDebugPanel = true;
     [SerializeField] private bool ensureInfluenceOverlay = true;
     [SerializeField] private bool ensureIntentOverlay = true;
 
@@ -42,11 +41,6 @@ public class InfluenceSystemBootstrap : MonoBehaviour
         if (ensureAiController && FindAnyObjectByType<AIInfluenceController>() == null)
         {
             gameObject.AddComponent<AIInfluenceController>();
-        }
-
-        if (ensureDebugPanel && FindAnyObjectByType<InfluenceDebugPanel>() == null)
-        {
-            gameObject.AddComponent<InfluenceDebugPanel>();
         }
 
         if (FindAnyObjectByType<DistrictClericAssignPanel>() == null)

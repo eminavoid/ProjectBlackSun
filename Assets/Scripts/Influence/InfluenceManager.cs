@@ -491,6 +491,12 @@ public class InfluenceManager : Singleton<InfluenceManager>
 
             if (entry.isImperial) continue;
 
+            if (entry.usesPerZoneAmount)
+            {
+                DistributeProductionByShare(zone, entry.primaryResource, zone.ProductionAmount);
+                continue;
+            }
+
             float districtMult = 1f;
             FactionId? districtOwner = GetDistrictController(zone.District);
             // Multiplier applies to production of zones in a controlled district (GDD).
@@ -510,6 +516,24 @@ public class InfluenceManager : Singleton<InfluenceManager>
     private static int ScaleAmount(int baseAmount, float mult)
     {
         return Mathf.Max(0, Mathf.FloorToInt(baseAmount * mult));
+    }
+
+    /// <summary>
+    /// Cada facción recibe floor(producción * su influencia / total). El resto se pierde.
+    /// </summary>
+    private void DistributeProductionByShare(DistrictZone zone, Resource resource, int production)
+    {
+        if (production <= 0 || zone.Influence == null) return;
+
+        ZoneInfluenceState state = zone.Influence;
+        int total = state.TotalInfluence;
+        if (total <= 0) return;
+
+        foreach (FactionId faction in state.FactionsWithShare())
+        {
+            int amount = DistrictProductionConfig.FloorShare(production, state.GetShare(faction), total);
+            if (amount > 0) GrantResource(faction, resource, amount);
+        }
     }
 
     private void DistributeZoneProduction(DistrictZone zone, Resource resource, int baseAmount)
