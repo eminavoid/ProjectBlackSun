@@ -4544,13 +4544,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ResourceManager
   playerResources: {fileID: 11400000, guid: b6189538476b6ff4eba1374d56e45c58, type: 2}
-  startWealth: 100
-  startZeal: 100
+  startWealth: 50
+  startZeal: 50
   startFlock: 100
   startAuthority: 1
-  startHappiness: 100
-  startMaterials: 50
-  startSecrets: 50
+  startHappiness: 25
+  startMaterials: 25
+  startSecrets: 25
   tithe: 0.5
   uiWindow: {fileID: 8615628383825455374, guid: 778a8f7019ff05743b5ad1abc6c8d319, type: 3}
 --- !u!1 &962344488
