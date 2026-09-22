@@ -105,6 +105,26 @@ public class EventExcelImporterWindow : EditorWindow
                     continue;
                 }
 
+                if (string.IsNullOrWhiteSpace(evt.title))
+                {
+                    log.Add($"WARNING: {evt.id} ({category}) has a blank title.");
+                }
+                if (string.IsNullOrWhiteSpace(evt.description))
+                {
+                    log.Add($"WARNING: {evt.id} ({category}) has a blank description.");
+                }
+                foreach (var opt in evt.options)
+                {
+                    if (string.IsNullOrWhiteSpace(opt.title))
+                    {
+                        log.Add($"WARNING: {evt.id} option {opt.letter} ({category}) has a blank title.");
+                    }
+                    if (opt.outcomes.Count == 0)
+                    {
+                        log.Add($"WARNING: {evt.id} option {opt.letter} ({category}) has zero outcomes.");
+                    }
+                }
+
                 CreateSeedAsset(category, evt, sharedPlayerStats);
                 log.Add($"Created {evt.id} ({category}) with {evt.options.Count} option(s).");
                 created++;
@@ -147,6 +167,16 @@ public class EventExcelImporterWindow : EditorWindow
         public List<ParsedOption> options = new List<ParsedOption>();
     }
 
+    private string FindFirstNonBlank(XlsxReader.Sheet sheet, int row, int fromCol, int toCol)
+    {
+        for (int c = fromCol; c <= toCol; c++)
+        {
+            string val = sheet.Get(row, c);
+            if (!string.IsNullOrWhiteSpace(val)) return val.Trim();
+        }
+        return "";
+    }
+
     private List<ParsedEvent> ScanSheet(XlsxReader.Sheet sheet)
     {
         var events = new List<ParsedEvent>();
@@ -160,8 +190,8 @@ public class EventExcelImporterWindow : EditorWindow
             var evt = new ParsedEvent
             {
                 id = id.Trim(),
-                title = (sheet.Get(1, startCol + 1) ?? "").Trim(),
-                description = (sheet.Get(2, startCol + 1) ?? "").Trim()
+                title = FindFirstNonBlank(sheet, 1, startCol + 1, startCol + 4),
+                description = FindFirstNonBlank(sheet, 2, startCol, startCol + 4)
             };
 
             string[] letters = { "A", "B", "C", "D" };

@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
+  m_Name: PQ3
+  m_EditorClassIdentifier: Assembly-CSharp::Seed
+  title: SHADOWS IN THE DARK
+  description: Pontiff! Dire trouble! The people are terrified; they dread even stepping
+    out onto the street. Our flock fears that standing with us has drawn the wrath
+    of every rival sect in the city. Worse yet, they are convinced we cannot do a
+    single thing to protect them.
+  icon: {fileID: 0}
+  ticks: 1
+  eventType: 0
+  difficulty: 1
+  <Options>k__BackingField:
+  - {fileID: 11400000, guid: 8476a36af2e1a5942bfe5b96ca6fc940, type: 2}
+  - {fileID: 11400000, guid: 16e7c435f3c4244439d7cf2a3db607dd, type: 2}
+  - {fileID: 11400000, guid: 210cc387ba2c816468e971225f174efb, type: 2}
+  - {fileID: 11400000, guid: 9a53959393df97247a9177b2a7691156, type: 2}

@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
+  m_Name: CR3
+  m_EditorClassIdentifier: Assembly-CSharp::Seed
+  title: NEGLIGENCE
+  description: Pontiff, a disaster has struck! Our temples... how should I put this...
+    they are falling apart! We neglected maintenance for so long that they collapsed!
+    One of our sanctuaries in the Warrens was completely leveled! We must do something!
+  icon: {fileID: 0}
+  ticks: 1
+  eventType: 0
+  difficulty: 1
+  <Options>k__BackingField:
+  - {fileID: 11400000, guid: 4788cb2b191d9744286405bc4df04326, type: 2}
+  - {fileID: 11400000, guid: 8cd436fd6713e91419d491eec783a420, type: 2}
+  - {fileID: 11400000, guid: 058bcd82aaeb8d14a964f5ea9eea213a, type: 2}
+  - {fileID: 11400000, guid: fe9abe4b9c7c93049bd94c66fe753267, type: 2}

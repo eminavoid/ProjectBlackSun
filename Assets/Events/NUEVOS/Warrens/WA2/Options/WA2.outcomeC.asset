@@ -18,8 +18,8 @@ MonoBehaviour:
   icon: {fileID: 0}
   modules:
   - rid: 2174037052531671148
-  - rid: 2174037052531671149
   - rid: 2174037052531671298
+  - rid: 2174037052531671149
   endsQuestline: 1
   followUpSeeds: []
   references:
@@ -69,7 +69,7 @@ MonoBehaviour:
       type: {class: RequireResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
-        required: 10
+        required: 50
         consumeResource: 1
     - rid: 2174037052531671299
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}

@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: CR3.outcomeB
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
+  title: What good are all these followers if we cannot put them to work in a crisis?
+    Conscript labor for the rebuild right now!
+  description: 'COST: 50 Flock & 100 Zeal'
+  icon: {fileID: 0}
+  modules:
+  - rid: 2174037371569569795
+  - rid: 2174037371569569796
+  - rid: 2174037371569569797
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 2174037371569569795
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        required: 50
+        consumeResource: 1
+    - rid: 2174037371569569796
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        required: 100
+        consumeResource: 1
+    - rid: 2174037371569569797
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 50
+          module:
+          - rid: 2174037371569569798
+          - rid: 2174037371569569799
+          - rid: 2174037371569569800
+          statUsed: 0
+          output: The flock works day and night! In no time our temples are back
+            in shape, and it only cost a handful of lives along the way...
+        - weight: 50
+          module:
+          - rid: 2174037371569569801
+          statUsed: 0
+          output: Curse it all! One too many workplace accidents and the flock walked
+            out en masse. Do they really have no loyalty to their sect in times of
+            trouble?!
+    - rid: 2174037371569569798
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 5
+        minAmount: 30
+        maxAmount: 30
+    - rid: 2174037371569569799
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: -10
+        maxAmount: -10
+    - rid: 2174037371569569800
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: 50
+        maxAmount: 50
+    - rid: 2174037371569569801
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: -30
+        maxAmount: -30

@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: CR3.outcomeC
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
+  title: The Builders' Guild owes us a favor...
+  description: 'COST: 1 Authority'
+  icon: {fileID: 0}
+  modules:
+  - rid: 2174037371569569802
+  - rid: 2174037371569569803
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 2174037371569569802
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 2
+        required: 1
+        consumeResource: 1
+    - rid: 2174037371569569803
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 50
+          module:
+          - rid: 2174037371569569804
+          statUsed: 0
+          output: Nothing beats professionals working for free. Our temples will
+            be back to their former glory in no time.
+    - rid: 2174037371569569804
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 5
+        minAmount: 50
+        maxAmount: 50

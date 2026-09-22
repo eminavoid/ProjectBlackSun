@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: PQ3.outcomeA
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
+  title: We will hire sellswords to patrol the areas our flock frequents most. Let
+    no one say we abandon our own!
+  description: 'COST: 100 Wealth & 50 Zeal'
+  icon: {fileID: 0}
+  modules:
+  - rid: 2174037371569569819
+  - rid: 2174037371569569820
+  - rid: 2174037371569569821
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 2174037371569569819
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        required: 100
+        consumeResource: 1
+    - rid: 2174037371569569820
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        required: 50
+        consumeResource: 1
+    - rid: 2174037371569569821
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 50
+          module:
+          - rid: 2174037371569569822
+          statUsed: 0
+          output: The men, along with a few good beatings handed to local thugs,
+            clear the dread from the streets. Our flock can finally breathe easy
+            again!
+        - weight: 50
+          module:
+          - rid: 2174037371569569823
+          statUsed: 0
+          output: Dammit all! Our followers think the sellswords are secretly on
+            our rivals' payroll. The paranoia rages on!
+    - rid: 2174037371569569822
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 6
+        minAmount: 40
+        maxAmount: 40
+    - rid: 2174037371569569823
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: -40
+        maxAmount: -40
