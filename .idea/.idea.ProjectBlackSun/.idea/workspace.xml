@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a42c9136-0aac-4f8a-91a6-2854c1038143" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.ProjectBlackSun/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ProjectBlackSun/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Editor/EventImporter/EventExcelImporterWindow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Editor/EventImporter/EventExcelImporterWindow.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Events/NUEVOS/Warrens/WA2/Options/WA2.outcomeC.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Events/NUEVOS/Warrens/WA2/Options/WA2.outcomeC.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Seeds/AI Event Pool.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Seeds/AI Event Pool.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Seeds/Wealth Seeds Pool.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Seeds/Wealth Seeds Pool.asset.meta" beforeDir="false" />
-    </list>
+    <list default="true" id="a42c9136-0aac-4f8a-91a6-2854c1038143" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -130,7 +123,7 @@
       <workItem from="1788884576131" duration="88000" />
       <workItem from="1788884676820" duration="701000" />
       <workItem from="1789755680542" duration="1044000" />
-      <workItem from="1790109142019" duration="1430000" />
+      <workItem from="1790109142019" duration="1839000" />
     </task>
     <servers />
   </component>

@@ -4877,6 +4877,23 @@ MonoBehaviour:
   spawnOptionsWindow: {fileID: 478184976}
   eventOutputWindowPrefab: {fileID: 6986076241118867485, guid: 26ede2eefc574e0458ee06d975b56568, type: 3}
   optionDisplayPrefab: {fileID: 8361523740710303735, guid: 91a741170ced58643a73efea27a88975, type: 3}
+  resourceSeedPools:
+  - Resource: 0
+    SeedPool: {fileID: 11400000, guid: 4838434b73cac6849b45d776f401133f, type: 2}
+    SeedChance: 100
+    TriggerBelowAmount: 0
+  - Resource: 1
+    SeedPool: {fileID: 11400000, guid: aa62e1536e4a01f4297cde38977e3d93, type: 2}
+    SeedChance: 100
+    TriggerBelowAmount: 0
+  - Resource: 5
+    SeedPool: {fileID: 11400000, guid: f3e42ad569011f144a71d4c73ae68311, type: 2}
+    SeedChance: 100
+    TriggerBelowAmount: 0
+  - Resource: 6
+    SeedPool: {fileID: 11400000, guid: 45cd873730116f649b8c167ae5934692, type: 2}
+    SeedChance: 100
+    TriggerBelowAmount: 0
   wealthSeedPool: {fileID: 11400000, guid: 4838434b73cac6849b45d776f401133f, type: 2}
   wealthSeedChance: 100
 --- !u!1 &1118011050

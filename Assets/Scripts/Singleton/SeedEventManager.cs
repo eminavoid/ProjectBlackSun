@@ -6,6 +6,15 @@ using TMPro;
 
 public class SeedEventManager : Singleton<SeedEventManager>
 {
+    [System.Serializable]
+    private class ResourceSeedPool
+    {
+        public Resource Resource;
+        public SeedsPool SeedPool;
+        [Range(0, 100)] public int SeedChance = 100;
+        public int TriggerBelowAmount = 0;
+    }
+
     [SerializeField] private PlayerResources resources;
 
     [SerializeField] private UIWindow spawnOptionsWindow;
@@ -14,8 +23,9 @@ public class SeedEventManager : Singleton<SeedEventManager>
 
     [Space]
 
-    [SerializeField] private SeedsPool wealthSeedPool;
-    [SerializeField] private int wealthSeedChance = 100;
+    [SerializeField] private List<ResourceSeedPool> resourceSeedPools = new List<ResourceSeedPool>();
+    [SerializeField, HideInInspector] private SeedsPool wealthSeedPool;
+    [SerializeField, HideInInspector] private int wealthSeedChance = 100;
 
     private readonly Queue<Seed> seedEvents = new Queue<Seed>();
 
@@ -26,6 +36,7 @@ public class SeedEventManager : Singleton<SeedEventManager>
 
     private void Start()
     {
+        AddLegacyWealthSeedPool();
         GameTime.OnTurnStarted += OnTurnStarted;
         SetOptionsWindowVisibility(false);
     }
@@ -59,29 +70,101 @@ public class SeedEventManager : Singleton<SeedEventManager>
     {
         StartChoosingOptionsPhase();
 
-        if (resources.GetResourceAmount(Resource.Wealth) < 0 && wealthSeedChance > Random.Range(0, 99))
+        TryPlantResourceSeeds();
+    }
+
+    private void TryPlantResourceSeeds()
+    {
+        if (resourceSeedPools == null)
         {
-            TryPlantSeed(wealthSeedPool.EvilSeeds[Random.Range(0, wealthSeedPool.EvilSeeds.Count)]);
-            Debug.Log("Played seed due to negative wealth");
+            return;
+        }
+
+        for (int i = 0; i < resourceSeedPools.Count; i++)
+        {
+            ResourceSeedPool resourceSeedPool = resourceSeedPools[i];
+
+            if (resourceSeedPool == null || resourceSeedPool.SeedPool == null || resourceSeedPool.SeedPool.EvilSeeds == null || resourceSeedPool.SeedPool.EvilSeeds.Count <= 0)
+            {
+                continue;
+            }
+
+            if (resources.GetResourceAmount(resourceSeedPool.Resource) >= resourceSeedPool.TriggerBelowAmount)
+            {
+                continue;
+            }
+
+            int seedChance = Mathf.Clamp(resourceSeedPool.SeedChance, 0, 100);
+
+            if (Random.Range(0, 100) >= seedChance)
+            {
+                continue;
+            }
+
+            Seed seed = resourceSeedPool.SeedPool.EvilSeeds[Random.Range(0, resourceSeedPool.SeedPool.EvilSeeds.Count)];
+
+            if (TryPlantSeed(seed))
+            {
+                Debug.Log($"Played seed due to low {resourceSeedPool.Resource}");
+            }
         }
     }
 
     private bool TryPlantSeed(Seed seed)
     {
+        if (seed == null) return false;
+
         if (!DistrictsManager.TryGetRandomFreeZoneAnyDistrict(out DistrictZone zone) || zone == null)
         {
-            Debug.LogWarning("No hay sectores libres para plantar wealth seed.", this);
+            Debug.LogWarning("No hay sectores libres para plantar resource seed.", this);
             return false;
         }
 
         //TODO: que se fije las allowed seeds
-        if (seed == null) return false;
-
         if (!seed.CanPlantInDistrict(zone.District)) return false;
 
         if (!zone.AddSeed(seed)) return false;
 
         return true;
+    }
+
+    private void AddLegacyWealthSeedPool()
+    {
+        if (resourceSeedPools == null)
+        {
+            resourceSeedPools = new List<ResourceSeedPool>();
+        }
+
+        if (wealthSeedPool == null || HasResourceSeedPool(Resource.Wealth))
+        {
+            return;
+        }
+
+        resourceSeedPools.Add(new ResourceSeedPool
+        {
+            Resource = Resource.Wealth,
+            SeedPool = wealthSeedPool,
+            SeedChance = wealthSeedChance,
+            TriggerBelowAmount = 0
+        });
+    }
+
+    private bool HasResourceSeedPool(Resource resource)
+    {
+        if (resourceSeedPools == null)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < resourceSeedPools.Count; i++)
+        {
+            if (resourceSeedPools[i] != null && resourceSeedPools[i].Resource == resource)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void StartChoosingOptionsPhase()
