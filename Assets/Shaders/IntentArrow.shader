@@ -33,8 +33,9 @@ Shader "Custom/IntentArrow"
 
             Blend One One
             ZWrite Off
-            ZTest Always
+            ZTest LEqual
             Cull Off
+            Offset -1, -1
 
             HLSLPROGRAM
             #pragma target 4.5
