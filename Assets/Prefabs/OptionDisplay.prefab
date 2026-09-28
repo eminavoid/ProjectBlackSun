@@ -68,8 +68,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Tilte
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1746c488ec43b7d4fbd18172fcc413b4, type: 2}
-  m_sharedMaterial: {fileID: 3072357763800881182, guid: 1746c488ec43b7d4fbd18172fcc413b4, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1edd54523ff3acd4e942871243f45066, type: 2}
+  m_sharedMaterial: {fileID: 6637940868953274025, guid: 1edd54523ff3acd4e942871243f45066, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -100,10 +100,10 @@ MonoBehaviour:
   m_fontSizeMin: 14
   m_fontSizeMax: 34
   m_fontStyle: 1
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 0
+  m_characterSpacing: 3.66
   m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
@@ -221,8 +221,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1746c488ec43b7d4fbd18172fcc413b4, type: 2}
-  m_sharedMaterial: {fileID: 3072357763800881182, guid: 1746c488ec43b7d4fbd18172fcc413b4, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1edd54523ff3acd4e942871243f45066, type: 2}
+  m_sharedMaterial: {fileID: 6637940868953274025, guid: 1edd54523ff3acd4e942871243f45066, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -246,7 +246,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24.15
+  m_fontSize: 26.6
   m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -254,9 +254,9 @@ MonoBehaviour:
   m_fontSizeMax: 32
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 0
+  m_characterSpacing: 3.66
   m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
@@ -321,6 +321,7 @@ GameObject:
   - component: {fileID: 8361523740710303735}
   - component: {fileID: 6789160431552908183}
   - component: {fileID: 6079696836741356350}
+  - component: {fileID: 6363641243468721122}
   m_Layer: 5
   m_Name: OptionDisplay
   m_TagString: Untagged
@@ -482,6 +483,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIClickSound
   clickEvent: Play_UI_EventCard
+--- !u!114 &6363641243468721122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3691270410600279194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0282c48b06cfa7e478e51a69e152d929, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OptionHoverTextFeedback
+  texts:
+  - {fileID: 1491726929824773882}
+  - {fileID: 182564905533500940}
+  selectable: {fileID: 4553039971190504876}
+  hoverColor: {r: 1, g: 0.85, b: 0.4, a: 1}
+  disabledDimFactor: 0.5
 --- !u!1 &7241402641051545618
 GameObject:
   m_ObjectHideFlags: 0

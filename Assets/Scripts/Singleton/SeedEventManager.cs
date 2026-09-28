@@ -60,9 +60,10 @@ public class SeedEventManager : Singleton<SeedEventManager>
         }
     }
 
-    public static void CreateEventOutputWindow(string description)
+    public static void CreateEventOutputWindow(string title, string description)
     {
         UIWindow windowInstance = Instantiate(Instance.eventOutputWindowPrefab, GlobalReferences.ScreenCanvas.transform);
+        windowInstance.TryGetElement<TextMeshProUGUI>("Title").text = title;
         windowInstance.TryGetElement<TextMeshProUGUI>("Description").text = description;
     }
 
@@ -209,5 +210,9 @@ public class SeedEventManager : Singleton<SeedEventManager>
         spawnOptionsWindow.TryGetElement<RectTransform>("Title Rect").gameObject.SetActive(condition);
         spawnOptionsWindow.TryGetElement<RectTransform>("Description Rect").gameObject.SetActive(condition);
         spawnOptionsWindow.TryGetElement<Image>("Background").gameObject.SetActive(condition);
+
+        // Depth of field volume + click blocker behind the window.
+        Transform blur = spawnOptionsWindow.transform.Find("BlurBackground");
+        if (blur != null) blur.gameObject.SetActive(condition);
     }
 }

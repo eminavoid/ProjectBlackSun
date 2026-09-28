@@ -28,7 +28,7 @@ public class WeighedChoice : OptionModule
             {
                 element.module[i].Execute(option, seed);
             }
-            SeedEventManager.CreateEventOutputWindow(element.output);
+            SeedEventManager.CreateEventOutputWindow(seed.Title, element.output);
         }
     }
 
