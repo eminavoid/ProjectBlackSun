@@ -1772,6 +1772,7 @@ GameObject:
   - component: {fileID: 5479826314897523413}
   - component: {fileID: 4454148344915294746}
   - component: {fileID: 1587477605708382653}
+  - component: {fileID: 1993752061254335864}
   m_Layer: 5
   m_Name: Wealth
   m_TagString: Untagged
@@ -1895,6 +1896,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ResourceIconAudioHook
   resourceType: Gold
+--- !u!114 &1993752061254335864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5845617849369257943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94f5612887589a04cbc012126295c970, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
+  tooltipText: DAJKDJKSAJK dksjdsjadok oroooo
 --- !u!1 &6251220869327509188
 GameObject:
   m_ObjectHideFlags: 0
