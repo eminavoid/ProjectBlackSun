@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -205,14 +206,58 @@ public class SeedEventManager : Singleton<SeedEventManager>
         }
     }
 
+    private Coroutine optionsVisibilityRoutine;
+    private int resourceWindowOriginalIndex = -1;
+
     private void SetOptionsWindowVisibility(bool condition)
+    {
+        if (optionsVisibilityRoutine != null) StopCoroutine(optionsVisibilityRoutine);
+
+        Transform blur = spawnOptionsWindow.transform.Find("BlurBackground");
+        if (condition && blur != null)
+        {
+            optionsVisibilityRoutine = StartCoroutine(ShowOptionsWindowAfterBlur(blur));
+            return;
+        }
+
+        if (blur != null) blur.gameObject.SetActive(false);
+        RestoreResourceWindowOrder();
+        ApplyOptionsWindowVisibility(condition);
+    }
+
+    // The blur snapshots the screen at end of frame; the window content must stay hidden until then.
+    private IEnumerator ShowOptionsWindowAfterBlur(Transform blur)
+    {
+        blur.gameObject.SetActive(true);
+        UIBackgroundBlur blurComponent = blur.GetComponent<UIBackgroundBlur>();
+        for (int i = 0; i < 3 && blurComponent != null && !blurComponent.IsReady; i++) yield return null;
+
+        KeepResourceWindowSharp();
+        ApplyOptionsWindowVisibility(true);
+        optionsVisibilityRoutine = null;
+    }
+
+    // The resources bar sits at the back of the canvas; draw it above the blur so it stays sharp.
+    private void KeepResourceWindowSharp()
+    {
+        Transform resources = ResourceManager.ResourceWindowTransform;
+        if (resources == null) return;
+
+        if (resourceWindowOriginalIndex < 0) resourceWindowOriginalIndex = resources.GetSiblingIndex();
+        resources.SetSiblingIndex(spawnOptionsWindow.transform.GetSiblingIndex());
+    }
+
+    private void RestoreResourceWindowOrder()
+    {
+        Transform resources = ResourceManager.ResourceWindowTransform;
+        if (resources != null && resourceWindowOriginalIndex >= 0) resources.SetSiblingIndex(resourceWindowOriginalIndex);
+        resourceWindowOriginalIndex = -1;
+    }
+
+    private void ApplyOptionsWindowVisibility(bool condition)
     {
         spawnOptionsWindow.TryGetElement<RectTransform>("Title Rect").gameObject.SetActive(condition);
         spawnOptionsWindow.TryGetElement<RectTransform>("Description Rect").gameObject.SetActive(condition);
         spawnOptionsWindow.TryGetElement<Image>("Background").gameObject.SetActive(condition);
-
-        // Depth of field volume + click blocker behind the window.
-        Transform blur = spawnOptionsWindow.transform.Find("BlurBackground");
-        if (blur != null) blur.gameObject.SetActive(condition);
     }
 }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 272904485597859918}
   - component: {fileID: 5839590323434993446}
   - component: {fileID: 7046434914953552623}
-  - component: {fileID: 7791557557587885603}
+  - component: {fileID: 8087414956796237937}
   m_Layer: 0
   m_Name: BlurBackground
   m_TagString: Untagged
@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.RawImage
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.25}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -73,7 +73,7 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
---- !u!114 &7791557557587885603
+--- !u!114 &8087414956796237937
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -82,14 +82,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 2783185822021901032}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Script: {fileID: 11500000, guid: 9ab0bc4cc4c873c4abd83c240f82f8ff, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.Volume
-  m_IsGlobal: 1
-  priority: 0
-  blendDistance: 0
-  weight: 1
-  sharedProfile: {fileID: 11400000, guid: b7395182df533e64c88d1751de7b01cb, type: 2}
+  m_EditorClassIdentifier: Assembly-CSharp::UIBackgroundBlur
+  blurShader: {fileID: 4800000, guid: 509554bb1e595a24b8562b5dae878b80, type: 3}
+  downsample: 2
+  iterations: 2
+  radius: 1.5
+  tint: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &2878909583519788551
 GameObject:
   m_ObjectHideFlags: 0
