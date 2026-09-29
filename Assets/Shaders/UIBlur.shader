@@ -8,7 +8,8 @@ Shader "Hidden/UIBlur"
     {
         Cull Off ZWrite Off ZTest Always
 
-        // Separable gaussian (9 taps). _Direction is the per-tap UV step.
+        // Pass 0: separable gaussian (9 taps). _Direction is the per-tap UV step.
+        // Output alpha is forced to 1 so the result fully hides what it is drawn over.
         Pass
         {
             CGPROGRAM
@@ -29,8 +30,6 @@ Shader "Hidden/UIBlur"
                     c += tex2D(_MainTex, i.uv + o) * w[k];
                     c += tex2D(_MainTex, i.uv - o) * w[k];
                 }
-                // The screen capture doesn't come with a reliable alpha; a partly transparent result
-                // lets the sharp UI underneath show through instead of hiding it.
                 return fixed4(c.rgb, 1);
             }
             ENDCG

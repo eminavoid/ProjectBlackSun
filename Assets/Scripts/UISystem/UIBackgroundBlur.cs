@@ -3,9 +3,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 // Blurs everything on screen (world + overlay UI) behind a window and blocks clicks on it.
-// Overlay canvases ignore post-processing, so the final frame is grabbed at end of frame, blurred
-// and shown on a full-screen RawImage. Whoever shows the window must wait for IsReady before
-// activating the window's own content, otherwise the window itself ends up in the snapshot.
+// Overlay canvases never show up in URP's render textures, so the final frame is grabbed at end of
+// frame, blurred and shown on a full-screen RawImage. Whoever shows the window must wait for
+// IsReady before activating the window's own content, otherwise the window ends up in the snapshot.
 // UI that must stay sharp (e.g. the resources bar) just needs to be drawn after this object.
 [RequireComponent(typeof(RawImage))]
 public class UIBackgroundBlur : MonoBehaviour
