@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -60,9 +61,10 @@ public class SeedEventManager : Singleton<SeedEventManager>
         }
     }
 
-    public static void CreateEventOutputWindow(string description)
+    public static void CreateEventOutputWindow(string title, string description)
     {
         UIWindow windowInstance = Instantiate(Instance.eventOutputWindowPrefab, GlobalReferences.ScreenCanvas.transform);
+        windowInstance.TryGetElement<TextMeshProUGUI>("Title").text = title;
         windowInstance.TryGetElement<TextMeshProUGUI>("Description").text = description;
     }
 
@@ -204,7 +206,55 @@ public class SeedEventManager : Singleton<SeedEventManager>
         }
     }
 
+    private Coroutine optionsVisibilityRoutine;
+    private int resourceWindowOriginalIndex = -1;
+
     private void SetOptionsWindowVisibility(bool condition)
+    {
+        if (optionsVisibilityRoutine != null) StopCoroutine(optionsVisibilityRoutine);
+
+        RawImage blur = spawnOptionsWindow.TryGetElement<RawImage>("Blur");
+        if (condition && blur != null)
+        {
+            optionsVisibilityRoutine = StartCoroutine(ShowOptionsWindowAfterBlur(blur));
+            return;
+        }
+
+        if (blur != null) blur.gameObject.SetActive(false);
+        RestoreResourceWindowOrder();
+        ApplyOptionsWindowVisibility(condition);
+    }
+
+    // The blur snapshots the screen at end of frame; the window content must stay hidden until then.
+    private IEnumerator ShowOptionsWindowAfterBlur(RawImage blur)
+    {
+        blur.gameObject.SetActive(true);
+        UIBackgroundBlur blurComponent = blur.GetComponent<UIBackgroundBlur>();
+        for (int i = 0; i < 3 && blurComponent != null && !blurComponent.IsReady; i++) yield return null;
+
+        KeepResourceWindowSharp();
+        ApplyOptionsWindowVisibility(true);
+        optionsVisibilityRoutine = null;
+    }
+
+    // The resources bar sits at the back of the canvas; draw it above the blur so it stays sharp.
+    private void KeepResourceWindowSharp()
+    {
+        Transform resourcesWindow = ResourceManager.ResourceWindowTransform;
+        if (resourcesWindow == null) return;
+
+        if (resourceWindowOriginalIndex < 0) resourceWindowOriginalIndex = resourcesWindow.GetSiblingIndex();
+        resourcesWindow.SetSiblingIndex(spawnOptionsWindow.transform.GetSiblingIndex());
+    }
+
+    private void RestoreResourceWindowOrder()
+    {
+        Transform resourcesWindow = ResourceManager.ResourceWindowTransform;
+        if (resourcesWindow != null && resourceWindowOriginalIndex >= 0) resourcesWindow.SetSiblingIndex(resourceWindowOriginalIndex);
+        resourceWindowOriginalIndex = -1;
+    }
+
+    private void ApplyOptionsWindowVisibility(bool condition)
     {
         spawnOptionsWindow.TryGetElement<RectTransform>("Title Rect").gameObject.SetActive(condition);
         spawnOptionsWindow.TryGetElement<RectTransform>("Description Rect").gameObject.SetActive(condition);

@@ -22,6 +22,7 @@ public class ResourceManager : Singleton<ResourceManager>
     [SerializeField] private UIWindow uiWindow;
 
     public static PlayerResources Resources => Instance.playerResources;
+    public static Transform ResourceWindowTransform => Instance.resourceWindow != null ? Instance.resourceWindow.transform : null;
 
     private UIWindow resourceWindow = null;
 
