@@ -1,5 +1,6 @@
-using UnityEngine;
+using System.Threading;
 using TMPro;
+using UnityEngine;
 
 public class Tooltip : Singleton<Tooltip>
 {
@@ -12,15 +13,58 @@ public class Tooltip : Singleton<Tooltip>
     [SerializeField] private float offsetX = 0;
     [SerializeField] private float offsetY = -15f;
 
+    [SerializeField] private float maxWidth = 400f;
+    [SerializeField] private float maxHeight = 300f;
+    [SerializeField] private Vector2 padding = new Vector2(20f, 10f);
+
+    [Space]
+
+    [SerializeField] private float showDelay = 1f;
+
+    private State state = State.Hide;
+    private float timer = 0f;
+
+    private Canvas canvas;
+
+    private enum State
+    {
+        Show,
+        Hide,
+    }
+
+    public static void SetText(string text)
+    {
+        Instance.tooltipText.text = text;
+
+        // Force TMP to update its measurements.
+        Instance.tooltipText.ForceMeshUpdate();
+
+        Vector2 textSize = Instance.tooltipText.GetPreferredValues(text, Instance.maxWidth, Instance.maxHeight);
+
+        // Add padding for the tooltip background/box.
+        Vector2 finalSize = textSize + Instance.padding;
+
+        // Cap the size.
+        finalSize.x = Mathf.Min(finalSize.x, Instance.maxWidth);
+        finalSize.y = Mathf.Min(finalSize.y, Instance.maxHeight);
+
+        Instance.tooltipRect.sizeDelta = finalSize;
+    }
+
     private void Update()
     {
+        UpdateState();
+
         if (!tooltipObject.activeSelf)
             return;
 
-        Canvas canvas = tooltipRect.GetComponentInParent<Canvas>();
-
         float scale = canvas.scaleFactor;
 
+        UpdatePosition(scale);
+    }
+
+    private void UpdatePosition(float scale)
+    {
         Vector2 offset = new Vector2(
             offsetX * scale,
             offsetY * scale
@@ -54,19 +98,36 @@ public class Tooltip : Singleton<Tooltip>
         tooltipRect.position = position;
     }
 
+    private void UpdateState()
+    {
+        if (state == State.Show && !tooltipObject.activeSelf)
+        {
+            timer += Time.deltaTime;
+
+            if (timer > showDelay)
+            {
+                Instance.tooltipObject.SetActive(true);
+            }
+        }
+    }
+
     protected override void OnInitialization()
     {
+        canvas = tooltipRect.GetComponentInParent<Canvas>();
+
         Hide();
     }
 
     public static void Show(string text)
     {
-        Instance.tooltipText.text = text;
-        Instance.tooltipObject.SetActive(true);
+        SetText(text);
+        Instance.state = State.Show;
     }
 
     public static void Hide()
     {
+        Instance.timer = 0f;
+        Instance.state = State.Hide;
         Instance.tooltipObject.SetActive(false);
     }
 }

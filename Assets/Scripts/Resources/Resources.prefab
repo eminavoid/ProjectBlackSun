@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8870638030074694260}
   - component: {fileID: 3692171854263800541}
   - component: {fileID: 7103291462009744447}
+  - component: {fileID: 7340402739989462548}
   m_Layer: 5
   m_Name: Materials
   m_TagString: Untagged
@@ -136,6 +137,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ResourceIconAudioHook
   resourceType: Materials
+--- !u!114 &7340402739989462548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 471486964707853622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94f5612887589a04cbc012126295c970, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
+  tooltipText: Materials
 --- !u!1 &513747531748058798
 GameObject:
   m_ObjectHideFlags: 0
@@ -819,6 +833,7 @@ GameObject:
   - component: {fileID: 8073620850261013882}
   - component: {fileID: 7060961081473846483}
   - component: {fileID: 3433673318194088693}
+  - component: {fileID: 7756308449077249714}
   m_Layer: 5
   m_Name: Flock
   m_TagString: Untagged
@@ -942,6 +957,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ResourceIconAudioHook
   resourceType: Flock
+--- !u!114 &7756308449077249714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1441773575698925460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94f5612887589a04cbc012126295c970, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
+  tooltipText: Flock
 --- !u!1 &3492722034540148848
 GameObject:
   m_ObjectHideFlags: 0
@@ -1333,6 +1361,7 @@ GameObject:
   - component: {fileID: 4684570878450368520}
   - component: {fileID: 5248770442287304949}
   - component: {fileID: 7059672918947046517}
+  - component: {fileID: 3721123702979183044}
   m_Layer: 5
   m_Name: Authority
   m_TagString: Untagged
@@ -1456,6 +1485,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ResourceIconAudioHook
   resourceType: Authority
+--- !u!114 &3721123702979183044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4780708656610624205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94f5612887589a04cbc012126295c970, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
+  tooltipText: Authority
 --- !u!1 &4794849879619505018
 GameObject:
   m_ObjectHideFlags: 0
@@ -1908,7 +1950,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94f5612887589a04cbc012126295c970, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
-  tooltipText: DAJKDJKSAJK dksjdsjadok oroooo
+  tooltipText: Wealth
 --- !u!1 &6251220869327509188
 GameObject:
   m_ObjectHideFlags: 0
@@ -1922,6 +1964,7 @@ GameObject:
   - component: {fileID: 7908998135323550255}
   - component: {fileID: 454656901868830706}
   - component: {fileID: 3670137661884916235}
+  - component: {fileID: 6286047134931391125}
   m_Layer: 5
   m_Name: Zeal
   m_TagString: Untagged
@@ -2045,6 +2088,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ResourceIconAudioHook
   resourceType: Faith
+--- !u!114 &6286047134931391125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6251220869327509188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94f5612887589a04cbc012126295c970, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
+  tooltipText: Zeal
 --- !u!1 &6845409141229668839
 GameObject:
   m_ObjectHideFlags: 0
@@ -2058,6 +2114,7 @@ GameObject:
   - component: {fileID: 2495503567219873377}
   - component: {fileID: 5182308589101432644}
   - component: {fileID: 5764226498204847091}
+  - component: {fileID: 1097804979483240367}
   m_Layer: 5
   m_Name: Happiness
   m_TagString: Untagged
@@ -2181,6 +2238,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ResourceIconAudioHook
   resourceType: Bliss
+--- !u!114 &1097804979483240367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6845409141229668839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94f5612887589a04cbc012126295c970, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
+  tooltipText: Happiness
 --- !u!1 &7964421640955382976
 GameObject:
   m_ObjectHideFlags: 0
@@ -2194,6 +2264,7 @@ GameObject:
   - component: {fileID: 389663884977042971}
   - component: {fileID: 2203868657470184815}
   - component: {fileID: 5469243943755375914}
+  - component: {fileID: 1853011738780726777}
   m_Layer: 5
   m_Name: Secrets
   m_TagString: Untagged
@@ -2317,6 +2388,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ResourceIconAudioHook
   resourceType: Secrets
+--- !u!114 &1853011738780726777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7964421640955382976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94f5612887589a04cbc012126295c970, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
+  tooltipText: Secrets
 --- !u!1 &8285154804259404808
 GameObject:
   m_ObjectHideFlags: 0
