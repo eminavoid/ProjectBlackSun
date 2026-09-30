@@ -657,7 +657,8 @@ MonoBehaviour:
   downsample: 2
   iterations: 2
   radius: 1.5
-  tint: {r: 1, g: 1, b: 1, a: 1}
+  tint: {r: 0.72, g: 0.72, b: 0.72, a: 1}
+  fadeDuration: 0.18
 --- !u!1 &5670729614839619147
 GameObject:
   m_ObjectHideFlags: 0

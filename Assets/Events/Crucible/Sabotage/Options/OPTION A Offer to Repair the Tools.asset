@@ -29,6 +29,7 @@ MonoBehaviour:
       data:
         resource: 0
         required: 20
+        consumeResource: 1
     - rid: 107151340257149025
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
@@ -36,15 +37,17 @@ MonoBehaviour:
         - weight: 80
           module:
           - rid: 107151343762276418
+          statUsed: 0
           output: "Gold serves well to soothe the Overseer\u2019s temper. However,
             his men remain restless, fearing the future intervention of other rival
             sects."
         - weight: 20
           module:
           - rid: 107151343762276419
+          statUsed: 0
           output: "The Overseer is quick to accept our donation, yet he cannot help
             but remark that both he and his men would have preferred a more \u201Cdirect\u201D
-            retribution against those responsible.\r\n[Lost 5 Bliss]\r\n"
+            retribution against those responsible."
     - rid: 107151343762276418
       type: {class: DoNothing, ns: , asm: Assembly-CSharp}
       data: 

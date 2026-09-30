@@ -37,8 +37,8 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671139
           statUsed: 0
-          output: 'Curse it all! We grew far too reckless! Our clerics have fallen
-            ill. [-20 Flock]'
+          output: Curse it all! We grew far too reckless! Our clerics have fallen
+            ill.
     - rid: 2174037052531671139
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

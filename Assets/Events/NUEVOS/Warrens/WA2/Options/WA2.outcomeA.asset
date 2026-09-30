@@ -42,20 +42,21 @@ MonoBehaviour:
           - rid: 2174037052531671291
           - rid: 2174037052531671293
           statUsed: 0
-          output: 'Our charitable efforts are warmly embraced. [25 Flock & 25 Zeal]'
+          output: Our charitable efforts are warmly embraced.
         - weight: 30
           module:
           - rid: 2174037052531671294
           - rid: 2174037052531671295
           statUsed: 0
-          output: 'Our deeds were not in vain, yet the locals grumble that we could
-            have offered far more aid. [10 Zeal]'
+          output: Our deeds were not in vain, yet the locals grumble that we could
+            have offered far more aid.
     - rid: 2174037052531671142
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: 25
         maxAmount: 25
+        refund: 0
     - rid: 2174037052531671290
       type: {class: RequireResource, ns: , asm: Assembly-CSharp}
       data:
@@ -68,21 +69,25 @@ MonoBehaviour:
         resource: 1
         minAmount: 25
         maxAmount: 25
+        refund: 0
     - rid: 2174037052531671293
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: 25
         maxAmount: 25
+        refund: 1
     - rid: 2174037052531671294
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: 10
         maxAmount: 10
+        refund: 0
     - rid: 2174037052531671295
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: 25
         maxAmount: 25
+        refund: 1

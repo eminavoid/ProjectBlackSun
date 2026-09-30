@@ -41,4 +41,19 @@ public class PlayerResources : ScriptableObject
     {
         return resources[resource];
     }
+
+    public Dictionary<Resource, int> Snapshot()
+    {
+        return new Dictionary<Resource, int>(resources);
+    }
+
+    /// <summary>What actually changed since the snapshot, after the caps were applied.</summary>
+    public void GetChangesSince(Dictionary<Resource, int> snapshot, List<ResourceDelta> changes, bool asRefund = false)
+    {
+        foreach (KeyValuePair<Resource, int> pair in resources)
+        {
+            snapshot.TryGetValue(pair.Key, out int before);
+            if (pair.Value != before) ResourceDelta.Add(changes, pair.Key, pair.Value - before, asRefund);
+        }
+    }
 }

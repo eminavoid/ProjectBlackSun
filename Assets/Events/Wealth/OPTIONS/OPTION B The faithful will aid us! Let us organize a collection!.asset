@@ -29,6 +29,7 @@ MonoBehaviour:
       data:
         resource: 1
         required: 100
+        consumeResource: 1
     - rid: 5841915870972215300
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
@@ -37,34 +38,28 @@ MonoBehaviour:
           module:
           - rid: 5841915870972215301
           statUsed: 0
-          output: 'The collection is a resounding success! The faithful flock to
-            our aid and fill our coffers with tribute! [Gained 60 Wealth] '
+          output: The collection is a resounding success! The faithful flock to our
+            aid and fill our coffers with tribute!
         - weight: 60
           module:
           - rid: 5841915870972215302
           statUsed: 0
-          output: 'The faithful do their part! Though they possess little, our flock
-            recognizes the crisis we are facing. May the Beholder bless them! [Gained
-            30 Wealth] '
+          output: The faithful do their part! Though they possess little, our flock
+            recognizes the crisis we are facing. May the Beholder bless them!
         - weight: 20
           module:
           - rid: 5841915870972215303
           statUsed: 0
-          output: 'Miserly wretches! Our "faithful" offer nothing more than paltry
-            alms. At this rate, we will never recover. [Gained 10 Wealth]'
+          output: Miserly wretches! Our "faithful" offer nothing more than paltry
+            alms. At this rate, we will never recover.
         - weight: 10
           module:
           - rid: 5841915870972215304
           - rid: 5841915870972215305
           statUsed: 0
-          output: 'A rival cult seized upon our plea for aid to aggrandize themselves,
+          output: A rival cult seized upon our plea for aid to aggrandize themselves,
             even donating to our cause! We collected very little, and worse still,
             they lured away our followers! Curse them!
-
-            [Gained 10 Wealth,
-            Lost 30 Flock]
-
-'
     - rid: 5841915870972215301
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

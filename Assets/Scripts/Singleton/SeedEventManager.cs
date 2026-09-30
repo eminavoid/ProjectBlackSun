@@ -51,6 +51,13 @@ public class SeedEventManager : Singleton<SeedEventManager>
             Destroy(children.gameObject);
         }
 
+        // A result window is taking over: hide this event but keep its blur, the queue resumes once it closes.
+        if (openOutputWindows > 0)
+        {
+            ApplyOptionsWindowVisibility(false);
+            return;
+        }
+
         if (seedEvents.Count > 0)
         {
             StartChoosingOptionsPhase();
@@ -61,11 +68,16 @@ public class SeedEventManager : Singleton<SeedEventManager>
         }
     }
 
-    public static void CreateEventOutputWindow(string title, string description)
+    public static void CreateEventOutputWindow(string title, string description, IReadOnlyList<ResourceDelta> resourceChanges = null)
     {
         UIWindow windowInstance = Instantiate(Instance.eventOutputWindowPrefab, GlobalReferences.ScreenCanvas.transform);
         windowInstance.TryGetElement<TextMeshProUGUI>("Title").text = title;
         windowInstance.TryGetElement<TextMeshProUGUI>("Description").text = description;
+
+        ResourceAmountRow resourceRow = windowInstance.GetComponentInChildren<ResourceAmountRow>(true);
+        if (resourceRow != null) resourceRow.Show(resourceChanges);
+
+        Instance.StartCoroutine(Instance.ShowOutputWindowAfterBlur(windowInstance));
     }
 
     private void OnTurnStarted()
@@ -207,7 +219,10 @@ public class SeedEventManager : Singleton<SeedEventManager>
     }
 
     private Coroutine optionsVisibilityRoutine;
+    private Coroutine optionsFadeRoutine;
+    private CanvasGroup[] optionsContent;
     private int resourceWindowOriginalIndex = -1;
+    private int openOutputWindows;
 
     private void SetOptionsWindowVisibility(bool condition)
     {
@@ -232,19 +247,57 @@ public class SeedEventManager : Singleton<SeedEventManager>
         UIBackgroundBlur blurComponent = blur.GetComponent<UIBackgroundBlur>();
         for (int i = 0; i < 3 && blurComponent != null && !blurComponent.IsReady; i++) yield return null;
 
-        KeepResourceWindowSharp();
+        KeepResourceWindowSharp(spawnOptionsWindow.transform);
         ApplyOptionsWindowVisibility(true);
+
+        if (optionsFadeRoutine != null) StopCoroutine(optionsFadeRoutine);
+        optionsFadeRoutine = StartCoroutine(FadeIn(blurComponent != null ? blurComponent.FadeDuration : 0f, OptionsContent()));
         optionsVisibilityRoutine = null;
     }
 
-    // The resources bar sits at the back of the canvas; draw it above the blur so it stays sharp.
-    private void KeepResourceWindowSharp()
+    // Same rule for the result window: it stays invisible until its blur has the snapshot.
+    private IEnumerator ShowOutputWindowAfterBlur(UIWindow window)
+    {
+        openOutputWindows++;
+
+        if (!window.TryGetComponent(out CanvasGroup group)) group = window.gameObject.AddComponent<CanvasGroup>();
+        group.alpha = 0f;
+
+        UIBackgroundBlur blur = window.GetComponentInChildren<UIBackgroundBlur>();
+        while (blur != null && !blur.IsReady) yield return null;
+
+        if (window != null)
+        {
+            KeepResourceWindowSharp(window.transform);
+            StartCoroutine(FadeIn(blur != null ? blur.FadeDuration : 0f, group));
+        }
+
+        while (window != null) yield return null;
+
+        openOutputWindows--;
+        if (openOutputWindows > 0) yield break;
+
+        if (seedEvents.Count > 0)
+        {
+            StartChoosingOptionsPhase();
+        }
+        else
+        {
+            SetOptionsWindowVisibility(false);
+        }
+    }
+
+    // The resources bar sits at the back of the canvas; draw it right above the blurred window so it stays sharp.
+    private void KeepResourceWindowSharp(Transform window)
     {
         Transform resourcesWindow = ResourceManager.ResourceWindowTransform;
         if (resourcesWindow == null) return;
 
         if (resourceWindowOriginalIndex < 0) resourceWindowOriginalIndex = resourcesWindow.GetSiblingIndex();
-        resourcesWindow.SetSiblingIndex(spawnOptionsWindow.transform.GetSiblingIndex());
+
+        // SetSiblingIndex shifts everything in between, so the target depends on which side the bar comes from.
+        int windowIndex = window.GetSiblingIndex();
+        resourcesWindow.SetSiblingIndex(resourcesWindow.GetSiblingIndex() < windowIndex ? windowIndex : windowIndex + 1);
     }
 
     private void RestoreResourceWindowOrder()
@@ -256,8 +309,52 @@ public class SeedEventManager : Singleton<SeedEventManager>
 
     private void ApplyOptionsWindowVisibility(bool condition)
     {
-        spawnOptionsWindow.TryGetElement<RectTransform>("Title Rect").gameObject.SetActive(condition);
-        spawnOptionsWindow.TryGetElement<RectTransform>("Description Rect").gameObject.SetActive(condition);
-        spawnOptionsWindow.TryGetElement<Image>("Background").gameObject.SetActive(condition);
+        CanvasGroup[] content = OptionsContent();
+        for (int i = 0; i < content.Length; i++)
+        {
+            content[i].gameObject.SetActive(condition);
+        }
+    }
+
+    // Everything the options window draws over its blur: title, description, background and options.
+    private CanvasGroup[] OptionsContent()
+    {
+        if (optionsContent != null) return optionsContent;
+
+        GameObject[] objects =
+        {
+            spawnOptionsWindow.TryGetElement<RectTransform>("Title Rect").gameObject,
+            spawnOptionsWindow.TryGetElement<RectTransform>("Description Rect").gameObject,
+            spawnOptionsWindow.TryGetElement<Image>("Background").gameObject,
+            spawnOptionsWindow.TryGetElement<LayoutGroup>("Layout Group").gameObject
+        };
+
+        optionsContent = new CanvasGroup[objects.Length];
+        for (int i = 0; i < objects.Length; i++)
+        {
+            if (!objects[i].TryGetComponent(out optionsContent[i])) optionsContent[i] = objects[i].AddComponent<CanvasGroup>();
+        }
+
+        return optionsContent;
+    }
+
+    // Same length as the blur fade, so the window and its background come in together.
+    private IEnumerator FadeIn(float duration, params CanvasGroup[] groups)
+    {
+        for (float t = 0f; t < duration; t += Time.unscaledDeltaTime)
+        {
+            SetGroupsAlpha(groups, t / duration);
+            yield return null;
+        }
+
+        SetGroupsAlpha(groups, 1f);
+    }
+
+    private static void SetGroupsAlpha(CanvasGroup[] groups, float alpha)
+    {
+        for (int i = 0; i < groups.Length; i++)
+        {
+            if (groups[i] != null) groups[i].alpha = alpha;
+        }
     }
 }

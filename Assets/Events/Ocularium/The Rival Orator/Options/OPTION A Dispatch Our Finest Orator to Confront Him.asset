@@ -30,21 +30,20 @@ MonoBehaviour:
         - weight: 50
           module:
           - rid: 107151343762276447
+          statUsed: 0
           output: "The Beholder is with us! Our man utterly humiliated this so-called
             \u201Corator.\u201D He exposed the fallacies of his arguments and proved
             to all that he is naught but a charlatan. The commoners themselves drove
             him from the plaza with kicks and jeers. It is doubtful he will show
-            his face again, and better still, our man inherited his audience!\r\n[Gained
-            30 Zeal]"
+            his face again, and better still, our man inherited his audience!"
         - weight: 50
           module:
           - rid: 107151343762276448
-          output: 'What a disgrace! Our man was utterly undone by the rival''s rhetoric
+          statUsed: 0
+          output: What a disgrace! Our man was utterly undone by the rival's rhetoric
             and logic. The humiliation was such that by the time it ended, the crowd
             was roaring with laughter at his expense. We have been defeated, and
-            the blow to our sect''s morale is heavy.
-
-            [Lost 30 Zeal]'
+            the blow to our sect's morale is heavy.
     - rid: 107151343762276447
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

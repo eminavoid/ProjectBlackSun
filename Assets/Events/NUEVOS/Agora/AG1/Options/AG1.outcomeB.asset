@@ -39,15 +39,14 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671132
           statUsed: 0
-          output: 'The guards welcome our bribe with open arms. [50 Wealth]'
+          output: The guards welcome our bribe with open arms.
         - weight: 50
           module:
           - rid: 2174037052531671133
           - rid: 2174037052531671248
           statUsed: 0
-          output: 'Just our luck! The only guards in all of Beheld with actual morals
-            happened to be on duty! Our cleric has been arrested. [-25 Zeal & +50
-            Wealth]'
+          output: Just our luck! The only guards in all of Beheld with actual morals
+            happened to be on duty! Our cleric has been arrested.
     - rid: 2174037052531671132
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

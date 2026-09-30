@@ -31,29 +31,21 @@ MonoBehaviour:
           module:
           - rid: 107151359355650063
           - rid: 107151359355650064
-          output: 'What were we thinking? To convince these wretches of the error
+          statUsed: 0
+          output: What were we thinking? To convince these wretches of the error
             of their ways? They laughed in the face of the cleric we dispatched and
             gave him a sound thrashing to boot. What shall the people think of our
             sect after such a public humiliation?
-
-            [Gained Bane Lost
-            10 Bliss & 10 Zeal]
-
-'
         - weight: 5
           module:
           - rid: 107151359355650065
           - rid: 107151359355650066
           - rid: 107151359355650067
-          output: 'Impressive! The man we sent to convert the miscreants must surely
+          statUsed: 0
+          output: Impressive! The man we sent to convert the miscreants must surely
             possess a silver tongue, for he has persuaded them to abandon their wicked
             ways and join our fold instead. If this is not proof that we are favored
             by the Beholder, then naught is!
-
-            [Gained 20 Flock, 10 Bliss
-            & 30 Zeal]
-
-'
     - rid: 107151359355650063
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

@@ -32,30 +32,25 @@ MonoBehaviour:
           module:
           - rid: 107151343762276421
           - rid: 107151343762276422
-          output: 'Our men track the culprits to a small rival parish, which is promptly
+          statUsed: 0
+          output: Our men track the culprits to a small rival parish, which is promptly
             stormed and its inhabitants beaten. We have not only defended our followers
             but proven that the Beholder favors us.
-
-            [Gained 10 Bliss
-            & 20 Zeal]
-
-'
         - weight: 50
           module:
           - rid: 107151343762276423
           - rid: 107151343762276424
           - rid: 107151343762276425
-          output: 'Our men track the culprits to a rival parish but are ambushed
-            along the way. The struggle is bitter, and in the end, we are forced
-            to retreat. Not all return home. The Beholder has abandoned us.
-
-            [Lost
-            10 Bliss, 20 Zeal & 5 Flock]'
+          statUsed: 0
+          output: Our men track the culprits to a rival parish but are ambushed along
+            the way. The struggle is bitter, and in the end, we are forced to retreat.
+            Not all return home. The Beholder has abandoned us.
     - rid: 107151340257149039
       type: {class: RequireResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         required: 20
+        consumeResource: 1
     - rid: 107151343762276421
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

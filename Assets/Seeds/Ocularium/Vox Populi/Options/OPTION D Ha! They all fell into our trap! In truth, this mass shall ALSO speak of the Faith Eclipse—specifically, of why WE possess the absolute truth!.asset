@@ -35,41 +35,27 @@ MonoBehaviour:
           - rid: 1516066228257685610
           - rid: 1516066228257685611
           statUsed: 0
-          output: 'The commoners stand baffled by our deception. Yet many remain
-            in their seats, either because they lack alternative plans or because
-            they dare not risk offending the Beholder.
-
-            [Gained 20 Flock
-            & 30 Zeal]
-
-'
+          output: The commoners stand baffled by our deception. Yet many remain in
+            their seats, either because they lack alternative plans or because they
+            dare not risk offending the Beholder.
         - weight: 70
           module:
           - rid: 1516066228257685612
           - rid: 1516066228257685613
           statUsed: 0
-          output: 'The populace is furious with our deceit! The majority marches
-            out in search of more honest congregations. Our gambit has proven thoroughly
+          output: The populace is furious with our deceit! The majority marches out
+            in search of more honest congregations. Our gambit has proven thoroughly
             ineffective; who would have thought that lying to the people could bring
             us trouble?
-
-            [Lost 10 Flock & 10 Zeal]
-
-'
         - weight: 10
           module:
           - rid: 1516066228257685614
           - rid: 1516066228257685615
           statUsed: 2
-          output: 'The crowd is initially incensed by our ruse, but the imposing
-            presence of our men intimidates them into submission. In the end, they
-            listen regardless, and the display of courage by our brothers seems to
-            inspire the preacher, who delivers a particularly convincing sermon.
-
-            [Gained
-            30 Flock & 60 Zeal]
-
-'
+          output: The crowd is initially incensed by our ruse, but the imposing presence
+            of our men intimidates them into submission. In the end, they listen
+            regardless, and the display of courage by our brothers seems to inspire
+            the preacher, who delivers a particularly convincing sermon.
     - rid: 1516066228257685610
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

@@ -34,40 +34,25 @@ MonoBehaviour:
           - rid: 1516066228257685525
           - rid: 1516066228257685526
           statUsed: 0
-          output: 'The licentious mass proves to be a resounding success among both
+          output: The licentious mass proves to be a resounding success among both
             men and women. Such is the response that one could almost argue we should
             continue utilizing this very strategy to recruit new followers.
-
-            [Gained
-            20 Flock & 30 Zeal]
-
-'
         - weight: 20
           module:
           - rid: 1516066228257685527
           statUsed: 0
-          output: 'The salacious service is an absolute disaster! The populace is
+          output: The salacious service is an absolute disaster! The populace is
             left horizontal with shock by the topics handled by the cleric, and many
             flee in horror. Perhaps we should have kept the sermon more family friendly.
-
-            [Lost
-            10 Zeal]
-
-'
         - weight: 10
           module:
           - rid: 1516066228257685528
           - rid: 1516066228257685529
           statUsed: 4
-          output: 'Our profound knowledge of the comings and goings of the Pink Quarter
+          output: Our profound knowledge of the comings and goings of the Pink Quarter
             grants us the edge we require to deliver a particularly memorable service.
             The crowd stands hypnotized by the prospect of learning the most shameful
-            secrets of several of Beheld''s prominent celebrities.
-
-            [Gained
-            30 Flock & 60 Zeal]
-
-'
+            secrets of several of Beheld's prominent celebrities.
     - rid: 1516066228257685525
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

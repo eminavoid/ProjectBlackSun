@@ -41,8 +41,8 @@ MonoBehaviour:
           - rid: 2174037052531671296
           - rid: 2174037052531671297
           statUsed: 0
-          output: 'The cleric persuades the cutthroats to forsake their wicked ways.
-            A true miracle! [25 Flock & 100 Zeal]'
+          output: The cleric persuades the cutthroats to forsake their wicked ways.
+            A true miracle!
         - weight: 90
           module: []
           statUsed: 0
@@ -54,15 +54,18 @@ MonoBehaviour:
         resource: 3
         minAmount: 25
         maxAmount: 25
+        refund: 0
     - rid: 2174037052531671296
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: 100
         maxAmount: 100
+        refund: 0
     - rid: 2174037052531671297
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: 10
         maxAmount: 10
+        refund: 1

@@ -31,12 +31,10 @@ MonoBehaviour:
           module:
           - rid: 107151343762276462
           - rid: 107151343762276463
-          output: 'But the people did not disperse; instead, they grew in number.
+          statUsed: 0
+          output: But the people did not disperse; instead, they grew in number.
             The orator has gained great influence within the Ocularium, and our sect
             pays dearly for failing to deal with him when the chance was ours.
-
-            [Lost
-            30 Zeal & 30 Flock]'
     - rid: 107151343762276462
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

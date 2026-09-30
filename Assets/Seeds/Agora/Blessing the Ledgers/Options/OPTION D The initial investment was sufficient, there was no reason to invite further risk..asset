@@ -35,29 +35,20 @@ MonoBehaviour:
           statUsed: 3
           output: "\u201CRisk little, gain little,\u201D so muttered the bolder members
             of our fold. Yet, a gain is a gain. What would have befallen us had we
-            gambled all and lost?\r\n[Gained 75 Wealth]\r\n"
+            gambled all and lost?"
         - weight: 40
           module:
           - rid: 1516066228257685674
           statUsed: 0
-          output: 'We were conservative, and with good reason! Our meager investment
+          output: We were conservative, and with good reason! Our meager investment
             barely managed to break even. Crisis averted!
-
-            [Gained 50
-            Wealth]
-
-'
         - weight: 10
           module:
           - rid: 1516066228257685675
           statUsed: 0
-          output: 'What a disgrace. Even with the slight risk we took, we managed
+          output: What a disgrace. Even with the slight risk we took, we managed
             to lose coin nonetheless. Perhaps we should dedicate ourselves to other
             endeavors.
-
-            [Gained 25 Wealth]
-
-'
     - rid: 1516066228257685673
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

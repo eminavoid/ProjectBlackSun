@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +8,7 @@ using UnityEngine.UI;
 // frame, blurred and shown on a full-screen RawImage. Whoever shows the window must wait for
 // IsReady before activating the window's own content, otherwise the window ends up in the snapshot.
 // UI that must stay sharp (e.g. the resources bar) just needs to be drawn after this object.
+// A blur opened while another one is on screen reuses its snapshot, so stacked windows share one background.
 [RequireComponent(typeof(RawImage))]
 public class UIBackgroundBlur : MonoBehaviour
 {
@@ -14,15 +16,19 @@ public class UIBackgroundBlur : MonoBehaviour
     [SerializeField, Range(1, 8)] int downsample = 2;
     [SerializeField, Range(1, 6)] int iterations = 2;
     [SerializeField, Range(0.5f, 4f)] float radius = 1.5f;
-    [SerializeField] Color tint = Color.white;
+    [Tooltip("Multiplied over the snapshot. Grey dims the background so the window stands out.")]
+    [SerializeField] Color tint = new Color(0.72f, 0.72f, 0.72f, 1f);
+    [SerializeField, Min(0f)] float fadeDuration = 0.18f;
 
     static Material blurMaterial;
+    static readonly List<UIBackgroundBlur> shown = new List<UIBackgroundBlur>();
 
     RawImage image;
     RectTransform rect;
     RenderTexture result;
 
     public bool IsReady { get; private set; }
+    public float FadeDuration => fadeDuration;
 
     void Awake()
     {
@@ -35,12 +41,25 @@ public class UIBackgroundBlur : MonoBehaviour
     {
         IsReady = false;
         image.enabled = false;
+
+        // The screen behind is that blur already: copying it avoids blurring and dimming it twice.
+        UIBackgroundBlur behind = TopShownBlur();
+        if (behind != null)
+        {
+            result = RenderTexture.GetTemporary(behind.result.descriptor);
+            Graphics.Blit(behind.result, result);
+            Show(1f);
+            IsReady = true;
+            return;
+        }
+
         StartCoroutine(CaptureAtEndOfFrame());
     }
 
     void OnDisable()
     {
         StopAllCoroutines();
+        shown.Remove(this);
         IsReady = false;
         if (result != null)
         {
@@ -53,15 +72,24 @@ public class UIBackgroundBlur : MonoBehaviour
     IEnumerator CaptureAtEndOfFrame()
     {
         yield return new WaitForEndOfFrame();
-        Capture();
+        bool captured = Capture();
         IsReady = true;
+        if (!captured) yield break;
+
+        Show(0f);
+        for (float t = 0f; t < fadeDuration; t += Time.unscaledDeltaTime)
+        {
+            SetAlpha(t / fadeDuration);
+            yield return null;
+        }
+        SetAlpha(1f);
     }
 
-    void Capture()
+    bool Capture()
     {
         if (blurMaterial == null)
         {
-            if (blurShader == null) { Debug.LogWarning("UIBackgroundBlur: no blur shader assigned.", this); return; }
+            if (blurShader == null) { Debug.LogWarning("UIBackgroundBlur: no blur shader assigned.", this); return false; }
             blurMaterial = new Material(blurShader) { hideFlags = HideFlags.HideAndDontSave };
         }
 
@@ -71,6 +99,8 @@ public class UIBackgroundBlur : MonoBehaviour
         int h = Mathf.Max(16, Screen.height / downsample);
         RenderTexture a = RenderTexture.GetTemporary(w, h, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.sRGB);
         RenderTexture b = RenderTexture.GetTemporary(w, h, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.sRGB);
+        // The snapshot now lines up with the screen edges, so taps past them must not wrap around.
+        a.wrapMode = b.wrapMode = TextureWrapMode.Clamp;
         Graphics.Blit(screen, a, blurMaterial, 1);
         Destroy(screen);
 
@@ -86,9 +116,17 @@ public class UIBackgroundBlur : MonoBehaviour
 
         if (result != null) RenderTexture.ReleaseTemporary(result);
         result = a;
+        return true;
+    }
 
-        // Cover the whole canvas so the snapshot lines up 1:1 and every click behind is blocked.
+    void Show(float alpha)
+    {
+        // Cover the whole canvas 1:1 whatever the scale of this object or its parents, so the snapshot
+        // lines up with the screen and doesn't jump when it appears.
         var canvasRect = (RectTransform)GetComponentInParent<Canvas>().rootCanvas.transform;
+        Vector3 parentScale = rect.parent != null ? rect.parent.lossyScale : Vector3.one;
+        Vector3 canvasScale = canvasRect.lossyScale;
+        rect.localScale = new Vector3(canvasScale.x / parentScale.x, canvasScale.y / parentScale.y, 1f);
         rect.anchorMin = rect.anchorMax = new Vector2(0.5f, 0.5f);
         rect.pivot = new Vector2(0.5f, 0.5f);
         rect.sizeDelta = canvasRect.rect.size;
@@ -96,7 +134,26 @@ public class UIBackgroundBlur : MonoBehaviour
 
         image.uvRect = new Rect(0f, 0f, 1f, 1f);
         image.texture = result;
-        image.color = tint;
+        SetAlpha(alpha);
         image.enabled = true;
+        shown.Add(this);
+    }
+
+    void SetAlpha(float alpha)
+    {
+        Color color = tint;
+        color.a *= alpha;
+        image.color = color;
+    }
+
+    static UIBackgroundBlur TopShownBlur()
+    {
+        for (int i = shown.Count - 1; i >= 0; i--)
+        {
+            UIBackgroundBlur blur = shown[i];
+            if (blur != null && blur.isActiveAndEnabled && blur.result != null) return blur;
+        }
+
+        return null;
     }
 }

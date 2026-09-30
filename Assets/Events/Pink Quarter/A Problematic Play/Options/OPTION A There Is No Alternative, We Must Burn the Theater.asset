@@ -29,6 +29,7 @@ MonoBehaviour:
       data:
         resource: 3
         required: 10
+        consumeResource: 1
     - rid: 107151359355650139
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
@@ -37,41 +38,29 @@ MonoBehaviour:
           module:
           - rid: 107151359355650140
           - rid: 107151359355650141
-          output: 'The roaring flames of the theater are the only entertainment the
+          statUsed: 0
+          output: The roaring flames of the theater are the only entertainment the
             commoners shall derive from that establishment. It appears the play has
             been canceled... permanently. Our men saw to that personally!
-
-            [Gained
-            10 Bliss & 10 Flock]
-
-'
         - weight: 40
           module:
           - rid: 107151359355650142
           - rid: 107151359355650143
           - rid: 107151359355650144
-          output: 'Our men are successful in lighting the fires, but lamentably,
-            members of the rival sect were nearby and managed to quench the blaze.
-            So much organization... for naught! At the very least, our hand was not
-            discovered, though the play shall now proceed as planned.
-
-            [Gained
-            10 Flock Lost 20 Zeal & 15 Bliss]
-
-'
+          statUsed: 0
+          output: Our men are successful in lighting the fires, but lamentably, members
+            of the rival sect were nearby and managed to quench the blaze. So much
+            organization... for naught! At the very least, our hand was not discovered,
+            though the play shall now proceed as planned.
         - weight: 10
           module:
           - rid: 107151359355650145
           - rid: 107151359355650146
-          output: 'Terrible news! Our plan succeeded, but our men became trapped
-            within the inferno. When the fires were extinguished and their charred
-            remains were discovered, enough evidence was left intact to trace the
-            deed back to us. There may be no play, but the outcome is far worse!
-
-            [Lost
-            40 Zeal & 15 Bliss]
-
-'
+          statUsed: 0
+          output: Terrible news! Our plan succeeded, but our men became trapped within
+            the inferno. When the fires were extinguished and their charred remains
+            were discovered, enough evidence was left intact to trace the deed back
+            to us. There may be no play, but the outcome is far worse!
     - rid: 107151359355650140
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

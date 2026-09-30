@@ -31,17 +31,14 @@ MonoBehaviour:
         - weight: 60
           module:
           - rid: 107151343762276435
-          output: 'The Overseer is grateful for the generous contribution, and the
+          statUsed: 0
+          output: The Overseer is grateful for the generous contribution, and the
             men, vulnerable from the loss of their kin, seek refuge in the warmth
             of our sect. The priests are already preparing the rites of initiation.
-
-            [Gained
-            10 Flock]
-
-'
         - weight: 30
           module:
           - rid: 107151343762276436
+          statUsed: 0
           output: 'The Overseer accepts our generosity with humility. However, the
             men are too burdened by the loss of their friends and livelihood to take
             notice. None shall join us today.
@@ -51,10 +48,10 @@ MonoBehaviour:
           module:
           - rid: 107151343762276437
           - rid: 107151343762276438
+          statUsed: 0
           output: "The Overseer spits upon our generosity and drives our men away,
             accusing us of standing idle only to prey upon them in their moment of
-            vulnerability\u2026 he is not entirely mistaken.\r\n[Gained 30 Wealth
-            Lost 5 Zeal]\r\n\n"
+            vulnerability\u2026 he is not entirely mistaken."
     - rid: 107151343762276435
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
@@ -81,3 +78,4 @@ MonoBehaviour:
       data:
         resource: 0
         required: 30
+        consumeResource: 1

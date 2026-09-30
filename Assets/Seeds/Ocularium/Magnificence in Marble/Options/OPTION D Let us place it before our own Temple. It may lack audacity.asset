@@ -32,14 +32,10 @@ MonoBehaviour:
           module:
           - rid: 1516066228257685523
           statUsed: 0
-          output: 'It may not have been the boldest course of action, but by placing
+          output: It may not have been the boldest course of action, but by placing
             it within our own sanctuary, we have ensured our followers feel immense
             pride in belonging to our fold, even if something so ostentatious feels
             slightly out of place.
-
-            [Gained 20 Bliss]
-
-'
     - rid: 1516066228257685523
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

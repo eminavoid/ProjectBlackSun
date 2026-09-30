@@ -33,7 +33,7 @@ MonoBehaviour:
           statUsed: 0
           output: "This crisis shall pass, and from its ashes will rise those who
             are truly devout\u2014leaving behind all who are swayed only by the glint
-            of coin!\r\n[Lost 50 Flock]\r\n"
+            of coin!"
     - rid: 5841915870972215312
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

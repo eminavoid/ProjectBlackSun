@@ -45,21 +45,19 @@ MonoBehaviour:
         - weight: 100
           module:
           - rid: 107151343762276442
-          output: 'With a hastily written missive, you mobilize the local watch.
-            The Captain is displeased to follow your commands, but he knows you have
+          statUsed: 0
+          output: With a hastily written missive, you mobilize the local watch. The
+            Captain is displeased to follow your commands, but he knows you have
             friends in high places. Under the capable hands of the Guard, the Overseer
             saves both his foundry and his men. They know we are truly responsible
             for their salvation and choose to affiliate themselves immediately, offering
             an early tithe as thanks.
-
-            [Gained 30 Flock & 20 Wealth]
-
-'
     - rid: 107151343762276441
       type: {class: RequireResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 2
         required: 1
+        consumeResource: 1
     - rid: 107151343762276442
       type: {class: DoNothing, ns: , asm: Assembly-CSharp}
       data: 

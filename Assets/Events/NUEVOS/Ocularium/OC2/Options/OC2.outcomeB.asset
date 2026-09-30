@@ -41,14 +41,14 @@ MonoBehaviour:
           statUsed: 0
           output: The eclipse bore no divine essence, yet the masses took it as such.
             It may have been somewhat extravagant, but our festival was warmly embraced
-            by the populace. [50 Zeal[
+            by the populace.
         - weight: 50
           module:
           - rid: 2174037052531671147
           statUsed: 0
-          output: 'The spectacle proved far less grand than the crowd anticipated...
+          output: The spectacle proved far less grand than the crowd anticipated...
             and certainly void of divinity. We look like utter fools for staging
-            such a lavish feast in its name. [-10 Zeal]'
+            such a lavish feast in its name.
     - rid: 2174037052531671146
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

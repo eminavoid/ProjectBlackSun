@@ -32,8 +32,8 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671136
           statUsed: 0
-          output: 'The district resents us for such callousness, but at least our
-            flock remains entirely untainted! [-50 Zeal]'
+          output: The district resents us for such callousness, but at least our
+            flock remains entirely untainted!
     - rid: 2174037052531671136
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

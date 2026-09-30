@@ -30,32 +30,24 @@ MonoBehaviour:
         - weight: 45
           module:
           - rid: 107151359355650173
-          output: 'What is better than having a talented painter under our sway?
-            Having that same artist dedicate his skills to slandering our primary
-            rival!
-
-            [Gained 40 Zeal]
-
-'
+          statUsed: 0
+          output: What is better than having a talented painter under our sway? Having
+            that same artist dedicate his skills to slandering our primary rival!
         - weight: 45
           module:
           - rid: 107151359355650174
-          output: 'The artist is horrified by our attempt at slander. It seems we
+          statUsed: 0
+          output: The artist is horrified by our attempt at slander. It seems we
             have caused him to become disillusioned with all sects. It could have
             been worse; at least now he shall not paint for anyone!
-
-            [Lost
-            10 Bliss]
-
-'
         - weight: 10
           module:
           - rid: 107151359355650175
+          statUsed: 0
           output: "What a tragedy! It appears our rivals had the very same idea.
             The painter found himself at the center of the worst aspects of our warring
             folds. Such was the chaos that the youth eventually lost his faith\u2014and
-            with it, his will to live. Today, the city loses a rising star.\r\n[Lost
-            55 Zeal]\r\n"
+            with it, his will to live. Today, the city loses a rising star."
     - rid: 107151359355650173
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

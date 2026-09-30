@@ -32,14 +32,14 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671142
           statUsed: 0
-          output: 'A public scandal erupts and the aristocrat is dragged away in
-            chains. That will teach the rest not to cross us. [25 Secrets]'
+          output: A public scandal erupts and the aristocrat is dragged away in chains.
+            That will teach the rest not to cross us.
         - weight: 80
           module:
           - rid: 2174037052531671143
           statUsed: 0
-          output: 'Curse it all! The noble wielded far more influence than we anticipated.
-            We are in deep trouble! [-50 Secrets]'
+          output: Curse it all! The noble wielded far more influence than we anticipated.
+            We are in deep trouble!
     - rid: 2174037052531671142
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

@@ -29,6 +29,7 @@ MonoBehaviour:
       data:
         resource: 0
         required: 40
+        consumeResource: 1
     - rid: 107151359355650128
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
@@ -38,14 +39,10 @@ MonoBehaviour:
           - rid: 107151359355650129
           - rid: 107151359355650130
           - rid: 107151359355650131
-          output: 'The people appreciate the assistance rendered. And though our
-            temples suffered damage, it is nothing that cannot be mended with coin.
-            Tomorrow is another day!
-
-            [Gained 20 Zeal & 10 Bliss Lost
-            20 Wealth]
-
-'
+          statUsed: 0
+          output: The people appreciate the assistance rendered. And though our temples
+            suffered damage, it is nothing that cannot be mended with coin. Tomorrow
+            is another day!
     - rid: 107151359355650129
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

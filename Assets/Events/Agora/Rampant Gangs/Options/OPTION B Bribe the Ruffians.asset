@@ -29,6 +29,7 @@ MonoBehaviour:
       data:
         resource: 0
         required: 50
+        consumeResource: 1
     - rid: 107151359355650053
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
@@ -36,37 +37,27 @@ MonoBehaviour:
         - weight: 65
           module:
           - rid: 107151359355650054
-          output: 'Let it not be said that gold cannot move mountains. At the prospect
+          statUsed: 0
+          output: Let it not be said that gold cannot move mountains. At the prospect
             of being paid for their idleness, the ruffians accept our offer as swiftly
             as it is proposed. The price was steep, but we should suffer no further
             trouble from them.
-
-            [Gained 10 Bliss]
-
-'
         - weight: 25
           module:
           - rid: 107151359355650055
           - rid: 107151359355650056
-          output: 'Who would have thought it? Criminals with standards! The gang
-            refused to accept our coin, remaining loyal to their current masters.
-            It seems our troubles shall continue for the time being.
-
-            [Gained
-            50 Wealth & Bane Lost 10 Bliss]
-
-'
+          statUsed: 0
+          output: Who would have thought it? Criminals with standards! The gang refused
+            to accept our coin, remaining loyal to their current masters. It seems
+            our troubles shall continue for the time being.
         - weight: 10
           module:
           - rid: 107151359355650057
-          output: 'What a disaster! Our agents made contact with the scoundrels,
-            who accepted the payment without hesitation. However, it was naught but
-            a ruse, for the very next day they returned to wreak even greater havoc!
+          statUsed: 0
+          output: What a disaster! Our agents made contact with the scoundrels, who
+            accepted the payment without hesitation. However, it was naught but a
+            ruse, for the very next day they returned to wreak even greater havoc!
             We have been swindled!
-
-            [Lost 15 Bliss]
-
-'
     - rid: 107151359355650054
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

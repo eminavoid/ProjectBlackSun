@@ -29,6 +29,7 @@ MonoBehaviour:
       data:
         resource: 2
         required: 1
+        consumeResource: 1
     - rid: 107151343762276459
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
@@ -36,12 +37,13 @@ MonoBehaviour:
         - weight: 100
           module:
           - rid: 107151343762276460
+          statUsed: 0
           output: "We may not triumph in the marketplace of ideas, but victory is
             assured when one is well-acquainted with the region\u2019s most prominent
             Inquisitor. A single missive and our problem is swiftly resolved. The
             Inquisitor has charged him with heresy, and with the \"evidence\" that
             coincidentally arrived at his door, the orator's fate was sealed: to
-            burn at the stake.\n[Gained 40 Zeal]"
+            burn at the stake."
     - rid: 107151343762276460
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

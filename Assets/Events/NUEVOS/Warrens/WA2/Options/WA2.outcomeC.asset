@@ -14,84 +14,89 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Option
   playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
   title: An opportunity to install a boss loyal to our faith. Dispatch reinforcements!
-  description: 'COST: 50 Wealth & 10 Flock'
+  description: 'COST: 50 Wealth & 50 Flock'
   icon: {fileID: 0}
   modules:
-  - rid: 2174037052531671148
-  - rid: 2174037052531671298
+  - rid: 2174037531835236798
+  - rid: 2174037531835236799
   - rid: 2174037052531671149
   endsQuestline: 1
   followUpSeeds: []
   references:
     version: 2
     RefIds:
-    - rid: 2174037052531671148
-      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
-      data:
-        resource: 0
-        required: 50
-        consumeResource: 1
     - rid: 2174037052531671149
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
         modules:
         - weight: 15
           module:
-          - rid: 2174037052531671150
-          - rid: 2174037052531671299
-          - rid: 2174037052531671300
-          - rid: 2174037052531671301
-          - rid: 2174037052531671302
+          - rid: 2174037531835236800
+          - rid: 2174037531835236801
+          - rid: 2174037531835236802
+          - rid: 2174037531835236803
+          - rid: 2174037531835236804
           statUsed: 0
-          output: ' Bolstered by our forces, our favored boss amasses enough power
+          output: Bolstered by our forces, our favored boss amasses enough power
             to crush the rival gangs. Not only do we hold a puppet in high places,
-            but the district credits our sect with ending the bloodshed! [25 Wealth
-            & 25 Flock & 1 Authority & 50 Zeal]'
+            but the district credits our sect with ending the bloodshed!
         - weight: 85
           module:
-          - rid: 2174037052531671151
+          - rid: 2174037531835236805
           statUsed: 0
-          output: 'Our chosen champion is cut down, and worse still, we stand publicly
-            accused of stoking the violence! [-50 Zeal]'
-    - rid: 2174037052531671150
-      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+          output: Our chosen champion is cut down, and worse still, we stand publicly
+            accused of stoking the violence!
+    - rid: 2174037531835236798
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
       data:
-        resource: 3
-        minAmount: 50
-        maxAmount: 50
-    - rid: 2174037052531671151
-      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
-      data:
-        resource: 1
-        minAmount: -50
-        maxAmount: -50
-    - rid: 2174037052531671298
+        resource: 0
+        required: 50
+        consumeResource: 1
+    - rid: 2174037531835236799
       type: {class: RequireResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         required: 50
         consumeResource: 1
-    - rid: 2174037052531671299
+    - rid: 2174037531835236800
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: 25
         maxAmount: 25
-    - rid: 2174037052531671300
+        refund: 0
+    - rid: 2174037531835236801
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 0
         minAmount: 25
         maxAmount: 25
-    - rid: 2174037052531671301
+        refund: 0
+    - rid: 2174037531835236802
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 2
         minAmount: 1
         maxAmount: 1
-    - rid: 2174037052531671302
+        refund: 0
+    - rid: 2174037531835236803
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: 50
         maxAmount: 50
+        refund: 0
+    - rid: 2174037531835236804
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: 50
+        maxAmount: 50
+        refund: 1
+    - rid: 2174037531835236805
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: -50
+        maxAmount: -50
+        refund: 0

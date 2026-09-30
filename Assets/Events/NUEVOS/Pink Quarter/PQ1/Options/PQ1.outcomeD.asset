@@ -32,8 +32,8 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671281
           statUsed: 0
-          output: 'Catastrophe! A rival sect unearths the truth and exposes our shame
-            to the city! [-75 Zeal]'
+          output: Catastrophe! A rival sect unearths the truth and exposes our shame
+            to the city!
         - weight: 40
           module: []
           statUsed: 0

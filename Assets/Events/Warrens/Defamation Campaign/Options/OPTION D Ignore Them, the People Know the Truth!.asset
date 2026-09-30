@@ -30,13 +30,10 @@ MonoBehaviour:
         - weight: 100
           module:
           - rid: 107151359355650106
-          output: 'Perhaps what the speakers say are lies, but the people believe
+          statUsed: 0
+          output: Perhaps what the speakers say are lies, but the people believe
             them nonetheless. This stain upon our reputation shall be difficult to
             wash away.
-
-            [Lost 20 Zeal]
-
-'
     - rid: 107151359355650106
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

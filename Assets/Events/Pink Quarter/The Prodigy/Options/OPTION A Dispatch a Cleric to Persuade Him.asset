@@ -31,25 +31,19 @@ MonoBehaviour:
           module:
           - rid: 107151359355650160
           - rid: 107151359355650161
-          output: 'The Beholder smiles upon us! Our cleric successfully convinced
+          statUsed: 0
+          output: The Beholder smiles upon us! Our cleric successfully convinced
             the youth to join our ranks. With such a talented figure by our side,
             our doctrine shall breathe life upon the canvas. Through his brush, we
             shall find immortality!
-
-            [Gained 40 Zeal, 10 Bliss & Boon]
-
-'
         - weight: 50
           module:
           - rid: 107151359355650162
-          output: 'Terrible news! It seems we were not the only sect attempting to
+          statUsed: 0
+          output: Terrible news! It seems we were not the only sect attempting to
             recruit the young artist. By the time we arrived, he had already been
             indoctrinated by one of our rivals. Our followers are crestfallen at
             having lost such a grand opportunity.
-
-            [Lost 15 Bliss]
-
-'
     - rid: 107151359355650160
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

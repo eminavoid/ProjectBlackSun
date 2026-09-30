@@ -39,15 +39,14 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671150
           statUsed: 0
-          output: "The merchant agrees, securing a mutually beneficial partnership.
-            [100 Wealth]\r"
+          output: The merchant agrees, securing a mutually beneficial partnership.
         - weight: 70
           module:
           - rid: 2174037052531671151
           statUsed: 0
-          output: 'The merchant proved to be nothing more than a charlatan chasing
+          output: The merchant proved to be nothing more than a charlatan chasing
             coin. Spooked by our proposal, he fled to peddle trinkets for another
-            cult. [-10 Flock]'
+            cult.
     - rid: 2174037052531671150
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

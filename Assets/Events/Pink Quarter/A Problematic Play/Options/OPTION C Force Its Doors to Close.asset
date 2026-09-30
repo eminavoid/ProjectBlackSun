@@ -29,6 +29,7 @@ MonoBehaviour:
       data:
         resource: 2
         required: 1
+        consumeResource: 1
     - rid: 107151359355650152
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
@@ -36,11 +37,12 @@ MonoBehaviour:
         - weight: 100
           module:
           - rid: 107151359355650153
+          statUsed: 0
           output: "Well, well... it seems some of the past performances at this theater
             could be deemed blasphemous. Who would have thought our rivals would
             stoop to associating with such heretics? The director is promptly arrested
             and the theater\u2019s doors are shuttered forever. That shall teach
-            them to trifle with our fold.\r\n[Gained 15 Bliss]\r\n"
+            them to trifle with our fold."
     - rid: 107151359355650153
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

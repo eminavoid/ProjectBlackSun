@@ -30,6 +30,7 @@ MonoBehaviour:
         - weight: 80
           module:
           - rid: 107151343762276443
+          statUsed: 0
           output: "The commoners of the district gather around the foundry to witness
             the destruction as if it were a communal bonfire. The cracking of the
             timber almost manages to drown out the screams of those trapped within\u2026
@@ -37,11 +38,11 @@ MonoBehaviour:
         - weight: 20
           module:
           - rid: 107151343762276444
+          statUsed: 0
           output: "The commoners of the district gather around the foundry to witness
             the destruction as if it were a communal bonfire. The cracking of the
             timber almost manages to drown out the screams of those trapped within\u2026
-            almost. Our own men cannot help but feel that we should have intervened.\r\n[Lost
-            5 Bliss]"
+            almost. Our own men cannot help but feel that we should have intervened."
     - rid: 107151343762276443
       type: {class: DoNothing, ns: , asm: Assembly-CSharp}
       data: 

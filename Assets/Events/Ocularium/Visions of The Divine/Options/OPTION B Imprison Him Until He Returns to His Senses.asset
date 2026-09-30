@@ -29,6 +29,7 @@ MonoBehaviour:
         modules:
         - weight: 70
           module: []
+          statUsed: 0
           output: After several days in isolation, the cleric recovers his wits.
             It appears this episode was naught but a fleeting bout of madness. Having
             reflected upon his errors, the cleric is now prepared to return to his
@@ -37,15 +38,11 @@ MonoBehaviour:
           module:
           - rid: 107151358184390663
           - rid: 107151358184390664
-          output: 'We have a problem... the cleric has escaped his confinement. Reports
+          statUsed: 0
+          output: We have a problem... the cleric has escaped his confinement. Reports
             are flooding in of a naked madman shrieking in the streets about the
             coming apocalypse and the righteous punishment of the Beholder. Lamentably,
             a rival sect has already identified him as one of our own.
-
-            [Lost
-            20 Zeal & 10 Bliss]
-
-'
     - rid: 107151358184390663
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

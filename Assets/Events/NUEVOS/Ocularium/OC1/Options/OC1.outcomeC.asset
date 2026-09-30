@@ -32,7 +32,7 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671262
           statUsed: 0
-          output: 'You shall make a fine cleric one day, lad! [25 Zeal]'
+          output: You shall make a fine cleric one day, lad!
     - rid: 2174037052531671262
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

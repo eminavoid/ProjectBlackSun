@@ -38,7 +38,7 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671128
           statUsed: 0
-          output: 'More materials are always welcome. [50 Materials]'
+          output: More materials are always welcome.
         - weight: 25
           module: []
           statUsed: 0

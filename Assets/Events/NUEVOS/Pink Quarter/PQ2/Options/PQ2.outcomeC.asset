@@ -34,14 +34,14 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671150
           statUsed: 0
-          output: 'The aristocrat is immensely grateful and pledges to assist our
-            endeavors in the future! [1 Authority]'
+          output: The aristocrat is immensely grateful and pledges to assist our
+            endeavors in the future!
         - weight: 85
           module:
           - rid: 2174037052531671151
           statUsed: 0
-          output: 'The aristocrat threatens us outright. We had best drop the matter
-            entirely. [-50 Secrets]'
+          output: The aristocrat threatens us outright. We had best drop the matter
+            entirely.
     - rid: 2174037052531671150
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

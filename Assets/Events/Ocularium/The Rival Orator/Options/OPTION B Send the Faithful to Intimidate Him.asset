@@ -29,6 +29,7 @@ MonoBehaviour:
       data:
         resource: 3
         required: 10
+        consumeResource: 1
     - rid: 107151343762276450
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
@@ -37,28 +38,29 @@ MonoBehaviour:
           module:
           - rid: 107151343762276451
           - rid: 107151343762276452
+          statUsed: 0
           output: "Our followers discover where this \u201Corator\u201D dwells and
             pay him a nocturnal visit. Coincidentally, he does not appear in the
-            plaza the following morning, nor any day thereafter.\r\n[Gained 20 Zeal
-            & 10 Flock]\r\n"
+            plaza the following morning, nor any day thereafter."
         - weight: 40
           module:
           - rid: 107151343762276453
+          statUsed: 0
           output: "What a disaster! Our followers ambush the orator as he concludes
             one of his sermons. Yet, he stands his ground, even as our men begin
             to threaten violence. They clearly misread the situation; the orator\u2019s
             stoicism is enough to rouse his followers to his defense. Our men are
-            lynched on the spot.\r\n[Lost 20 Zeal]"
+            lynched on the spot."
         - weight: 10
           module:
           - rid: 107151343762276455
           - rid: 107151343762276456
           - rid: 107151343762276457
+          statUsed: 0
           output: "A catastrophe! Matters have spiraled out of control. Our men were
             meant only to give him a fright, but they overplayed their hand and ended
             the poor devil's life! Worse, they did so before the eyes of all his
-            followers. Needless to say, our sect\u2019s reputation is left in tatters.\r\n[Lost
-            25 Zeal, 10 Bliss & 20 Flock]"
+            followers. Needless to say, our sect\u2019s reputation is left in tatters."
     - rid: 107151343762276451
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

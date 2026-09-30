@@ -30,17 +30,14 @@ MonoBehaviour:
         - weight: 30
           module:
           - rid: 107151358184390666
-          output: 'The cleric speaks with absolute certainty. Our Inquisitor could
+          statUsed: 0
+          output: The cleric speaks with absolute certainty. Our Inquisitor could
             not determine if the visions are genuine or merely delusions, but there
             seems to be no harm in allowing him to minister to the masses. However,
-            after the Inquisitor''s harsh methods, the cleric appears noticeably
-            diminished.
-
-            [Gained 10 Zeal]
-
-'
+            after the Inquisitor's harsh methods, the cleric appears noticeably diminished.
         - weight: 30
           module: []
+          statUsed: 0
           output: What a relief! The cleric was revealed to be a charlatan. He made
             a valiant effort to conceal his deceit, but after a lengthy session of
             "interrogation," the truth was wrung from him. Long live the Beholder,
@@ -48,13 +45,10 @@ MonoBehaviour:
         - weight: 40
           module:
           - rid: 107151358184390667
-          output: 'The Inquisitor overplayed his hand during the questioning... the
+          statUsed: 0
+          output: The Inquisitor overplayed his hand during the questioning... the
             cleric did not survive the ordeal. Now, we shall never know the truth
             of his visions.
-
-            [Lost 10 Bliss]
-
-'
     - rid: 107151358184390666
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

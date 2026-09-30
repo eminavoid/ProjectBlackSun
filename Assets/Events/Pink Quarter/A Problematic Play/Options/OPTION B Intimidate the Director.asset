@@ -30,25 +30,18 @@ MonoBehaviour:
         - weight: 60
           module:
           - rid: 107151359355650148
-          output: 'A nocturnal visit is all it takes for the director to abandon
-            his patrons. Our men can be so persuasive when the need arises... it
-            is their trade, after all!
-
-            [Gained 5 Bliss]
-
-'
+          statUsed: 0
+          output: A nocturnal visit is all it takes for the director to abandon his
+            patrons. Our men can be so persuasive when the need arises... it is their
+            trade, after all!
         - weight: 40
           module:
           - rid: 107151359355650149
           - rid: 107151359355650150
-          output: 'The gall of this man! Even with a band of fanatics appearing at
+          statUsed: 0
+          output: The gall of this man! Even with a band of fanatics appearing at
             his doorstep, he refuses to forsake his benefactors. Such dedication
             would be commendable were it not directed squarely against us.
-
-            [Lost
-            20 Zeal & 10 Bliss]
-
-'
     - rid: 107151359355650148
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

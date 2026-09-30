@@ -32,8 +32,8 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671303
           statUsed: 0
-          output: 'The commoners resent our inaction, but there is precious little
-            to be done about it. [-10 Zeal]'
+          output: The commoners resent our inaction, but there is precious little
+            to be done about it.
     - rid: 2174037052531671303
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
