@@ -34,27 +34,21 @@ MonoBehaviour:
           - rid: 107151359355650133
           - rid: 107151359355650134
           - rid: 107151359355650135
-          output: 'The people call us lunatics for welcoming the rains with open
-            arms. But is this water not a gift from the Beholder Himself? Who are
-            we to reject His bounty?
-
-            [Lost 40 Wealth, 20 Zeal & 10 Bliss]
-
-'
+          statUsed: 0
+          output: The people call us lunatics for welcoming the rains with open arms.
+            But is this water not a gift from the Beholder Himself? Who are we to
+            reject His bounty?
         - weight: 5
           module:
           - rid: 107151359355650136
           - rid: 107151359355650137
-          output: 'Long live the Beholder! May His tears flood the world! The masses
+          statUsed: 0
+          output: Long live the Beholder! May His tears flood the world! The masses
             called us mad, but as the city drowned and more souls were swept away,
             more joined us in prayer. Eventually, our conviction stayed the rain.
             But the people are changed; they now understand that the tears of the
             Beholder are not to be feared, but celebrated. We have birthed an apocalyptic
             doctrine!
-
-            [Gained 50 Zeal & Doctrine Lost 40 Wealth]
-
-'
     - rid: 107151359355650133
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

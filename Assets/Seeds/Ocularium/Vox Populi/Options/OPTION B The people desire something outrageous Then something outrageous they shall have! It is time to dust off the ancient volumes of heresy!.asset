@@ -34,26 +34,16 @@ MonoBehaviour:
           - rid: 1516066228257685531
           - rid: 1516066228257685532
           statUsed: 0
-          output: 'Though this gamble might well earn us a visit from an Imperial
+          output: Though this gamble might well earn us a visit from an Imperial
             Inquisitor, it is undeniable that the common folk are deeply enticed
             by subjects forbidden since the last Faith Eclipse. The mass is a triumph!
-
-            [Gained
-            20 Flock & 30 Zeal]
-
-'
         - weight: 50
           module:
           - rid: 1516066228257685533
           statUsed: 0
-          output: 'What a disaster! The populace flees in terror at the mere prospect
+          output: What a disaster! The populace flees in terror at the mere prospect
             of being implicated in an Imperial Inquisition witch-hunt for harboring
             heretical knowledge. As for us? We had best sleep with one eye open.
-
-            [Lost
-            20 Zeal]
-
-'
         - weight: 10
           module:
           - rid: 1516066228257685534
@@ -61,8 +51,7 @@ MonoBehaviour:
           statUsed: 5
           output: "Our profound and exhaustive knowledge concerning the ancient teachings\u2014now
             forbidden by the latest Faith Eclipse\u2014allows us to deliver an informative
-            mass without ever falling into the peril of being branded as heretics.\r\n[Gained
-            30 Flock & 60 Zeal]\r\n"
+            mass without ever falling into the peril of being branded as heretics."
     - rid: 1516066228257685531
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

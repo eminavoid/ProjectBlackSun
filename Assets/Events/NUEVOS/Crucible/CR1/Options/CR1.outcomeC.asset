@@ -38,13 +38,12 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671136
           statUsed: 0
-          output: 'Now we are truly well supplied! [100 Materials]'
+          output: Now we are truly well supplied!
         - weight: 15
           module:
           - rid: 2174037052531671137
           statUsed: 0
-          output: 'Curse it all! The materials were shoddy! We have been swindled!
-            [-10 Bliss]'
+          output: Curse it all! The materials were shoddy! We have been swindled!
     - rid: 2174037052531671136
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

@@ -33,15 +33,15 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671132
           statUsed: 0
-          output: 'Those with nowhere else to turn, or burdened by sick kin at home,
-            are deeply grateful for our sanctuary. [10 Flock]'
+          output: Those with nowhere else to turn, or burdened by sick kin at home,
+            are deeply grateful for our sanctuary.
         - weight: 50
           module:
           - rid: 2174037052531671133
           - rid: 2174037052531671288
           statUsed: 0
-          output: 'While the healthy appreciate our shelter, we are branded heartless
-            for turning away the afflicted. [-10 & -20 Zeal]'
+          output: While the healthy appreciate our shelter, we are branded heartless
+            for turning away the afflicted.
     - rid: 2174037052531671132
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

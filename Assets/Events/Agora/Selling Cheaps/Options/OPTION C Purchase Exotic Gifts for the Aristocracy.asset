@@ -29,6 +29,7 @@ MonoBehaviour:
       data:
         resource: 0
         required: 60
+        consumeResource: 1
     - rid: 107151359355650080
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
@@ -36,25 +37,19 @@ MonoBehaviour:
         - weight: 50
           module:
           - rid: 107151359355650081
-          output: 'Such reverence! The aristocrats are fascinated by our offerings.
+          statUsed: 0
+          output: Such reverence! The aristocrats are fascinated by our offerings.
             The exotic nature of the gifts has given us the edge we required, as
             it seems we have started a new trend among the nobility. They shall not
             forget this gesture anytime soon.
-
-            [Gained 1 Authority]
-
-'
         - weight: 50
           module:
           - rid: 107151359355650082
-          output: 'Horrible news! The gifts proved to be cheap counterfeits of the
+          statUsed: 0
+          output: Horrible news! The gifts proved to be cheap counterfeits of the
             true articles. The refined eyes of the aristocracy were quick to spot
             the deception and were left indignant. They now believe us to be charlatans!
             This is the price of trusting outlanders!
-
-            [Lost 1 Authority]
-
-'
     - rid: 107151359355650081
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

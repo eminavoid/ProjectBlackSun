@@ -31,32 +31,29 @@ MonoBehaviour:
         - weight: 25
           module:
           - rid: 107151343762276430
-          output: 'The bravery of our people is commendable. They charged into the
+          statUsed: 0
+          output: The bravery of our people is commendable. They charged into the
             roaring flames and, by the grace of the Beholder, rescued those trapped
             inside. Not only that, but they managed to douse the fire entirely. The
             laborers are now lining up to join our sect. The Beholder smiles upon
             us!
-
-            [Gained 30 Flock]'
         - weight: 50
           module:
           - rid: 107151343762276431
-          output: 'Our men managed to extinguish the flames, yet none dared to venture
+          statUsed: 0
+          output: Our men managed to extinguish the flames, yet none dared to venture
             into the burning structure until it was far too late. The poor souls
             trapped within are now with the Beholder. Even so, the Overseer offered
             a reward for the service rendered.
-
-            [Gained 10 Wealth]'
         - weight: 25
           module:
           - rid: 107151343762276432
           - rid: 107151343762276433
-          output: 'What a tragedy! Our brave followers entered the inferno without
+          statUsed: 0
+          output: What a tragedy! Our brave followers entered the inferno without
             fear in their hearts to save the trapped men. But as time passed, it
             became clear that no one was coming out. May the Beholder gently receive
             our valiant martyrs.
-
-            [Gained 10 Zeal Lost 10 Bliss]'
     - rid: 107151343762276430
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
@@ -86,3 +83,4 @@ MonoBehaviour:
       data:
         resource: 3
         required: 20
+        consumeResource: 1

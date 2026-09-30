@@ -39,8 +39,7 @@ MonoBehaviour:
           - rid: 2174037052531671128
           - rid: 2174037052531671247
           statUsed: 0
-          output: 'The cleric successfully convinces the guards to release the goods.
-            [25 Wealth]'
+          output: The cleric successfully convinces the guards to release the goods.
         - weight: 25
           module:
           - rid: 2174037052531671129
@@ -52,15 +51,18 @@ MonoBehaviour:
         resource: 0
         minAmount: 25
         maxAmount: 25
+        refund: 0
     - rid: 2174037052531671129
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: 10
         maxAmount: 10
+        refund: 1
     - rid: 2174037052531671247
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: 10
         maxAmount: 10
+        refund: 1

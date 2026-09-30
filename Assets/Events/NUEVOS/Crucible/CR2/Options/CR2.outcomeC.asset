@@ -18,67 +18,72 @@ MonoBehaviour:
   description: 'COST: 50 Flock'
   icon: {fileID: 0}
   modules:
-  - rid: 2174037052531671148
+  - rid: 2174037531835236782
   - rid: 2174037052531671149
   endsQuestline: 1
   followUpSeeds: []
   references:
     version: 2
     RefIds:
-    - rid: 2174037052531671148
-      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
-      data:
-        resource: 3
-        required: 50
-        consumeResource: 1
     - rid: 2174037052531671149
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
         modules:
         - weight: 15
           module:
-          - rid: 2174037052531671150
-          - rid: 2174037052531671256
-          - rid: 2174037052531671257
+          - rid: 2174037531835236783
+          - rid: 2174037531835236784
+          - rid: 2174037531835236785
           statUsed: 0
-          output: 'The people stand with us! The guilds are forced to capitulate
-            to the strikers'' demands, and the new leaders are more than willing
-            to assist our cause. [100 Materials & 1 Authority & 100 Flock]'
+          output: The people stand with us! The guilds are forced to capitulate to
+            the strikers' demands, and the new leaders are more than willing to assist
+            our cause.
         - weight: 85
           module:
-          - rid: 2174037052531671151
-          - rid: 2174037052531671259
+          - rid: 2174037531835236786
+          - rid: 2174037531835236787
           statUsed: 0
-          output: 'Curse it all, a rival sect suppressed the strikers. Not only did
+          output: Curse it all, a rival sect suppressed the strikers. Not only did
             we fail to win over the mob, but the guilds now hold a grudge against
-            us. [-1 Authority]'
-    - rid: 2174037052531671150
+            us.
+    - rid: 2174037531835236782
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        required: 50
+        consumeResource: 1
+    - rid: 2174037531835236783
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 5
         minAmount: 100
         maxAmount: 100
-    - rid: 2174037052531671151
-      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
-      data:
-        resource: 2
-        minAmount: -1
-        maxAmount: -1
-    - rid: 2174037052531671256
+        refund: 0
+    - rid: 2174037531835236784
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 2
         minAmount: 1
         maxAmount: 1
-    - rid: 2174037052531671257
+        refund: 0
+    - rid: 2174037531835236785
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: 100
         maxAmount: 100
-    - rid: 2174037052531671259
+        refund: 0
+    - rid: 2174037531835236786
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 2
+        minAmount: -1
+        maxAmount: -1
+        refund: 0
+    - rid: 2174037531835236787
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: 20
         maxAmount: 20
+        refund: 1

@@ -31,6 +31,7 @@ MonoBehaviour:
       data:
         resource: 0
         required: 50
+        consumeResource: 1
     - rid: 1516066228257685663
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
@@ -39,29 +40,20 @@ MonoBehaviour:
           module:
           - rid: 1516066228257685664
           statUsed: 3
-          output: 'It is said that one must venture to win. Today was one of those
-            fortunate days, for we have secured a bounty of wealth. [Gained 150 Wealth]'
+          output: It is said that one must venture to win. Today was one of those
+            fortunate days, for we have secured a bounty of wealth.
         - weight: 50
           module:
           - rid: 1516066228257685666
           statUsed: 0
-          output: 'Perhaps speculating upon the markets is not our calling. We gained
+          output: Perhaps speculating upon the markets is not our calling. We gained
             not a single copper, yet we lost nothing either. What a relief!
-
-            [Gained
-            100 Wealth]
-
-'
         - weight: 20
           module:
           - rid: 1516066228257685667
           statUsed: 0
-          output: 'What a disgrace! So much wealth committed, only for us to lose
+          output: What a disgrace! So much wealth committed, only for us to lose
             the greater part of it!
-
-            [Gained 35 Wealth]
-
-'
     - rid: 1516066228257685664
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

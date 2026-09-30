@@ -32,6 +32,7 @@ MonoBehaviour:
       data:
         resource: 0
         required: 200
+        consumeResource: 1
     - rid: 1516066228257685669
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
@@ -40,25 +41,16 @@ MonoBehaviour:
           module:
           - rid: 1516066228257685670
           statUsed: 3
-          output: 'Stake high and win high! If this is not a glorious testament to
-            the Beholder''s favor, then naught is!
-
-            [Gained 375 Wealth]
-
-'
+          output: Stake high and win high! If this is not a glorious testament to
+            the Beholder's favor, then naught is!
         - weight: 40
           module:
           - rid: 1516066228257685671
           statUsed: 0
-          output: 'Perhaps market speculation is not our trade. In the end, despite
+          output: Perhaps market speculation is not our trade. In the end, despite
             pouring so much coin into the venture, we merely broke even. At least
             a crisis was averted; the mere thought of what would have become of us
-            had we lost this sum is enough to steal one''s sleep.
-
-            [Gained
-            250 Wealth]
-
-'
+            had we lost this sum is enough to steal one's sleep.
         - weight: 40
           module: []
           statUsed: 0

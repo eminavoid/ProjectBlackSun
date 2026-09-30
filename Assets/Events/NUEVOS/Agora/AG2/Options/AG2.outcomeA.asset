@@ -39,43 +39,47 @@ MonoBehaviour:
           - rid: 2174037052531671142
           - rid: 2174037052531671249
           statUsed: 0
-          output: 'The stall is quietly shut down. The common folk miss its wares.
-            [-5 Bliss]'
+          output: The stall is quietly shut down. The common folk miss its wares.
         - weight: 50
           module:
           - rid: 2174037052531671143
           - rid: 2174037052531671250
           - rid: 2174037052531671251
           statUsed: 0
-          output: 'Incompetence! Our men gave the poor vendor a public beating! We
-            look like mere brutes. [-10 Zeal & -10 Bliss]'
+          output: Incompetence! Our men gave the poor vendor a public beating! We
+            look like mere brutes.
     - rid: 2174037052531671142
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 4
         minAmount: -5
         maxAmount: -5
+        refund: 0
     - rid: 2174037052531671143
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: -10
         maxAmount: -10
+        refund: 0
     - rid: 2174037052531671249
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: 10
         maxAmount: 10
+        refund: 1
     - rid: 2174037052531671250
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 4
         minAmount: -10
         maxAmount: -10
+        refund: 0
     - rid: 2174037052531671251
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: 10
         maxAmount: 10
+        refund: 1

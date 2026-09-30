@@ -31,25 +31,18 @@ MonoBehaviour:
           module:
           - rid: 107151359355650084
           - rid: 107151359355650085
-          output: 'We quickly come to regret our hesitation, as a rival sect seizes
+          statUsed: 0
+          output: We quickly come to regret our hesitation, as a rival sect seizes
             the opportunity to strengthen its foothold in the city. That influence
             could have been ours!
-
-            [Lost 10 Bliss & 10 Zeal]
-
-'
         - weight: 50
           module:
           - rid: 107151359355650086
           - rid: 107151359355650087
-          output: 'Ha! Another sect fell for this crude trick and has become the
-            laughingstock of the city for squandering a fortune on such rubbish.
-            That is what befalls those who place their trust in outlanders!
-
-            [Gained
-            10 Bliss & 10 Zeal]
-
-'
+          statUsed: 0
+          output: Ha! Another sect fell for this crude trick and has become the laughingstock
+            of the city for squandering a fortune on such rubbish. That is what befalls
+            those who place their trust in outlanders!
     - rid: 107151359355650084
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

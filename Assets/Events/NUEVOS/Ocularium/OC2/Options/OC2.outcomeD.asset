@@ -38,8 +38,8 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671153
           statUsed: 0
-          output: 'Curse it all! The eclipse bore no divine essence, yet the masses
-            took it as such. We squandered a magnificent opportunity! [-25 Zeal]'
+          output: Curse it all! The eclipse bore no divine essence, yet the masses
+            took it as such. We squandered a magnificent opportunity!
     - rid: 2174037052531671153
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

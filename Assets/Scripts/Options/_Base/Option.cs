@@ -43,6 +43,14 @@ public class Option : ScriptableObject
         return true;
     }
 
+    public void GetFixedResourceChanges(List<ResourceDelta> changes)
+    {
+        for (int i = 0; i < modules.Count; i++)
+        {
+            modules[i]?.GetFixedResourceChanges(changes);
+        }
+    }
+
     public void ExecuteOption()
     {
         for (int i = 0; i < modules.Count; i++)

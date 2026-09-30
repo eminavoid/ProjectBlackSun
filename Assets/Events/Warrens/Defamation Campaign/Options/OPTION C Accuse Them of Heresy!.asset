@@ -29,6 +29,7 @@ MonoBehaviour:
       data:
         resource: 2
         required: 1
+        consumeResource: 1
     - rid: 107151359355650103
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
@@ -36,14 +37,11 @@ MonoBehaviour:
         - weight: 100
           module:
           - rid: 107151359355650104
-          output: 'There is nothing a missive to our friends in high places cannot
+          statUsed: 0
+          output: There is nothing a missive to our friends in high places cannot
             resolve. These men are clearly spouting blasphemy, and what is blasphemy
             if not a form of heresy? To the pyre with them! Our sect brings justice
             to the wicked!
-
-            [Gained 40 Zeal]
-
-'
     - rid: 107151359355650104
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

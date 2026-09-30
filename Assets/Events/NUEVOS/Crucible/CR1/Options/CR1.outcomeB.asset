@@ -17,36 +17,36 @@ MonoBehaviour:
   description: 'COST: 25 Wealth'
   icon: {fileID: 0}
   modules:
-  - rid: 2174037052531671130
+  - rid: 2174037531835236780
   - rid: 2174037052531671131
   endsQuestline: 1
   followUpSeeds: []
   references:
     version: 2
     RefIds:
-    - rid: 2174037052531671130
-      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
-      data:
-        resource: 0
-        required: 25
-        consumeResource: 1
     - rid: 2174037052531671131
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
         modules:
         - weight: 75
           module:
-          - rid: 2174037052531671132
+          - rid: 2174037531835236781
           statUsed: 0
-          output: 'The guilds agree to lower their rates. Quite the bargain! [50
-            Materials]'
+          output: The guilds agree to lower their rates. Quite the bargain!
         - weight: 25
           module: []
           statUsed: 0
-          output: The guilds refuse to budge an inch
-    - rid: 2174037052531671132
+          output: The guilds refuse to budge an inch.
+    - rid: 2174037531835236780
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        required: 25
+        consumeResource: 1
+    - rid: 2174037531835236781
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 5
         minAmount: 50
         maxAmount: 50
+        refund: 0

@@ -29,6 +29,7 @@ MonoBehaviour:
       data:
         resource: 0
         required: 40
+        consumeResource: 1
     - rid: 107151359355650049
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
@@ -36,24 +37,16 @@ MonoBehaviour:
         - weight: 80
           module:
           - rid: 107151359355650050
-          output: 'The mercenaries make short work of the scoundrels. In less than
+          statUsed: 0
+          output: The mercenaries make short work of the scoundrels. In less than
             a fortnight, order is restored to the bazaar, and the commoners rejoice.
-
-            [Gained
-            15 Bliss]
-
-'
         - weight: 20
           module:
           - rid: 107151359355650051
-          output: 'Curse them! The mercenaries are efficient enough, yet they seem
+          statUsed: 0
+          output: Curse them! The mercenaries are efficient enough, yet they seem
             unable or unwilling to deliver a killing blow to the gangs. It appears
             we shall be forced to keep them on our coin for the foreseeable future.
-
-            [Gained
-            5 Bliss & Bane]
-
-'
     - rid: 107151359355650050
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

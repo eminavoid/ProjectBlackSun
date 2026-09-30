@@ -18,46 +18,40 @@ MonoBehaviour:
   description: 'COST: 25 Wealth'
   icon: {fileID: 0}
   modules:
-  - rid: 2174037052531671140
+  - rid: 2174037531835236788
   - rid: 2174037052531671141
   endsQuestline: 1
   followUpSeeds: []
   references:
     version: 2
     RefIds:
-    - rid: 2174037052531671140
-      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
-      data:
-        resource: 0
-        required: 25
-        consumeResource: 1
     - rid: 2174037052531671141
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
         modules:
         - weight: 50
           module:
-          - rid: 2174037052531671142
+          - rid: 2174037531835236789
           statUsed: 0
-          output: 'The eclipse bore no divine essence, yet the masses took it as
-            such. We enjoyed a splendid evening celebrating the Beholder, the true
-            divine entity. [50 Zeal]'
+          output: The eclipse bore no divine essence, yet the masses took it as such.
+            We enjoyed a splendid evening celebrating the Beholder, the true divine
+            entity.
         - weight: 50
-          module:
-          - rid: 2174037052531671143
+          module: []
           statUsed: 0
           output: The spectacle proved far less grand than the crowd anticipated...
             and certainly void of divinity. At least we wasted few resources on the
             farce.
-    - rid: 2174037052531671142
+    - rid: 2174037531835236788
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        required: 25
+        consumeResource: 1
+    - rid: 2174037531835236789
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: 50
         maxAmount: 50
-    - rid: 2174037052531671143
-      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
-      data:
-        resource: 0
-        minAmount: 0
-        maxAmount: 0
+        refund: 0

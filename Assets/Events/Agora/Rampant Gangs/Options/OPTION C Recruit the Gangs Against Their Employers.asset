@@ -29,6 +29,7 @@ MonoBehaviour:
       data:
         resource: 0
         required: 60
+        consumeResource: 1
     - rid: 107151359355650059
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
@@ -36,24 +37,18 @@ MonoBehaviour:
         - weight: 50
           module:
           - rid: 107151359355650060
-          output: 'It was in vain; the ruffians refuse to even lend us an ear. One
+          statUsed: 0
+          output: It was in vain; the ruffians refuse to even lend us an ear. One
             wonders how much they were paid to secure such unwavering loyalty. May
             the Beholder curse them!
-
-            [Gained Bane Lost 10 Bliss]
-
-'
         - weight: 50
           module:
           - rid: 107151359355650061
-          output: 'The scoundrels accept our offer with grins upon their faces. After
+          statUsed: 0
+          output: The scoundrels accept our offer with grins upon their faces. After
             all, we are paying them once more to perform the very same deeds they
             were already committing. A fine trade for them, but at least they are
             no longer our burden.
-
-            [Gained 10 Bliss]
-
-'
     - rid: 107151359355650060
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

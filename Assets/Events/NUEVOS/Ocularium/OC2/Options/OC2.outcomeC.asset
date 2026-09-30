@@ -33,18 +33,17 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671150
           statUsed: 0
-          output: 'The spectacle proved far less grand than the crowd anticipated...
-            and certainly void of divinity. We won the people''s respect by standing
-            resolute while rival sects lost their minds over a phantom omen. [50
-            Zeal]'
+          output: The spectacle proved far less grand than the crowd anticipated...
+            and certainly void of divinity. We won the people's respect by standing
+            resolute while rival sects lost their minds over a phantom omen.
         - weight: 50
           module:
           - rid: 2174037052531671151
           - rid: 2174037052531671264
           statUsed: 0
-          output: 'Curse it all! The eclipse bore no divine essence, yet the masses
+          output: Curse it all! The eclipse bore no divine essence, yet the masses
             took it as such. Our stance alienated the common folk, though the enlightened
-            revere our integrity. [-25 Zeal / +10 Flock]'
+            revere our integrity.
     - rid: 2174037052531671150
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

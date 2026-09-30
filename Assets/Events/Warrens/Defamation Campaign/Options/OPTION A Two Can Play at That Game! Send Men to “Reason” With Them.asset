@@ -30,6 +30,7 @@ MonoBehaviour:
       data:
         resource: 3
         required: 20
+        consumeResource: 1
     - rid: 107151359355650089
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
@@ -38,22 +39,19 @@ MonoBehaviour:
           module:
           - rid: 107151359355650090
           - rid: 107151359355650091
-          output: 'We dispatched our faithful to demonstrate the error of their ways...
+          statUsed: 0
+          output: We dispatched our faithful to demonstrate the error of their ways...
             with their fists! Clearly, we are the superior sect, for our men gave
             them a thorough thrashing. They shall think twice before crossing us
             again.
-
-            [Gained 20 Zeal & 20 Flock]
-
-'
         - weight: 50
           module:
           - rid: 107151359355650092
           - rid: 107151359355650093
+          statUsed: 0
           output: "Ill tidings! The rival speakers proved to be hardier than we anticipated.
             They delivered a terrible beating to our men\u2014not all of whom survived.
-            We have been exposed as a weak fold in the eyes of the public!\r\n[Gained
-            10 Flock Lost 30 Zeal]\r\n"
+            We have been exposed as a weak fold in the eyes of the public!"
     - rid: 107151359355650090
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

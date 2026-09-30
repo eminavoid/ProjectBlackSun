@@ -29,6 +29,7 @@ MonoBehaviour:
       data:
         resource: 2
         required: 1
+        consumeResource: 1
     - rid: 5841915870972215307
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
@@ -37,13 +38,8 @@ MonoBehaviour:
           module:
           - rid: 5841915870972215309
           statUsed: 0
-          output: 'May the Beholder bless our patrons. Their generous contribution
+          output: May the Beholder bless our patrons. Their generous contribution
             will ensure we can continue preaching the truth in these dark times!
-
-            [Gained
-            60 Wealth]
-
-'
     - rid: 5841915870972215309
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

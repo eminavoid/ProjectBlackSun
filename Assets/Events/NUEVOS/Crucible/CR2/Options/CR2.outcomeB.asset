@@ -38,29 +38,31 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671146
           statUsed: 0
-          output: 'Our cleric successfully brokers a compromise between both factions.
-            [50 Zeal]'
+          output: Our cleric successfully brokers a compromise between both factions.
         - weight: 50
           module:
           - rid: 2174037052531671147
           - rid: 2174037052531671255
           statUsed: 0
-          output: 'The strikers pay no heed to our cleric. Curse it all! [-10 Zeal]'
+          output: The strikers pay no heed to our cleric. Curse it all!
     - rid: 2174037052531671146
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: 50
         maxAmount: 50
+        refund: 0
     - rid: 2174037052531671147
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: -10
         maxAmount: -10
+        refund: 0
     - rid: 2174037052531671255
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: 10
         maxAmount: 10
+        refund: 1

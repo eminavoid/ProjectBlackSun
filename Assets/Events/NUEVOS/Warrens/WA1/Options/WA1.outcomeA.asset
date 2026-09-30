@@ -31,35 +31,37 @@ MonoBehaviour:
         modules:
         - weight: 30
           module:
-          - rid: 2174037052531671128
-          - rid: 2174037052531671286
+          - rid: 2174037531835236795
+          - rid: 2174037531835236796
           statUsed: 0
-          output: 'We are hailed as the saviors of the hour! Praised be the Beholder
-            for placing us upon this earth! [25 Flock & 25 Zeal]'
+          output: We are hailed as the saviors of the hour! Praised be the Beholder
+            for placing us upon this earth!
         - weight: 70
           module:
-          - rid: 2174037052531671129
+          - rid: 2174037531835236797
           statUsed: 0
-          output: ' Our clerics catch the contagion and succumb to the affliction.
-            [-25 Flock]'
-    - rid: 2174037052531671128
+          output: Our clerics catch the contagion and succumb to the affliction.
+    - rid: 2174037052531671285
+      type: {class: DoNothing, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 2174037531835236795
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: 25
         maxAmount: 25
-    - rid: 2174037052531671129
-      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
-      data:
-        resource: 3
-        minAmount: -25
-        maxAmount: -25
-    - rid: 2174037052531671285
-      type: {class: DoNothing, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 2174037052531671286
+        refund: 0
+    - rid: 2174037531835236796
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: 25
         maxAmount: 25
+        refund: 0
+    - rid: 2174037531835236797
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: -25
+        maxAmount: -25
+        refund: 0

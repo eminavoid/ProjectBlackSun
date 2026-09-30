@@ -31,6 +31,7 @@ MonoBehaviour:
       data:
         resource: 3
         required: 20
+        consumeResource: 1
     - rid: 1516066228257685514
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
@@ -41,39 +42,25 @@ MonoBehaviour:
           - rid: 1516066228257685516
           - rid: 1516066228257685517
           statUsed: 0
-          output: 'The statue was eventually defaced, yet we believe it fulfilled
+          output: The statue was eventually defaced, yet we believe it fulfilled
             its sacred purpose. The masses were able to admire it, and our men feel
             a deep sense of pride for having stood in its defense.
-
-            [Gained
-            40 Flock, 40 Zeal & 10 Bliss]
-
-'
         - weight: 30
           module:
           - rid: 1516066228257685518
           - rid: 1516066228257685519
           statUsed: 0
-          output: 'The monument was swiftly reduced to rubble by our rivals. At the
+          output: The monument was swiftly reduced to rubble by our rivals. At the
             very least, it was displayed before the masses, fleeting though that
             moment was.
-
-            [Gained 20 Flock & 20 Zeal]
-
-'
         - weight: 20
           module:
           - rid: 1516066228257685520
           - rid: 1516066228257685521
           statUsed: 0
-          output: 'To our surprise, the rival sects left the statue unmolested. In
+          output: To our surprise, the rival sects left the statue unmolested. In
             time, it transformed into a prominent landmark of the plaza, bringing
             us prestige with each passing day.
-
-            [Gained 40 Flock & 20
-            Zeal]
-
-'
     - rid: 1516066228257685515
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

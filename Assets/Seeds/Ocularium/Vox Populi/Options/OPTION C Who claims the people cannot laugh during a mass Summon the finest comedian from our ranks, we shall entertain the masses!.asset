@@ -34,39 +34,25 @@ MonoBehaviour:
           - rid: 1516066228257685604
           - rid: 1516066228257685605
           statUsed: 0
-          output: 'The crowd roars with laughter at our man''s performance. However,
+          output: The crowd roars with laughter at our man's performance. However,
             our sacred teachings are entirely lost in the absurdist sea of his creation.
             At the very least, we have ensured the people will desire to return.
-
-            [Gained
-            20 Flock & 30 Zeal]
-
-'
         - weight: 30
           module:
           - rid: 1516066228257685606
           statUsed: 0
-          output: 'A difficult audience... the jests do not seem to land. By the
-            conclusion of the service, half the temple stands empty, and our man
-            is red as a turnip from sheer embarrassment.
-
-            [Lost 10 Zeal]
-
-'
+          output: A difficult audience... the jests do not seem to land. By the conclusion
+            of the service, half the temple stands empty, and our man is red as a
+            turnip from sheer embarrassment.
         - weight: 20
           module:
           - rid: 1516066228257685607
           - rid: 1516066228257685608
           statUsed: 1
-          output: 'What an artisan! Our man is a natural comedian. Not only that,
+          output: What an artisan! Our man is a natural comedian. Not only that,
             but while it would be simple to merely make the masses laugh and leave
             it at that, he masterfully weaves reflections and holy lessons between
             every jest, causing the populace to pay closer attention than ever before!
-
-            [Gained
-            30 Flock & 60 Zeal]
-
-'
     - rid: 1516066228257685604
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

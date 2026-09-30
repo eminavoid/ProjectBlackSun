@@ -29,6 +29,7 @@ MonoBehaviour:
       data:
         resource: 0
         required: 40
+        consumeResource: 1
     - rid: 107151359355650075
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
@@ -36,26 +37,20 @@ MonoBehaviour:
         - weight: 50
           module:
           - rid: 107151359355650076
-          output: 'The merchant may have been an outlander, but it is impossible
-            to deny that his ornaments are truly breathtaking. Their modest price
-            allowed us to adorn many of our temples, granting us newfound legitimacy
-            in the eyes of the populace!
-
-            [Gained 30 Zeal]
-
-'
+          statUsed: 0
+          output: The merchant may have been an outlander, but it is impossible to
+            deny that his ornaments are truly breathtaking. Their modest price allowed
+            us to adorn many of our temples, granting us newfound legitimacy in the
+            eyes of the populace!
         - weight: 50
           module:
           - rid: 107151359355650077
-          output: 'What a disgrace! The decorations seemed a bargain, but we should
+          statUsed: 0
+          output: What a disgrace! The decorations seemed a bargain, but we should
             have known better... they were of wretched quality! That man has swindled
             us, and reports of broken finery are already pouring in. Worse still,
             accidents have been caused by their collapse. This is the price of trusting
             outlanders!
-
-            [Lost 30 Zeal]
-
-'
     - rid: 107151359355650076
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

@@ -17,31 +17,33 @@ MonoBehaviour:
   description: 'COST: 1 Authority'
   icon: {fileID: 0}
   modules:
-  - rid: 2174037052531671134
+  - rid: 2174037531835236775
   - rid: 2174037052531671135
   endsQuestline: 1
   followUpSeeds: []
   references:
     version: 2
     RefIds:
-    - rid: 2174037052531671134
-      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
-      data:
-        resource: 2
-        required: 1
-        consumeResource: 1
     - rid: 2174037052531671135
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
         modules:
         - weight: 50
           module:
-          - rid: 2174037052531671137
+          - rid: 2174037531835236776
           statUsed: 0
-          output: 'The guards have no choice but to yield to our demands. [100 Wealth]'
-    - rid: 2174037052531671137
+          output: The guards have no choice but to yield to our demands. The Merchant
+            is ecstatic.
+    - rid: 2174037531835236775
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 2
+        required: 1
+        consumeResource: 1
+    - rid: 2174037531835236776
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 0
         minAmount: 100
         maxAmount: 100
+        refund: 0

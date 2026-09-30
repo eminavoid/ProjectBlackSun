@@ -32,6 +32,7 @@ MonoBehaviour:
       data:
         resource: 2
         required: 1
+        consumeResource: 1
     - rid: 1516066228257685505
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
@@ -46,12 +47,10 @@ MonoBehaviour:
           module:
           - rid: 1516066228257685506
           statUsed: 1
-          output: 'At first, the Imperial Family was reluctant to show favor to any
+          output: At first, the Imperial Family was reluctant to show favor to any
             single sect, yet upon witnessing the grandeur of our sculpture, they
             chose to make an exception. They practically declared that we were doing
             them a service rather than the reverse!
-
-            [Gained 2 Authority]'
     - rid: 1516066228257685506
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

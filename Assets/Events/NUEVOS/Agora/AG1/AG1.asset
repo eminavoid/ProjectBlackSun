@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
   m_Name: AG1
   m_EditorClassIdentifier: Assembly-CSharp::Seed
-  title: "A MOST CURIOUS INVESTMENT\t"
+  title: A MOST CURIOUS INVESTMENT
   description: "My Pontiff, an exotic merchant from the East has arrived at our gates
     with a most curious sob story: he claims to have brought a vast shipment of rare
     wares, but alas, when he attempted to sell them in the Agora, the guards confiscated

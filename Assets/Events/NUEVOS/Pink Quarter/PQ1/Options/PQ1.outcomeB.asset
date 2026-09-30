@@ -18,44 +18,39 @@ MonoBehaviour:
   description: 'COST: No cost'
   icon: {fileID: 0}
   modules:
-  - rid: 2174037052531671130
   - rid: 2174037052531671131
   endsQuestline: 1
   followUpSeeds: []
   references:
     version: 2
     RefIds:
-    - rid: 2174037052531671130
-      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
-      data:
-        resource: 0
-        required: 0
-        consumeResource: 1
     - rid: 2174037052531671131
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
         modules:
         - weight: 50
           module:
-          - rid: 2174037052531671132
+          - rid: 2174037531835236793
           statUsed: 0
           output: 'The crowds applaud our forthrightness. Better still: they lynch
-            the heretic on the spot. [25 Zeal]'
+            the heretic on the spot.'
         - weight: 50
           module:
-          - rid: 2174037052531671133
+          - rid: 2174037531835236794
           statUsed: 0
-          output: 'The public proved far less forgiving than we anticipated. Our
-            standing has suffered a severe blow. [-50 Zeal]'
-    - rid: 2174037052531671132
+          output: The public proved far less forgiving than we anticipated. Our standing
+            has suffered a severe blow.
+    - rid: 2174037531835236793
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: 25
         maxAmount: 25
-    - rid: 2174037052531671133
+        refund: 0
+    - rid: 2174037531835236794
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: -50
         maxAmount: -50
+        refund: 0

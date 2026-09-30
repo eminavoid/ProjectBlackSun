@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 [Serializable]
 public class RequireResource : OptionModule
@@ -21,5 +22,10 @@ public class RequireResource : OptionModule
         {
             ResourceManager.Resources.AddResource(resource, -required);
         }
+    }
+
+    public override void GetFixedResourceChanges(List<ResourceDelta> changes)
+    {
+        if (consumeResource && required > 0) ResourceDelta.Add(changes, resource, -required);
     }
 }

@@ -17,44 +17,46 @@ MonoBehaviour:
   description: 'COST: 25 Wealth'
   icon: {fileID: 0}
   modules:
-  - rid: 2174037052531671144
+  - rid: 2174037531835236777
   - rid: 2174037052531671145
   endsQuestline: 1
   followUpSeeds: []
   references:
     version: 2
     RefIds:
-    - rid: 2174037052531671144
-      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
-      data:
-        resource: 0
-        required: 25
-        consumeResource: 1
     - rid: 2174037052531671145
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
         modules:
         - weight: 50
           module:
-          - rid: 2174037052531671146
+          - rid: 2174037531835236778
           statUsed: 0
-          output: 'Incompetence! Our men gave the poor vendor a public beating! We
-            look like mere brutes. [50 Wealth]'
+          output: A roaring success! The people flock to our stall and the wares
+            quickly sell out.
         - weight: 50
           module:
-          - rid: 2174037052531671147
+          - rid: 2174037531835236779
           statUsed: 0
-          output: 'Unfortunately, the merchant held too strong a foothold; we ended
-            up being branded as the knockoffs. [-10 Zeal]'
-    - rid: 2174037052531671146
+          output: Unfortunately, the merchant held too strong a foothold; we ended
+            up being branded as the knockoffs.
+    - rid: 2174037531835236777
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        required: 25
+        consumeResource: 1
+    - rid: 2174037531835236778
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 0
         minAmount: 50
         maxAmount: 50
-    - rid: 2174037052531671147
+        refund: 0
+    - rid: 2174037531835236779
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: -10
         maxAmount: -10
+        refund: 0

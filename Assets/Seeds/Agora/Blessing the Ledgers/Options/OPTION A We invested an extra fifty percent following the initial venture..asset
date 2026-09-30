@@ -29,6 +29,7 @@ MonoBehaviour:
       data:
         resource: 0
         required: 25
+        consumeResource: 1
     - rid: 1516066228257685658
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
@@ -37,30 +38,20 @@ MonoBehaviour:
           module:
           - rid: 1516066228257685659
           statUsed: 3
-          output: 'We were cautious, but not cowardly. Our investment has paid handsome
+          output: We were cautious, but not cowardly. Our investment has paid handsome
             dividends.
-
-            [Gained 100 Wealth]'
         - weight: 50
           module:
           - rid: 1516066228257685660
           statUsed: 0
-          output: 'We ended up breaking even. A pity, but at the very least we lost
+          output: We ended up breaking even. A pity, but at the very least we lost
             no coin.
-
-            [Gained 75 Wealth]
-
-'
         - weight: 10
           module:
           - rid: 1516066228257685661
           statUsed: 0
-          output: 'Ill fortune, we have lost coin. Though we can take comfort that
+          output: Ill fortune, we have lost coin. Though we can take comfort that
             we did not risk a greater sum.
-
-            [Gained 25 Wealth]
-
-'
     - rid: 1516066228257685659
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:

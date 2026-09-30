@@ -18,44 +18,46 @@ MonoBehaviour:
   description: 'COST: 10 Secrets'
   icon: {fileID: 0}
   modules:
-  - rid: 2174037052531671126
+  - rid: 2174037531835236790
   - rid: 2174037052531671127
   endsQuestline: 1
   followUpSeeds: []
   references:
     version: 2
     RefIds:
-    - rid: 2174037052531671126
-      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
-      data:
-        resource: 6
-        required: 10
-        consumeResource: 1
     - rid: 2174037052531671127
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
         modules:
         - weight: 75
           module:
-          - rid: 2174037052531671128
+          - rid: 2174037531835236791
           statUsed: 0
-          output: 'We deal with the cleric in total secrecy. No one shall ever uncover
-            what transpired here. [25 Secrets]'
+          output: We deal with the cleric in total secrecy. No one shall ever uncover
+            what transpired here.
         - weight: 25
           module:
-          - rid: 2174037052531671129
+          - rid: 2174037531835236792
           statUsed: 0
-          output: ' The cleric slips right through our fingers! Now we find ourselves
-            at his mercy! [-25 Secrets]'
-    - rid: 2174037052531671128
+          output: The cleric slips right through our fingers! Now we find ourselves
+            at his mercy!
+    - rid: 2174037531835236790
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 6
+        required: 10
+        consumeResource: 1
+    - rid: 2174037531835236791
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 6
         minAmount: 25
         maxAmount: 25
-    - rid: 2174037052531671129
+        refund: 0
+    - rid: 2174037531835236792
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 6
         minAmount: -25
         maxAmount: -25
+        refund: 0
