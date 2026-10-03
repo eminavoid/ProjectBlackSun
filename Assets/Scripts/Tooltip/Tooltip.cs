@@ -1,133 +1,162 @@
-using System.Threading;
 using TMPro;
 using UnityEngine;
 
-public class Tooltip : Singleton<Tooltip>
+namespace Zeke.Tooltips
 {
-    [SerializeField] private GameObject tooltipObject;
-    [SerializeField] private TMP_Text tooltipText;
-    [SerializeField] private RectTransform tooltipRect;
-
-    [Space]
-
-    [SerializeField] private float offsetX = 0;
-    [SerializeField] private float offsetY = -15f;
-
-    [SerializeField] private float maxWidth = 400f;
-    [SerializeField] private float maxHeight = 300f;
-    [SerializeField] private Vector2 padding = new Vector2(20f, 10f);
-
-    [Space]
-
-    [SerializeField] private float showDelay = 1f;
-
-    private State state = State.Hide;
-    private float timer = 0f;
-
-    private Canvas canvas;
-
-    private enum State
+    public class Tooltip : Singleton<Tooltip>
     {
-        Show,
-        Hide,
-    }
+        [Header("Dependency")]
+        [SerializeField] private GameObject tooltipObject;
+        [SerializeField] private RectTransform tooltipRect;
+        [SerializeField] private TMP_Text tooltipText;
 
-    public static void SetText(string text)
-    {
-        Instance.tooltipText.text = text;
+        [Header("Tooltip")]
+        [SerializeField] private Vector2 offset = new Vector2(0f, -15f);
 
-        // Force TMP to update its measurements.
-        Instance.tooltipText.ForceMeshUpdate();
+        [SerializeField] private OffsetType offsetTypeX = OffsetType.Border;
+        [SerializeField] private OffsetType offsetTypeY = OffsetType.Border;
 
-        Vector2 textSize = Instance.tooltipText.GetPreferredValues(text, Instance.maxWidth, Instance.maxHeight);
+        [Space]
 
-        // Add padding for the tooltip background/box.
-        Vector2 finalSize = textSize + Instance.padding;
+        [SerializeField] private Vector2 maxSize = new Vector2(400f, 400f);
 
-        // Cap the size.
-        finalSize.x = Mathf.Min(finalSize.x, Instance.maxWidth);
-        finalSize.y = Mathf.Min(finalSize.y, Instance.maxHeight);
+        [Space]
 
-        Instance.tooltipRect.sizeDelta = finalSize;
-    }
+        [SerializeField] private float showDelay = 1f;
 
-    private void Update()
-    {
-        UpdateState();
+        private State state = State.Hide;
+        private float timer = 0f;
 
-        if (!tooltipObject.activeSelf)
-            return;
+        private Canvas canvas;
 
-        float scale = canvas.scaleFactor;
-
-        UpdatePosition(scale);
-    }
-
-    private void UpdatePosition(float scale)
-    {
-        Vector2 offset = new Vector2(
-            offsetX * scale,
-            offsetY * scale
-        );
-
-        tooltipRect.position = (Vector2)Input.mousePosition + offset;
-
-        Canvas.ForceUpdateCanvases();
-
-        Vector3[] corners = new Vector3[4];
-        tooltipRect.GetWorldCorners(corners);
-
-        Vector3 position = tooltipRect.position;
-
-        // Left
-        if (corners[0].x < 0)
-            position.x += -corners[0].x;
-
-        // Right
-        if (corners[2].x > Screen.width)
-            position.x -= corners[2].x - Screen.width;
-
-        // Bottom
-        if (corners[0].y < 0)
-            position.y += -corners[0].y;
-
-        // Top
-        if (corners[2].y > Screen.height)
-            position.y -= corners[2].y - Screen.height;
-
-        tooltipRect.position = position;
-    }
-
-    private void UpdateState()
-    {
-        if (state == State.Show && !tooltipObject.activeSelf)
+        private enum State
         {
-            timer += Time.deltaTime;
+            Show,
+            Hide,
+        }
 
-            if (timer > showDelay)
+        private enum OffsetType
+        {
+            Center,
+            Border
+        }
+
+        public static void SetText(string text)
+        {
+            Instance.tooltipText.text = text;
+            Vector2 sizeDelta = Vector2.zero;
+
+            Vector2 textSize = Instance.tooltipText.GetPreferredValues(text, Instance.maxSize.x, Instance.maxSize.y);
+
+            sizeDelta.x = Mathf.Clamp(textSize.x, 0f, Instance.maxSize.x);
+            sizeDelta.y = Mathf.Clamp(textSize.y, 0f, Instance.maxSize.y);
+
+            Instance.tooltipRect.sizeDelta = sizeDelta;
+        }
+
+        public static void Show(string text)
+        {
+            SetText(text);
+            Instance.state = State.Show;
+        }
+
+        public static void Hide()
+        {
+            Instance.timer = 0f;
+            Instance.state = State.Hide;
+            Instance.tooltipObject.SetActive(false);
+        }
+
+        private void Awake()
+        {
+            canvas = tooltipRect.GetComponentInParent<Canvas>();
+            Hide();
+        }
+
+        private void Update()
+        {
+            UpdateState();
+
+            if (tooltipObject.activeSelf)
             {
-                Instance.tooltipObject.SetActive(true);
+                UpdatePosition(canvas.scaleFactor);
             }
         }
-    }
 
-    protected override void OnInitialization()
-    {
-        canvas = tooltipRect.GetComponentInParent<Canvas>();
+        private void UpdatePosition(float scale)
+        {
+            Vector2 mousePosition = Input.mousePosition;
+            tooltipRect.position = mousePosition + GetOffset(scale);
 
-        Hide();
-    }
+            ClampToScreen(tooltipRect);
+        }
 
-    public static void Show(string text)
-    {
-        SetText(text);
-        Instance.state = State.Show;
-    }
+        private void ClampToScreen(RectTransform rectTransform)
+        {
+            Vector2 size = Vector2.Scale(rectTransform.rect.size, rectTransform.lossyScale);
 
-    public static void Hide()
-    {
-        Instance.timer = 0f;
-        Instance.state = State.Hide;
-        Instance.tooltipObject.SetActive(false);
+            Vector3 position = rectTransform.position;
+            Vector2 pivot = rectTransform.pivot;
+
+            position.x = Mathf.Clamp(position.x, size.x * pivot.x, Screen.width - size.x * (1f - pivot.x));
+            position.y = Mathf.Clamp(position.y, size.y * pivot.y, Screen.height - size.y * (1f - pivot.y));
+
+            rectTransform.position = position;
+        }
+
+        private Vector2 GetOffset(float scale)
+        {
+            Vector2 size = tooltipRect.rect.size * scale;
+            Vector2 pivot = tooltipRect.pivot;
+
+            Vector2 newOffset = new Vector2(offset.x, offset.y) * scale;
+
+            if (offsetTypeX == OffsetType.Border)
+            {
+                if (offset.x > 0f)
+                {
+                    newOffset.x += size.x * pivot.x;
+                }
+                else if (offset.x < 0f)
+                {
+                    newOffset.x -= size.x * (1f - pivot.x);
+                }
+            }
+            else if (offsetTypeX == OffsetType.Center)
+            {
+                newOffset.x += size.x * (pivot.x - 0.5f);
+            }
+
+            if (offsetTypeY == OffsetType.Border)
+            {
+                if (offset.y > 0f)
+                {
+                    newOffset.y += size.y * pivot.y;
+                }
+                else if (offset.y < 0f)
+                {
+                    newOffset.y -= size.y * (1f - pivot.y);
+                }
+            }
+            else if (offsetTypeY == OffsetType.Center)
+            {
+                newOffset.y += size.y * (pivot.y - 0.5f);
+            }
+
+            return newOffset;
+        }
+
+        private void UpdateState()
+        {
+            if (state == State.Show && !tooltipObject.activeSelf)
+            {
+                timer += Time.deltaTime;
+
+                if (timer > showDelay)
+                {
+                    tooltipObject.SetActive(true);
+                }
+            }
+        }
     }
 }

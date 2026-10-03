@@ -1,18 +1,21 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+namespace Zeke.Tooltips
 {
-    [TextArea]
-    [SerializeField] private string tooltipText;
-
-    public void OnPointerEnter(PointerEventData eventData)
+    public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        Tooltip.Show(tooltipText);
-    }
+        [TextArea]
+        [SerializeField] private string tooltipText;
 
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        Tooltip.Hide();
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            Tooltip.Show(tooltipText);
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            Tooltip.Hide();
+        }
     }
 }
