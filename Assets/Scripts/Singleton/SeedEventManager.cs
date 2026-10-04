@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Zeke.UI;
 using TMPro;
+using System;
 
 public class SeedEventManager : Singleton<SeedEventManager>
 {
@@ -30,9 +31,12 @@ public class SeedEventManager : Singleton<SeedEventManager>
 
     private readonly Queue<Seed> seedEvents = new Queue<Seed>();
 
+    public static Action<Seed> onSeedQueued;
+
     public static void EnqueueSeedEvent(Seed seed)
     {
         Instance.seedEvents.Enqueue(seed);
+        onSeedQueued?.Invoke(seed);
     }
 
     private void Start()
@@ -110,12 +114,12 @@ public class SeedEventManager : Singleton<SeedEventManager>
 
             int seedChance = Mathf.Clamp(resourceSeedPool.SeedChance, 0, 100);
 
-            if (Random.Range(0, 100) >= seedChance)
+            if (UnityEngine.Random.Range(0, 100) >= seedChance)
             {
                 continue;
             }
 
-            Seed seed = resourceSeedPool.SeedPool.EvilSeeds[Random.Range(0, resourceSeedPool.SeedPool.EvilSeeds.Count)];
+            Seed seed = resourceSeedPool.SeedPool.EvilSeeds[UnityEngine.Random.Range(0, resourceSeedPool.SeedPool.EvilSeeds.Count)];
 
             if (TryPlantSeed(seed))
             {
