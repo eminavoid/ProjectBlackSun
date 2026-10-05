@@ -29,7 +29,7 @@ public class SeedEventManager : Singleton<SeedEventManager>
     [SerializeField, HideInInspector] private SeedsPool wealthSeedPool;
     [SerializeField, HideInInspector] private int wealthSeedChance = 100;
 
-    private readonly HashSet<Seed> seedEvents = new HashSet<Seed>();
+    private readonly List<Seed> seedEvents = new List<Seed>();
 
     public static Action<Seed> onSeedStored;
     public static Action<Seed> onSeedRemoved;
@@ -63,6 +63,7 @@ public class SeedEventManager : Singleton<SeedEventManager>
     {
         AddLegacyWealthSeedPool();
         GameTime.OnTurnStarted += OnTurnStarted;
+        GameTime.OnTurnEndedLate += OnTurnEndedLate;
         SetOptionsWindowVisibility(false);
     }
 
@@ -104,7 +105,20 @@ public class SeedEventManager : Singleton<SeedEventManager>
 
     private void OnTurnStarted()
     {
+        Debug.Log($"Turn started: {seedEvents.Count}");
+
         TryPlantResourceSeeds();
+    }
+
+    private void OnTurnEndedLate()
+    {
+        Debug.Log($"Turn ended: {seedEvents.Count}");
+
+        for (int i = 0; i < seedEvents.Count; i++)
+        {
+            Seed seed = seedEvents[i];
+            seed.Options[seed.DefaultOption - 1].ExecuteOption();
+        }
     }
 
     private void TryPlantResourceSeeds()
@@ -211,10 +225,10 @@ public class SeedEventManager : Singleton<SeedEventManager>
         {
             OptionDisplay display = Instantiate(optionDisplayPrefab, layout.transform);
 
-            if (display.TryGetComponent(out UIWindow uiWIndow))
+            if (display.TryGetComponent(out UIWindow uiWindow))
             {
-                uiWIndow.TryGetElement<TextMeshProUGUI>("Title").text = seed.Options[i].Title;
-                uiWIndow.TryGetElement<TextMeshProUGUI>("Description").text = seed.Options[i].Description;
+                uiWindow.TryGetElement<TextMeshProUGUI>("Title").text = seed.Options[i].Title;
+                uiWindow.TryGetElement<TextMeshProUGUI>("Description").text = seed.Options[i].Description;
             }
 
             display.InitializeData(seed.Options[i]);

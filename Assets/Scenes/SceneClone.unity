@@ -11382,6 +11382,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnOptionsBounds
       objectReference: {fileID: 0}
+    - target: {fileID: 4314052648714244165, guid: f5db8a30acde8f841a466f15e62fa833, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6653606219760129811, guid: f5db8a30acde8f841a466f15e62fa833, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

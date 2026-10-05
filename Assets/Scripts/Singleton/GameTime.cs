@@ -15,6 +15,8 @@ public class GameTime : Singleton<GameTime>
     public static Action OnTurnEnded;
     public static Action OnTurnStarted;
 
+    public static Action OnTurnEndedLate;
+
     private static bool processingTurn = false;
 
     private void Update()
@@ -48,6 +50,7 @@ public class GameTime : Singleton<GameTime>
     private IEnumerator NextTurnCoroutine()
     {
         processingTurn = true;
+        OnTurnEndedLate?.Invoke();
         OnTurnEnding?.Invoke();
         OnTurnEnded?.Invoke();
         yield return new WaitForSeconds(turnStartDelay);

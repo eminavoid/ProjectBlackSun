@@ -29,6 +29,8 @@ public class Seed : ScriptableObject
     [SerializeField] private SeedEventType eventType;
     [SerializeField] private SeedDifficulty difficulty;
     [field: SerializeField] public List<Option> Options { get; private set; }
+    [field: Tooltip("Not index (1 == 0 index)")]
+    [field: SerializeField] public int DefaultOption { get; private set; } = 4;
     public int Ticks => ticks;
     public SeedEventType EventType => eventType;
     public SeedDifficulty Difficulty => difficulty;
