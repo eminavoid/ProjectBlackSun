@@ -29,14 +29,34 @@ public class SeedEventManager : Singleton<SeedEventManager>
     [SerializeField, HideInInspector] private SeedsPool wealthSeedPool;
     [SerializeField, HideInInspector] private int wealthSeedChance = 100;
 
-    private readonly Queue<Seed> seedEvents = new Queue<Seed>();
+    private readonly HashSet<Seed> seedEvents = new HashSet<Seed>();
 
-    public static Action<Seed> onSeedQueued;
+    public static Action<Seed> onSeedStored;
+    public static Action<Seed> onSeedRemoved;
 
-    public static void EnqueueSeedEvent(Seed seed)
+    public static void CreateSeedEventMenu(Seed seed)
     {
-        Instance.seedEvents.Enqueue(seed);
-        onSeedQueued?.Invoke(seed);
+        Instance.spawnOptionsWindow.gameObject.SetActive(true);
+        Instance.SetOptionsWindowVisibility(true);
+        Instance.CreateSeedOptionsInCanvas(seed);
+
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayEventPopup();
+        }
+    }
+
+    public static void StoreSeedEvent(Seed seed)
+    {
+        Instance.seedEvents.Add(seed);
+        onSeedStored?.Invoke(seed);
+    }
+
+    private static Seed RemoveSeed(Seed seed)
+    {
+        Instance.seedEvents.Remove(seed);
+        onSeedRemoved?.Invoke(seed);
+        return seed;
     }
 
     private void Start()
@@ -48,28 +68,10 @@ public class SeedEventManager : Singleton<SeedEventManager>
 
     public void OnOptionSelected(Option option)
     {
-        LayoutGroup layout = spawnOptionsWindow.TryGetElement<LayoutGroup>("Layout Group");
+        UnloadOptionsWindow();
+        RemoveSeed(option.Seed);
 
-        foreach (Transform children in layout.transform)
-        {
-            Destroy(children.gameObject);
-        }
-
-        // A result window is taking over: hide this event but keep its blur, the queue resumes once it closes.
-        if (openOutputWindows > 0)
-        {
-            ApplyOptionsWindowVisibility(false);
-            return;
-        }
-
-        if (seedEvents.Count > 0)
-        {
-            StartChoosingOptionsPhase();
-        }
-        else
-        {
-            SetOptionsWindowVisibility(false);
-        }
+        //SetOptionsWindowVisibility(false);
     }
 
     public static void CreateEventOutputWindow(string title, string description, IReadOnlyList<ResourceDelta> resourceChanges = null)
@@ -84,10 +86,24 @@ public class SeedEventManager : Singleton<SeedEventManager>
         Instance.StartCoroutine(Instance.ShowOutputWindowAfterBlur(windowInstance));
     }
 
+    public void UnloadOptionsWindow()
+    {
+        LayoutGroup layout = spawnOptionsWindow.TryGetElement<LayoutGroup>("Layout Group");
+
+        foreach (Transform children in layout.transform)
+        {
+            Destroy(children.gameObject);
+        }
+
+        if (openOutputWindows > 0)
+        {
+            ApplyOptionsWindowVisibility(false);
+            return;
+        }
+    }
+
     private void OnTurnStarted()
     {
-        StartChoosingOptionsPhase();
-
         TryPlantResourceSeeds();
     }
 
@@ -185,22 +201,6 @@ public class SeedEventManager : Singleton<SeedEventManager>
         return false;
     }
 
-    private void StartChoosingOptionsPhase()
-    {
-        if (seedEvents.Count <= 0)
-        {
-            return;
-        }
-
-        SetOptionsWindowVisibility(true);
-        CreateSeedOptionsInCanvas(seedEvents.Dequeue());
-
-        if (AudioManager.Instance != null)
-        {
-            AudioManager.Instance.PlayEventPopup();
-        }
-    }
-
     private void CreateSeedOptionsInCanvas(Seed seed)
     {
         LayoutGroup layout = spawnOptionsWindow.TryGetElement<LayoutGroup>("Layout Group");
@@ -281,14 +281,7 @@ public class SeedEventManager : Singleton<SeedEventManager>
         openOutputWindows--;
         if (openOutputWindows > 0) yield break;
 
-        if (seedEvents.Count > 0)
-        {
-            StartChoosingOptionsPhase();
-        }
-        else
-        {
-            SetOptionsWindowVisibility(false);
-        }
+        SetOptionsWindowVisibility(false);
     }
 
     // The resources bar sits at the back of the canvas; draw it right above the blurred window so it stays sharp.

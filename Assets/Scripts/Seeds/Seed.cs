@@ -66,7 +66,7 @@ public class Seed : ScriptableObject
         if (currentTicks >= ticks)
         {
             Debug.Log($"Seed '{Title}' completed in sector '{currentZone?.SectorName ?? "Unknown"}' after {ticks} turn(s).");
-            SeedEventManager.EnqueueSeedEvent(this);
+            SeedEventManager.StoreSeedEvent(this);
             currentZone.RemoveSeed(this);
         }
     }
