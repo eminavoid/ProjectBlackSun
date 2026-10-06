@@ -14,8 +14,10 @@ public class IntentArrowView : MonoBehaviour
 
     private static readonly List<Vector3> Vertices = new List<Vector3>();
     private static readonly List<Vector2> Uvs = new List<Vector2>();
+    private static readonly List<Vector2> Uv2s = new List<Vector2>();
     private static readonly List<Color> Colors = new List<Color>();
     private static readonly List<int> Triangles = new List<int>();
+    private static float markerKind;
 
     private MeshFilter meshFilter;
     private MeshRenderer meshRenderer;
@@ -41,6 +43,7 @@ public class IntentArrowView : MonoBehaviour
     public void BuildArc(Vector3 from, Vector3 to, Color color, ArrowStyle style)
     {
         BeginBuild(from);
+        markerKind = 0f;
 
         Vector3 localFrom = Vector3.zero;
         Vector3 localTo = to - from;
@@ -54,6 +57,7 @@ public class IntentArrowView : MonoBehaviour
     public void BuildDrop(Vector3 target, Color color, ArrowStyle style)
     {
         BeginBuild(target);
+        markerKind = 1f;
 
         Vector3 top = Vector3.up * style.DropHeight;
         AppendCrossedRibbon(top, Vector3.zero, color, style);
@@ -115,6 +119,7 @@ public class IntentArrowView : MonoBehaviour
 
         Vertices.Clear();
         Uvs.Clear();
+        Uv2s.Clear();
         Colors.Clear();
         Triangles.Clear();
     }
@@ -124,6 +129,7 @@ public class IntentArrowView : MonoBehaviour
         mesh.Clear();
         mesh.SetVertices(Vertices);
         mesh.SetUVs(0, Uvs);
+        mesh.SetUVs(1, Uv2s);
         mesh.SetColors(Colors);
         mesh.SetTriangles(Triangles, 0);
         mesh.RecalculateBounds();
@@ -252,8 +258,8 @@ public class IntentArrowView : MonoBehaviour
             float angle = t * Mathf.PI * 2f;
             Vector3 dir = new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle));
 
-            AddVertex(center + dir * inner, new Vector2(t, 0f), color);
-            AddVertex(center + dir * outer, new Vector2(t, 1f), color);
+            AddVertex(center + dir * inner, new Vector2(t, 0f), color, 1f);
+            AddVertex(center + dir * outer, new Vector2(t, 1f), color, 1f);
 
             if (i == 0) continue;
 
@@ -267,10 +273,11 @@ public class IntentArrowView : MonoBehaviour
         }
     }
 
-    private static void AddVertex(Vector3 position, Vector2 uv, Color color)
+    private static void AddVertex(Vector3 position, Vector2 uv, Color color, float part = 0f)
     {
         Vertices.Add(position);
         Uvs.Add(uv);
+        Uv2s.Add(new Vector2(markerKind, part));
         Colors.Add(color);
     }
 

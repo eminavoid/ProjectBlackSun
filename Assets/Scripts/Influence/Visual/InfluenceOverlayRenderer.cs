@@ -247,6 +247,9 @@ public class InfluenceOverlayRenderer : MonoBehaviour
         overlayMaterial.SetFloat("_SmokeSpeed", settings.smokeSpeed);
         overlayMaterial.SetFloat("_ColorNoise", settings.colorNoiseStrength);
         overlayMaterial.SetFloat("_ColorPulseSpeed", settings.colorPulseSpeed);
+        overlayMaterial.SetFloat("_PushStrength", settings.expansionStrength);
+        overlayMaterial.SetFloat("_PushSpeed", settings.expansionSpeed);
+        overlayMaterial.SetFloat("_PushScale", settings.expansionCellsPerZone / zoneExtent);
 
         fieldBlock.SetFloat("_Lift", zoneExtent * settings.volumeHeight);
         fieldBlock.SetFloat("_BreathAmp", zoneExtent * settings.volumeBreath);
@@ -257,6 +260,9 @@ public class InfluenceOverlayRenderer : MonoBehaviour
         fieldBlock.SetFloat("_SmokeSpeed", settings.smokeSpeed);
         fieldBlock.SetFloat("_ColorNoise", settings.colorNoiseStrength);
         fieldBlock.SetFloat("_ColorPulseSpeed", settings.colorPulseSpeed);
+        fieldBlock.SetFloat("_PushStrength", settings.expansionStrength);
+        fieldBlock.SetFloat("_PushSpeed", settings.expansionSpeed);
+        fieldBlock.SetFloat("_PushScale", settings.expansionCellsPerZone / zoneExtent);
         ApplyPropertyBlock();
     }
 

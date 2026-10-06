@@ -16,14 +16,14 @@ public class AIIntentOverlay : MonoBehaviour
 
     [Header("Escala (relativa al tamaño de una cuadra)")]
     [SerializeField] private float liftFactor = 0.12f;
-    [SerializeField] private float widthFactor = 0.2f;
+    [SerializeField] private float widthFactor = 0.28f;
     [SerializeField] private float arcHeightFactor = 0.55f;
-    [SerializeField] private float dropHeightFactor = 1.05f;
-    [SerializeField] private float ringRadiusFactor = 0.36f;
+    [SerializeField] private float dropHeightFactor = 1.35f;
+    [SerializeField] private float ringRadiusFactor = 0.46f;
 
     [Header("Forma")]
-    [SerializeField] private float headRatio = 0.18f;
-    [SerializeField] private float headWidthScale = 2.4f;
+    [SerializeField] private float headRatio = 0.22f;
+    [SerializeField] private float headWidthScale = 3.1f;
     [SerializeField] private float arcLengthInfluence = 0.22f;
 
     [Header("Visual")]

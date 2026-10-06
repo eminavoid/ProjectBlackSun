@@ -162,7 +162,7 @@ public class DistrictSeedPlantPanel : MonoBehaviour
 
         Seed selectedSeed = cachedSeeds[selectedSeedIndex];
 
-        if (targetZone.IsOccupied || !targetZone.AddSeed(selectedSeed))
+        if (targetZone.IsOccupied || !targetZone.AddSeed(selectedSeed, FactionId.Player))
         {
             ShowPlantPopup($"No se puede plantar: el nodo '{targetZone.SectorName}' ya está ocupado.");
             return;

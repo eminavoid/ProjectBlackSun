@@ -8,6 +8,9 @@ public class DistrictZone : MonoBehaviour
 {
     private const string PlantedMaterialResourcePath = "Materials/SeedPlantedInvert";
     private const string PlantedShaderName = "Custom/SeedPlantedInvert";
+    private const string BeaconMaterialResourcePath = "Materials/SeedRunningBeacon";
+    private const string BeaconShaderName = "Custom/SeedRunningBeacon";
+    private const string BeaconChildName = "SeedBeacon";
     private const string SelectedMaterialResourcePath = "Materials/NodeSelectedShield";
     private const string SelectedShaderName = "Custom/NodeSelectedShield";
 
@@ -23,6 +26,7 @@ public class DistrictZone : MonoBehaviour
     private static Material selectedTemplate;
 
     private Seed plantedSeed;
+    private FactionId? plantedBy;
     private bool isSelected;
     private ZoneInfluenceState influence;
     private ZoneControlMarker controlMarker;
@@ -30,6 +34,7 @@ public class DistrictZone : MonoBehaviour
     private MeshRenderer cachedRenderer;
     private Material[] originalSharedMaterials;
     private Material[] runtimeVisualMaterials;
+    private Material beaconMaterial;
 
     public Districts District => district;
 
@@ -44,6 +49,7 @@ public class DistrictZone : MonoBehaviour
     public bool IsOccupied => plantedSeed != null;
     public bool IsSelected => isSelected;
     public Seed PlantedSeed => plantedSeed;
+    public FactionId? PlantedBy => plantedBy;
     public string SectorName => gameObject.name;
     public ZoneInfluenceState Influence => influence;
 
@@ -150,14 +156,14 @@ public class DistrictZone : MonoBehaviour
         RefreshVisual();
     }
 
-    public bool AddSeed(Seed seed)
+    public bool AddSeed(Seed seed, FactionId? planter = null)
     {
         if (plantedSeed != null) return false;
         if (seed == null) return false;
 
-        Seed newSeed = Instantiate(seed);
-        newSeed.Initialize(this);
-        plantedSeed = newSeed;
+        seed.Initialize(this);
+        plantedSeed = seed;
+        plantedBy = planter;
 
         // Drop selection so the planted shield becomes visible immediately.
         if (isSelected && DistrictSelectionController.SelectedZone == this)
@@ -176,6 +182,7 @@ public class DistrictZone : MonoBehaviour
     {
         if (plantedSeed != seed) return;
         plantedSeed = null;
+        plantedBy = null;
         RefreshVisual();
     }
 
@@ -264,18 +271,23 @@ public class DistrictZone : MonoBehaviour
         CaptureOriginalMaterialsIfNeeded(targetRenderer);
         DestroyRuntimeMaterials();
 
-        // Selection highlight wins while active; planted shield returns after deselect.
+        bool showPlanted = plantedSeed != null;
         Material template = null;
         string label = null;
-        if (isSelected)
+        if (showPlanted)
+        {
+            template = ResolvePlantedTemplate();
+            label = "Planted";
+        }
+        else if (isSelected)
         {
             template = ResolveSelectedTemplate();
             label = "Selected";
         }
-        else if (plantedSeed != null)
+
+        if (!showPlanted)
         {
-            template = ResolvePlantedTemplate();
-            label = "Planted";
+            ClearBeacon();
         }
 
         if (template == null)
@@ -285,10 +297,15 @@ public class DistrictZone : MonoBehaviour
                 targetRenderer.sharedMaterials = originalSharedMaterials;
             }
 
+            if (showPlanted) EnsureBeacon();
             return;
         }
 
-        if (originalSharedMaterials == null || originalSharedMaterials.Length == 0) return;
+        if (originalSharedMaterials == null || originalSharedMaterials.Length == 0)
+        {
+            if (showPlanted) EnsureBeacon();
+            return;
+        }
 
         runtimeVisualMaterials = new Material[originalSharedMaterials.Length];
         for (int i = 0; i < originalSharedMaterials.Length; i++)
@@ -299,10 +316,131 @@ public class DistrictZone : MonoBehaviour
                 name = $"{SectorName}_{label}_{i}"
             };
             CopyMaterialAppearance(source, instance);
+            if (showPlanted) ApplySeedLook(instance);
             runtimeVisualMaterials[i] = instance;
         }
 
-        targetRenderer.materials = runtimeVisualMaterials;
+        targetRenderer.sharedMaterials = runtimeVisualMaterials;
+        if (showPlanted) EnsureBeacon();
+    }
+
+    private void ApplySeedLook(Material destination)
+    {
+        if (destination == null) return;
+
+        bool known = plantedBy.HasValue;
+        bool isPlayer = plantedBy == FactionId.Player;
+        Color glow = known
+            ? FactionPalette.Glow(plantedBy.Value)
+            : new Color(1.25f, 0.78f, 0.22f, 1f);
+        Color rim = isPlayer ? new Color(1.15f, 0.86f, 1.45f, 1f) : glow;
+
+        if (destination.HasProperty("_ShieldColor")) destination.SetColor("_ShieldColor", glow);
+        if (destination.HasProperty("_RimColor")) destination.SetColor("_RimColor", rim);
+        if (destination.HasProperty("_IsPlayer")) destination.SetFloat("_IsPlayer", isPlayer ? 1f : 0f);
+        if (destination.HasProperty("_HasFaction")) destination.SetFloat("_HasFaction", known ? 1f : 0f);
+        if (destination.HasProperty("_Selected")) destination.SetFloat("_Selected", isSelected ? 1f : 0f);
+        if (destination.HasProperty("_BaseDim")) destination.SetFloat("_BaseDim", 0.5f);
+        if (destination.HasProperty("_ShieldIntensity")) destination.SetFloat("_ShieldIntensity", 2.3f);
+
+        float progress = 0f;
+        if (plantedSeed != null && plantedSeed.Ticks > 0)
+        {
+            progress = Mathf.Clamp01((float)plantedSeed.CurrentTicks / plantedSeed.Ticks);
+        }
+
+        if (destination.HasProperty("_RunProgress")) destination.SetFloat("_RunProgress", progress);
+
+        Bounds bounds = GetWorldBounds();
+        if (destination.HasProperty("_ZoneCenter")) destination.SetVector("_ZoneCenter", bounds.center);
+        float extent = Mathf.Max(bounds.extents.x, bounds.extents.z, 0.01f);
+        if (destination.HasProperty("_ZoneExtent")) destination.SetFloat("_ZoneExtent", extent);
+        if (destination.HasProperty("_Lift")) destination.SetFloat("_Lift", extent * 0.05f);
+    }
+
+    private void EnsureBeacon()
+    {
+        ClearBeacon();
+
+        MeshRenderer sourceRenderer = ResolveRenderer();
+        if (sourceRenderer == null) return;
+        if (!sourceRenderer.TryGetComponent(out MeshFilter source) || source.sharedMesh == null) return;
+
+        Material template = Resources.Load<Material>(BeaconMaterialResourcePath);
+        Shader shader = template != null ? template.shader : null;
+        if (shader == null || shader.name != BeaconShaderName)
+        {
+            shader = Shader.Find(BeaconShaderName);
+        }
+
+        if (shader == null)
+        {
+            Debug.LogWarning($"DistrictZone: no se encontró el shader '{BeaconShaderName}'.", this);
+            return;
+        }
+
+        GameObject go = new GameObject(BeaconChildName);
+        go.transform.SetParent(sourceRenderer.transform, false);
+        go.transform.localPosition = Vector3.zero;
+        go.transform.localRotation = Quaternion.identity;
+        go.transform.localScale = Vector3.one;
+        go.layer = sourceRenderer.gameObject.layer;
+
+        MeshFilter filter = go.AddComponent<MeshFilter>();
+        filter.sharedMesh = source.sharedMesh;
+
+        MeshRenderer beaconRenderer = go.AddComponent<MeshRenderer>();
+        beaconRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        beaconRenderer.receiveShadows = false;
+        beaconRenderer.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
+        beaconRenderer.reflectionProbeUsage = UnityEngine.Rendering.ReflectionProbeUsage.Off;
+
+        beaconMaterial = template != null ? new Material(template) : new Material(shader);
+        beaconMaterial.shader = shader;
+        beaconMaterial.name = SectorName + "_SeedBeacon";
+        ApplySeedLook(beaconMaterial);
+
+        int submeshes = Mathf.Max(1, source.sharedMesh.subMeshCount);
+        Material[] materials = new Material[submeshes];
+        for (int i = 0; i < materials.Length; i++) materials[i] = beaconMaterial;
+        beaconRenderer.sharedMaterials = materials;
+    }
+
+    private void ClearBeacon()
+    {
+        Transform beacon = FindBeacon();
+        if (beacon != null)
+        {
+            beacon.gameObject.SetActive(false);
+            beacon.name = BeaconChildName + "_Dead";
+            if (Application.isPlaying) Destroy(beacon.gameObject);
+            else DestroyImmediate(beacon.gameObject);
+        }
+
+        if (beaconMaterial != null)
+        {
+            if (Application.isPlaying) Destroy(beaconMaterial);
+            else DestroyImmediate(beaconMaterial);
+            beaconMaterial = null;
+        }
+    }
+
+    private Transform FindBeacon()
+    {
+        MeshRenderer renderer = ResolveRenderer();
+        if (renderer != null)
+        {
+            Transform nested = renderer.transform.Find(BeaconChildName);
+            if (nested != null) return nested;
+        }
+
+        Transform[] children = GetComponentsInChildren<Transform>(true);
+        for (int i = 0; i < children.Length; i++)
+        {
+            if (children[i] != null && children[i].name == BeaconChildName) return children[i];
+        }
+
+        return null;
     }
 
     private void CaptureOriginalMaterialsIfNeeded(MeshRenderer targetRenderer)
@@ -314,6 +452,7 @@ public class DistrictZone : MonoBehaviour
 
     private void ClearVisualToOriginal()
     {
+        ClearBeacon();
         DestroyRuntimeMaterials();
 
         MeshRenderer targetRenderer = ResolveRenderer();
@@ -346,7 +485,7 @@ public class DistrictZone : MonoBehaviour
             MeshRenderer[] renderers = GetComponentsInChildren<MeshRenderer>(true);
             for (int i = 0; i < renderers.Length; i++)
             {
-                if (renderers[i].name == "InfluenceOverlay") continue;
+                if (renderers[i].name == "InfluenceOverlay" || renderers[i].name == BeaconChildName) continue;
                 cachedRenderer = renderers[i];
                 break;
             }
@@ -429,6 +568,7 @@ public class DistrictZone : MonoBehaviour
 
     private void OnDestroy()
     {
+        ClearBeacon();
         DestroyRuntimeMaterials();
     }
 
@@ -436,6 +576,17 @@ public class DistrictZone : MonoBehaviour
     {
         if (plantedSeed == null) return;
         plantedSeed.Tick();
+        if (plantedSeed == null) return;
+
+        if (runtimeVisualMaterials != null)
+        {
+            for (int i = 0; i < runtimeVisualMaterials.Length; i++)
+            {
+                ApplySeedLook(runtimeVisualMaterials[i]);
+            }
+        }
+
+        ApplySeedLook(beaconMaterial);
     }
 
     private void OnValidate()

@@ -21,6 +21,9 @@ Shader "Custom/InfluenceOverlay"
         _PatternScale("Pattern Scale", Range(0.001, 20)) = 0.35
         _PatternStrength("Pattern Strength", Range(0, 1)) = 0.45
         _FlowSpeed("Flow Speed", Range(0, 4)) = 0.35
+        _PushStrength("Expansion Strength", Range(0, 2)) = 1.2
+        _PushSpeed("Expansion Speed", Range(0, 3)) = 0.9
+        _PushScale("Expansion Scale", Range(0.001, 20)) = 0.2
         _ScanSpeed("Scan Speed", Range(0, 6)) = 0.9
         _SmokeStrength("Smoke Strength", Range(0, 1)) = 0.72
         _SmokeScale("Smoke Scale", Range(0.001, 20)) = 0.12
@@ -80,6 +83,9 @@ Shader "Custom/InfluenceOverlay"
                 half _PatternScale;
                 half _PatternStrength;
                 half _FlowSpeed;
+                half _PushStrength;
+                half _PushSpeed;
+                half _PushScale;
                 half _ScanSpeed;
                 half _SmokeStrength;
                 half _SmokeScale;
@@ -264,6 +270,32 @@ Shader "Custom/InfluenceOverlay"
                 return (half3)lerp((float3)chroma, max(painted, 0.0), mixAmt);
             }
 
+            // Galones en V que apuntan y avanzan en la dirección de expansión (aux.gb).
+            half ExpansionChevrons(float2 worldXZ, float2 push, out half trail)
+            {
+                trail = 0.0h;
+                float pushMag = length(push);
+                if (pushMag < 0.08) return 0.0h;
+
+                float2 dir = push / pushMag;
+                float along = dot(worldXZ, dir);
+                float across = dot(worldXZ, float2(-dir.y, dir.x));
+                float scale = max(_PushScale, 0.0001);
+                float2 cell = float2(along, across) * scale;
+
+                // 0 en el centro de cada carril, 0.5 en el borde.
+                float lane = abs(frac(cell.y) - 0.5);
+                // La punta de la V queda hacia +dir y el patrón scrollea en ese sentido.
+                float wave = frac(cell.x + lane * 1.15 - _Time.y * _PushSpeed);
+
+                half arrow = saturate(1.0h - (half)wave * 6.5h);
+                arrow *= arrow;
+                arrow *= (half)smoothstep(0.46, 0.1, lane);
+
+                trail = (half)smoothstep(0.34, 0.08, wave) * (half)smoothstep(0.42, 0.14, lane) * 0.4h;
+                return arrow;
+            }
+
             // Evita el blowout a blanco sin re-saturar colores apagados (el azul del jugador).
             half3 FactionChroma(half3 c)
             {
@@ -317,6 +349,11 @@ Shader "Custom/InfluenceOverlay"
                 half fillEdge = saturate((abs(right.a - left.a) + abs(up.a - down.a)) * 2.2h);
                 half frontier = saturate(max(colorEdge, fillEdge)) * _FrontierStrength;
 
+                half trail;
+                half arrow = ExpansionChevrons(input.positionWS.xz, aux.gb, trail);
+                half pushMask = saturate((half)length(aux.gb)) * _PushStrength;
+                pushMask *= lerp(0.55h, 1.15h, saturate(frontier));
+
                 float time = _Time.y;
                 float2 worldPattern = input.positionWS.xz * _PatternScale;
                 float2 swirl = float2(
@@ -350,6 +387,8 @@ Shader "Custom/InfluenceOverlay"
 
                 half3 baseRgb = chroma * value;
                 baseRgb += chroma * frontier * 0.28h;
+                baseRgb += chroma * arrow * pushMask * 0.95h;
+                baseRgb += chroma * trail * pushMask * 0.45h;
                 baseRgb += chroma * fresnel * _RimStrength * 0.22h;
                 baseRgb += chroma * interference * 0.45h;
                 baseRgb += chroma * grain * smokeMix * 0.16h;
@@ -360,7 +399,7 @@ Shader "Custom/InfluenceOverlay"
                 half alpha = coverage * lerp(0.52h, 0.88h, energy)
                     * (0.8h + hex * 0.08h + scan * 0.05h + frontier * 0.08h + fresnel * 0.1h);
                 alpha *= lerp(1.0h, 0.42h + smoke * 0.52h + grain * 0.18h, smokeMix);
-                alpha = saturate(alpha + interference * 0.2h) * _GlobalAlpha;
+                alpha = saturate(alpha + interference * 0.2h + (arrow + trail) * pushMask * 0.22h) * _GlobalAlpha;
 
                 return half4(baseRgb, alpha);
             }

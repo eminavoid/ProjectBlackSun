@@ -82,7 +82,13 @@ public class Option : ScriptableObject
                 continue;
             }
 
-            bool planted = targetZone.AddSeed(config.followUpSeed);
+            FactionId? planter = FactionId.Player;
+            if (seed != null && seed.CurrentZone != null && seed.CurrentZone.PlantedBy.HasValue)
+            {
+                planter = seed.CurrentZone.PlantedBy;
+            }
+
+            bool planted = targetZone.AddSeed(config.followUpSeed, planter);
             if (planted)
             {
                 Debug.Log($"Option '{name}': planted follow-up seed '{config.followUpSeed.Title}' on sector '{targetZone.SectorName}' (district: {targetZone.District}).");

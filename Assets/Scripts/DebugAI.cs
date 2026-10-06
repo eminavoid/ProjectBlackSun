@@ -130,7 +130,7 @@ public class DebugAI : MonoBehaviour
             return false;
         }
 
-        if (!zone.AddSeed(seed)) return false;
+        if (!zone.AddSeed(seed, intent.Faction)) return false;
 
         if (showPlantLogs)
         {
