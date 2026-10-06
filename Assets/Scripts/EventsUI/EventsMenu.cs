@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor.PackageManager.UI;
 using UnityEngine;
 using UnityEngine.UI;
 using Zeke.UI;
@@ -11,7 +10,14 @@ public class EventsMenu : MonoBehaviour
     [SerializeField] private RectTransform content;
     [SerializeField] private UIWindow elementPrefab;
 
+    private MapCameraController mapCameraController;
+
     private readonly Dictionary<int, UIWindow> seedWindows = new Dictionary<int, UIWindow>();
+
+    private void Awake()
+    {
+        mapCameraController = FindAnyObjectByType<MapCameraController>();
+    }
 
     private void Start()
     {
@@ -41,9 +47,10 @@ public class EventsMenu : MonoBehaviour
         UIWindow window = Instantiate(elementPrefab, content);
 
         window.TryGetElement<TextMeshProUGUI>("Name").text = seed.Title;
-        window.TryGetElement<TextMeshProUGUI>("Position Text").text = "Position Name: WIP";
+        window.TryGetElement<TextMeshProUGUI>("Position Text").text = seed.CurrentZone.name;
 
-        //window.TryGetElement<Button>("Position Clickbox").onClick.AddListener(); <-- Implement move to camera method here ex: "() => MoveCamera(node.positionidk)"
+        window.TryGetElement<Button>("Position Clickbox").onClick.AddListener(() => mapCameraController.FocusOnZone(seed.CurrentZone));
+        window.TryGetElement<Button>("Position Clickbox").onClick.AddListener(() => ui.SetActive(false));
 
         Button elementClickbox = window.TryGetElement<Button>("Event Clickbox");
 
