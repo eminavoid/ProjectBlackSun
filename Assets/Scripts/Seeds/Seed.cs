@@ -31,6 +31,8 @@ public class Seed : ScriptableObject
     [SerializeField] private SeedEventType eventType;
     [SerializeField] private SeedDifficulty difficulty;
     [field: SerializeField] public List<Option> Options { get; private set; }
+    [field: Tooltip("Not index (1 == 0 index)")]
+    [field: SerializeField] public int DefaultOption { get; private set; } = 4;
     public Region Region => region;
     public int Ticks => ticks;
     public SeedEventType EventType => eventType;
@@ -69,7 +71,7 @@ public class Seed : ScriptableObject
         if (currentTicks >= ticks)
         {
             Debug.Log($"Seed '{Title}' completed in sector '{currentZone?.SectorName ?? "Unknown"}' after {ticks} turn(s).");
-            SeedEventManager.EnqueueSeedEvent(this);
+            SeedEventManager.StoreSeedEvent(this);
             currentZone.RemoveSeed(this);
         }
     }

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Zeke.UI;
 using TMPro;
+using System;
 
 public class SeedEventManager : Singleton<SeedEventManager>
 {
@@ -45,17 +46,41 @@ public class SeedEventManager : Singleton<SeedEventManager>
     [SerializeField, HideInInspector] private SeedsPool wealthSeedPool;
     [SerializeField, HideInInspector] private int wealthSeedChance = 100;
 
-    private readonly Queue<Seed> seedEvents = new Queue<Seed>();
+    private readonly List<Seed> seedEvents = new List<Seed>();
 
-    public static void EnqueueSeedEvent(Seed seed)
+    public static Action<Seed> onSeedStored;
+    public static Action<Seed> onSeedRemoved;
+
+    public static void CreateSeedEventMenu(Seed seed)
     {
-        Instance.seedEvents.Enqueue(seed);
+        Instance.spawnOptionsWindow.gameObject.SetActive(true);
+        Instance.SetOptionsWindowVisibility(true);
+        Instance.CreateSeedOptionsInCanvas(seed);
+
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayEventPopup();
+        }
+    }
+
+    public static void StoreSeedEvent(Seed seed)
+    {
+        Instance.seedEvents.Add(seed);
+        onSeedStored?.Invoke(seed);
+    }
+
+    private static Seed RemoveSeed(Seed seed)
+    {
+        Instance.seedEvents.Remove(seed);
+        onSeedRemoved?.Invoke(seed);
+        return seed;
     }
 
     private void Start()
     {
         AddLegacyWealthSeedPool();
         GameTime.OnTurnStarted += OnTurnStarted;
+        GameTime.OnTurnEndedLate += OnTurnEndedLate;
         SetOptionsWindowVisibility(false);
     }
 
@@ -103,7 +128,7 @@ public class SeedEventManager : Singleton<SeedEventManager>
 
         if (optionsGroup != null) optionsGroup.blocksRaycasts = true;
         choosing = false;
-        OnOptionExecuted();
+        OnOptionExecuted(chosen.Option);
     }
 
     // A quick wobble of the option's size. Negative amounts dip first (a press), positive ones grow first (a thump).
@@ -129,11 +154,13 @@ public class SeedEventManager : Singleton<SeedEventManager>
         }
     }
 
-    private void OnOptionExecuted()
+    // The event is resolved: it leaves the events list and its window closes.
+    private void OnOptionExecuted(Option option)
     {
+        RemoveSeed(option.Seed);
         LayoutGroup layout = spawnOptionsWindow.TryGetElement<LayoutGroup>("Layout Group");
 
-        // A result window is taking over: this event fades away under it but keeps its blur; the queue resumes once it closes.
+        // A result window is taking over: this event fades away under it but keeps its blur until the result closes.
         if (openOutputWindows > 0)
         {
             optionsFade?.Kill();
@@ -146,15 +173,7 @@ public class SeedEventManager : Singleton<SeedEventManager>
         }
 
         DestroyOptions(layout);
-
-        if (seedEvents.Count > 0)
-        {
-            StartChoosingOptionsPhase();
-        }
-        else
-        {
-            SetOptionsWindowVisibility(false);
-        }
+        SetOptionsWindowVisibility(false);
     }
 
     private static void DestroyOptions(LayoutGroup layout)
@@ -177,11 +196,38 @@ public class SeedEventManager : Singleton<SeedEventManager>
         Instance.StartCoroutine(Instance.ShowOutputWindowAfterBlur(windowInstance, Instance.choiceOrigin));
     }
 
+    public void UnloadOptionsWindow()
+    {
+        LayoutGroup layout = spawnOptionsWindow.TryGetElement<LayoutGroup>("Layout Group");
+
+        foreach (Transform children in layout.transform)
+        {
+            Destroy(children.gameObject);
+        }
+
+        if (openOutputWindows > 0)
+        {
+            ApplyOptionsWindowVisibility(false);
+            return;
+        }
+    }
+
     private void OnTurnStarted()
     {
-        StartChoosingOptionsPhase();
+        Debug.Log($"Turn started: {seedEvents.Count}");
 
         TryPlantResourceSeeds();
+    }
+
+    private void OnTurnEndedLate()
+    {
+        Debug.Log($"Turn ended: {seedEvents.Count}");
+
+        for (int i = 0; i < seedEvents.Count; i++)
+        {
+            Seed seed = seedEvents[i];
+            seed.Options[seed.DefaultOption - 1].ExecuteOption();
+        }
     }
 
     private void TryPlantResourceSeeds()
@@ -207,12 +253,12 @@ public class SeedEventManager : Singleton<SeedEventManager>
 
             int seedChance = Mathf.Clamp(resourceSeedPool.SeedChance, 0, 100);
 
-            if (Random.Range(0, 100) >= seedChance)
+            if (UnityEngine.Random.Range(0, 100) >= seedChance)
             {
                 continue;
             }
 
-            Seed seed = resourceSeedPool.SeedPool.EvilSeeds[Random.Range(0, resourceSeedPool.SeedPool.EvilSeeds.Count)];
+            Seed seed = resourceSeedPool.SeedPool.EvilSeeds[UnityEngine.Random.Range(0, resourceSeedPool.SeedPool.EvilSeeds.Count)];
 
             if (TryPlantSeed(seed))
             {
@@ -278,22 +324,6 @@ public class SeedEventManager : Singleton<SeedEventManager>
         return false;
     }
 
-    private void StartChoosingOptionsPhase()
-    {
-        if (seedEvents.Count <= 0)
-        {
-            return;
-        }
-
-        SetOptionsWindowVisibility(true);
-        CreateSeedOptionsInCanvas(seedEvents.Dequeue());
-
-        if (AudioManager.Instance != null)
-        {
-            AudioManager.Instance.PlayEventPopup();
-        }
-    }
-
     private void CreateSeedOptionsInCanvas(Seed seed)
     {
         LayoutGroup layout = spawnOptionsWindow.TryGetElement<LayoutGroup>("Layout Group");
@@ -308,10 +338,10 @@ public class SeedEventManager : Singleton<SeedEventManager>
         {
             OptionDisplay display = Instantiate(optionDisplayPrefab, layout.transform);
 
-            if (display.TryGetComponent(out UIWindow uiWIndow))
+            if (display.TryGetComponent(out UIWindow uiWindow))
             {
-                uiWIndow.TryGetElement<TextMeshProUGUI>("Title").text = seed.Options[i].Title;
-                uiWIndow.TryGetElement<TextMeshProUGUI>("Description").text = seed.Options[i].Description;
+                uiWindow.TryGetElement<TextMeshProUGUI>("Title").text = seed.Options[i].Title;
+                uiWindow.TryGetElement<TextMeshProUGUI>("Description").text = seed.Options[i].Description;
             }
 
             display.InitializeData(seed.Options[i]);
@@ -387,14 +417,7 @@ public class SeedEventManager : Singleton<SeedEventManager>
         openOutputWindows--;
         if (openOutputWindows > 0) yield break;
 
-        if (seedEvents.Count > 0)
-        {
-            StartChoosingOptionsPhase();
-        }
-        else
-        {
-            SetOptionsWindowVisibility(false);
-        }
+        SetOptionsWindowVisibility(false);
     }
 
     // The result's parchment starts as the chosen option's strip and opens up to its size on its way to its place;

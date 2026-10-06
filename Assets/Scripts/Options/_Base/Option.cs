@@ -18,6 +18,7 @@ public class Option : ScriptableObject
     [SerializeField] private List<FollowUpSeedConfig> followUpSeeds = new List<FollowUpSeedConfig>();
 
     public PlayerStats PlayerStats => playerStats;
+    public Seed Seed => seed;
 
     private Seed seed;
 
