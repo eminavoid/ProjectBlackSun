@@ -161,8 +161,9 @@ public class DistrictZone : MonoBehaviour
         if (plantedSeed != null) return false;
         if (seed == null) return false;
 
-        seed.Initialize(this);
-        plantedSeed = seed;
+        Seed newSeed = Instantiate(seed);
+        newSeed.Initialize(this);
+        plantedSeed = newSeed;
         plantedBy = planter;
 
         // Drop selection so the planted shield becomes visible immediately.
