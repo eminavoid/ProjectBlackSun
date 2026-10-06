@@ -70,6 +70,10 @@ public class DistrictMapBootstrap : MonoBehaviour
 
             zone.ResolveDistrictFromHierarchy(colorMapping);
             zone.EnsureCollider();
+            if (zone.GetComponent<Zeke.Tooltips.ZoneHoverTooltip>() == null)
+            {
+                zone.gameObject.AddComponent<Zeke.Tooltips.ZoneHoverTooltip>();
+            }
         }
     }
 
