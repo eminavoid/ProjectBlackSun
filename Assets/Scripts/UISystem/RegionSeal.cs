@@ -3,11 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-/// The emblem stamped in the event window's wax seal, showing the region the event comes from.
-/// Uses the emblem drawn for that region when there is one; otherwise the region's resource icon tinted
-/// like the wax, as a placeholder. Events without a region leave the seal empty.
-/// </summary>
 [RequireComponent(typeof(Image))]
 public class RegionSeal : MonoBehaviour
 {
@@ -45,7 +40,6 @@ public class RegionSeal : MonoBehaviour
         image.sprite = sprite;
         image.enabled = sprite != null;
         image.color = placeholder ? iconTint : Color.white;
-        // A drawn emblem covers the whole seal and stretches with it; an icon keeps its own proportions.
         image.preserveAspect = placeholder;
         transform.localScale = Vector3.one * (placeholder ? iconScale : 1f);
         if (pressedEdge != null) pressedEdge.enabled = placeholder;

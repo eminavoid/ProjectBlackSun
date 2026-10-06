@@ -47,7 +47,6 @@ public class PlayerResources : ScriptableObject
         return new Dictionary<Resource, int>(resources);
     }
 
-    /// <summary>What actually changed since the snapshot, after the caps were applied.</summary>
     public void GetChangesSince(Dictionary<Resource, int> snapshot, List<ResourceDelta> changes, bool asRefund = false)
     {
         foreach (KeyValuePair<Resource, int> pair in resources)

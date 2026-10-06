@@ -1,10 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// The result window's resource chips fly to the resources bar when the player continues.
-/// Until then the bar keeps its old values, so the change lands with the chips.
-/// </summary>
 [RequireComponent(typeof(ResourceAmountRow))]
 public class OutcomeResourceFlight : MonoBehaviour
 {
@@ -32,7 +28,6 @@ public class OutcomeResourceFlight : MonoBehaviour
         }
     }
 
-    /// <summary>Hooked to the window's continue button, next to closing the window.</summary>
     public void FlyToSidebar()
     {
         if (ResourceManager.Sidebar != null)

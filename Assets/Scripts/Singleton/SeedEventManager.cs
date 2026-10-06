@@ -117,8 +117,6 @@ public class SeedEventManager : Singleton<SeedEventManager>
         StartCoroutine(PlayChoice(chosen));
     }
 
-    // The chosen option stays lit while the others fade away, its cost flies out of the resources bar into it,
-    // and only then the option runs; its result unrolls out of it.
     private IEnumerator PlayChoice(OptionDisplay chosen)
     {
         choosing = true;
@@ -129,7 +127,6 @@ public class SeedEventManager : Singleton<SeedEventManager>
         Pulse(chosen.transform, -0.05f);
         FadeOutOtherOptions(layout, chosen);
 
-        // Only what the option spends flies in; anything it gives up front shows in the bar when it runs.
         var fixedChanges = new List<(RectTransform icon, ResourceDelta delta)>();
         chosen.GetFixedChangeIcons(fixedChanges);
         var flights = new List<Tween>();
@@ -146,7 +143,6 @@ public class SeedEventManager : Singleton<SeedEventManager>
         if (flights.Count > 0) Pulse(chosen.transform, 0.04f);
         yield return new WaitForSecondsRealtime(flights.Count > 0 ? choiceBeat : othersFadeDuration);
 
-        // The cost really leaves now: the bar already shows it, so it stops holding it in the same frame.
         RectTransform rect = (RectTransform)chosen.transform;
         choiceOrigin = (rect.TransformPoint(rect.rect.center), Vector2.Scale(rect.rect.size, rect.lossyScale));
         chosen.Option.ExecuteOption();
@@ -158,14 +154,11 @@ public class SeedEventManager : Singleton<SeedEventManager>
         OnOptionExecuted(chosen.Option, chosen.Seed);
     }
 
-    // A quick wobble of the option's size. Negative amounts dip first (a press), positive ones grow first (a thump).
     private static void Pulse(Transform option, float amount)
     {
         option.DOPunchScale(Vector3.one * amount, 0.27f, 2, 0.5f).SetLink(option.gameObject).SetUpdate(true);
     }
 
-    // The others shrink a bit and fade, one after another outwards from the chosen one.
-    // They stay in place (just invisible) so the layout doesn't move the chosen option.
     private void FadeOutOtherOptions(LayoutGroup layout, OptionDisplay chosen)
     {
         int chosenIndex = chosen.transform.GetSiblingIndex();
@@ -181,14 +174,12 @@ public class SeedEventManager : Singleton<SeedEventManager>
         }
     }
 
-    // The event is resolved: it leaves the events list and its window closes.
     private void OnOptionExecuted(Option option, Seed seed)
     {
         Debug.Log($"calling remove seed with {option.Seed}");
         RemoveSeed(seed);
         LayoutGroup layout = spawnOptionsWindow.TryGetElement<LayoutGroup>("Layout Group");
 
-        // A result window is taking over: this event fades away under it but keeps its blur until the result closes.
         if (openOutputWindows > 0)
         {
             optionsFade?.Kill();
@@ -384,7 +375,6 @@ public class SeedEventManager : Singleton<SeedEventManager>
     private int resourceWindowOriginalIndex = -1;
     private int openOutputWindows;
     private bool choosing;
-    // Where the chosen option is on screen (world space) while it runs, for its result to unroll from.
     private (Vector3 center, Vector2 size)? choiceOrigin;
 
     private void SetOptionsWindowVisibility(bool condition)
@@ -403,7 +393,6 @@ public class SeedEventManager : Singleton<SeedEventManager>
         ApplyOptionsWindowVisibility(condition);
     }
 
-    // The blur snapshots the screen at end of frame; the window content must stay hidden until then.
     private IEnumerator ShowOptionsWindowAfterBlur(RawImage blur)
     {
         blur.gameObject.SetActive(true);
@@ -413,14 +402,12 @@ public class SeedEventManager : Singleton<SeedEventManager>
         KeepResourceWindowSharp(spawnOptionsWindow.transform);
         ApplyOptionsWindowVisibility(true);
 
-        // Same length as the blur fade, so the window and its background come in together.
         optionsFade?.Kill();
         SetGroupsAlpha(OptionsContent(), 0f);
         optionsFade = FadeGroups(OptionsContent(), 1f, blurComponent != null ? blurComponent.FadeDuration : 0f);
         optionsVisibilityRoutine = null;
     }
 
-    // Same rule for the result window: it stays invisible until its blur has the snapshot.
     private IEnumerator ShowOutputWindowAfterBlur(UIWindow window, (Vector3 center, Vector2 size)? origin)
     {
         openOutputWindows++;
@@ -440,7 +427,6 @@ public class SeedEventManager : Singleton<SeedEventManager>
 
         while (window != null) yield return null;
 
-        // Let the result's chips land in the resources bar before the next event blurs the screen.
         while (ResourceManager.Sidebar != null && ResourceManager.Sidebar.IsBusy) yield return null;
 
         openOutputWindows--;
@@ -449,8 +435,6 @@ public class SeedEventManager : Singleton<SeedEventManager>
         SetOptionsWindowVisibility(false);
     }
 
-    // The result's parchment starts as the chosen option's strip and opens up to its size on its way to its place;
-    // the rest of the window fades in once it's open.
     private void Unroll(UIWindow window, CanvasGroup windowGroup, (Vector3 center, Vector2 size) origin)
     {
         Image background = window.TryGetElement<Image>("Background");
@@ -460,7 +444,6 @@ public class SeedEventManager : Singleton<SeedEventManager>
             return;
         }
 
-        // Its blur shows the same snapshot as the event's, still behind it: fading it in fades the event out.
         RectTransform parchment = background.rectTransform;
         CanvasGroup parchmentGroup = GroupOf(parchment.gameObject);
         CanvasGroup blurGroup = null;
@@ -481,7 +464,6 @@ public class SeedEventManager : Singleton<SeedEventManager>
         SetGroupsAlpha(content, 0f);
         windowGroup.alpha = 1f;
 
-        // The parchment dissolves in over the option it comes out of and snaps open; the texts come in once it's open.
         Sequence unroll = DOTween.Sequence()
             .Insert(0f, parchment.DOLocalMove(endPosition, unrollDuration).SetEase(Ease.OutCubic))
             .Insert(0f, parchment.DOScaleX(endScale.x, unrollDuration).SetEase(Ease.OutCubic))
@@ -497,7 +479,6 @@ public class SeedEventManager : Singleton<SeedEventManager>
         }
     }
 
-    // The resources bar sits at the back of the canvas; draw it right above the blurred window so it stays sharp.
     private void KeepResourceWindowSharp(Transform window)
     {
         Transform resourcesWindow = ResourceManager.ResourceWindowTransform;
@@ -505,7 +486,6 @@ public class SeedEventManager : Singleton<SeedEventManager>
 
         if (resourceWindowOriginalIndex < 0) resourceWindowOriginalIndex = resourcesWindow.GetSiblingIndex();
 
-        // SetSiblingIndex shifts everything in between, so the target depends on which side the bar comes from.
         int windowIndex = window.GetSiblingIndex();
         resourcesWindow.SetSiblingIndex(resourcesWindow.GetSiblingIndex() < windowIndex ? windowIndex : windowIndex + 1);
     }
@@ -526,7 +506,6 @@ public class SeedEventManager : Singleton<SeedEventManager>
         }
     }
 
-    // Everything the options window draws over its blur: title, description, background and options.
     private CanvasGroup[] OptionsContent()
     {
         if (optionsContent != null) return optionsContent;
@@ -553,7 +532,6 @@ public class SeedEventManager : Singleton<SeedEventManager>
         return target.TryGetComponent(out CanvasGroup group) ? group : target.AddComponent<CanvasGroup>();
     }
 
-    // Fades the groups together, from wherever they are to alpha.
     private static Sequence FadeGroups(IReadOnlyList<CanvasGroup> groups, float alpha, float duration)
     {
         Sequence fade = DOTween.Sequence().SetUpdate(true);

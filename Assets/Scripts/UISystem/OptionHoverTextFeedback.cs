@@ -13,7 +13,6 @@ public class OptionHoverTextFeedback : MonoBehaviour, IPointerEnterHandler, IPoi
     private Color[] originalColors;
     private bool locked;
 
-    /// <summary>Keeps the hover color for good (e.g. the option was chosen), whatever the pointer does next.</summary>
     public void LockHighlighted()
     {
         locked = true;

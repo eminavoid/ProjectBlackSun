@@ -101,7 +101,6 @@ public class AudioManager : MonoBehaviour
     }
 
 
-    // Gain or Loss when the outcome went only one way; Mixed when it went both ways or only gave the cost back.
     public void PlayOutcomeResources(bool gained, bool lost)
     {
         if (UIEmitter == null)

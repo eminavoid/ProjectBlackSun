@@ -1,10 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Plays the outcome's resource sound when its chips pop in.
-/// Refunds only give the option's cost back, so they count as neither gain nor loss.
-/// </summary>
 [RequireComponent(typeof(ResourceAmountRow))]
 public class OutcomeResourcesSound : MonoBehaviour
 {

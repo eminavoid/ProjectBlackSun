@@ -175,7 +175,6 @@ public class EventExcelImporterWindow : EditorWindow
 
     private static string EventFolder(string category, string id) => $"Assets/Events/NUEVOS/{category}/{id}";
 
-    // Sheets are named after the regions: "Agora", "Pink Quarter", "The Warrens"...
     private static Region ParseRegion(string sheetName)
     {
         string name = sheetName.Trim();
@@ -244,7 +243,6 @@ public class EventExcelImporterWindow : EditorWindow
                 description = FindFirstNonBlank(sheet, 2, startCol, startCol + 4)
             };
 
-            // A and C are labeled in the event's first column, B and D three columns to the right.
             ScanOptions(sheet, startCol, evt.options);
             ScanOptions(sheet, startCol + 3, evt.options);
             evt.options.Sort((a, b) => string.CompareOrdinal(a.letter, b.letter));
@@ -256,9 +254,6 @@ public class EventExcelImporterWindow : EditorWindow
         return events;
     }
 
-    // Events don't all have the same height (some options have 2 outcomes, the template has room for 4),
-    // so rows are found through the labels column: "A" starts an option, "COST" follows it,
-    // and "1A", "2A"... start an outcome whose weight ("%") and effect ("$") are the two rows below.
     private void ScanOptions(XlsxReader.Sheet sheet, int labelCol, List<ParsedOption> options)
     {
         int dataCol = labelCol + 1;
@@ -304,8 +299,6 @@ public class EventExcelImporterWindow : EditorWindow
         public bool refund;
     }
 
-    // Outcome texts end with a "[-25 Zeal & +50 Wealth]" summary; the result window shows it with icons now.
-    // Only a bracket closing the text is removed; "[" also counts as closing because some rows have that typo.
     private static string StripResourceSummary(string text)
     {
         string trimmed = text.TrimEnd();
@@ -329,7 +322,6 @@ public class EventExcelImporterWindow : EditorWindow
         var result = new List<ResourceAmount>();
         if (string.IsNullOrWhiteSpace(raw)) return result;
 
-        // Lists come as "25 Flock, 25 Zeal & 10 Flock!!!"; "!!!" marks the clause that refunds the option's cost.
         string[] clauses = Regex.Split(raw, @"[&/,]");
 
         foreach (var rawClause in clauses)
@@ -363,7 +355,6 @@ public class EventExcelImporterWindow : EditorWindow
         return IsEmptyCost(costRaw) ? new List<ResourceAmount>() : ParseResourceClauses(costRaw);
     }
 
-    // Imported events live in NUEVOS/{category}/{id}, but a folder may have been renamed since, so they're found by asset name.
     private static Seed FindExistingSeed(string id)
     {
         const string root = "Assets/Events/NUEVOS";
@@ -380,8 +371,6 @@ public class EventExcelImporterWindow : EditorWindow
 
     #region Comparing
 
-    // One value the Excel defines ("Option A outcome 2" / "weight" / "75"). Both the Excel and the game
-    // describe an event as a list of these, so comparing them is comparing the lists.
     private struct EventField
     {
         public string scope;
@@ -432,7 +421,6 @@ public class EventExcelImporterWindow : EditorWindow
         return differences;
     }
 
-    // A whole option or outcome added/removed is one line, not one per field (nor per outcome of a new option).
     private static void ReportScope(string scope, string message, List<string> differences, List<string> reportedScopes)
     {
         if (reportedScopes.Any(reported => scope == reported || scope.StartsWith(reported + " "))) return;
@@ -475,8 +463,6 @@ public class EventExcelImporterWindow : EditorWindow
         }
     }
 
-    // Only what the importer writes is described: modules someone added by hand (DoNothing, zone influence...)
-    // are kept on re-import, so they must not count as differences either.
     private static List<EventField> DescribeGameEvent(Seed seed, string id)
     {
         var fields = new List<EventField>();
@@ -567,7 +553,6 @@ public class EventExcelImporterWindow : EditorWindow
         return option.name.StartsWith(prefix) ? option.name.Substring(prefix.Length) : option.name;
     }
 
-    // "Assembly-CSharp Namespace.ClassName" -> "ClassName"; empty for a null reference.
     private static string ModuleType(SerializedProperty module)
     {
         string fullName = module.managedReferenceFullTypename;
@@ -591,7 +576,6 @@ public class EventExcelImporterWindow : EditorWindow
         return joined.Length > 0 ? joined : "none";
     }
 
-    // Short "old -> new" for the log. Long texts only show the stretch where they start to differ.
     private static string DescribeChange(string current, string expected)
     {
         if (current == null) return $"(none) -> {Quote(expected)}";
@@ -617,7 +601,6 @@ public class EventExcelImporterWindow : EditorWindow
         return (from > 0 ? "..." : "") + part + (from + length < text.Length ? "..." : "");
     }
 
-    // Tabs and line breaks are made visible, otherwise "trailing tab" differences look identical in the log.
     private static string Quote(string value) => "\"" + value.Replace("\n", "\\n").Replace("\t", "\\t") + "\"";
 
     #endregion
@@ -627,8 +610,6 @@ public class EventExcelImporterWindow : EditorWindow
     private static readonly FieldInfo OptionModulesField = typeof(Option).GetField("modules", BindingFlags.Instance | BindingFlags.NonPublic);
     private static readonly FieldInfo OutcomesField = typeof(WeighedChoice).GetField("modules", BindingFlags.Instance | BindingFlags.NonPublic);
 
-    // Creates the event, or updates it in place so whatever references its assets (event pools...) keeps working.
-    // Only what the Excel defines is overwritten: ticks, type, difficulty, icons, follow-ups and hand-added modules stay.
     private static void WriteEvent(string category, ParsedEvent evt, Seed seed, PlayerStats sharedPlayerStats)
     {
         bool isNewEvent = seed == null;
@@ -660,7 +641,6 @@ public class EventExcelImporterWindow : EditorWindow
                 AssetDatabase.CreateAsset(option, $"{optionsFolder}/{optionName}.asset");
             }
 
-            // Options that already match are left alone, so their files don't change for nothing.
             if (isNewOption || !OptionMatches(option, parsedOption)) WriteOption(option, parsedOption, isNewOption, sharedPlayerStats);
             options.Add(option);
         }
@@ -683,7 +663,6 @@ public class EventExcelImporterWindow : EditorWindow
             seedObject.FindProperty("difficulty").enumValueIndex = 0;
         }
 
-        // Options that left the Excel are only unlinked; their assets stay in the folder.
         SerializedProperty optionsProp = seedObject.FindProperty("<Options>k__BackingField");
         optionsProp.arraySize = options.Count;
         for (int i = 0; i < options.Count; i++)
@@ -694,7 +673,6 @@ public class EventExcelImporterWindow : EditorWindow
         if (seedObject.ApplyModifiedProperties()) EditorUtility.SetDirty(seed);
     }
 
-    // What an outcome has besides the Excel's data: the stat that boosts it and any module that isn't a resource change.
     private struct OutcomeExtras
     {
         public int statUsed;
@@ -705,7 +683,6 @@ public class EventExcelImporterWindow : EditorWindow
     {
         List<ResourceAmount> costs = CostClauses(parsedOption.costRaw);
 
-        // The cost requirements and the outcome table are the Excel's; other modules stay where they were.
         List<OptionModule> currentModules = OptionModulesField.GetValue(option) as List<OptionModule> ?? new List<OptionModule>();
         WeighedChoice weighedChoice = currentModules.OfType<WeighedChoice>().FirstOrDefault();
         List<OutcomeExtras> outcomeExtras = ReadOutcomeExtras(weighedChoice);
@@ -785,7 +762,6 @@ public class EventExcelImporterWindow : EditorWindow
         EditorUtility.SetDirty(option);
     }
 
-    // Outcomes are matched by position: the stat of outcome 2 stays on outcome 2.
     private static List<OutcomeExtras> ReadOutcomeExtras(WeighedChoice weighedChoice)
     {
         var extras = new List<OutcomeExtras>();

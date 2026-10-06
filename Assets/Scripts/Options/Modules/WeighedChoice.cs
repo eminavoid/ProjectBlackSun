@@ -24,8 +24,6 @@ public class WeighedChoice : OptionModule
         {
             WeightedElement element = WeightedSelect.SelectElement(tempModules).weightedElement;
 
-            // Only this outcome's effects: the option's cost was already shown on its button.
-            // Measured per module so refunds stay apart from gains of the same resource.
             List<ResourceDelta> changes = new List<ResourceDelta>();
             for (int i = 0; i < element.module.Count; i++)
             {

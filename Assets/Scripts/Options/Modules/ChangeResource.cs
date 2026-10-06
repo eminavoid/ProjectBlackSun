@@ -21,7 +21,6 @@ public class ChangeResource : OptionModule
         ResourceManager.Resources.AddResource(resource, resourceAmount);
     }
 
-    // A random range isn't known until it runs, so only fixed amounts are shown up front.
     public override void GetFixedResourceChanges(List<ResourceDelta> changes)
     {
         if (minAmount == maxAmount && minAmount != 0) ResourceDelta.Add(changes, resource, minAmount, refund);

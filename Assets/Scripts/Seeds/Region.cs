@@ -1,4 +1,3 @@
-/// <summary>The part of the city an event comes from. Each region stands for one resource.</summary>
 public enum Region
 {
     None,

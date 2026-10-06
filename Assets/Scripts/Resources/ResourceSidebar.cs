@@ -5,12 +5,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using Zeke.UI;
 
-/// <summary>
-/// The resources bar. When a resource changes its number ticks to the new value, the slot punches
-/// and the change floats out next to it ("+25").
-/// Changes can be held back (e.g. while a result window shows them) and released when their chips
-/// fly in, so the bar changes the moment they land.
-/// </summary>
 [RequireComponent(typeof(UIWindow))]
 public class ResourceSidebar : MonoBehaviour
 {
@@ -55,8 +49,6 @@ public class ResourceSidebar : MonoBehaviour
         public Sequence ticking;
     }
 
-    // An amount already applied to the player's resources but not shown yet. Its owner lets go of it
-    // explicitly (a chip landing) or by being destroyed (a window closed some other way).
     private struct Held
     {
         public Object owner;
@@ -70,8 +62,6 @@ public class ResourceSidebar : MonoBehaviour
     private PlayerResources resources;
     private Transform canvas;
 
-    /// <summary>True while chips are flying in or out, or the bar is still showing a change.</summary>
-    // Every animation of the bar is tagged with the bar itself.
     public bool IsBusy => DOTween.IsTweening(this);
 
     public void Initialize(PlayerResources playerResources)
@@ -80,7 +70,6 @@ public class ResourceSidebar : MonoBehaviour
         canvas = GlobalReferences.ScreenCanvas.transform;
         UIWindow window = GetComponent<UIWindow>();
 
-        // Each slot's number is the UIElement named after its resource; the slot is its parent, with the icon next to it.
         foreach (Resource resource in System.Enum.GetValues(typeof(Resource)))
         {
             TMP_Text text = window.TryGetElement<TMP_Text>(resource.ToString());
@@ -119,7 +108,6 @@ public class ResourceSidebar : MonoBehaviour
         DOTween.Kill(this);
     }
 
-    /// <summary>Keeps showing the values from before these changes until <paramref name="owner"/> lets go of them.</summary>
     public void Hold(Object owner, IReadOnlyList<ResourceDelta> deltas)
     {
         for (int i = 0; i < deltas.Count; i++)
@@ -129,10 +117,6 @@ public class ResourceSidebar : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Flies the chips into their slots; each one's change shows when it lands.
-    /// What <paramref name="owner"/> held moves to the chips, so the bar doesn't change before they arrive.
-    /// </summary>
     public void Receive(Object owner, List<(RectTransform rect, ResourceDelta delta)> chips)
     {
         for (int i = 0; i < chips.Count; i++)
@@ -156,12 +140,6 @@ public class ResourceSidebar : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Shows a change before it's applied: the amount leaves its slot and flies into <paramref name="target"/>
-    /// (e.g. the cost on an option), which punches when it arrives. The returned tween completes then.
-    /// The bar keeps showing the change until <paramref name="owner"/> calls <see cref="Release"/>, once the change
-    /// is really applied, or is destroyed, if it never is.
-    /// </summary>
     public Tween Send(Object owner, Resource resource, int change, RectTransform target, float delay)
     {
         if (change == 0 || !slots.TryGetValue(resource, out Slot slot)) return null;
@@ -172,7 +150,6 @@ public class ResourceSidebar : MonoBehaviour
         Vector3 destination = target != null ? CanvasPoint(target) : CanvasPoint(slot.icon);
         float endScale = tokenRect.localScale.x * (target != null ? WorldHeight(target) : WorldHeight(slot.icon)) / WorldHeight(tokenRect);
 
-        // The target may go away mid-flight; the token then finishes at its last known place.
         Sequence travel = Travel(tokenRect, CanvasPoint(tokenRect), () => destination = target != null ? CanvasPoint(target) : destination, endScale);
         travel.Insert(liftDuration + flightDuration * 0.9f, token.DOFade(0f, flightDuration * 0.1f));
 
@@ -180,7 +157,6 @@ public class ResourceSidebar : MonoBehaviour
             .AppendInterval(delay)
             .AppendCallback(() =>
             {
-                // The amount leaves the slot now: the bar shows the change from here on.
                 token.gameObject.SetActive(true);
                 held.Add(new Held { owner = owner, resource = resource, amount = -change });
                 Retarget(resource, null);
@@ -209,7 +185,6 @@ public class ResourceSidebar : MonoBehaviour
 
     private void OnResourceChanged(Resource resource, int amount)
     {
-        // Applied at the end of the frame: changes held in the same frame (an outcome) mustn't show first.
         dirty.Add(resource);
     }
 
@@ -229,7 +204,6 @@ public class ResourceSidebar : MonoBehaviour
         dirty.Clear();
     }
 
-    /// <summary>Stops holding what <paramref name="owner"/> held. Call it right when those changes are really applied.</summary>
     public void Release(Object owner)
     {
         for (int i = held.Count - 1; i >= 0; i--)
@@ -240,7 +214,6 @@ public class ResourceSidebar : MonoBehaviour
         }
     }
 
-    // A chip landed: what it held shows now, flashing its color.
     private void Land(Object owner, Color color)
     {
         for (int i = held.Count - 1; i >= 0; i--)
@@ -271,7 +244,6 @@ public class ResourceSidebar : MonoBehaviour
         Float(resource, slot, change, flash);
     }
 
-    // The number counts to its target and flashes the change's color while the icon punches.
     private void Tick(Resource resource, Slot slot, Color flash)
     {
         slot.ticking?.Kill();
@@ -292,7 +264,6 @@ public class ResourceSidebar : MonoBehaviour
         slot.ticking = tick;
     }
 
-    // "+25" pops out beside the number, drifts up and fades.
     private void Float(Resource resource, Slot slot, int change, Color color)
     {
         GameObject popup = new GameObject($"{resource} {change:+#;-#}", typeof(RectTransform));
@@ -306,7 +277,6 @@ public class ResourceSidebar : MonoBehaviour
         text.textWrappingMode = TextWrappingModes.NoWrap;
         text.raycastTarget = false;
         text.text = (change > 0 ? "+" : "") + Format(resource, change);
-        // Invisible on its first frame, so a blur snapshot taken that frame doesn't keep a copy of it.
         text.color = new Color(color.r, color.g, color.b, 0f);
 
         RectTransform rect = (RectTransform)popup.transform;
@@ -324,7 +294,6 @@ public class ResourceSidebar : MonoBehaviour
             .SetLink(popup).SetId(this).SetUpdate(true);
     }
 
-    // The chip arcs into its slot shrinking onto the slot's icon, and its change shows on landing.
     private void Fly(RectTransform chip, ResourceDelta delta, Slot slot, float delay)
     {
         Image icon = chip.GetComponentInChildren<Image>();
@@ -356,21 +325,16 @@ public class ResourceSidebar : MonoBehaviour
         image.preserveAspect = true;
         image.raycastTarget = false;
 
-        // Stands out over the light parchment.
         Shadow shadow = token.AddComponent<Shadow>();
         shadow.effectColor = new Color(0f, 0f, 0f, 0.55f);
         shadow.effectDistance = new Vector2(4f, -4f);
 
-        // Same size and place as the slot's icon.
         rect.sizeDelta = slot.icon.rect.size;
         rect.localScale = Vector3.one * (slot.icon.lossyScale.y / canvas.lossyScale.y);
         rect.localPosition = CanvasPoint(slot.icon);
         return image;
     }
 
-    // Shared by chips flying in and costs flying out: a short lift-off, then an arc into the destination.
-    // The point (an icon's centre) follows the path and the mover is placed around it, keeping its size most
-    // of the way and shrinking (or growing) to endScale at the end, so it stays readable in flight.
     private Sequence Travel(RectTransform mover, Vector3 point, System.Func<Vector3> destination, float endScale)
     {
         Vector3 moverFromPoint = mover.localPosition - point;
@@ -397,7 +361,6 @@ public class ResourceSidebar : MonoBehaviour
         mover.localPosition = point + moverFromPoint * (scale / startScale);
     }
 
-    // Quadratic curve from a to b, bent towards control.
     private static Vector3 Bezier(Vector3 a, Vector3 control, Vector3 b, float t)
     {
         float u = 1f - t;

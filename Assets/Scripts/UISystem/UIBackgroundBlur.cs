@@ -4,12 +4,6 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-// Blurs everything on screen (world + overlay UI) behind a window and blocks clicks on it.
-// Overlay canvases never show up in URP's render textures, so the final frame is grabbed at end of
-// frame, blurred and shown on a full-screen RawImage. Whoever shows the window must wait for
-// IsReady before activating the window's own content, otherwise the window ends up in the snapshot.
-// UI that must stay sharp (e.g. the resources bar) just needs to be drawn after this object.
-// A blur opened while another one is on screen reuses its snapshot, so stacked windows share one background.
 [RequireComponent(typeof(RawImage))]
 public class UIBackgroundBlur : MonoBehaviour
 {
@@ -35,7 +29,7 @@ public class UIBackgroundBlur : MonoBehaviour
     {
         image = GetComponent<RawImage>();
         rect = (RectTransform)transform;
-        image.raycastTarget = true; // swallow clicks meant for whatever is behind the window
+        image.raycastTarget = true;
     }
 
     void OnEnable()
@@ -43,7 +37,6 @@ public class UIBackgroundBlur : MonoBehaviour
         IsReady = false;
         image.enabled = false;
 
-        // The screen behind is that blur already: copying it avoids blurring and dimming it twice.
         UIBackgroundBlur behind = TopShownBlur();
         if (behind != null)
         {
@@ -95,7 +88,6 @@ public class UIBackgroundBlur : MonoBehaviour
         int h = Mathf.Max(16, Screen.height / downsample);
         RenderTexture a = RenderTexture.GetTemporary(w, h, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.sRGB);
         RenderTexture b = RenderTexture.GetTemporary(w, h, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.sRGB);
-        // The snapshot now lines up with the screen edges, so taps past them must not wrap around.
         a.wrapMode = b.wrapMode = TextureWrapMode.Clamp;
         Graphics.Blit(screen, a, blurMaterial, 1);
         Destroy(screen);
@@ -117,8 +109,6 @@ public class UIBackgroundBlur : MonoBehaviour
 
     void Show(float alpha)
     {
-        // Cover the whole canvas 1:1 whatever the scale of this object or its parents, so the snapshot
-        // lines up with the screen and doesn't jump when it appears.
         var canvasRect = (RectTransform)GetComponentInParent<Canvas>().rootCanvas.transform;
         Vector3 parentScale = rect.parent != null ? rect.parent.lossyScale : Vector3.one;
         Vector3 canvasScale = canvasRect.lossyScale;

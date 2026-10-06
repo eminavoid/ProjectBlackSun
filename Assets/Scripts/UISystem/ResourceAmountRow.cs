@@ -5,10 +5,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-/// Row of resource icons with a signed amount each (-25 Wealth, +50 Zeal...).
-/// Chips are copies of a disabled template child, so their look is edited in the prefab.
-/// </summary>
 public class ResourceAmountRow : MonoBehaviour
 {
     [SerializeField] private ResourceIcons icons;
@@ -40,10 +36,8 @@ public class ResourceAmountRow : MonoBehaviour
         public ResourceDelta delta;
     }
 
-    /// <summary>Raised as soon as the row has chips to show, with the changes shown.</summary>
     public event Action<IReadOnlyList<ResourceDelta>> Shown;
 
-    /// <summary>Raised when the first chip shows up (after the appear delay when animated), with the changes shown.</summary>
     public event Action<IReadOnlyList<ResourceDelta>> ChipsAppeared;
 
     private readonly List<Chip> chips = new List<Chip>();
@@ -121,7 +115,6 @@ public class ResourceAmountRow : MonoBehaviour
         return new Color(color.r * dimmedFactor, color.g * dimmedFactor, color.b * dimmedFactor, color.a);
     }
 
-    // Each chip pops in after the previous one while its number counts up from zero.
     private void AnimateIn(IReadOnlyList<ResourceDelta> deltas)
     {
         appearing = DOTween.Sequence()
@@ -149,7 +142,6 @@ public class ResourceAmountRow : MonoBehaviour
         return chip.delta.IsRefund && !string.IsNullOrEmpty(refundLabel) ? $"{number} <size=55%>{refundLabel}</size>" : number;
     }
 
-    /// <summary>The icon of each chip shown, with its change. The row keeps the chips.</summary>
     public void GetChipIcons(List<(RectTransform icon, ResourceDelta delta)> icons)
     {
         for (int i = 0; i < chips.Count; i++)
@@ -158,10 +150,6 @@ public class ResourceAmountRow : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Hands the chips over, fully shown, so they can outlive the row (e.g. to fly off to the resources bar).
-    /// The row forgets them: whoever takes them destroys them.
-    /// </summary>
     public List<(RectTransform rect, ResourceDelta delta)> TakeChips()
     {
         appearing?.Complete();
