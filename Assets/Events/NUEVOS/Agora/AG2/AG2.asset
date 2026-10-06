@@ -20,6 +20,7 @@ MonoBehaviour:
     it. How should we respond?
   icon: {fileID: 0}
   ticks: 1
+  region: 1
   eventType: 0
   difficulty: 0
   <Options>k__BackingField:

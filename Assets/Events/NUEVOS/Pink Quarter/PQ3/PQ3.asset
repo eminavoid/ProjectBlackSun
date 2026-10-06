@@ -19,6 +19,7 @@ MonoBehaviour:
     single thing to protect them.
   icon: {fileID: 0}
   ticks: 1
+  region: 4
   eventType: 0
   difficulty: 1
   <Options>k__BackingField:

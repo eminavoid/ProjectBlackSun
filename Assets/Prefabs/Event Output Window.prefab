@@ -170,7 +170,7 @@ MonoBehaviour:
   iterations: 2
   radius: 1.5
   tint: {r: 0.72, g: 0.72, b: 0.72, a: 1}
-  fadeDuration: 0.18
+  fadeDuration: 0.22
 --- !u!1 &3571492382786382792
 GameObject:
   m_ObjectHideFlags: 0
@@ -182,6 +182,8 @@ GameObject:
   - component: {fileID: 2005276880641593078}
   - component: {fileID: 6970202795909920247}
   - component: {fileID: 7218763521740834016}
+  - component: {fileID: 7373123230703507885}
+  - component: {fileID: 5767921461148157487}
   m_Layer: 0
   m_Name: Resources
   m_TagString: Untagged
@@ -252,10 +254,37 @@ MonoBehaviour:
   gainColor: {r: 0.16, g: 0.4, b: 0.12, a: 1}
   lossColor: {r: 0.55, g: 0.1, b: 0.07, a: 1}
   dimmedFactor: 0.5
+  refundColor: {r: 0.36, g: 0.34, b: 0.31, a: 1}
+  refundIconColor: {r: 0.6, g: 0.6, b: 0.6, a: 0.8}
+  refundLabel: refund
   animateIn: 1
-  appearDelay: 0.2
-  stagger: 0.12
-  popDuration: 0.35
+  appearDelay: 0.62
+  stagger: 0.15
+  popDuration: 0.42
+--- !u!114 &7373123230703507885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3571492382786382792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f36873a4ab14df540af4a601ea1a0c9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OutcomeResourcesSound
+--- !u!114 &5767921461148157487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3571492382786382792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8703d380c12a98c47be68b7303330a3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OutcomeResourceFlight
 --- !u!1 &4129795501412027553
 GameObject:
   m_ObjectHideFlags: 0
@@ -379,13 +408,25 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 5767921461148157487}
+        m_TargetAssemblyTypeName: OutcomeResourceFlight, Assembly-CSharp
+        m_MethodName: FlyToSidebar
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 6986076241118867485}
         m_TargetAssemblyTypeName: Zeke.UI.UIWindow, Assembly-CSharp
         m_MethodName: DestroyWindow
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgumentAssemblyTypeName: 
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -569,6 +610,7 @@ GameObject:
   - component: {fileID: 1255846611280552758}
   - component: {fileID: 2382625040912401888}
   - component: {fileID: 2366611636029094721}
+  - component: {fileID: 1376892131721215990}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -633,6 +675,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1376892131721215990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5532404150958212327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0eda2b0dda5ddc44baae6df7f05374c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Zeke.UI.UIElement
+  window: {fileID: 6986076241118867485}
+  <Name>k__BackingField: Background
+  <Element>k__BackingField: {fileID: 2366611636029094721}
 --- !u!1 &5962452802113886530
 GameObject:
   m_ObjectHideFlags: 0

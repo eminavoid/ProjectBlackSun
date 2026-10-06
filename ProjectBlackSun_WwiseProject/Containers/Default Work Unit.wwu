@@ -603,6 +603,188 @@
 												<ActiveSource Name="slimy" ID="{27659E0F-767D-41E1-92EE-338675E8449E}" Platform="Linked"/>
 											</ActiveSourceList>
 										</Sound>
+										<SwitchContainer Name="Outcome_Resources" ID="{33727073-CDE1-4895-9407-959540015A27}" ShortID="728159118">
+											<PropertyList>
+												<Property Name="EnableLoudnessNormalization" Type="bool" Value="True"/>
+												<Property Name="MaxSoundPerInstance" Type="int16">
+													<ValueList>
+														<Value>1</Value>
+													</ValueList>
+												</Property>
+												<Property Name="Pitch" Type="int32">
+													<ModifierList>
+														<ModifierInfo>
+															<Modifier Name="" ID="{D4EF56B4-3036-4B58-9455-45A01E8360AE}">
+																<PropertyList>
+																	<Property Name="Enabled" Type="bool" Value="True"/>
+																	<Property Name="Max" Type="Real64" Value="100"/>
+																	<Property Name="Min" Type="Real64" Value="-100"/>
+																</PropertyList>
+															</Modifier>
+														</ModifierInfo>
+													</ModifierList>
+												</Property>
+												<Property Name="UseMaxSoundPerInstance" Type="bool">
+													<ValueList>
+														<Value>True</Value>
+													</ValueList>
+												</Property>
+											</PropertyList>
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{53BC1063-D44E-4BC8-8599-75E59AC25903}"/>
+												</Reference>
+												<Reference Name="DefaultSwitchOrState">
+													<ObjectRef Name="Mixed" ID="{18BA7170-6819-452D-BB1B-9545209DB98F}" WorkUnitID="{C5C6F0B9-4476-4083-985C-85A4A7C12D00}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="UI Bus" ID="{C291DD3F-FF56-4624-97BA-B9A4FEE59028}" WorkUnitID="{5B620076-8548-4615-B6BF-D06492A4D622}"/>
+												</Reference>
+												<Reference Name="SwitchGroupOrStateGroup">
+													<ObjectRef Name="OutcomeBalance" ID="{7E995430-D3C2-42D3-9D26-7F680297FB62}" WorkUnitID="{C5C6F0B9-4476-4083-985C-85A4A7C12D00}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<Sound Name="good harp" ID="{B9BD0C3B-5DE6-4D1E-ABDE-391607276E6E}" ShortID="814752084">
+													<ReferenceList>
+														<Reference Name="Conversion">
+															<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{53BC1063-D44E-4BC8-8599-75E59AC25903}"/>
+														</Reference>
+														<Reference Name="OutputBus">
+															<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{5B620076-8548-4615-B6BF-D06492A4D622}"/>
+														</Reference>
+													</ReferenceList>
+													<ChildrenList>
+														<AudioFileSource Name="good harp" ID="{B382F37E-8178-4D0D-B392-F673379F8AEB}">
+															<PropertyList>
+																<Property Name="FadeOutDuration" Type="Real64" Value="1.1979"/>
+																<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+																<Property Name="TrimEnd" Type="Real64" Value="2.15991"/>
+															</PropertyList>
+															<Language>SFX</Language>
+															<AudioFile>good harp.wav</AudioFile>
+															<MediaIDList>
+																<MediaID ID="1030129768"/>
+															</MediaIDList>
+														</AudioFileSource>
+													</ChildrenList>
+													<ActiveSourceList>
+														<ActiveSource Name="good harp" ID="{B382F37E-8178-4D0D-B392-F673379F8AEB}" Platform="Linked"/>
+													</ActiveSourceList>
+												</Sound>
+												<Sound Name="LUTE SOUND" ID="{CD7CAAC4-68F4-4204-910E-C0AECABC8870}" ShortID="959856700">
+													<PropertyList>
+														<Property Name="Pitch" Type="int32">
+															<ValueList>
+																<Value>410</Value>
+															</ValueList>
+															<ModifierList>
+																<ModifierInfo>
+																	<Modifier Name="" ID="{D600FC06-6C8F-4D7E-A1FF-7D8CFC27C891}">
+																		<PropertyList>
+																			<Property Name="Max" Type="Real64" Value="200"/>
+																			<Property Name="Min" Type="Real64" Value="-200"/>
+																		</PropertyList>
+																	</Modifier>
+																</ModifierInfo>
+															</ModifierList>
+														</Property>
+													</PropertyList>
+													<ReferenceList>
+														<Reference Name="Conversion">
+															<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{53BC1063-D44E-4BC8-8599-75E59AC25903}"/>
+														</Reference>
+														<Reference Name="OutputBus">
+															<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{5B620076-8548-4615-B6BF-D06492A4D622}"/>
+														</Reference>
+													</ReferenceList>
+													<ChildrenList>
+														<AudioFileSource Name="LUTE SOUND" ID="{634D9D3D-39CA-4CB8-80C1-CEE1D1B4D1A3}">
+															<PropertyList>
+																<Property Name="FadeOutDuration" Type="Real64" Value="2.07433"/>
+																<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+																<Property Name="TrimEnd" Type="Real64" Value="5.11394"/>
+															</PropertyList>
+															<Language>SFX</Language>
+															<AudioFile>LUTE SOUND.wav</AudioFile>
+															<MediaIDList>
+																<MediaID ID="135592675"/>
+															</MediaIDList>
+														</AudioFileSource>
+													</ChildrenList>
+													<ActiveSourceList>
+														<ActiveSource Name="LUTE SOUND" ID="{634D9D3D-39CA-4CB8-80C1-CEE1D1B4D1A3}" Platform="Linked"/>
+													</ActiveSourceList>
+												</Sound>
+												<Sound Name="Trombone - SOUND EFFECT -" ID="{41D1A8BE-D935-43EF-9428-520BFABFEC4D}" ShortID="604357238">
+													<PropertyList>
+														<Property Name="Pitch" Type="int32">
+															<ValueList>
+																<Value>-530</Value>
+															</ValueList>
+														</Property>
+													</PropertyList>
+													<ReferenceList>
+														<Reference Name="Conversion">
+															<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{53BC1063-D44E-4BC8-8599-75E59AC25903}"/>
+														</Reference>
+														<Reference Name="OutputBus">
+															<ObjectRef Name="Main Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{5B620076-8548-4615-B6BF-D06492A4D622}"/>
+														</Reference>
+													</ReferenceList>
+													<ChildrenList>
+														<AudioFileSource Name="Trombone - SOUND EFFECT -" ID="{3CCA11FD-29C0-4430-8256-AED0DE810547}">
+															<PropertyList>
+																<Property Name="FadeOutDuration" Type="Real64" Value="1.22611"/>
+																<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+																<Property Name="TrimBegin" Type="Real64" Value="15.6783"/>
+															</PropertyList>
+															<Language>SFX</Language>
+															<AudioFile>Trombone - SOUND EFFECT -.wav</AudioFile>
+															<MediaIDList>
+																<MediaID ID="336502226"/>
+															</MediaIDList>
+														</AudioFileSource>
+													</ChildrenList>
+													<ActiveSourceList>
+														<ActiveSource Name="Trombone - SOUND EFFECT -" ID="{3CCA11FD-29C0-4430-8256-AED0DE810547}" Platform="Linked"/>
+													</ActiveSourceList>
+												</Sound>
+											</ChildrenList>
+											<GroupingInfo>
+												<GroupingBehaviorList>
+													<GroupingBehavior>
+														<ItemRef Name="good harp" ID="{B9BD0C3B-5DE6-4D1E-ABDE-391607276E6E}"/>
+													</GroupingBehavior>
+													<GroupingBehavior>
+														<ItemRef Name="Trombone - SOUND EFFECT -" ID="{41D1A8BE-D935-43EF-9428-520BFABFEC4D}"/>
+													</GroupingBehavior>
+													<GroupingBehavior>
+														<ItemRef Name="LUTE SOUND" ID="{CD7CAAC4-68F4-4204-910E-C0AECABC8870}"/>
+													</GroupingBehavior>
+												</GroupingBehaviorList>
+												<GroupingList>
+													<Grouping>
+														<SwitchRef Name="Mixed" ID="{18BA7170-6819-452D-BB1B-9545209DB98F}"/>
+														<ItemList>
+															<ItemRef Name="LUTE SOUND" ID="{CD7CAAC4-68F4-4204-910E-C0AECABC8870}"/>
+														</ItemList>
+													</Grouping>
+													<Grouping>
+														<SwitchRef Name="Gain" ID="{36994381-11B2-48C4-8B89-E33CCE1EB27D}"/>
+														<ItemList>
+															<ItemRef Name="good harp" ID="{B9BD0C3B-5DE6-4D1E-ABDE-391607276E6E}"/>
+														</ItemList>
+													</Grouping>
+													<Grouping>
+														<SwitchRef Name="Loss" ID="{2DDE4CB7-0AEE-4DB4-88DC-3DDC02613CED}"/>
+														<ItemList>
+															<ItemRef Name="Trombone - SOUND EFFECT -" ID="{41D1A8BE-D935-43EF-9428-520BFABFEC4D}"/>
+														</ItemList>
+													</Grouping>
+												</GroupingList>
+											</GroupingInfo>
+										</SwitchContainer>
 									</ChildrenList>
 								</Folder>
 								<Folder Name="ResourceIcons" ID="{6E681145-06AD-452D-9238-18F12A76CA11}" ShortID="335996798">

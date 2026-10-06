@@ -18,6 +18,7 @@ MonoBehaviour:
     collectively lost its faith! What are we to do?!
   icon: {fileID: 0}
   ticks: 1
+  region: 2
   eventType: 0
   difficulty: 1
   <Options>k__BackingField:

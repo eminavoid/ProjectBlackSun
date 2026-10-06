@@ -14,6 +14,13 @@
 						<Switch Name="Bliss" ID="{E5CBE8E1-BE76-4385-95A1-AA676024B35A}"/>
 					</ChildrenList>
 				</SwitchGroup>
+				<SwitchGroup Name="OutcomeBalance" ID="{7E995430-D3C2-42D3-9D26-7F680297FB62}">
+					<ChildrenList>
+						<Switch Name="Gain" ID="{36994381-11B2-48C4-8B89-E33CCE1EB27D}"/>
+						<Switch Name="Loss" ID="{2DDE4CB7-0AEE-4DB4-88DC-3DDC02613CED}"/>
+						<Switch Name="Mixed" ID="{18BA7170-6819-452D-BB1B-9545209DB98F}"/>
+					</ChildrenList>
+				</SwitchGroup>
 			</ChildrenList>
 		</WorkUnit>
 	</Switches>

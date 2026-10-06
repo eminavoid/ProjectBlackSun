@@ -1,6 +1,5 @@
 using UnityEngine;
 using Zeke.UI;
-using TMPro;
 
 public class ResourceManager : Singleton<ResourceManager>
 {
@@ -23,8 +22,10 @@ public class ResourceManager : Singleton<ResourceManager>
 
     public static PlayerResources Resources => Instance.playerResources;
     public static Transform ResourceWindowTransform => Instance.resourceWindow != null ? Instance.resourceWindow.transform : null;
+    public static ResourceSidebar Sidebar => Instance.sidebar;
 
     private UIWindow resourceWindow = null;
+    private ResourceSidebar sidebar = null;
 
     public void SetTithe(float value)
     {
@@ -42,22 +43,8 @@ public class ResourceManager : Singleton<ResourceManager>
         playerResources.AddResource(Resource.Secrets, startSecrets);
 
         resourceWindow = Instantiate(uiWindow, GlobalReferences.ScreenCanvas.transform);
-
-        resourceWindow.TryGetElement<TextMeshProUGUI>("Wealth").text = playerResources.GetResourceAmount(Resource.Wealth).ToString();
-        resourceWindow.TryGetElement<TextMeshProUGUI>("Zeal").text = playerResources.GetResourceAmount(Resource.Zeal).ToString();
-        resourceWindow.TryGetElement<TextMeshProUGUI>("Flock").text = playerResources.GetResourceAmount(Resource.Flock).ToString();
-        resourceWindow.TryGetElement<TextMeshProUGUI>("Authority").text = playerResources.GetResourceAmount(Resource.Authority).ToString();
-        resourceWindow.TryGetElement<TextMeshProUGUI>("Materials").text = playerResources.GetResourceAmount(Resource.Materials).ToString();
-        resourceWindow.TryGetElement<TextMeshProUGUI>("Secrets").text = playerResources.GetResourceAmount(Resource.Secrets).ToString();
-
-        resourceWindow.TryGetElement<TextMeshProUGUI>("Happiness").text = playerResources.GetResourceAmount(Resource.Happiness).ToString() + "%";
-
-        playerResources.onResourceGained += OnResourceGained;
-    }
-
-    private void OnResourceGained(Resource resource, int amount)
-    {
-        resourceWindow.TryGetElement<TextMeshProUGUI>(resource.ToString()).text = playerResources.GetResourceAmount(resource).ToString();
+        sidebar = resourceWindow.GetComponent<ResourceSidebar>();
+        sidebar.Initialize(playerResources);
     }
 
     private void Start()

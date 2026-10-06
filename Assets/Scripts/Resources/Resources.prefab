@@ -470,6 +470,7 @@ GameObject:
   - component: {fileID: 6468248115014692805}
   - component: {fileID: 8615628383825455374}
   - component: {fileID: 5699568374700155396}
+  - component: {fileID: 1023916690684910316}
   m_Layer: 5
   m_Name: Resources
   m_TagString: Untagged
@@ -500,9 +501,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -78, y: -325}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 186.0439, y: 841.4494}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 1, y: 1}
 --- !u!222 &5151205001401784129
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -554,11 +555,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.VerticalLayoutGroup
   m_Padding:
-    m_Left: 75
+    m_Left: 0
     m_Right: 0
-    m_Top: 5
-    m_Bottom: 5
-  m_ChildAlignment: 1
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 2
   m_Spacing: 5
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 0
@@ -592,6 +593,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HierarchyOrder
   order: 0
+--- !u!114 &1023916690684910316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 739304921537269862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cf6a986aca77c3459cef0ffbcf6c5c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ResourceSidebar
+  gainColor: {r: 0.55, g: 0.95, b: 0.45, a: 1}
+  lossColor: {r: 1, g: 0.42, b: 0.36, a: 1}
+  refundColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
+  countDuration: 0.55
+  punchDuration: 0.42
+  punchScale: 1.25
+  popupFont: {fileID: 11400000, guid: 1edd54523ff3acd4e942871243f45066, type: 2}
+  popupFontSize: 38
+  popupOffset: {x: -55, y: 0}
+  popupRise: 40
+  popupDuration: 1
+  flightStagger: 0.13
+  liftDuration: 0.16
+  liftScale: 1.45
+  flightDuration: 0.62
+  arcHeight: 160
+  arrivalPunchScale: 1.8
 --- !u!1 &787733685438625866
 GameObject:
   m_ObjectHideFlags: 0

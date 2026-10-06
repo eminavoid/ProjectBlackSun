@@ -16,6 +16,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private string seedPlantEvent = "Play_UI_SeedPlant";
     [SerializeField] private string districtClickEvent = "Play_World_DistrictClick";
     [SerializeField] private string cardClickEvent = "Play_UI_Click_Card";
+    [SerializeField] private string outcomeResourcesEvent = "Play_UI_OutcomeResources";
     [SerializeField] private string backgroundMusicEvent = "Play_MUS_Background";
 
     [Header("Wwise RTPC Names")]
@@ -28,6 +29,8 @@ public class AudioManager : MonoBehaviour
 
     [Header("Wwise Switch Group")]
     [SerializeField] private string resourceTypeSwitchGroup = "ResourceType";
+    [Tooltip("Switches: Gain, Loss, Mixed.")]
+    [SerializeField] private string outcomeBalanceSwitchGroup = "OutcomeBalance";
 
     private void Awake()
     {
@@ -97,6 +100,20 @@ public class AudioManager : MonoBehaviour
         AkSoundEngine.PostEvent(resourceIconClickEvent, UIEmitter);
     }
 
+
+    // Gain or Loss when the outcome went only one way; Mixed when it went both ways or only gave the cost back.
+    public void PlayOutcomeResources(bool gained, bool lost)
+    {
+        if (UIEmitter == null)
+        {
+            Debug.LogWarning("AudioManager: UIEmitter is not assigned. Assign the UI_AudioEmitter GameObject in the Inspector.");
+            return;
+        }
+
+        string balance = gained == lost ? "Mixed" : gained ? "Gain" : "Loss";
+        AkSoundEngine.SetSwitch(outcomeBalanceSwitchGroup, balance, UIEmitter);
+        AkSoundEngine.PostEvent(outcomeResourcesEvent, UIEmitter);
+    }
 
     public void PlayEventPopup()
     {

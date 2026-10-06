@@ -21,6 +21,7 @@ MonoBehaviour:
     to offer them our aid.
   icon: {fileID: 0}
   ticks: 1
+  region: 5
   eventType: 0
   difficulty: 0
   <Options>k__BackingField:

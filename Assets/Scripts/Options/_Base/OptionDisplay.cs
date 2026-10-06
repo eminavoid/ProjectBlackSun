@@ -11,10 +11,13 @@ public class OptionDisplay : MonoBehaviour
     [Tooltip("Cost text from the data. Only shown when the row has nothing to show (e.g. \"No cost\").")]
     [SerializeField] private GameObject costText;
 
-    public Action<Option> onOptionSelected;
+    /// <summary>The player picked this option. Whoever listens plays the choice out and executes it.</summary>
+    public Action<OptionDisplay> onOptionChosen;
 
     private Option option;
     private readonly List<ResourceDelta> fixedChanges = new List<ResourceDelta>();
+
+    public Option Option => option;
 
     public void InitializeData(Option optionReference)
     {
@@ -23,13 +26,19 @@ public class OptionDisplay : MonoBehaviour
         ShowFixedChanges();
     }
 
+    // Hooked to the button.
     public void ExecuteOptions()
     {
         if (option.CanExecute())
         {
-            option.ExecuteOption();
-            OnOptionExecuted();
+            onOptionChosen?.Invoke(this);
         }
+    }
+
+    /// <summary>The icons of what the option spends (or gives) up front, with their changes.</summary>
+    public void GetFixedChangeIcons(List<(RectTransform icon, ResourceDelta delta)> icons)
+    {
+        if (resourceRow != null) resourceRow.GetChipIcons(icons);
     }
 
     private void ShowFixedChanges()
@@ -42,10 +51,5 @@ public class OptionDisplay : MonoBehaviour
         // Dimmed like the texts when the option can't be afforded.
         resourceRow.Show(fixedChanges, !button.interactable);
         if (costText != null) costText.SetActive(fixedChanges.Count == 0);
-    }
-
-    private void OnOptionExecuted()
-    {
-        onOptionSelected?.Invoke(option);
     }
 }

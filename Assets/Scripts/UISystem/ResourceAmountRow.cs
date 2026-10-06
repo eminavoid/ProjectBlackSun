@@ -1,5 +1,6 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,24 +28,30 @@ public class ResourceAmountRow : MonoBehaviour
 
     [Header("Appear Animation")]
     [SerializeField] private bool animateIn;
-    [SerializeField, Min(0f)] private float appearDelay = 0.2f;
-    [SerializeField, Min(0f)] private float stagger = 0.12f;
-    [SerializeField, Min(0.01f)] private float popDuration = 0.35f;
+    [SerializeField, Min(0f)] private float appearDelay = 0.25f;
+    [SerializeField, Min(0f)] private float stagger = 0.15f;
+    [SerializeField, Min(0.01f)] private float popDuration = 0.42f;
 
     private class Chip
     {
         public GameObject root;
         public Image icon;
         public TMP_Text amount;
-        public int value;
-        public bool refund;
+        public ResourceDelta delta;
     }
 
+    /// <summary>Raised as soon as the row has chips to show, with the changes shown.</summary>
+    public event Action<IReadOnlyList<ResourceDelta>> Shown;
+
+    /// <summary>Raised when the first chip shows up (after the appear delay when animated), with the changes shown.</summary>
+    public event Action<IReadOnlyList<ResourceDelta>> ChipsAppeared;
+
     private readonly List<Chip> chips = new List<Chip>();
+    private Sequence appearing;
 
     public void Show(IReadOnlyList<ResourceDelta> deltas, bool dimmed = false)
     {
-        StopAllCoroutines();
+        appearing?.Kill();
         ClearChips();
 
         if (deltas != null)
@@ -55,7 +62,11 @@ public class ResourceAmountRow : MonoBehaviour
 
         bool hasAny = chips.Count > 0;
         gameObject.SetActive(hasAny);
-        if (hasAny && animateIn) StartCoroutine(AnimateIn());
+        if (!hasAny) return;
+
+        Shown?.Invoke(deltas);
+        if (animateIn) AnimateIn(deltas);
+        else ChipsAppeared?.Invoke(deltas);
     }
 
     private void AddChips(IReadOnlyList<ResourceDelta> deltas, bool refunds, bool dimmed)
@@ -78,8 +89,7 @@ public class ResourceAmountRow : MonoBehaviour
             root = root,
             icon = root.GetComponentInChildren<Image>(true),
             amount = root.GetComponentInChildren<TMP_Text>(true),
-            value = delta.Amount,
-            refund = delta.IsRefund
+            delta = delta
         };
 
         Color color = delta.IsRefund ? refundColor : delta.Amount > 0 ? gainColor : lossColor;
@@ -112,60 +122,58 @@ public class ResourceAmountRow : MonoBehaviour
     }
 
     // Each chip pops in after the previous one while its number counts up from zero.
-    private IEnumerator AnimateIn()
+    private void AnimateIn(IReadOnlyList<ResourceDelta> deltas)
     {
-        SetProgress(0f);
-        float start = Time.unscaledTime + appearDelay;
+        appearing = DOTween.Sequence()
+            .InsertCallback(appearDelay, () => ChipsAppeared?.Invoke(deltas))
+            .SetLink(gameObject).SetUpdate(true);
 
-        bool finished = false;
-        while (!finished)
-        {
-            finished = true;
-            float elapsed = Time.unscaledTime - start;
-
-            for (int i = 0; i < chips.Count; i++)
-            {
-                float t = Mathf.Clamp01((elapsed - i * stagger) / popDuration);
-                if (t < 1f) finished = false;
-                ApplyProgress(chips[i], t);
-            }
-
-            yield return null;
-        }
-    }
-
-    private void SetProgress(float t)
-    {
         for (int i = 0; i < chips.Count; i++)
         {
-            ApplyProgress(chips[i], t);
-        }
-    }
+            Chip chip = chips[i];
+            float at = appearDelay + i * stagger;
 
-    private void ApplyProgress(Chip chip, float t)
-    {
-        chip.root.transform.localScale = Vector3.one * BackOut(t);
-        if (chip.amount != null)
-        {
-            float counted = 1f - (1f - t) * (1f - t) * (1f - t);
-            chip.amount.text = FormatAmount(chip, Mathf.RoundToInt(chip.value * counted));
-        }
-    }
+            chip.root.transform.localScale = Vector3.zero;
+            appearing.Insert(at, chip.root.transform.DOScale(1f, popDuration).SetEase(Ease.OutBack));
 
-    // Overshoots a little past 1 before settling, which reads as a "pop".
-    private static float BackOut(float t)
-    {
-        if (t <= 0f) return 0f;
-        const float c1 = 1.70158f;
-        const float c3 = c1 + 1f;
-        float u = t - 1f;
-        return 1f + c3 * u * u * u + c1 * u * u;
+            if (chip.amount == null) continue;
+            chip.amount.text = FormatAmount(chip, 0);
+            appearing.Insert(at, DOVirtual.Float(0f, chip.delta.Amount, popDuration,
+                value => chip.amount.text = FormatAmount(chip, Mathf.RoundToInt(value))).SetEase(Ease.OutCubic));
+        }
     }
 
     private string FormatAmount(Chip chip, int amount)
     {
         string number = amount > 0 ? $"+{amount}" : amount.ToString();
-        return chip.refund && !string.IsNullOrEmpty(refundLabel) ? $"{number} <size=55%>{refundLabel}</size>" : number;
+        return chip.delta.IsRefund && !string.IsNullOrEmpty(refundLabel) ? $"{number} <size=55%>{refundLabel}</size>" : number;
+    }
+
+    /// <summary>The icon of each chip shown, with its change. The row keeps the chips.</summary>
+    public void GetChipIcons(List<(RectTransform icon, ResourceDelta delta)> icons)
+    {
+        for (int i = 0; i < chips.Count; i++)
+        {
+            if (chips[i].icon != null) icons.Add((chips[i].icon.rectTransform, chips[i].delta));
+        }
+    }
+
+    /// <summary>
+    /// Hands the chips over, fully shown, so they can outlive the row (e.g. to fly off to the resources bar).
+    /// The row forgets them: whoever takes them destroys them.
+    /// </summary>
+    public List<(RectTransform rect, ResourceDelta delta)> TakeChips()
+    {
+        appearing?.Complete();
+
+        var taken = new List<(RectTransform rect, ResourceDelta delta)>(chips.Count);
+        for (int i = 0; i < chips.Count; i++)
+        {
+            taken.Add(((RectTransform)chips[i].root.transform, chips[i].delta));
+        }
+
+        chips.Clear();
+        return taken;
     }
 
     private void ClearChips()

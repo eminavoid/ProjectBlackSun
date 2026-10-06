@@ -11,6 +11,14 @@ public class OptionHoverTextFeedback : MonoBehaviour, IPointerEnterHandler, IPoi
     [SerializeField, Range(0f, 1f)] private float disabledDimFactor = 0.5f;
 
     private Color[] originalColors;
+    private bool locked;
+
+    /// <summary>Keeps the hover color for good (e.g. the option was chosen), whatever the pointer does next.</summary>
+    public void LockHighlighted()
+    {
+        locked = true;
+        SetColor(hoverColor);
+    }
 
     private void Start()
     {
@@ -37,7 +45,7 @@ public class OptionHoverTextFeedback : MonoBehaviour, IPointerEnterHandler, IPoi
 
     private bool IsInteractable()
     {
-        return selectable == null || selectable.interactable;
+        return !locked && (selectable == null || selectable.interactable);
     }
 
     private void ApplyBaseAppearance()

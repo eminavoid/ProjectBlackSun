@@ -10,7 +10,7 @@
     "Type": "User",
     "GUID": "{87650D7E-134E-4921-881A-FE8CF49829E8}",
     "Language": "SFX",
-    "Hash": "{17FF24D8-CD55-91BA-8FC3-738370CA6022}",
+    "Hash": "{BB29849B-EB6A-EB5C-9631-C6D5F6E09BF7}",
     "ObjectPath": "\\SoundBanks\\Default Work Unit\\UI",
     "ShortName": "UI",
     "Path": "UI.bnk",
@@ -38,6 +38,14 @@
       "Location": "Memory",
       "ShortName": "shh.wav",
       "CachePath": "5E/{5E6DDD4E-7535-7664-C723-80D1699ADC41}.wem"
+     },
+     {
+      "Id": "135592675",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "LUTE SOUND.wav",
+      "CachePath": "26/{26423FC3-93C9-4F05-59DE-03FC40B2BCB7}.wem"
      },
      {
       "Id": "156979451",
@@ -70,6 +78,14 @@
       "Location": "Memory",
       "ShortName": "slimy.wav",
       "CachePath": "35/{358441DE-A351-7007-5118-92F94609DD34}.wem"
+     },
+     {
+      "Id": "336502226",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Trombone - SOUND EFFECT -.wav",
+      "CachePath": "30/{30A171FD-370C-FF97-1A1E-44995067244A}.wem"
      },
      {
       "Id": "339411233",
@@ -158,6 +174,14 @@
       "Location": "Memory",
       "ShortName": "choir.wav",
       "CachePath": "4B/{4BFE9437-9130-8BD7-B5E3-2E17E44B6EB6}.wem"
+     },
+     {
+      "Id": "1030129768",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "good harp.wav",
+      "CachePath": "18/{182D7B14-77CF-4956-B93A-BDAD03A26114}.wem"
      }
     ],
     "Events": [
@@ -254,6 +278,57 @@
       "MediaRefs": [
        {
         "Id": "156979451"
+       }
+      ]
+     },
+     {
+      "Id": "2322140692",
+      "Name": "Play_UI_OutcomeResources",
+      "ObjectPath": "\\Events\\Default Work Unit\\Play_UI_OutcomeResources",
+      "GUID": "{BE0013ED-F726-4C79-A105-FEA77B984E16}",
+      "DurationType": "OneShot",
+      "DurationMin": "2.0386834",
+      "DurationMax": "4.275526",
+      "SwitchContainers": [
+       {
+        "SwitchValue": {
+         "GroupType": "Switch",
+         "GroupId": "3935956969",
+         "Id": "3133553498",
+         "GUID": "{18BA7170-6819-452D-BB1B-9545209DB98F}",
+         "Default": "true"
+        },
+        "MediaRefs": [
+         {
+          "Id": "135592675"
+         }
+        ]
+       },
+       {
+        "SwitchValue": {
+         "GroupType": "Switch",
+         "GroupId": "3935956969",
+         "Id": "635371784",
+         "GUID": "{36994381-11B2-48C4-8B89-E33CCE1EB27D}"
+        },
+        "MediaRefs": [
+         {
+          "Id": "1030129768"
+         }
+        ]
+       },
+       {
+        "SwitchValue": {
+         "GroupType": "Switch",
+         "GroupId": "3935956969",
+         "Id": "221232704",
+         "GUID": "{2DDE4CB7-0AEE-4DB4-88DC-3DDC02613CED}"
+        },
+        "MediaRefs": [
+         {
+          "Id": "336502226"
+         }
+        ]
        }
       ]
      },
@@ -425,10 +500,36 @@
         "GUID": "{3BFDACD9-413C-4DCB-B4DF-38E5E76C4C55}"
        }
       ]
+     },
+     {
+      "Id": "3935956969",
+      "Name": "OutcomeBalance",
+      "ObjectPath": "\\Switches\\Default Work Unit\\OutcomeBalance",
+      "GUID": "{7E995430-D3C2-42D3-9D26-7F680297FB62}",
+      "Switches": [
+       {
+        "Id": "221232704",
+        "Name": "Loss",
+        "ObjectPath": "\\Switches\\Default Work Unit\\OutcomeBalance\\Loss",
+        "GUID": "{2DDE4CB7-0AEE-4DB4-88DC-3DDC02613CED}"
+       },
+       {
+        "Id": "635371784",
+        "Name": "Gain",
+        "ObjectPath": "\\Switches\\Default Work Unit\\OutcomeBalance\\Gain",
+        "GUID": "{36994381-11B2-48C4-8B89-E33CCE1EB27D}"
+       },
+       {
+        "Id": "3133553498",
+        "Name": "Mixed",
+        "ObjectPath": "\\Switches\\Default Work Unit\\OutcomeBalance\\Mixed",
+        "GUID": "{18BA7170-6819-452D-BB1B-9545209DB98F}"
+       }
+      ]
      }
     ]
    }
   ],
-  "FileHash": "{E10A4589-7F2D-2890-33CF-0A5A86DC3058}"
+  "FileHash": "{50ED4203-D727-0B48-CF95-21E093032231}"
  }
 }

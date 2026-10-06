@@ -108,9 +108,13 @@ public class EventExcelImporterWindow : EditorWindow
             string category = sheet.Name.Trim();
             if (category.Equals("TEMPLATE", StringComparison.OrdinalIgnoreCase)) continue;
 
+            Region region = ParseRegion(category);
+            if (region == Region.None) log.Add($"WARNING: sheet \"{category}\" isn't named after a region; its events get none.");
+
             var events = ScanSheet(sheet);
             foreach (var evt in events)
             {
+                evt.region = region;
                 Seed existing = FindExistingSeed(evt.id);
                 List<string> differences = null;
                 if (existing != null)
@@ -171,6 +175,16 @@ public class EventExcelImporterWindow : EditorWindow
 
     private static string EventFolder(string category, string id) => $"Assets/Events/NUEVOS/{category}/{id}";
 
+    // Sheets are named after the regions: "Agora", "Pink Quarter", "The Warrens"...
+    private static Region ParseRegion(string sheetName)
+    {
+        string name = sheetName.Trim();
+        if (name.StartsWith("The ", StringComparison.OrdinalIgnoreCase)) name = name.Substring(4);
+        name = name.Replace(" ", "");
+
+        return Enum.TryParse(name, true, out Region region) && Enum.IsDefined(typeof(Region), region) ? region : Region.None;
+    }
+
     private PlayerStats FindSharedPlayerStats()
     {
         string[] guids = AssetDatabase.FindAssets("t:PlayerStats");
@@ -197,6 +211,7 @@ public class EventExcelImporterWindow : EditorWindow
     private class ParsedEvent
     {
         public string id;
+        public Region region;
         public string title;
         public string description;
         public List<ParsedOption> options = new List<ParsedOption>();
@@ -430,6 +445,7 @@ public class EventExcelImporterWindow : EditorWindow
         var fields = new List<EventField>();
         AddField(fields, "Event", "title", evt.title);
         AddField(fields, "Event", "description", evt.description);
+        AddField(fields, "Event", "region", evt.region.ToString());
         AddField(fields, "Event", "options", string.Join(", ", evt.options.Select(option => option.letter)));
 
         foreach (ParsedOption option in evt.options)
@@ -469,6 +485,7 @@ public class EventExcelImporterWindow : EditorWindow
 
         AddField(fields, "Event", "title", seedObject.FindProperty("title").stringValue);
         AddField(fields, "Event", "description", seedObject.FindProperty("description").stringValue);
+        AddField(fields, "Event", "region", ((Region)seedObject.FindProperty("region").intValue).ToString());
         AddField(fields, "Event", "options", string.Join(", ", options.Select(option => option != null ? OptionLetter(option, id) : "(empty)")));
 
         foreach (Option option in options)
@@ -657,6 +674,7 @@ public class EventExcelImporterWindow : EditorWindow
         var seedObject = new SerializedObject(seed);
         seedObject.FindProperty("title").stringValue = evt.title;
         seedObject.FindProperty("description").stringValue = evt.description;
+        seedObject.FindProperty("region").intValue = (int)evt.region;
 
         if (isNewEvent)
         {

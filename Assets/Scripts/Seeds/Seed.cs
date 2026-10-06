@@ -26,9 +26,12 @@ public class Seed : ScriptableObject
     [Header("Gameplay")]
     [SerializeField] private int ticks = 1;
     [Header("Classification")]
+    [Tooltip("Where the event comes from; its resource is stamped on the event window's seal.")]
+    [SerializeField] private Region region;
     [SerializeField] private SeedEventType eventType;
     [SerializeField] private SeedDifficulty difficulty;
     [field: SerializeField] public List<Option> Options { get; private set; }
+    public Region Region => region;
     public int Ticks => ticks;
     public SeedEventType EventType => eventType;
     public SeedDifficulty Difficulty => difficulty;

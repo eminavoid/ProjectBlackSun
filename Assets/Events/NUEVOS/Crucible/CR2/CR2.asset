@@ -19,6 +19,7 @@ MonoBehaviour:
     quell this uprising. Maybe we should raise to the occasion?
   icon: {fileID: 0}
   ticks: 1
+  region: 3
   eventType: 0
   difficulty: 0
   <Options>k__BackingField:

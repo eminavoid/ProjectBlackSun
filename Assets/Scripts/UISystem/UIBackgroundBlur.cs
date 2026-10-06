@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,7 +19,7 @@ public class UIBackgroundBlur : MonoBehaviour
     [SerializeField, Range(0.5f, 4f)] float radius = 1.5f;
     [Tooltip("Multiplied over the snapshot. Grey dims the background so the window stands out.")]
     [SerializeField] Color tint = new Color(0.72f, 0.72f, 0.72f, 1f);
-    [SerializeField, Min(0f)] float fadeDuration = 0.18f;
+    [SerializeField, Min(0f)] float fadeDuration = 0.22f;
 
     static Material blurMaterial;
     static readonly List<UIBackgroundBlur> shown = new List<UIBackgroundBlur>();
@@ -77,12 +78,7 @@ public class UIBackgroundBlur : MonoBehaviour
         if (!captured) yield break;
 
         Show(0f);
-        for (float t = 0f; t < fadeDuration; t += Time.unscaledDeltaTime)
-        {
-            SetAlpha(t / fadeDuration);
-            yield return null;
-        }
-        SetAlpha(1f);
+        DOVirtual.Float(0f, 1f, fadeDuration, SetAlpha).SetLink(gameObject, LinkBehaviour.KillOnDisable).SetUpdate(true);
     }
 
     bool Capture()

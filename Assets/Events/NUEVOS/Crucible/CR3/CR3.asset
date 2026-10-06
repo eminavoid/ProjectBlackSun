@@ -18,6 +18,7 @@ MonoBehaviour:
     One of our sanctuaries in the Warrens was completely leveled! We must do something!
   icon: {fileID: 0}
   ticks: 1
+  region: 3
   eventType: 0
   difficulty: 1
   <Options>k__BackingField:

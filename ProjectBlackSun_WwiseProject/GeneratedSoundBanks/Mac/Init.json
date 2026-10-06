@@ -130,10 +130,36 @@
         "GUID": "{3BFDACD9-413C-4DCB-B4DF-38E5E76C4C55}"
        }
       ]
+     },
+     {
+      "Id": "3935956969",
+      "Name": "OutcomeBalance",
+      "ObjectPath": "\\Switches\\Default Work Unit\\OutcomeBalance",
+      "GUID": "{7E995430-D3C2-42D3-9D26-7F680297FB62}",
+      "Switches": [
+       {
+        "Id": "221232704",
+        "Name": "Loss",
+        "ObjectPath": "\\Switches\\Default Work Unit\\OutcomeBalance\\Loss",
+        "GUID": "{2DDE4CB7-0AEE-4DB4-88DC-3DDC02613CED}"
+       },
+       {
+        "Id": "635371784",
+        "Name": "Gain",
+        "ObjectPath": "\\Switches\\Default Work Unit\\OutcomeBalance\\Gain",
+        "GUID": "{36994381-11B2-48C4-8B89-E33CCE1EB27D}"
+       },
+       {
+        "Id": "3133553498",
+        "Name": "Mixed",
+        "ObjectPath": "\\Switches\\Default Work Unit\\OutcomeBalance\\Mixed",
+        "GUID": "{18BA7170-6819-452D-BB1B-9545209DB98F}"
+       }
+      ]
      }
     ]
    }
   ],
-  "FileHash": "{6BDE5276-3475-2FAC-34CD-657145A97889}"
+  "FileHash": "{7A0E26F0-C54F-5CA0-CB32-853F2FD1D8AC}"
  }
 }

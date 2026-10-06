@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 using Zeke.UI;
@@ -22,6 +23,22 @@ public class SeedEventManager : Singleton<SeedEventManager>
     [SerializeField] private UIWindow eventOutputWindowPrefab;
     [SerializeField] private OptionDisplay optionDisplayPrefab;
 
+    [Header("Choosing an Option")]
+    [Tooltip("The other options fade out, one after another outwards from the chosen one.")]
+    [SerializeField, Min(0.01f)] private float othersFadeDuration = 0.32f;
+    [SerializeField, Min(0f)] private float othersFadeStagger = 0.06f;
+    [Tooltip("From the click to the cost leaving the resources bar.")]
+    [SerializeField, Min(0f)] private float costFlightDelay = 0.15f;
+    [SerializeField, Min(0f)] private float costFlightStagger = 0.13f;
+    [Tooltip("Pause after the cost lands, before the option runs.")]
+    [SerializeField, Min(0f)] private float choiceBeat = 0.2f;
+
+    [Header("Result Transition")]
+    [Tooltip("The result's parchment unrolls out of the chosen option.")]
+    [SerializeField, Min(0.01f)] private float unrollDuration = 0.5f;
+    [Tooltip("The event's window fades away under the unrolling result.")]
+    [SerializeField, Min(0.01f)] private float optionsFadeOutDuration = 0.25f;
+
     [Space]
 
     [SerializeField] private List<ResourceSeedPool> resourceSeedPools = new List<ResourceSeedPool>();
@@ -42,21 +59,93 @@ public class SeedEventManager : Singleton<SeedEventManager>
         SetOptionsWindowVisibility(false);
     }
 
-    public void OnOptionSelected(Option option)
+    private void OnOptionChosen(OptionDisplay chosen)
+    {
+        if (choosing) return;
+        StartCoroutine(PlayChoice(chosen));
+    }
+
+    // The chosen option stays lit while the others fade away, its cost flies out of the resources bar into it,
+    // and only then the option runs; its result unrolls out of it.
+    private IEnumerator PlayChoice(OptionDisplay chosen)
+    {
+        choosing = true;
+        LayoutGroup layout = spawnOptionsWindow.TryGetElement<LayoutGroup>("Layout Group");
+        if (layout.TryGetComponent(out CanvasGroup optionsGroup)) optionsGroup.blocksRaycasts = false;
+
+        if (chosen.TryGetComponent(out OptionHoverTextFeedback feedback)) feedback.LockHighlighted();
+        Pulse(chosen.transform, -0.05f);
+        FadeOutOtherOptions(layout, chosen);
+
+        // Only what the option spends flies in; anything it gives up front shows in the bar when it runs.
+        var fixedChanges = new List<(RectTransform icon, ResourceDelta delta)>();
+        chosen.GetFixedChangeIcons(fixedChanges);
+        var flights = new List<Tween>();
+        for (int i = 0; i < fixedChanges.Count; i++)
+        {
+            (RectTransform icon, ResourceDelta delta) = fixedChanges[i];
+            if (delta.Amount >= 0 || ResourceManager.Sidebar == null) continue;
+
+            Tween flight = ResourceManager.Sidebar.Send(chosen, delta.Resource, delta.Amount, icon, costFlightDelay + flights.Count * costFlightStagger);
+            if (flight != null) flights.Add(flight);
+        }
+
+        for (int i = 0; i < flights.Count; i++) yield return flights[i].WaitForCompletion();
+        if (flights.Count > 0) Pulse(chosen.transform, 0.04f);
+        yield return new WaitForSecondsRealtime(flights.Count > 0 ? choiceBeat : othersFadeDuration);
+
+        // The cost really leaves now: the bar already shows it, so it stops holding it in the same frame.
+        RectTransform rect = (RectTransform)chosen.transform;
+        choiceOrigin = (rect.TransformPoint(rect.rect.center), Vector2.Scale(rect.rect.size, rect.lossyScale));
+        chosen.Option.ExecuteOption();
+        if (ResourceManager.Sidebar != null) ResourceManager.Sidebar.Release(chosen);
+        choiceOrigin = null;
+
+        if (optionsGroup != null) optionsGroup.blocksRaycasts = true;
+        choosing = false;
+        OnOptionExecuted();
+    }
+
+    // A quick wobble of the option's size. Negative amounts dip first (a press), positive ones grow first (a thump).
+    private static void Pulse(Transform option, float amount)
+    {
+        option.DOPunchScale(Vector3.one * amount, 0.27f, 2, 0.5f).SetLink(option.gameObject).SetUpdate(true);
+    }
+
+    // The others shrink a bit and fade, one after another outwards from the chosen one.
+    // They stay in place (just invisible) so the layout doesn't move the chosen option.
+    private void FadeOutOtherOptions(LayoutGroup layout, OptionDisplay chosen)
+    {
+        int chosenIndex = chosen.transform.GetSiblingIndex();
+        foreach (Transform option in layout.transform)
+        {
+            if (option == chosen.transform) continue;
+
+            DOTween.Sequence()
+                .Join(GroupOf(option.gameObject).DOFade(0f, othersFadeDuration))
+                .Join(option.DOScale(option.localScale * 0.92f, othersFadeDuration))
+                .SetDelay(Mathf.Abs(option.GetSiblingIndex() - chosenIndex) * othersFadeStagger)
+                .SetEase(Ease.OutCubic).SetLink(option.gameObject).SetUpdate(true);
+        }
+    }
+
+    private void OnOptionExecuted()
     {
         LayoutGroup layout = spawnOptionsWindow.TryGetElement<LayoutGroup>("Layout Group");
 
-        foreach (Transform children in layout.transform)
-        {
-            Destroy(children.gameObject);
-        }
-
-        // A result window is taking over: hide this event but keep its blur, the queue resumes once it closes.
+        // A result window is taking over: this event fades away under it but keeps its blur; the queue resumes once it closes.
         if (openOutputWindows > 0)
         {
-            ApplyOptionsWindowVisibility(false);
+            optionsFade?.Kill();
+            optionsFade = FadeGroups(OptionsContent(), 0f, optionsFadeOutDuration).OnComplete(() =>
+            {
+                ApplyOptionsWindowVisibility(false);
+                DestroyOptions(layout);
+            });
             return;
         }
+
+        DestroyOptions(layout);
 
         if (seedEvents.Count > 0)
         {
@@ -65,6 +154,14 @@ public class SeedEventManager : Singleton<SeedEventManager>
         else
         {
             SetOptionsWindowVisibility(false);
+        }
+    }
+
+    private static void DestroyOptions(LayoutGroup layout)
+    {
+        foreach (Transform option in layout.transform)
+        {
+            Destroy(option.gameObject);
         }
     }
 
@@ -77,7 +174,7 @@ public class SeedEventManager : Singleton<SeedEventManager>
         ResourceAmountRow resourceRow = windowInstance.GetComponentInChildren<ResourceAmountRow>(true);
         if (resourceRow != null) resourceRow.Show(resourceChanges);
 
-        Instance.StartCoroutine(Instance.ShowOutputWindowAfterBlur(windowInstance));
+        Instance.StartCoroutine(Instance.ShowOutputWindowAfterBlur(windowInstance, Instance.choiceOrigin));
     }
 
     private void OnTurnStarted()
@@ -200,8 +297,12 @@ public class SeedEventManager : Singleton<SeedEventManager>
     private void CreateSeedOptionsInCanvas(Seed seed)
     {
         LayoutGroup layout = spawnOptionsWindow.TryGetElement<LayoutGroup>("Layout Group");
+        DestroyOptions(layout);
         spawnOptionsWindow.TryGetElement<TextMeshProUGUI>("Title").text = seed.Title;
         spawnOptionsWindow.TryGetElement<TextMeshProUGUI>("Description").text = seed.Description;
+
+        RegionSeal seal = spawnOptionsWindow.GetComponentInChildren<RegionSeal>(true);
+        if (seal != null) seal.Show(seed.Region);
 
         for (int i = 0; i < seed.Options.Count; i++)
         {
@@ -214,15 +315,18 @@ public class SeedEventManager : Singleton<SeedEventManager>
             }
 
             display.InitializeData(seed.Options[i]);
-            display.onOptionSelected += OnOptionSelected;
+            display.onOptionChosen += OnOptionChosen;
         }
     }
 
     private Coroutine optionsVisibilityRoutine;
-    private Coroutine optionsFadeRoutine;
+    private Tween optionsFade;
     private CanvasGroup[] optionsContent;
     private int resourceWindowOriginalIndex = -1;
     private int openOutputWindows;
+    private bool choosing;
+    // Where the chosen option is on screen (world space) while it runs, for its result to unroll from.
+    private (Vector3 center, Vector2 size)? choiceOrigin;
 
     private void SetOptionsWindowVisibility(bool condition)
     {
@@ -250,17 +354,19 @@ public class SeedEventManager : Singleton<SeedEventManager>
         KeepResourceWindowSharp(spawnOptionsWindow.transform);
         ApplyOptionsWindowVisibility(true);
 
-        if (optionsFadeRoutine != null) StopCoroutine(optionsFadeRoutine);
-        optionsFadeRoutine = StartCoroutine(FadeIn(blurComponent != null ? blurComponent.FadeDuration : 0f, OptionsContent()));
+        // Same length as the blur fade, so the window and its background come in together.
+        optionsFade?.Kill();
+        SetGroupsAlpha(OptionsContent(), 0f);
+        optionsFade = FadeGroups(OptionsContent(), 1f, blurComponent != null ? blurComponent.FadeDuration : 0f);
         optionsVisibilityRoutine = null;
     }
 
     // Same rule for the result window: it stays invisible until its blur has the snapshot.
-    private IEnumerator ShowOutputWindowAfterBlur(UIWindow window)
+    private IEnumerator ShowOutputWindowAfterBlur(UIWindow window, (Vector3 center, Vector2 size)? origin)
     {
         openOutputWindows++;
 
-        if (!window.TryGetComponent(out CanvasGroup group)) group = window.gameObject.AddComponent<CanvasGroup>();
+        CanvasGroup group = GroupOf(window.gameObject);
         group.alpha = 0f;
 
         UIBackgroundBlur blur = window.GetComponentInChildren<UIBackgroundBlur>();
@@ -269,10 +375,14 @@ public class SeedEventManager : Singleton<SeedEventManager>
         if (window != null)
         {
             KeepResourceWindowSharp(window.transform);
-            StartCoroutine(FadeIn(blur != null ? blur.FadeDuration : 0f, group));
+            if (origin.HasValue) Unroll(window, group, origin.Value);
+            else group.DOFade(1f, blur != null ? blur.FadeDuration : 0f).SetLink(window.gameObject).SetUpdate(true);
         }
 
         while (window != null) yield return null;
+
+        // Let the result's chips land in the resources bar before the next event blurs the screen.
+        while (ResourceManager.Sidebar != null && ResourceManager.Sidebar.IsBusy) yield return null;
 
         openOutputWindows--;
         if (openOutputWindows > 0) yield break;
@@ -284,6 +394,54 @@ public class SeedEventManager : Singleton<SeedEventManager>
         else
         {
             SetOptionsWindowVisibility(false);
+        }
+    }
+
+    // The result's parchment starts as the chosen option's strip and opens up to its size on its way to its place;
+    // the rest of the window fades in once it's open.
+    private void Unroll(UIWindow window, CanvasGroup windowGroup, (Vector3 center, Vector2 size) origin)
+    {
+        Image background = window.TryGetElement<Image>("Background");
+        if (background == null)
+        {
+            windowGroup.DOFade(1f, unrollDuration).SetLink(window.gameObject).SetUpdate(true);
+            return;
+        }
+
+        // Its blur shows the same snapshot as the event's, still behind it: fading it in fades the event out.
+        RectTransform parchment = background.rectTransform;
+        CanvasGroup parchmentGroup = GroupOf(parchment.gameObject);
+        CanvasGroup blurGroup = null;
+        var content = new List<CanvasGroup>();
+        foreach (Transform child in window.transform)
+        {
+            if (child == parchment) continue;
+            if (child.GetComponent<UIBackgroundBlur>() != null) blurGroup = GroupOf(child.gameObject);
+            else content.Add(GroupOf(child.gameObject));
+        }
+
+        Vector3 endPosition = parchment.localPosition;
+        Vector3 endScale = parchment.localScale;
+        Vector2 size = Vector2.Scale(parchment.rect.size, parchment.lossyScale);
+        parchment.localPosition = parchment.parent.InverseTransformPoint(origin.center);
+        parchment.localScale = new Vector3(endScale.x * origin.size.x / size.x, endScale.y * origin.size.y / size.y, endScale.z);
+        parchmentGroup.alpha = 0f;
+        SetGroupsAlpha(content, 0f);
+        windowGroup.alpha = 1f;
+
+        // The parchment dissolves in over the option it comes out of and snaps open; the texts come in once it's open.
+        Sequence unroll = DOTween.Sequence()
+            .Insert(0f, parchment.DOLocalMove(endPosition, unrollDuration).SetEase(Ease.OutCubic))
+            .Insert(0f, parchment.DOScaleX(endScale.x, unrollDuration).SetEase(Ease.OutCubic))
+            .Insert(0f, parchment.DOScaleY(endScale.y, unrollDuration).SetEase(Ease.OutBack))
+            .Insert(0f, parchmentGroup.DOFade(1f, unrollDuration * 0.3f))
+            .Insert(unrollDuration * 0.6f, FadeGroups(content, 1f, unrollDuration * 0.4f))
+            .SetLink(window.gameObject).SetUpdate(true);
+
+        if (blurGroup != null)
+        {
+            blurGroup.alpha = 0f;
+            unroll.Insert(0f, blurGroup.DOFade(1f, optionsFadeOutDuration));
         }
     }
 
@@ -332,27 +490,31 @@ public class SeedEventManager : Singleton<SeedEventManager>
         optionsContent = new CanvasGroup[objects.Length];
         for (int i = 0; i < objects.Length; i++)
         {
-            if (!objects[i].TryGetComponent(out optionsContent[i])) optionsContent[i] = objects[i].AddComponent<CanvasGroup>();
+            optionsContent[i] = GroupOf(objects[i]);
         }
 
         return optionsContent;
     }
 
-    // Same length as the blur fade, so the window and its background come in together.
-    private IEnumerator FadeIn(float duration, params CanvasGroup[] groups)
+    private static CanvasGroup GroupOf(GameObject target)
     {
-        for (float t = 0f; t < duration; t += Time.unscaledDeltaTime)
-        {
-            SetGroupsAlpha(groups, t / duration);
-            yield return null;
-        }
-
-        SetGroupsAlpha(groups, 1f);
+        return target.TryGetComponent(out CanvasGroup group) ? group : target.AddComponent<CanvasGroup>();
     }
 
-    private static void SetGroupsAlpha(CanvasGroup[] groups, float alpha)
+    // Fades the groups together, from wherever they are to alpha.
+    private static Sequence FadeGroups(IReadOnlyList<CanvasGroup> groups, float alpha, float duration)
     {
-        for (int i = 0; i < groups.Length; i++)
+        Sequence fade = DOTween.Sequence().SetUpdate(true);
+        for (int i = 0; i < groups.Count; i++)
+        {
+            fade.Insert(0f, groups[i].DOFade(alpha, duration));
+        }
+        return fade;
+    }
+
+    private static void SetGroupsAlpha(IReadOnlyList<CanvasGroup> groups, float alpha)
+    {
+        for (int i = 0; i < groups.Count; i++)
         {
             if (groups[i] != null) groups[i].alpha = alpha;
         }

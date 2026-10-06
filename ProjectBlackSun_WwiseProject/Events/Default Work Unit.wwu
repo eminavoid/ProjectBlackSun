@@ -124,6 +124,17 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Event Name="Play_UI_OutcomeResources" ID="{BE0013ED-F726-4C79-A105-FEA77B984E16}">
+					<ChildrenList>
+						<Action Name="" ID="{3B131844-390C-4FA3-B316-54810C007C2B}" ShortID="90697341">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Outcome_Resources" ID="{33727073-CDE1-4895-9407-959540015A27}" WorkUnitID="{85ECF510-36BD-49F2-8F1A-496BB22358A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>
