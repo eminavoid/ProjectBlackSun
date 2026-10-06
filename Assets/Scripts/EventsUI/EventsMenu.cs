@@ -1,8 +1,9 @@
-using UnityEngine;
-using Zeke.UI;
-using TMPro;
-using UnityEngine.UI;
 using System.Collections.Generic;
+using TMPro;
+using UnityEditor.PackageManager.UI;
+using UnityEngine;
+using UnityEngine.UI;
+using Zeke.UI;
 
 public class EventsMenu : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class EventsMenu : MonoBehaviour
     [SerializeField] private RectTransform content;
     [SerializeField] private UIWindow elementPrefab;
 
-    private readonly Dictionary<Seed, UIWindow> seedWindows = new Dictionary<Seed, UIWindow>();
+    private readonly Dictionary<int, UIWindow> seedWindows = new Dictionary<int, UIWindow>();
 
     private void Start()
     {
@@ -21,18 +22,21 @@ public class EventsMenu : MonoBehaviour
     //Temporal
     private void OnSeedQueued(Seed seed)
     {
-        CreateElement(seed);
+        UIWindow window = CreateElement(seed);
+        Debug.Log($"Adding {window} window to dictionary with seed: {seed} with id: {seed.UniqueID}");
+        seedWindows.Add(seed.UniqueID, window);
     }
 
     private void OnSeedRemoved(Seed seed)
     {
-        seedWindows[seed].DestroyWindow();
-        seedWindows.Remove(seed);
+        Debug.Log($"Trying to remove {seed} with id: {seed.UniqueID}");
+        seedWindows[seed.UniqueID].DestroyWindow();
+        seedWindows.Remove(seed.UniqueID);
     }
 
     //Needs a dequeue method to destroy them 
 
-    private void CreateElement(Seed seed)
+    private UIWindow CreateElement(Seed seed)
     {
         UIWindow window = Instantiate(elementPrefab, content);
 
@@ -46,6 +50,6 @@ public class EventsMenu : MonoBehaviour
         elementClickbox.onClick.AddListener(() => SeedEventManager.CreateSeedEventMenu(seed));
         elementClickbox.onClick.AddListener(() => ui.SetActive(false));
 
-        seedWindows.Add(seed, window);
+        return window;
     }
 }

@@ -51,6 +51,8 @@ public class Seed : ScriptableObject
 
     private DistrictZone currentZone;
 
+    public int UniqueID { get; private set; } = -9999;
+
     private int currentTicks = 0;
 
     public void Initialize(DistrictZone zone)
@@ -62,6 +64,9 @@ public class Seed : ScriptableObject
         {
             Options[i].Initialize(this);
         }
+
+        UniqueID = UniqueIDGenerator.GetId();
+        Debug.Log($"SeedEventManager initialized {this}");
     }
 
     public void Tick()

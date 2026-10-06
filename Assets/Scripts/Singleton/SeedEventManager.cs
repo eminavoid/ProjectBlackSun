@@ -73,6 +73,8 @@ public class SeedEventManager : Singleton<SeedEventManager>
         onSeedStored?.Invoke(seed);
 
         Instance.UpdateSeedEventsCount();
+
+        Debug.Log($"SeedEventManager Queued: {seed}");
     }
 
     private static Seed RemoveSeed(Seed seed)
@@ -81,6 +83,8 @@ public class SeedEventManager : Singleton<SeedEventManager>
         onSeedRemoved?.Invoke(seed);
 
         Instance.UpdateSeedEventsCount();
+
+        Debug.Log($"SeedEventManager Unqueued: {seed}");
 
         return seed;
     }
@@ -151,7 +155,7 @@ public class SeedEventManager : Singleton<SeedEventManager>
 
         if (optionsGroup != null) optionsGroup.blocksRaycasts = true;
         choosing = false;
-        OnOptionExecuted(chosen.Option);
+        OnOptionExecuted(chosen.Option, chosen.Seed);
     }
 
     // A quick wobble of the option's size. Negative amounts dip first (a press), positive ones grow first (a thump).
@@ -178,9 +182,10 @@ public class SeedEventManager : Singleton<SeedEventManager>
     }
 
     // The event is resolved: it leaves the events list and its window closes.
-    private void OnOptionExecuted(Option option)
+    private void OnOptionExecuted(Option option, Seed seed)
     {
-        RemoveSeed(option.Seed);
+        Debug.Log($"calling remove seed with {option.Seed}");
+        RemoveSeed(seed);
         LayoutGroup layout = spawnOptionsWindow.TryGetElement<LayoutGroup>("Layout Group");
 
         // A result window is taking over: this event fades away under it but keeps its blur until the result closes.
@@ -251,7 +256,7 @@ public class SeedEventManager : Singleton<SeedEventManager>
     private void AutoResolveEvent(Seed seed)
     {
         seed.Options[seed.DefaultOption - 1].ExecuteOption();
-        RemoveSeed(seed);
+        //RemoveSeed(seed);
     }
 
     private void TryPlantResourceSeeds()
@@ -368,7 +373,7 @@ public class SeedEventManager : Singleton<SeedEventManager>
                 uiWindow.TryGetElement<TextMeshProUGUI>("Description").text = seed.Options[i].Description;
             }
 
-            display.InitializeData(seed.Options[i]);
+            display.InitializeData(seed.Options[i], seed);
             display.onOptionChosen += OnOptionChosen;
         }
     }

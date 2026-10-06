@@ -25,6 +25,7 @@ public class GameTime : Singleton<GameTime>
     public static Action OnTurnEndedLate;
 
     private static bool processingTurn = false;
+    private static bool confirmationPopUpOpen = false;
 
     private void Update()
     {
@@ -50,18 +51,25 @@ public class GameTime : Singleton<GameTime>
     public static void NextTurn()
     {
         if (processingTurn) return;
+        if (confirmationPopUpOpen) return;
         if (SeedEventManager.HasUnresolvedEvents)
         {
+            confirmationPopUpOpen = true;
+
             UIWindow popUp = Instantiate(Instance.seedConfirmationPopUp, GlobalReferences.ScreenCanvas.transform);
 
             popUp.TryGetElement<TextMeshProUGUI>("Description").text = "There are still events left, continue and auto-resolve all of them? The free option will be automatically chosen";
 
-            Button connfirmButton = popUp.TryGetElement<Button>("Confirm Button");
+            Button confirmButton = popUp.TryGetElement<Button>("Confirm Button");
 
-            connfirmButton.onClick.AddListener(Instance.ForceNextTurn);
-            connfirmButton.onClick.AddListener(() => Destroy(popUp.gameObject));
+            confirmButton.onClick.AddListener(Instance.ForceNextTurn);
+            confirmButton.onClick.AddListener(() => Destroy(popUp.gameObject));
+            confirmButton.onClick.AddListener(() => confirmationPopUpOpen = false);
 
-            popUp.TryGetElement<Button>("Cancel Button").onClick.AddListener(() => Destroy(popUp.gameObject));
+            Button cancelButton = popUp.TryGetElement<Button>("Cancel Button");
+
+            cancelButton.onClick.AddListener(() => Destroy(popUp.gameObject));
+            cancelButton.onClick.AddListener(() => confirmationPopUpOpen = false);
         }
         else
         {

@@ -15,12 +15,15 @@ public class OptionDisplay : MonoBehaviour
     public Action<OptionDisplay> onOptionChosen;
 
     private Option option;
+    private Seed seed;
     private readonly List<ResourceDelta> fixedChanges = new List<ResourceDelta>();
 
     public Option Option => option;
+    public Seed Seed => seed;
 
-    public void InitializeData(Option optionReference)
+    public void InitializeData(Option optionReference, Seed seed)
     {
+        this.seed = seed;
         option = optionReference;
         button.interactable = option.CanExecute();
         ShowFixedChanges();
