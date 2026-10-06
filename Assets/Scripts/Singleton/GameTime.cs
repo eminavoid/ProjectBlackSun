@@ -1,6 +1,12 @@
 using System.Collections;
 using UnityEngine;
 using System;
+using Zeke.UI;
+using TMPro;
+using UnityEngine.UI;
+
+
+
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
@@ -8,6 +14,7 @@ using UnityEngine.InputSystem;
 public class GameTime : Singleton<GameTime>
 {
     [SerializeField] private float turnStartDelay;
+    [SerializeField] private UIWindow seedConfirmationPopUp;
 
     /// <summary>Se dispara antes de OnTurnEnded: acá se commitean las jugadas planificadas
     /// para que la resolución del turno las tenga en cuenta.</summary>
@@ -43,8 +50,28 @@ public class GameTime : Singleton<GameTime>
     public static void NextTurn()
     {
         if (processingTurn) return;
+        if (SeedEventManager.HasUnresolvedEvents)
+        {
+            UIWindow popUp = Instantiate(Instance.seedConfirmationPopUp, GlobalReferences.ScreenCanvas.transform);
 
-        Instance.StartCoroutine(Instance.NextTurnCoroutine());
+            popUp.TryGetElement<TextMeshProUGUI>("Description").text = "There are still events left, continue and auto-resolve all of them? The free option will be automatically chosen";
+
+            Button connfirmButton = popUp.TryGetElement<Button>("Confirm Button");
+
+            connfirmButton.onClick.AddListener(Instance.ForceNextTurn);
+            connfirmButton.onClick.AddListener(() => Destroy(popUp.gameObject));
+
+            popUp.TryGetElement<Button>("Cancel Button").onClick.AddListener(() => Destroy(popUp.gameObject));
+        }
+        else
+        {
+            Instance.StartCoroutine(Instance.NextTurnCoroutine());
+        }
+    }
+
+    private void ForceNextTurn()
+    {
+        StartCoroutine(Instance.NextTurnCoroutine());
     }
 
     private IEnumerator NextTurnCoroutine()

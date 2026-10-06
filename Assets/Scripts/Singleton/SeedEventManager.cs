@@ -8,7 +8,7 @@ using System;
 
 public class SeedEventManager : Singleton<SeedEventManager>
 {
-    [System.Serializable]
+    [Serializable]
     private class ResourceSeedPool
     {
         public Resource Resource;
@@ -22,12 +22,16 @@ public class SeedEventManager : Singleton<SeedEventManager>
     [SerializeField] private UIWindow spawnOptionsWindow;
     [SerializeField] private UIWindow eventOutputWindowPrefab;
     [SerializeField] private OptionDisplay optionDisplayPrefab;
+    [Space]
+    [SerializeField] private UIWindow seedsUnresolvedPopUp;
 
     [Space]
 
     [SerializeField] private List<ResourceSeedPool> resourceSeedPools = new List<ResourceSeedPool>();
     [SerializeField, HideInInspector] private SeedsPool wealthSeedPool;
     [SerializeField, HideInInspector] private int wealthSeedChance = 100;
+
+    public static bool HasUnresolvedEvents => Instance.seedEvents.Count > 0;
 
     private readonly List<Seed> seedEvents = new List<Seed>();
 
@@ -50,13 +54,32 @@ public class SeedEventManager : Singleton<SeedEventManager>
     {
         Instance.seedEvents.Add(seed);
         onSeedStored?.Invoke(seed);
+
+        Instance.UpdateSeedEventsCount();
     }
 
     private static Seed RemoveSeed(Seed seed)
     {
         Instance.seedEvents.Remove(seed);
         onSeedRemoved?.Invoke(seed);
+
+        Instance.UpdateSeedEventsCount();
+
         return seed;
+    }
+
+    private void UpdateSeedEventsCount()
+    {
+        seedsUnresolvedPopUp.TryGetElement<TextMeshProUGUI>("Text").text = seedEvents.Count.ToString();
+
+        if (seedEvents.Count == 1)
+        {
+            seedsUnresolvedPopUp.gameObject.SetActive(true);
+        }
+        else if (seedEvents.Count == 0)
+        {
+            seedsUnresolvedPopUp.gameObject.SetActive(false);
+        }
     }
 
     private void Start()
@@ -105,20 +128,21 @@ public class SeedEventManager : Singleton<SeedEventManager>
 
     private void OnTurnStarted()
     {
-        Debug.Log($"Turn started: {seedEvents.Count}");
-
         TryPlantResourceSeeds();
     }
 
     private void OnTurnEndedLate()
     {
-        Debug.Log($"Turn ended: {seedEvents.Count}");
-
         for (int i = 0; i < seedEvents.Count; i++)
         {
-            Seed seed = seedEvents[i];
-            seed.Options[seed.DefaultOption - 1].ExecuteOption();
+            AutoResolveEvent(seedEvents[i]);
         }
+    }
+
+    private void AutoResolveEvent(Seed seed)
+    {
+        seed.Options[seed.DefaultOption - 1].ExecuteOption();
+        RemoveSeed(seed);
     }
 
     private void TryPlantResourceSeeds()
