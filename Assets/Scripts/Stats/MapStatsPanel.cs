@@ -420,12 +420,20 @@ public class MapStatsPanel : MonoBehaviour
             return;
         }
 
-        openMenuButton = buttonTransform.GetComponent<Button>();
-        if (openMenuButton == null)
+        Button candidate = buttonTransform.GetComponent<Button>();
+        if (candidate == null)
         {
             Debug.LogWarning($"MapStatsPanel: '{optionsOpenButtonName}' no tiene componente Button.", this);
             return;
         }
+
+        // Button (1) ya abre el tray de seeds. No sumarle el menú de influencia.
+        if (candidate.onClick.GetPersistentEventCount() > 0)
+        {
+            return;
+        }
+
+        openMenuButton = candidate;
 
         TMP_Text label = openMenuButton.GetComponentInChildren<TMP_Text>(true);
         if (label != null) label.text = "Stats";

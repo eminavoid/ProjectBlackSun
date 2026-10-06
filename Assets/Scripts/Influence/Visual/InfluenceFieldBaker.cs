@@ -28,6 +28,11 @@ public class InfluenceFieldBaker
     private Texture2D fieldTexture;
     private Texture2D auxTexture;
 
+    // Dirección de expansión por cuadra: XZ, apunta hacia vecinos que no son de la misma secta.
+    private readonly Dictionary<DistrictZone, Vector2> zoneFlow = new Dictionary<DistrictZone, Vector2>();
+    private readonly Dictionary<DistrictZone, Vector2> zoneFlowNext = new Dictionary<DistrictZone, Vector2>();
+    private readonly HashSet<DistrictZone> flowSources = new HashSet<DistrictZone>();
+
     private Vector2 fieldOrigin;
     private float fieldSize = 1f;
     private bool boundsValid;
@@ -64,6 +69,7 @@ public class InfluenceFieldBaker
 
         if (boundsValid && zones != null)
         {
+            ComputeExpansionFlow(zones, adjacency);
             SplatZones(zones, settings);
             SplatBridges(zones, adjacency, settings);
         }
@@ -244,13 +250,16 @@ public class InfluenceFieldBaker
                 Mathf.Clamp01(totalWeight / state.Cap),
                 settings.MinPresence);
 
+            Vector2 flow = Vector2.zero;
+            zoneFlow.TryGetValue(zone, out flow);
+
             Splat(
                 bounds.center,
                 radius,
                 BlendedColor(totalWeight),
                 strength,
                 Dominance(totalWeight),
-                DistrictKey(zone.District));
+                flow);
         }
     }
 
@@ -291,18 +300,21 @@ public class InfluenceFieldBaker
                     Mathf.Clamp01(zone.Influence.TotalInfluence / (float)zone.Influence.Cap),
                     Mathf.Clamp01(neighbor.Influence.TotalInfluence / (float)neighbor.Influence.Cap));
 
+                zoneFlow.TryGetValue(zone, out Vector2 flowA);
+                zoneFlow.TryGetValue(neighbor, out Vector2 flowB);
+
                 Splat(
                     (a.center + b.center) * 0.5f,
                     radius,
                     FactionPalette.For(controller.Value),
                     strength,
                     1f,
-                    DistrictKey(zone.District));
+                    ClampFlow(flowA + flowB, 1f));
             }
         }
     }
 
-    private void Splat(Vector3 worldCenter, float radius, Color color, float strength, float dominance, float districtKey)
+    private void Splat(Vector3 worldCenter, float radius, Color color, float strength, float dominance, Vector2 flow)
     {
         if (radius <= 0f || strength <= 0f) return;
 
@@ -338,13 +350,15 @@ public class InfluenceFieldBaker
                 int index = row + x;
 
                 // Premultiplicado: el blur mezcla sin halos y se normaliza al final.
+                // Aux: R dominancia, G/B dirección de expansión en XZ (con signo), A peso.
                 accum[index].r += color.r * weight;
                 accum[index].g += color.g * weight;
                 accum[index].b += color.b * weight;
                 accum[index].a += weight;
 
                 accumAux[index].r += dominance * weight;
-                accumAux[index].g += districtKey * weight;
+                accumAux[index].g += flow.x * weight;
+                accumAux[index].b += flow.y * weight;
                 accumAux[index].a += weight;
             }
         }
@@ -459,9 +473,126 @@ public class InfluenceFieldBaker
         return Mathf.Clamp01(best / totalWeight);
     }
 
-    private static float DistrictKey(Districts district)
+    /// <summary>
+    /// Empuje hacia afuera: cada cuadra apunta a vecinos que no controla su secta.
+    /// El interior hereda esa dirección para que el bloque entero se lea como un avance.
+    /// </summary>
+    private void ComputeExpansionFlow(IReadOnlyList<DistrictZone> zones, ZoneAdjacencyGraph adjacency)
     {
-        return ((int)district + 1) / 8f;
+        zoneFlow.Clear();
+        flowSources.Clear();
+        if (zones == null) return;
+
+        for (int i = 0; i < zones.Count; i++)
+        {
+            DistrictZone zone = zones[i];
+            if (zone == null || !zone.IsPlayable || zone.Influence == null) continue;
+
+            Vector2 push = DirectPush(zone, adjacency);
+            zoneFlow[zone] = push;
+            if (push.sqrMagnitude > 0.2f) flowSources.Add(zone);
+        }
+
+        const int iterations = 8;
+        for (int iter = 0; iter < iterations; iter++)
+        {
+            zoneFlowNext.Clear();
+
+            foreach (KeyValuePair<DistrictZone, Vector2> pair in zoneFlow)
+            {
+                DistrictZone zone = pair.Key;
+                Vector2 current = pair.Value;
+                if (flowSources.Contains(zone) || adjacency == null)
+                {
+                    zoneFlowNext[zone] = current;
+                    continue;
+                }
+
+                FactionId? owner = ActingFaction(zone.Influence);
+                Vector2 accumulated = Vector2.zero;
+                int contributors = 0;
+
+                IReadOnlyList<DistrictZone> neighbors = adjacency.GetNeighbors(zone);
+                for (int n = 0; n < neighbors.Count; n++)
+                {
+                    DistrictZone neighbor = neighbors[n];
+                    if (neighbor == null || neighbor.Influence == null) continue;
+                    if (ActingFaction(neighbor.Influence) != owner) continue;
+                    if (!zoneFlow.TryGetValue(neighbor, out Vector2 neighborFlow)) continue;
+                    if (neighborFlow.sqrMagnitude < 1e-6f) continue;
+
+                    accumulated += neighborFlow;
+                    contributors++;
+                }
+
+                zoneFlowNext[zone] = contributors > 0
+                    ? ClampFlow(accumulated / contributors, 0.72f)
+                    : current;
+            }
+
+            zoneFlow.Clear();
+            foreach (KeyValuePair<DistrictZone, Vector2> pair in zoneFlowNext)
+            {
+                zoneFlow[pair.Key] = pair.Value;
+            }
+        }
+    }
+
+    private static Vector2 DirectPush(DistrictZone zone, ZoneAdjacencyGraph adjacency)
+    {
+        if (adjacency == null || zone == null || zone.Influence == null) return Vector2.zero;
+
+        FactionId? owner = ActingFaction(zone.Influence);
+        if (!owner.HasValue) return Vector2.zero;
+
+        Vector2 push = Vector2.zero;
+        Vector3 origin = zone.GetWorldBounds().center;
+        IReadOnlyList<DistrictZone> neighbors = adjacency.GetNeighbors(zone);
+
+        for (int i = 0; i < neighbors.Count; i++)
+        {
+            DistrictZone neighbor = neighbors[i];
+            if (neighbor == null || !neighbor.IsPlayable) continue;
+
+            FactionId? other = neighbor.Influence != null ? ActingFaction(neighbor.Influence) : null;
+            if (other.HasValue && other.Value == owner.Value) continue;
+
+            Vector3 delta = neighbor.GetWorldBounds().center - origin;
+            Vector2 direction = new Vector2(delta.x, delta.z);
+            if (direction.sqrMagnitude < 1e-6f) continue;
+
+            push += direction.normalized;
+        }
+
+        return ClampFlow(push, 1f);
+    }
+
+    private static FactionId? ActingFaction(ZoneInfluenceState state)
+    {
+        if (state == null) return null;
+        if (state.Controller.HasValue) return state.Controller;
+
+        FactionId? best = null;
+        float bestWeight = 0f;
+
+        for (int i = 0; i < FactionIdUtil.All.Length; i++)
+        {
+            FactionId faction = FactionIdUtil.All[i];
+            float weight = state.GetShare(faction) + state.GetClerics(faction);
+            if (weight <= bestWeight) continue;
+            bestWeight = weight;
+            best = faction;
+        }
+
+        return best;
+    }
+
+    private static Vector2 ClampFlow(Vector2 flow, float maxLength)
+    {
+        float sqr = flow.sqrMagnitude;
+        float cap = maxLength * maxLength;
+        if (sqr <= cap || sqr < 1e-8f) return flow;
+        return flow * (maxLength / Mathf.Sqrt(sqr));
     }
 
     public struct Settings

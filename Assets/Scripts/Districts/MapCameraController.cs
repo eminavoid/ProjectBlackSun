@@ -17,7 +17,7 @@ using UnityEngine.InputSystem;
 public class MapCameraController : MonoBehaviour
 {
     [Header("Smoothing")]
-    [SerializeField] private float moveSmoothTime = 0.16f;
+    [SerializeField] private float moveSmoothTime = 0.05f;
     [SerializeField] private float zoomSmoothTime = 0.28f;
 
     [Header("Pan")]
@@ -37,8 +37,9 @@ public class MapCameraController : MonoBehaviour
 
     [Header("Map Bounds")]
     [SerializeField] private bool clampPanToMap = true;
-    [Tooltip("Cuánto puede salir el centro de la vista del mapa. 0 lo deja dentro del contorno.")]
-    [SerializeField] private float mapBoundsPadding = 1.5f;
+    [Tooltip("Cuánto asoma el vacío en la base de la pirámide, como fracción de la ciudad. 0.06 es un borde chico.")]
+    [Range(0f, 0.2f)]
+    [SerializeField] private float outsideMarginFraction = 0.06f;
 
     [Header("Focus")]
     [SerializeField] private float focusPadding = 1.35f;
@@ -60,6 +61,9 @@ public class MapCameraController : MonoBehaviour
     private readonly List<RaycastResult> uiRaycastResults = new List<RaycastResult>();
     private Bounds mapBounds;
     private bool hasMapBounds;
+    private bool hasPanVolume;
+    private Vector2 panApex;
+    private Vector2 panBaseHalf;
 
     public static MapCameraController Instance { get; private set; }
 
@@ -134,21 +138,101 @@ public class MapCameraController : MonoBehaviour
     private void ClampTargetToMap()
     {
         if (!clampPanToMap) return;
-        if (!EnsureMapBounds()) return;
-        if (!TryGetGroundLookAt(targetPosition, out Vector3 lookAt)) return;
+        if (!EnsurePanVolume()) return;
 
-        float minX = mapBounds.min.x - mapBoundsPadding;
-        float maxX = mapBounds.max.x + mapBoundsPadding;
-        float minZ = mapBounds.min.z - mapBoundsPadding;
-        float maxZ = mapBounds.max.z + mapBoundsPadding;
+        float groundY = mapBounds.center.y;
+        if (!TryProjectViewport(targetPosition, new Vector2(0.5f, 0.5f), groundY, out Vector3 lookAt))
+        {
+            return;
+        }
 
-        float clampedX = Mathf.Clamp(lookAt.x, minX, maxX);
-        float clampedZ = Mathf.Clamp(lookAt.z, minZ, maxZ);
+        // Pirámide: en el zoom out máximo el área es un punto (el encuadre inicial).
+        // Hacia el piso el cuadrado crece lineal, igual en lateral y en profundidad.
+        float openness = PanFreedom(targetPosition.y);
+        float halfX = panBaseHalf.x * openness;
+        float halfZ = panBaseHalf.y * openness;
+
+        float clampedX = Mathf.Clamp(lookAt.x, panApex.x - halfX, panApex.x + halfX);
+        float clampedZ = Mathf.Clamp(lookAt.z, panApex.y - halfZ, panApex.y + halfZ);
         if (Mathf.Approximately(clampedX, lookAt.x) && Mathf.Approximately(clampedZ, lookAt.z)) return;
 
         lookAt.x = clampedX;
         lookAt.z = clampedZ;
         targetPosition = ResolveFocusCameraPosition(lookAt, targetPosition.y);
+    }
+
+    /// <summary>0 en la punta (zoom out). 1 en la base, pegada al mapa.</summary>
+    private float PanFreedom(float height)
+    {
+        float span = Mathf.Max(0.0001f, maxHeight - minHeight);
+        return Mathf.Clamp01((maxHeight - height) / span);
+    }
+
+    /// <summary>
+    /// La punta es el encuadre de arranque. La base llega al borde de la ciudad más un margen chico.
+    /// </summary>
+    private bool EnsurePanVolume()
+    {
+        if (hasPanVolume) return true;
+        if (!EnsureMapBounds()) return false;
+
+        float groundY = mapBounds.center.y;
+        if (!TryProjectViewport(transform.position, new Vector2(0.5f, 0.5f), groundY, out Vector3 lookAt))
+        {
+            lookAt = new Vector3(mapBounds.center.x, groundY, mapBounds.center.z);
+        }
+
+        panApex = new Vector2(lookAt.x, lookAt.z);
+
+        float fraction = Mathf.Clamp(outsideMarginFraction, 0f, 0.2f);
+        float marginX = mapBounds.size.x * fraction;
+        float marginZ = mapBounds.size.z * fraction;
+        float reachX = Mathf.Max(Mathf.Abs(mapBounds.max.x - panApex.x), Mathf.Abs(panApex.x - mapBounds.min.x)) + marginX;
+        float reachZ = Mathf.Max(Mathf.Abs(mapBounds.max.z - panApex.y), Mathf.Abs(panApex.y - mapBounds.min.z)) + marginZ;
+
+        // Misma apertura en los dos ejes: la sección de la pirámide es un cuadrado.
+        float side = Mathf.Max(reachX, reachZ);
+        panBaseHalf = new Vector2(side, side);
+        hasPanVolume = true;
+        return true;
+    }
+
+    private bool TryProjectViewport(Vector3 cameraPosition, Vector2 viewport, float groundY, out Vector3 worldPoint)
+    {
+        worldPoint = default;
+        if (cam == null) return false;
+
+        Vector3 origin;
+        Vector3 direction;
+        float aspect = Mathf.Max(0.01f, cam.aspect);
+
+        if (cam.orthographic)
+        {
+            float halfHeight = cam.orthographicSize;
+            float halfWidth = halfHeight * aspect;
+            origin = cameraPosition
+                + transform.right * ((viewport.x * 2f - 1f) * halfWidth)
+                + transform.up * ((viewport.y * 2f - 1f) * halfHeight);
+            direction = transform.forward;
+        }
+        else
+        {
+            float tanHalfFov = Mathf.Tan(cam.fieldOfView * 0.5f * Mathf.Deg2Rad);
+            Vector3 local = new Vector3(
+                (viewport.x * 2f - 1f) * tanHalfFov * aspect,
+                (viewport.y * 2f - 1f) * tanHalfFov,
+                1f);
+            origin = cameraPosition;
+            direction = transform.rotation * local;
+        }
+
+        if (Mathf.Abs(direction.y) < 0.0001f) return false;
+
+        float distance = (groundY - origin.y) / direction.y;
+        if (distance <= 0f) return false;
+
+        worldPoint = origin + direction * distance;
+        return true;
     }
 
     private bool EnsureMapBounds()
@@ -182,20 +266,6 @@ public class MapCameraController : MonoBehaviour
         return true;
     }
 
-    private bool TryGetGroundLookAt(Vector3 cameraPosition, out Vector3 lookAt)
-    {
-        lookAt = cameraPosition;
-        Vector3 forward = transform.forward;
-        if (Mathf.Abs(forward.y) < 0.0001f) return false;
-
-        float groundY = hasMapBounds ? mapBounds.center.y : 0f;
-        float distance = (groundY - cameraPosition.y) / forward.y;
-        if (distance <= 0f) return false;
-
-        lookAt = cameraPosition + forward * distance;
-        return true;
-    }
-
     private Vector3 ResolveFocusCameraPosition(Vector3 lookAt, float height)
     {
         Vector3 forward = transform.forward;
@@ -226,14 +296,17 @@ public class MapCameraController : MonoBehaviour
         Vector2 input = ReadMoveAxes();
         if (input.sqrMagnitude < 0.0001f) return;
 
+        float freedom = PanFreedom(targetPosition.y);
+        if (freedom < 0.02f) return;
+
         input = Vector2.ClampMagnitude(input, 1f);
 
         Vector3 right;
         Vector3 forward;
         GetPanAxes(out right, out forward);
 
-        // Move a bit faster when zoomed out.
-        float speed = keyboardPanSpeed * Mathf.Lerp(0.65f, 1.6f, Mathf.InverseLerp(minHeight, maxHeight, targetPosition.y));
+        // Más zoom in = el mismo desplazamiento llena más pantalla, así que el paneo baja.
+        float speed = keyboardPanSpeed * Mathf.Lerp(1f, 0.3f, freedom);
         Vector3 delta = (right * input.x + forward * input.y) * speed * Time.unscaledDeltaTime;
         targetPosition += new Vector3(delta.x, 0f, delta.z);
     }
@@ -308,7 +381,9 @@ public class MapCameraController : MonoBehaviour
 
         if (!isMousePanning) return;
 
-        if (TryGetGroundPoint(lastPanPointerPosition, out Vector3 previousGround)
+        float freedom = PanFreedom(targetPosition.y);
+        if (freedom >= 0.02f
+            && TryGetGroundPoint(lastPanPointerPosition, out Vector3 previousGround)
             && TryGetGroundPoint(pointer, out Vector3 currentGround))
         {
             Vector3 delta = previousGround - currentGround;

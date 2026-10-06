@@ -25,6 +25,9 @@ MonoBehaviour:
   smokeSpeed: 1
   colorNoiseStrength: 1
   colorPulseSpeed: 2
+  expansionStrength: 1.2
+  expansionSpeed: 0.9
+  expansionCellsPerZone: 1.5
   transitionSeconds: 0.6
   fadeSeconds: 0.25
   startVisible: 1

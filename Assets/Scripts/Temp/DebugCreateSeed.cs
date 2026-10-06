@@ -14,7 +14,7 @@ public class DebugCreateSeed : MonoBehaviour
 
         if (sector != null)
         {
-            sector.AddSeed(seed);
+            sector.AddSeed(seed, FactionId.Player);
         }
     }
 }

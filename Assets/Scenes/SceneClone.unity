@@ -1809,9 +1809,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28a1a597ed062994d84c3fb212ac94df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapCameraController
-  moveSmoothTime: 0.16
-  zoomSmoothTime: 0.28
-  keyboardPanSpeed: 8
+  moveSmoothTime: 0.1
+  zoomSmoothTime: 0.3
+  keyboardPanSpeed: 5
   enableKeyboardPan: 1
   enableMousePan: 1
   panWithMiddleMouse: 1
@@ -1821,7 +1821,7 @@ MonoBehaviour:
   maxHeight: 5
   blockZoomOverUi: 1
   clampPanToMap: 1
-  mapBoundsPadding: 1.5
+  outsideMarginFraction: 0.06
   focusPadding: 1.35
   adjustHeightOnFocus: 1
   focusOffset: {x: 0, y: 0, z: 0}

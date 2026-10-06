@@ -15,8 +15,9 @@ Shader "Custom/SeedPlantedInvert"
         _HexStrength("Hex Strength", Range(0, 1)) = 0.55
         _RimPower("Rim Power", Range(0.4, 8)) = 1.8
         _PulseSpeed("Pulse Speed", Range(0, 8)) = 2.0
-        _BaseDim("Base Dim", Range(0, 1)) = 0.12
+        _BaseDim("Base Dim", Range(0, 1)) = 0.48
         _DistortAmount("View Distort", Range(0, 0.2)) = 0.035
+        _IsPlayer("Is Player", Range(0, 1)) = 0
     }
 
     SubShader
@@ -57,6 +58,7 @@ Shader "Custom/SeedPlantedInvert"
                 half _PulseSpeed;
                 half _BaseDim;
                 half _DistortAmount;
+                half _IsPlayer;
             CBUFFER_END
 
             struct Attributes
@@ -192,10 +194,20 @@ Shader "Custom/SeedPlantedInvert"
 
                 half3 shieldRgb = _ShieldColor.rgb * (movingNoise * 0.55 + hexEnergy + sweep * 0.8);
                 shieldRgb += _RimColor.rgb * fresnel * (1.1 + movingNoise * 0.6);
-                shieldRgb *= _ShieldIntensity * shieldMask;
+                shieldRgb *= _ShieldIntensity * shieldMask * 0.45h;
 
-                // Composite in one Forward pass so Game View never draws the shield under the base.
-                half3 finalRgb = baseColor.rgb + shieldRgb;
+                half3 raw = max(_ShieldColor.rgb, 0.0h);
+                half peak = max(raw.r, max(raw.g, raw.b));
+                half3 tint = peak > 0.001h ? raw / peak : half3(0.35h, 0.8h, 1.0h);
+                half3 graded = lerp(baseColor.rgb, tint * (0.5h + 0.22h * (half)pulse), 0.78h);
+                if (_IsPlayer > 0.5h)
+                {
+                    graded += half3(0.22h, 0.12h, 0.28h) * (half)pulse;
+                }
+
+                half3 finalRgb = graded + shieldRgb;
+                half outPeak = max(finalRgb.r, max(finalRgb.g, finalRgb.b));
+                if (outPeak > 1.35h) finalRgb *= 1.35h / outPeak;
                 return half4(finalRgb, baseColor.a);
             }
             ENDHLSL

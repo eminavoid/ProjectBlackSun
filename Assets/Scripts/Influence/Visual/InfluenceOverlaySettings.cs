@@ -43,6 +43,17 @@ public class InfluenceOverlaySettings : ScriptableObject
     [Tooltip("Velocidad del pulso de tono y saturación (seno/coseno).")]
     [Range(0f, 3f)]
     public float colorPulseSpeed = 0.7f;
+
+    [Header("Expansión")]
+    [Tooltip("Fuerza de las flechas que marcan hacia dónde empuja cada facción.")]
+    [Range(0f, 2f)]
+    public float expansionStrength = 1.2f;
+    [Tooltip("Velocidad de esas flechas.")]
+    [Range(0f, 3f)]
+    public float expansionSpeed = 0.9f;
+    [Tooltip("Cuántas flechas entran a lo ancho de una cuadra. Menos = marcas más grandes.")]
+    [Range(0.4f, 6f)]
+    public float expansionCellsPerZone = 1.5f;
     public float transitionSeconds = 0.6f;
     public float fadeSeconds = 0.25f;
     public bool startVisible = true;
