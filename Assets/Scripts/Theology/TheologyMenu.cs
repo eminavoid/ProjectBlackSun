@@ -34,7 +34,7 @@ public class TheologyMenu : MonoBehaviour
 
     private void OnEnable()
     {
-        panel.localScale = Vector3.one * (((RectTransform)transform).rect.height / panel.rect.height);
+        panel.localScale = Vector3.one * (((RectTransform)transform).rect.height / (panel.rect.height * (1f - panel.pivot.y)));
         closedArt.color = Color.white;
         openMask.enabled = true;
         openMask.gameObject.SetActive(false);
