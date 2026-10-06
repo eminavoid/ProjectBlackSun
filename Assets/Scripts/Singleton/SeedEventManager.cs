@@ -247,7 +247,7 @@ public class SeedEventManager : Singleton<SeedEventManager>
     private void AutoResolveEvent(Seed seed)
     {
         seed.Options[seed.DefaultOption - 1].ExecuteOption();
-        //RemoveSeed(seed);
+        RemoveSeed(seed);
     }
 
     private void TryPlantResourceSeeds()
