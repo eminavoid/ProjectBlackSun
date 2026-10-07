@@ -23,5 +23,7 @@ MonoBehaviour:
     district: 3
   - partName: Purple
     district: 4
+  - partName: Violet
+    district: 4
   - partName: White
     district: 5

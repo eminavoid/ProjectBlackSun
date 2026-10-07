@@ -267,7 +267,15 @@ Shader "Custom/InfluenceOverlay"
                 float3 painted = lerp(dusk, shifted, lerp(0.4, 1.0, smoke));
                 painted += HueRotate((float3)chroma, hue + grain * 0.55) * grain * mixAmt * 0.2;
 
-                return (half3)lerp((float3)chroma, max(painted, 0.0), mixAmt);
+                float3 result = lerp((float3)chroma, max(painted, 0.0), mixAmt);
+
+                // El ruido puede cambiar el brillo, pero un rojo puro si no se ancla se lava a blanco.
+                float3 src = max((float3)chroma, 1e-4);
+                float srcPeak = max(src.r, max(src.g, src.b));
+                float resPeak = max(result.r, max(result.g, result.b));
+                result = lerp(result, (src / srcPeak) * resPeak, 0.78);
+
+                return (half3)max(result, 0.0);
             }
 
             // Galones en V que apuntan y avanzan en la dirección de expansión (aux.gb).

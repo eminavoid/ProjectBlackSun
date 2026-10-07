@@ -30,28 +30,32 @@ public class AIInfluenceProfile : ScriptableObject
         int startClerics,
         int perTurn,
         int maxAssign,
-        Districts primary,
-        Districts secondary)
+        params Districts[] districts)
     {
         faction = factionId;
         displayName = name;
         startingClerics = startClerics;
         clericsPerTurn = perTurn;
         maxAssignPerTurn = maxAssign;
-        preferredDistricts = new List<Districts> { primary, secondary };
+        preferredDistricts = new List<Districts>();
+        if (districts == null) return;
+
+        for (int i = 0; i < districts.Length; i++)
+        {
+            preferredDistricts.Add(districts[i]);
+        }
     }
 
     public static AIInfluenceProfile CreateRuntime(
         FactionId factionId,
         string name,
-        Districts primary,
-        Districts secondary,
-        int startClerics = 15)
+        int startClerics,
+        params Districts[] districts)
     {
         AIInfluenceProfile profile = CreateInstance<AIInfluenceProfile>();
         profile.hideFlags = HideFlags.HideAndDontSave;
         profile.name = name;
-        profile.RuntimeInit(factionId, name, startClerics, 1, 2, primary, secondary);
+        profile.RuntimeInit(factionId, name, startClerics, 1, 2, districts);
         return profile;
     }
 }

@@ -17,14 +17,12 @@ public class AIIntentOverlay : MonoBehaviour
     [Header("Escala (relativa al tamaño de una cuadra)")]
     [SerializeField] private float liftFactor = 0.12f;
     [SerializeField] private float widthFactor = 0.28f;
-    [SerializeField] private float arcHeightFactor = 0.55f;
     [SerializeField] private float dropHeightFactor = 1.35f;
     [SerializeField] private float ringRadiusFactor = 0.46f;
 
     [Header("Forma")]
     [SerializeField] private float headRatio = 0.22f;
     [SerializeField] private float headWidthScale = 3.1f;
-    [SerializeField] private float arcLengthInfluence = 0.22f;
 
     [Header("Visual")]
     [SerializeField] private bool startVisible = true;
@@ -168,8 +166,18 @@ public class AIIntentOverlay : MonoBehaviour
 
         if (hasOrigin && (target - origin).sqrMagnitude > referenceSize * referenceSize * 0.04f)
         {
-            float distance = Vector3.Distance(origin, target);
-            style.ArcHeight = referenceSize * arcHeightFactor + distance * arcLengthInfluence;
+            // La flecha solo muestra el tramo final. No cruza el mapa desde la base.
+            float zoneSize = referenceSize * 2f;
+            float maxLength = zoneSize * 2.1f;
+            Vector3 delta = target - origin;
+            float distance = delta.magnitude;
+            if (distance > maxLength)
+            {
+                origin = target - delta / distance * maxLength;
+                distance = maxLength;
+            }
+
+            style.ArcHeight = referenceSize * 0.28f + distance * 0.05f;
 
             view.BuildArc(origin, target, color, style);
             view.SetLabel(string.Empty, intent.LabelColor, Vector3.zero, 1f);

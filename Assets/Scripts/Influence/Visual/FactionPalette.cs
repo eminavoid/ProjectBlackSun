@@ -8,7 +8,8 @@ public static class FactionPalette
     private const float GlowValue = 1.55f;
 
     private static readonly Color PlayerRgb = Hex("#d000ff");
-    private static readonly Color Rival1Rgb = Hex("#ff0000");
+    // No es rojo de un solo canal: ese se quema a blanco con el brillo del overlay.
+    private static readonly Color Rival1Rgb = Hex("#ff2a2a");
     private static readonly Color Rival2Rgb = Hex("#00f2ff");
     private static readonly Color Rival3Rgb = Hex("#00ff00");
     private static readonly Color Rival4Rgb = Hex("#eeff00");

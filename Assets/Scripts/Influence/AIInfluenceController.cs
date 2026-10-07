@@ -2,8 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Vertical Slice: 4 rivales fijos que asignan clérigos a zonas preferidas.
-/// Planifica y ejecuta en fases separadas; AIIntentBoard dispara ambas.
+/// Tres rivales. El director decide las jugadas; este componente sólo ejecuta los clérigos.
 /// </summary>
 [DefaultExecutionOrder(40)]
 public class AIInfluenceController : MonoBehaviour
@@ -47,6 +46,23 @@ public class AIInfluenceController : MonoBehaviour
             if (profile == null) continue;
             InfluenceManager.Get.GetStock(profile.Faction).ReturnClerics(profile.ClericsPerTurn);
         }
+    }
+
+    public int ProjectedClericBudget(FactionId faction)
+    {
+        EnsureInitialized();
+        if (InfluenceManager.IsNull) return 0;
+
+        AIInfluenceProfile profile = FindProfile(faction);
+        int income = profile != null ? profile.ClericsPerTurn : 0;
+        return InfluenceManager.Get.GetStock(faction).Clerics + income;
+    }
+
+    public IReadOnlyList<Districts> GetPreferredDistricts(FactionId faction)
+    {
+        EnsureInitialized();
+        AIInfluenceProfile profile = FindProfile(faction);
+        return profile != null ? profile.PreferredDistricts : null;
     }
 
     public bool ExecuteIntent(AIIntent intent)
@@ -270,14 +286,34 @@ public class AIInfluenceController : MonoBehaviour
     private void EnsureDefaultProfiles()
     {
         if (!autoCreateDefaultProfiles) return;
-        if (rivalProfiles != null && rivalProfiles.Count >= 4) return;
+        if (rivalProfiles != null && rivalProfiles.Count > 0) return;
 
         rivalProfiles = new List<AIInfluenceProfile>
         {
-            AIInfluenceProfile.CreateRuntime(FactionId.Rival1, "Crimson Choir", Districts.District1, Districts.District4),
-            AIInfluenceProfile.CreateRuntime(FactionId.Rival2, "Azure Ledger", Districts.District2, Districts.District6),
-            AIInfluenceProfile.CreateRuntime(FactionId.Rival3, "Verdant Flock", Districts.District3, Districts.District5),
-            AIInfluenceProfile.CreateRuntime(FactionId.Rival4, "Violet Veil", Districts.District5, Districts.District1)
+            // Seeds: arranca en rojo y se abre a white y yellow.
+            AIInfluenceProfile.CreateRuntime(
+                FactionId.Rival1,
+                "Crimson Choir",
+                15,
+                Districts.District1,
+                Districts.District6,
+                Districts.District4),
+            // Balanceada: arranca en white y prioriza rojo, después green y violet.
+            AIInfluenceProfile.CreateRuntime(
+                FactionId.Rival2,
+                "Azure Ledger",
+                15,
+                Districts.District1,
+                Districts.District3,
+                Districts.District5),
+            // Clérigos: arranca en green y se abre a white y pink.
+            AIInfluenceProfile.CreateRuntime(
+                FactionId.Rival3,
+                "Verdant Flock",
+                15,
+                Districts.District3,
+                Districts.District6,
+                Districts.District2)
         };
     }
 
@@ -291,5 +327,47 @@ public class AIInfluenceController : MonoBehaviour
             if (profile == null) continue;
             InfluenceManager.Get.GetStock(profile.Faction).Clerics = profile.StartingClerics;
         }
+
+        ClaimOpeningZones();
+    }
+
+    private void ClaimOpeningZones()
+    {
+        ClaimZone(FactionId.Rival1, "ZONE_RED_4");
+        ClaimZone(FactionId.Rival2, "ZONE_WHITE_9");
+        ClaimZone(FactionId.Rival3, "ZONE_GREEN_5");
+
+        string playerZone = UnityEngine.Random.value < 0.5f ? "ZONE_YELLOW_1" : "ZONE_PINK_4";
+        ClaimZone(FactionId.Player, playerZone);
+    }
+
+    private static void ClaimZone(FactionId faction, string zoneName)
+    {
+        if (InfluenceManager.IsNull) return;
+
+        DistrictZone zone = FindZone(zoneName);
+        if (zone == null)
+        {
+            Debug.LogWarning($"Apertura: no se encontró '{zoneName}' para {FactionIdUtil.DisplayName(faction)}.");
+            return;
+        }
+
+        zone.EnsureInfluenceState();
+        int majority = zone.Influence.Cap / 2 + 1;
+        InfluenceManager.Get.ApplyEventInfluence(zone, faction, majority);
+        InfluenceManager.Get.TryAssignClerics(zone, faction, 1, out _);
+    }
+
+    private static DistrictZone FindZone(string zoneName)
+    {
+        IReadOnlyList<DistrictZone> zones = InfluenceManager.Get.GetPlayableZones();
+        for (int i = 0; i < zones.Count; i++)
+        {
+            DistrictZone zone = zones[i];
+            if (zone == null) continue;
+            if (string.Equals(zone.SectorName, zoneName, System.StringComparison.OrdinalIgnoreCase)) return zone;
+        }
+
+        return null;
     }
 }
