@@ -238,7 +238,7 @@ public class SeedEventManager : Singleton<SeedEventManager>
 
     private void OnTurnEndedLate()
     {
-        for (int i = 0; i < seedEvents.Count; i++)
+        for (int i = seedEvents.Count - 1; i >= 0; i--)
         {
             AutoResolveEvent(seedEvents[i]);
         }
