@@ -17,6 +17,7 @@ public class EventsMenu : MonoBehaviour
     private void Awake()
     {
         mapCameraController = FindAnyObjectByType<MapCameraController>();
+        NodeTooltipMenuBlock.Ensure(ui);
     }
 
     private void Start()

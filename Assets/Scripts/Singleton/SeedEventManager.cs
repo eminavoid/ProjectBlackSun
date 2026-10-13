@@ -375,6 +375,8 @@ public class SeedEventManager : Singleton<SeedEventManager>
     private int resourceWindowOriginalIndex = -1;
     private int openOutputWindows;
     private bool choosing;
+    private bool optionsVisible;
+    private bool nodeTooltipBlocked;
     private (Vector3 center, Vector2 size)? choiceOrigin;
 
     private void SetOptionsWindowVisibility(bool condition)
@@ -385,12 +387,22 @@ public class SeedEventManager : Singleton<SeedEventManager>
         if (condition && blur != null)
         {
             optionsVisibilityRoutine = StartCoroutine(ShowOptionsWindowAfterBlur(blur));
+            optionsVisible = true;
+            RefreshNodeTooltipBlock();
             return;
         }
 
         if (blur != null) blur.gameObject.SetActive(false);
         RestoreResourceWindowOrder();
         ApplyOptionsWindowVisibility(condition);
+    }
+
+    private void OnDisable()
+    {
+        optionsVisible = false;
+        if (!nodeTooltipBlocked) return;
+        nodeTooltipBlocked = false;
+        NodeTooltipMenuBlock.Pop();
     }
 
     private IEnumerator ShowOptionsWindowAfterBlur(RawImage blur)
@@ -411,6 +423,7 @@ public class SeedEventManager : Singleton<SeedEventManager>
     private IEnumerator ShowOutputWindowAfterBlur(UIWindow window, (Vector3 center, Vector2 size)? origin)
     {
         openOutputWindows++;
+        RefreshNodeTooltipBlock();
 
         CanvasGroup group = GroupOf(window.gameObject);
         group.alpha = 0f;
@@ -430,6 +443,7 @@ public class SeedEventManager : Singleton<SeedEventManager>
         while (ResourceManager.Sidebar != null && ResourceManager.Sidebar.IsBusy) yield return null;
 
         openOutputWindows--;
+        RefreshNodeTooltipBlock();
         if (openOutputWindows > 0) yield break;
 
         SetOptionsWindowVisibility(false);
@@ -504,6 +518,22 @@ public class SeedEventManager : Singleton<SeedEventManager>
         {
             content[i].gameObject.SetActive(condition);
         }
+
+        optionsVisible = condition;
+        RefreshNodeTooltipBlock();
+    }
+
+    private void RefreshNodeTooltipBlock()
+    {
+        SetNodeTooltipBlocked(optionsVisible || openOutputWindows > 0);
+    }
+
+    private void SetNodeTooltipBlocked(bool blocked)
+    {
+        if (nodeTooltipBlocked == blocked) return;
+        nodeTooltipBlocked = blocked;
+        if (blocked) NodeTooltipMenuBlock.Push();
+        else NodeTooltipMenuBlock.Pop();
     }
 
     private CanvasGroup[] OptionsContent()

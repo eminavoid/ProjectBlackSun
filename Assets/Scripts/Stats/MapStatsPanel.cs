@@ -363,7 +363,11 @@ public class MapStatsPanel : MonoBehaviour
 
     private void EnsureView()
     {
-        if (view != null && view.Root != null) return;
+        if (view != null && view.Root != null)
+        {
+            NodeTooltipMenuBlock.Ensure(view.Root);
+            return;
+        }
 
         Transform canvas = ResolveCanvas();
         if (canvas == null)
@@ -388,7 +392,11 @@ public class MapStatsPanel : MonoBehaviour
             view.CloseButton.onClick.AddListener(Close);
         }
 
-        if (view != null && view.Root != null) view.Root.SetActive(false);
+        if (view != null && view.Root != null)
+        {
+            view.Root.SetActive(false);
+            NodeTooltipMenuBlock.Ensure(view.Root);
+        }
     }
 
     private static Transform ResolveCanvas()

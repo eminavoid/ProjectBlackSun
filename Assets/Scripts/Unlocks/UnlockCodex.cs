@@ -92,6 +92,7 @@ public class UnlockCodex : MonoBehaviour
     private void Awake()
     {
         currentCost = startCost;
+        if (unlockerMenu != null) NodeTooltipMenuBlock.Ensure(unlockerMenu.gameObject);
         RefreshMenu();
     }
 

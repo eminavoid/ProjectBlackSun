@@ -9,7 +9,9 @@ public class LoseScreen : MonoBehaviour
     private void Awake()
     {
         GlobalEventBus.Subscribe<LoseEvent>(ShowLoseScreen);
+        if (window == null) return;
         window.SetActive(false);
+        NodeTooltipMenuBlock.Ensure(window);
     }
 
     private void ShowLoseScreen(LoseEvent loseEvent)
