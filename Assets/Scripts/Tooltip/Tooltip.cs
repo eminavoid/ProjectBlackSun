@@ -1,5 +1,8 @@
 using TMPro;
 using UnityEngine;
+#if ENABLE_INPUT_SYSTEM
+using UnityEngine.InputSystem;
+#endif
 
 namespace Zeke.Tooltips
 {
@@ -11,13 +14,6 @@ namespace Zeke.Tooltips
         [SerializeField] private TMP_Text tooltipText;
 
         [Header("Tooltip")]
-        [SerializeField] private Vector2 offset = new Vector2(0f, -15f);
-
-        [SerializeField] private OffsetType offsetTypeX = OffsetType.Border;
-        [SerializeField] private OffsetType offsetTypeY = OffsetType.Border;
-
-        [Space]
-
         [SerializeField] private Vector2 maxSize = new Vector2(400f, 400f);
 
         [Space]
@@ -27,18 +23,10 @@ namespace Zeke.Tooltips
         private State state = State.Hide;
         private float timer = 0f;
 
-        private Canvas canvas;
-
         private enum State
         {
             Show,
             Hide,
-        }
-
-        private enum OffsetType
-        {
-            Center,
-            Border
         }
 
         public static void SetText(string text)
@@ -67,9 +55,17 @@ namespace Zeke.Tooltips
             Instance.tooltipObject.SetActive(false);
         }
 
+        public static bool IsPartOfTooltip(GameObject candidate)
+        {
+            if (IsNull || candidate == null) return false;
+
+            Transform root = Instance.transform;
+            Transform hit = candidate.transform;
+            return hit == root || hit.IsChildOf(root);
+        }
+
         private void Awake()
         {
-            canvas = tooltipRect.GetComponentInParent<Canvas>();
             Hide();
         }
 
@@ -79,16 +75,30 @@ namespace Zeke.Tooltips
 
             if (tooltipObject.activeSelf)
             {
-                UpdatePosition(canvas.scaleFactor);
+                UpdatePosition();
             }
         }
 
-        private void UpdatePosition(float scale)
+        private void UpdatePosition()
         {
-            Vector2 mousePosition = Input.mousePosition;
-            tooltipRect.position = mousePosition + GetOffset(scale);
+            // Lower-left corner sits on the cursor, so the box grows up and to the right.
+            tooltipRect.pivot = Vector2.zero;
+
+            Vector2 pointer = ReadPointer();
+            Vector3 position = tooltipRect.position;
+            position.x = pointer.x;
+            position.y = pointer.y;
+            tooltipRect.position = position;
 
             ClampToScreen(tooltipRect);
+        }
+
+        private static Vector2 ReadPointer()
+        {
+#if ENABLE_INPUT_SYSTEM
+            if (Mouse.current != null) return Mouse.current.position.ReadValue();
+#endif
+            return Input.mousePosition;
         }
 
         private void ClampToScreen(RectTransform rectTransform)
@@ -102,48 +112,6 @@ namespace Zeke.Tooltips
             position.y = Mathf.Clamp(position.y, size.y * pivot.y, Screen.height - size.y * (1f - pivot.y));
 
             rectTransform.position = position;
-        }
-
-        private Vector2 GetOffset(float scale)
-        {
-            Vector2 size = tooltipRect.rect.size * scale;
-            Vector2 pivot = tooltipRect.pivot;
-
-            Vector2 newOffset = new Vector2(offset.x, offset.y) * scale;
-
-            if (offsetTypeX == OffsetType.Border)
-            {
-                if (offset.x > 0f)
-                {
-                    newOffset.x += size.x * pivot.x;
-                }
-                else if (offset.x < 0f)
-                {
-                    newOffset.x -= size.x * (1f - pivot.x);
-                }
-            }
-            else if (offsetTypeX == OffsetType.Center)
-            {
-                newOffset.x += size.x * (pivot.x - 0.5f);
-            }
-
-            if (offsetTypeY == OffsetType.Border)
-            {
-                if (offset.y > 0f)
-                {
-                    newOffset.y += size.y * pivot.y;
-                }
-                else if (offset.y < 0f)
-                {
-                    newOffset.y -= size.y * (1f - pivot.y);
-                }
-            }
-            else if (offsetTypeY == OffsetType.Center)
-            {
-                newOffset.y += size.y * (pivot.y - 0.5f);
-            }
-
-            return newOffset;
         }
 
         private void UpdateState()

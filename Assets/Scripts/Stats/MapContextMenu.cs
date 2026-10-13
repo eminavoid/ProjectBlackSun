@@ -146,6 +146,7 @@ public class MapContextMenu : MonoBehaviour
         if (view != null && view.Root != null)
         {
             EnsureActionWired();
+            NodeTooltipMenuBlock.Ensure(view.Root);
             return;
         }
 
@@ -168,7 +169,11 @@ public class MapContextMenu : MonoBehaviour
         }
 
         EnsureActionWired();
-        if (view != null && view.Root != null) view.Root.SetActive(false);
+        if (view != null && view.Root != null)
+        {
+            view.Root.SetActive(false);
+            NodeTooltipMenuBlock.Ensure(view.Root);
+        }
     }
 
     private void EnsureActionWired()

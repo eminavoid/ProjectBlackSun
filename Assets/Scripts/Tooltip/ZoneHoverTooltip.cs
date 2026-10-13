@@ -1,4 +1,10 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
+#if ENABLE_INPUT_SYSTEM
+using UnityEngine.InputSystem;
+#endif
 
 namespace Zeke.Tooltips
 {
@@ -7,7 +13,10 @@ namespace Zeke.Tooltips
     /// </summary>
     public class ZoneHoverTooltip : MonoBehaviour
     {
+        private static readonly List<RaycastResult> uiHits = new List<RaycastResult>(16);
+
         private static ZoneHoverTooltip current;
+        private static bool ownsTooltip;
 
         private DistrictZone zone;
 
@@ -32,20 +41,65 @@ namespace Zeke.Tooltips
         {
             if (current != this) return;
             current = null;
-            if (!Tooltip.IsNull) Tooltip.Hide();
+            DismissOwned();
         }
 
         private void OnDisable()
         {
             if (current != this) return;
             current = null;
+            DismissOwned();
+        }
+
+        public static void DismissOwned()
+        {
+            if (!ownsTooltip) return;
+            ownsTooltip = false;
             if (!Tooltip.IsNull) Tooltip.Hide();
         }
 
         private void Show()
         {
             if (Tooltip.IsNull || zone == null || !zone.IsPlayable) return;
+
+            if (NodeTooltipMenuBlock.IsAnyMenuOpen || IsPointerOverBlockingUi())
+            {
+                if (current == this) DismissOwned();
+                return;
+            }
+
             Tooltip.Show(BuildText(zone));
+            ownsTooltip = true;
+        }
+
+        private static bool IsPointerOverBlockingUi()
+        {
+            Vector2 screenPosition = ReadPointer();
+            if (OnGuiClickBlocker.IsPointerOverBlockedArea(screenPosition)) return true;
+            if (EventSystem.current == null) return false;
+
+            PointerEventData pointerData = new PointerEventData(EventSystem.current) { position = screenPosition };
+            uiHits.Clear();
+            EventSystem.current.RaycastAll(pointerData, uiHits);
+
+            for (int i = 0; i < uiHits.Count; i++)
+            {
+                GameObject hit = uiHits[i].gameObject;
+                if (hit == null || Tooltip.IsPartOfTooltip(hit)) continue;
+                if (!hit.TryGetComponent(out Graphic graphic) || !graphic.raycastTarget) continue;
+                return true;
+            }
+
+            return false;
+        }
+
+        private static Vector2 ReadPointer()
+        {
+#if ENABLE_INPUT_SYSTEM
+            if (Mouse.current != null) return Mouse.current.position.ReadValue();
+            if (Pointer.current != null) return Pointer.current.position.ReadValue();
+#endif
+            return Input.mousePosition;
         }
 
         private static string BuildText(DistrictZone zone)

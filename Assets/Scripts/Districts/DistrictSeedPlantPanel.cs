@@ -252,7 +252,9 @@ public class DistrictSeedPlantPanel : MonoBehaviour
 
     private void SetPanelVisible(bool visible)
     {
-        if (panelRoot != null) panelRoot.SetActive(visible);
+        if (panelRoot == null) return;
+        if (visible) NodeTooltipMenuBlock.Ensure(panelRoot);
+        panelRoot.SetActive(visible);
     }
 
     private void UpdatePlantButtonState()
