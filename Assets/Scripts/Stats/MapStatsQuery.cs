@@ -13,6 +13,7 @@ public class MapStatsFactionRow
     public int ControlledZones;
     public int PoolClerics;
     public bool ExpelledAtCap;
+    public string Behavior;
 }
 
 public class MapStatsSeedRow
@@ -142,7 +143,7 @@ public static class MapStatsQuery
             snapshot.Districts.Add(CaptureDistrictRow(district, GetDistrictZones(district, zones)));
         }
 
-        foreach (FactionId faction in FactionIdUtil.All)
+        foreach (FactionId faction in ListedFactions())
         {
             MapStatsFactionRow row = new MapStatsFactionRow
             {
@@ -151,7 +152,8 @@ public static class MapStatsQuery
                 Color = FactionPalette.For(faction),
                 ControlledZones = CountControlledZones(zones, faction),
                 Clerics = CountAssignedClerics(zones, faction),
-                PoolClerics = GetClericPool(faction)
+                PoolClerics = GetClericPool(faction),
+                Behavior = BehaviorOf(faction)
             };
             snapshot.Factions.Add(row);
         }
@@ -202,9 +204,9 @@ public static class MapStatsQuery
             ZoneInfluenceState state = GetState(zone);
             if (state == null) continue;
 
-            foreach (FactionId faction in FactionIdUtil.All)
+            foreach (FactionId faction in ListedFactions())
             {
-                MapStatsFactionRow row = factions[faction];
+                if (!factions.TryGetValue(faction, out MapStatsFactionRow row)) continue;
                 row.Influence += state.GetShare(faction);
                 row.Clerics += state.GetClerics(faction);
                 if (state.Status == ZoneControlStatus.Controlled && state.Controller == faction)
@@ -223,9 +225,9 @@ public static class MapStatsQuery
             districtInfluence += pair.Value.Influence;
         }
 
-        foreach (FactionId faction in FactionIdUtil.All)
+        foreach (FactionId faction in ListedFactions())
         {
-            MapStatsFactionRow row = factions[faction];
+            if (!factions.TryGetValue(faction, out MapStatsFactionRow row)) continue;
             row.SharePercent = districtInfluence > 0 ? row.Influence * 100f / districtInfluence : 0f;
             snapshot.Factions.Add(row);
         }
@@ -255,7 +257,7 @@ public static class MapStatsQuery
         snapshot.TitheLine = FormatZoneTithe(zone, state);
 
         int total = snapshot.TotalInfluence;
-        foreach (FactionId faction in FactionIdUtil.All)
+        foreach (FactionId faction in ListedFactions())
         {
             int share = state != null ? state.GetShare(faction) : 0;
             int clerics = state != null ? state.GetClerics(faction) : 0;
@@ -588,7 +590,7 @@ public static class MapStatsQuery
     private static Dictionary<FactionId, MapStatsFactionRow> CreateEmptyFactionRows()
     {
         Dictionary<FactionId, MapStatsFactionRow> rows = new Dictionary<FactionId, MapStatsFactionRow>();
-        foreach (FactionId faction in FactionIdUtil.All)
+        foreach (FactionId faction in ListedFactions())
         {
             rows[faction] = new MapStatsFactionRow
             {
@@ -716,5 +718,24 @@ public static class MapStatsQuery
     {
         DistrictSelectionController controller = UnityEngine.Object.FindAnyObjectByType<DistrictSelectionController>();
         return controller != null ? controller.ColorMapping : null;
+    }
+
+    /// <summary>Jugador y las tres IA. Violet Veil queda fuera de las stats.</summary>
+    private static List<FactionId> ListedFactions()
+    {
+        return new List<FactionId>
+        {
+            FactionId.Player,
+            FactionId.Rival1,
+            FactionId.Rival2,
+            FactionId.Rival3
+        };
+    }
+
+    private static string BehaviorOf(FactionId faction)
+    {
+        if (FactionIdUtil.IsPlayer(faction)) return string.Empty;
+        RivalAIDirector director = UnityEngine.Object.FindAnyObjectByType<RivalAIDirector>();
+        return director != null ? director.DescribeBehavior(faction) : string.Empty;
     }
 }
