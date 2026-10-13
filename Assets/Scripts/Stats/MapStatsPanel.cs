@@ -186,7 +186,8 @@ public class MapStatsPanel : MonoBehaviour
         for (int i = 0; i < snapshot.Factions.Count; i++)
         {
             MapStatsFactionRow row = snapshot.Factions[i];
-            string value = row.ControlledZones + " zonas  ·  pool " + row.PoolClerics + "  ·  asignados " + row.Clerics;
+            string behavior = string.IsNullOrEmpty(row.Behavior) ? string.Empty : row.Behavior + "  ·  ";
+            string value = behavior + row.ControlledZones + " zonas  ·  pool " + row.PoolClerics + "  ·  asignados " + row.Clerics;
             Track(MapStatsUiBuilder.SpawnFactionRow(view, row, value));
         }
 

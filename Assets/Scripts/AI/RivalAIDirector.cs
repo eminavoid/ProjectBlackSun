@@ -46,6 +46,63 @@ public class RivalAIDirector : MonoBehaviour
     public int ActionsPerTurn => actionsPerTurn;
     public float Aggressiveness => aggressiveness;
 
+    public bool TryGetPersonality(FactionId faction, out AIPersonality personality)
+    {
+        for (int i = 0; i < agents.Count; i++)
+        {
+            Agent agent = agents[i];
+            if (agent == null || agent.faction != faction) continue;
+            personality = agent.personality;
+            return true;
+        }
+
+        personality = default;
+        return false;
+    }
+
+    public static bool IsActiveRival(FactionId faction)
+    {
+        RivalAIDirector director = FindAnyObjectByType<RivalAIDirector>();
+        if (director == null)
+        {
+            return faction == FactionId.Rival1 || faction == FactionId.Rival2 || faction == FactionId.Rival3;
+        }
+
+        return director.TryGetPersonality(faction, out _);
+    }
+
+    public string DescribeBehavior(FactionId faction)
+    {
+        if (!TryGetPersonality(faction, out AIPersonality personality)) return string.Empty;
+
+        string style = PersonalityLabel(personality);
+        AIInfluenceController clerics = FindAnyObjectByType<AIInfluenceController>();
+        IReadOnlyList<Districts> preferred = clerics != null ? clerics.GetPreferredDistricts(faction) : null;
+        if (preferred == null || preferred.Count == 0) return style;
+
+        string first = MapStatsQuery.DistrictLabel(preferred[0]);
+        if (preferred.Count == 1) return style + " · " + first;
+
+        string rest = string.Empty;
+        for (int i = 1; i < preferred.Count; i++)
+        {
+            if (rest.Length > 0) rest += ", ";
+            rest += MapStatsQuery.DistrictLabel(preferred[i]);
+        }
+
+        return style + " · primero " + first + ", luego " + rest;
+    }
+
+    public static string PersonalityLabel(AIPersonality personality)
+    {
+        switch (personality)
+        {
+            case AIPersonality.Clerics: return "Clérigos";
+            case AIPersonality.Seeds: return "Seeds";
+            default: return "Balanceada";
+        }
+    }
+
     /// <summary>Ata la dificultad: pocas acciones y poca agresividad, o al revés.</summary>
     public void ApplyDifficulty(int actions, float aggression)
     {
