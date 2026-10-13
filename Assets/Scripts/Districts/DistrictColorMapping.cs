@@ -19,6 +19,7 @@ public class DistrictColorMapping : ScriptableObject
         new DistrictColorEntry { partName = "Green", district = Districts.District3 },
         new DistrictColorEntry { partName = "Yellow", district = Districts.District4 },
         new DistrictColorEntry { partName = "Purple", district = Districts.District5 },
+        new DistrictColorEntry { partName = "Violet", district = Districts.District5 },
         new DistrictColorEntry { partName = "White", district = Districts.District6 },
     };
 
@@ -78,7 +79,7 @@ public class DistrictColorMapping : ScriptableObject
             case Districts.District2: return "Blue";
             case Districts.District3: return "Green";
             case Districts.District4: return "Yellow";
-            case Districts.District5: return "Purple";
+            case Districts.District5: return "Violet";
             case Districts.District6: return "White";
             default: return district.ToString();
         }

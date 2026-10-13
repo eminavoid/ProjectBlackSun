@@ -43,6 +43,11 @@ public class InfluenceSystemBootstrap : MonoBehaviour
             gameObject.AddComponent<AIInfluenceController>();
         }
 
+        if (FindAnyObjectByType<RivalAIDirector>() == null)
+        {
+            gameObject.AddComponent<RivalAIDirector>();
+        }
+
         if (FindAnyObjectByType<DistrictClericAssignPanel>() == null)
         {
             gameObject.AddComponent<DistrictClericAssignPanel>();

@@ -140,6 +140,12 @@ public class DebugAI : MonoBehaviour
         return true;
     }
 
+    public bool TryPickSeed(Districts district, out Seed seed)
+    {
+        seed = GetRandomAllowedSeed(district);
+        return seed != null;
+    }
+
     private Seed GetRandomAllowedSeed(Districts? districtFilter)
     {
         if (seedsPool == null || seedsPool.EvilSeeds == null || seedsPool.EvilSeeds.Count == 0)

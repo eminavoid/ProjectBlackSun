@@ -6,9 +6,8 @@ using UnityEngine;
 /// Separa decisión de ejecución en las IAs para poder telegrafiar sus jugadas.
 /// Orquesta el orden explícitamente en lugar de que cada IA se suscriba a GameTime por su cuenta.
 ///
-/// Turno N: se planifica al inicio (flechas visibles), los clérigos se commitean antes de la
-/// resolución y las seeds justo después. Es el mismo timing que tenían antes, así que el balance
-/// no cambia: sólo se ve venir la jugada.
+/// Turno N: RivalAIDirector planifica al inicio (flechas visibles). Los clérigos se
+/// commitean antes de la resolución y las seeds justo después.
 /// </summary>
 [DefaultExecutionOrder(60)]
 public class AIIntentBoard : Singleton<AIIntentBoard>
@@ -19,6 +18,7 @@ public class AIIntentBoard : Singleton<AIIntentBoard>
 
     private AIInfluenceController clericAi;
     private DebugAI seedAi;
+    private RivalAIDirector director;
 
     public static AIIntentBoard Get => Instance;
 
@@ -96,8 +96,15 @@ public class AIIntentBoard : Singleton<AIIntentBoard>
 
         intents.Clear();
 
-        if (clericAi != null) clericAi.PlanIntents(intents);
-        if (seedAi != null) seedAi.PlanIntents(intents);
+        if (director != null)
+        {
+            director.PlanIntents(intents);
+        }
+        else
+        {
+            if (clericAi != null) clericAi.PlanIntents(intents);
+            if (seedAi != null) seedAi.PlanIntents(intents);
+        }
 
         for (int i = intents.Count - 1; i >= 0; i--)
         {
@@ -119,6 +126,7 @@ public class AIIntentBoard : Singleton<AIIntentBoard>
     {
         if (clericAi == null) clericAi = FindAnyObjectByType<AIInfluenceController>();
         if (seedAi == null) seedAi = FindAnyObjectByType<DebugAI>();
+        if (director == null) director = FindAnyObjectByType<RivalAIDirector>();
     }
 
     private static string Describe(AIIntent intent)
