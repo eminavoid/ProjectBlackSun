@@ -1,0 +1,56 @@
+{
+ "SoundBanksInfo": {
+  "Platform": "Windows",
+  "BasePlatform": "Windows",
+  "SchemaVersion": "16",
+  "SoundBankVersion": "172",
+  "SoundBanks": [
+   {
+    "Id": "2607556080",
+    "Type": "User",
+    "GUID": "{E6970029-EED7-49B4-910D-9503B8CE3743}",
+    "Language": "SFX",
+    "Hash": "{F4B2658E-1F2A-ACED-95F1-7B974723E9D3}",
+    "ObjectPath": "\\SoundBanks\\Default Work Unit\\Menu",
+    "ShortName": "Menu",
+    "Path": "Menu.bnk",
+    "Media": [
+     {
+      "Id": "528687772",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "Gregorian Chant - Kevin MacLeod.wav",
+      "CachePath": "D7/{D700567B-E7AB-AE8B-9256-679FF8EB8CFB}.wem"
+     },
+     {
+      "Id": "953058117",
+      "Language": "SFX",
+      "Streaming": "false",
+      "Location": "Memory",
+      "ShortName": "medieval atmosphere.wav",
+      "CachePath": "C9/{C9A68D94-506E-A770-4745-5DCCCCAAE8E1}.wem"
+     }
+    ],
+    "Events": [
+     {
+      "Id": "4249884003",
+      "Name": "Play_MUS_Menu",
+      "ObjectPath": "\\Events\\Default Work Unit\\Play_MUS_Menu",
+      "GUID": "{8F5BDBB4-25E0-47E3-B9FB-C178AE512DA7}",
+      "DurationType": "Infinite",
+      "MediaRefs": [
+       {
+        "Id": "528687772"
+       },
+       {
+        "Id": "953058117"
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "FileHash": "{07518162-CAD7-4FA2-A32F-CE9B7A295930}"
+ }
+}

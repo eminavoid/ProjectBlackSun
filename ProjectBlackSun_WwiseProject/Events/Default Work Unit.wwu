@@ -135,6 +135,24 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Event Name="Play_MUS_Menu" ID="{8F5BDBB4-25E0-47E3-B9FB-C178AE512DA7}">
+					<ChildrenList>
+						<Action Name="" ID="{9B308FE2-5FB4-40FC-B0E8-B9146431A136}" ShortID="242677525">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Main Menu Music" ID="{CE79DF36-0D0A-4B6A-B5F3-AF8535CB27F2}" WorkUnitID="{85ECF510-36BD-49F2-8F1A-496BB22358A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+						<Action Name="" ID="{63CABA8E-E272-466A-A3E7-4BCC6ABEAF3F}" ShortID="627822688">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="MainMenu_Ambience" ID="{3FC1983D-A85D-4434-80D4-54E8DA157298}" WorkUnitID="{85ECF510-36BD-49F2-8F1A-496BB22358A4}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

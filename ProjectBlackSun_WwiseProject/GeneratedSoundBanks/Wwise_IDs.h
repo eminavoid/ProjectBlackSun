@@ -14,6 +14,7 @@ namespace AK
     namespace EVENTS
     {
         static const AkUniqueID PLAY_MUS_BACKGROUND = 3649554266U;
+        static const AkUniqueID PLAY_MUS_MENU = 4249884003U;
         static const AkUniqueID PLAY_UI_CLICK_CARD = 1303835618U;
         static const AkUniqueID PLAY_UI_CLICK_GENERIC = 1757779431U;
         static const AkUniqueID PLAY_UI_EVENTCARD = 762812395U;
@@ -69,6 +70,7 @@ namespace AK
     {
         static const AkUniqueID INIT = 1355168291U;
         static const AkUniqueID GAMEPLAY = 89505537U;
+        static const AkUniqueID MENU = 2607556080U;
         static const AkUniqueID MUSIC = 3991942870U;
         static const AkUniqueID UI = 1551306167U;
     } // namespace BANKS

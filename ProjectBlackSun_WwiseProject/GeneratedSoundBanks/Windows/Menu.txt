@@ -1,0 +1,7 @@
+Event	ID	Name			Wwise Object Path	Notes
+	4249884003	Play_MUS_Menu			\Default Work Unit\Play_MUS_Menu	
+
+In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
+	528687772	Gregorian Chant - Kevin MacLeod	.cache\D7\{D700567B-E7AB-AE8B-9256-679FF8EB8CFB}.wem		\Containers\Default Work Unit\Music\Main Menu Music\Gregorian Chant - Kevin MacLeod\Gregorian Chant - Kevin MacLeod		1788089
+	953058117	MainMenu_Ambience	.cache\C9\{C9A68D94-506E-A770-4745-5DCCCCAAE8E1}.wem		\Containers\Default Work Unit\SFX\World\Ambience\MainMenu_Ambience		715391
+

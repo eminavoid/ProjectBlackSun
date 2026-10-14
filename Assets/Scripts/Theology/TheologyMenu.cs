@@ -13,7 +13,6 @@ public class TheologyMenu : MonoBehaviour
     [SerializeField] private Unlocked unlockedSeeds;
     [SerializeField] private Unlocked unlockedDoctrines;
 
-    [SerializeField] private RectTransform panel;
     [SerializeField] private Image closedArt;
     [SerializeField] private RectMask2D openMask;
     [SerializeField] private RectTransform openArt;
@@ -34,7 +33,6 @@ public class TheologyMenu : MonoBehaviour
 
     private void OnEnable()
     {
-        panel.localScale = Vector3.one * (((RectTransform)transform).rect.height / (panel.rect.height * (1f - panel.pivot.y)));
         closedArt.color = Color.white;
         openMask.enabled = true;
         openMask.gameObject.SetActive(false);

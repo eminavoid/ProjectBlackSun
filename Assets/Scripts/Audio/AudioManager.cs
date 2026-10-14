@@ -166,12 +166,21 @@ public class AudioManager : MonoBehaviour
 
     public void PlayBackgroundMusic()
     {
+        if (string.IsNullOrWhiteSpace(backgroundMusicEvent)) return;
+
         if (UIEmitter == null)
         {
             Debug.LogWarning("AudioManager: UIEmitter is not assigned. Assign the UI_AudioEmitter GameObject in the Inspector.");
             return;
         }
         AkSoundEngine.PostEvent(backgroundMusicEvent, UIEmitter);
+    }
+
+    public void StopBackgroundMusic(int fadeMilliseconds)
+    {
+        if (string.IsNullOrWhiteSpace(backgroundMusicEvent) || UIEmitter == null) return;
+
+        AkSoundEngine.ExecuteActionOnEvent(backgroundMusicEvent, AkActionOnEventType.AkActionOnEventType_Stop, UIEmitter, fadeMilliseconds, AkCurveInterpolation.AkCurveInterpolation_Sine);
     }
 
     public void SetMusicVolume(float value)

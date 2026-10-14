@@ -1023,7 +1023,6 @@ MonoBehaviour:
   icons: {fileID: 11400000, guid: 0903aa614e451a541ba7dfa0b538fc32, type: 2}
   unlockedSeeds: {fileID: 11400000, guid: 4614166d5d34a4b4e8a155aa5c87e740, type: 2}
   unlockedDoctrines: {fileID: 11400000, guid: 2a8116ba0990db54d96a7a650250a416, type: 2}
-  panel: {fileID: 66232120663612420}
   closedArt: {fileID: 4923124529245511520}
   openMask: {fileID: 4912171203819658534}
   openArt: {fileID: 1032522005081409098}
@@ -2587,6 +2586,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 66232120663612420}
+  - component: {fileID: 4400331037244556181}
   m_Layer: 0
   m_Name: Panel
   m_TagString: Untagged
@@ -2625,6 +2625,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1230, y: 968}
   m_Pivot: {x: 0.015447155, y: 0.04855372}
+--- !u!114 &4400331037244556181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6935743880071997836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0ae33ee986487640a0e7c225b7db91a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FitToScreenHeight
 --- !u!1 &6937912601831645454
 GameObject:
   m_ObjectHideFlags: 0
