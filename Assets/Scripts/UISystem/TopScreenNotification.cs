@@ -82,7 +82,7 @@ public class TopScreenNotification : MonoBehaviour
         root.anchorMin = new Vector2(0.5f, 1f);
         root.anchorMax = new Vector2(0.5f, 1f);
         root.pivot = new Vector2(0.5f, 1f);
-        root.anchoredPosition = new Vector2(0f, -24f);
+        root.anchoredPosition = new Vector2(0f, -100f);
         root.sizeDelta = new Vector2(860f, 72f);
 
         background = GetComponent<Image>();

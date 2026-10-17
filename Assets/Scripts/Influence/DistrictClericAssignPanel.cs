@@ -35,7 +35,7 @@ public class DistrictClericAssignPanel : MonoBehaviour
         float width = 280f;
         float height = 120f;
         float x = (Screen.width - width) * 0.5f;
-        float y = 12f;
+        float y = Screen.height - height - 12f;
         Rect rect = new Rect(x, y, width, height);
         OnGuiClickBlocker.RegisterGuiRect(rect);
         GUILayout.BeginArea(rect, GUI.skin.box);

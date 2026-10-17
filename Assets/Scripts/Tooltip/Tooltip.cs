@@ -20,6 +20,8 @@ namespace Zeke.Tooltips
 
         [SerializeField] private float showDelay = 1f;
 
+        private const float CursorHeight = 28f;
+
         private State state = State.Hide;
         private float timer = 0f;
 
@@ -66,6 +68,11 @@ namespace Zeke.Tooltips
 
         private void Awake()
         {
+            CanvasGroup group = tooltipObject.GetComponent<CanvasGroup>();
+            if (group == null) group = tooltipObject.AddComponent<CanvasGroup>();
+            group.blocksRaycasts = false;
+            group.interactable = false;
+
             Hide();
         }
 
@@ -81,13 +88,16 @@ namespace Zeke.Tooltips
 
         private void UpdatePosition()
         {
-            // Lower-left corner sits on the cursor, so the box grows up and to the right.
-            tooltipRect.pivot = Vector2.zero;
-
             Vector2 pointer = ReadPointer();
+            float height = tooltipRect.rect.height * tooltipRect.lossyScale.y;
+
+            // Lower-left corner sits on the cursor, so the box grows up and to the right.
+            bool fitsAbove = pointer.y + height <= Screen.height;
+            tooltipRect.pivot = fitsAbove ? Vector2.zero : Vector2.up;
+
             Vector3 position = tooltipRect.position;
             position.x = pointer.x;
-            position.y = pointer.y;
+            position.y = fitsAbove ? pointer.y : pointer.y - CursorHeight;
             tooltipRect.position = position;
 
             ClampToScreen(tooltipRect);

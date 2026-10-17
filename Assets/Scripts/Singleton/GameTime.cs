@@ -24,8 +24,18 @@ public class GameTime : Singleton<GameTime>
 
     public static Action OnTurnEndedLate;
 
+    public static Action OnTurnResolving;
+    public static Action OnTurnResolved;
+
+    public static int CurrentTurn { get; private set; } = 1;
+
     private static bool processingTurn = false;
     private static bool confirmationPopUpOpen = false;
+
+    protected override void OnInitialization()
+    {
+        CurrentTurn = 1;
+    }
 
     private void Update()
     {
@@ -85,11 +95,14 @@ public class GameTime : Singleton<GameTime>
     private IEnumerator NextTurnCoroutine()
     {
         processingTurn = true;
+        OnTurnResolving?.Invoke();
         OnTurnEndedLate?.Invoke();
         OnTurnEnding?.Invoke();
         OnTurnEnded?.Invoke();
+        CurrentTurn++;
         yield return new WaitForSeconds(turnStartDelay);
         OnTurnStarted?.Invoke();
         processingTurn = false;
+        OnTurnResolved?.Invoke();
     }
 }

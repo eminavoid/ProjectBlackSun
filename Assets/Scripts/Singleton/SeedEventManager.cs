@@ -54,6 +54,9 @@ public class SeedEventManager : Singleton<SeedEventManager>
 
     public static Action<Seed> onSeedStored;
     public static Action<Seed> onSeedRemoved;
+    public static Action<SettledEvent> onEventSettled;
+
+    private List<string> capturedOutcomes;
 
     public static void CreateSeedEventMenu(Seed seed)
     {
@@ -205,6 +208,12 @@ public class SeedEventManager : Singleton<SeedEventManager>
 
     public static void CreateEventOutputWindow(string title, string description, IReadOnlyList<ResourceDelta> resourceChanges = null)
     {
+        if (Instance.capturedOutcomes != null)
+        {
+            Instance.capturedOutcomes.Add(description);
+            return;
+        }
+
         UIWindow windowInstance = Instantiate(Instance.eventOutputWindowPrefab, GlobalReferences.ScreenCanvas.transform);
         windowInstance.TryGetElement<TextMeshProUGUI>("Title").text = title;
         windowInstance.TryGetElement<TextMeshProUGUI>("Description").text = description;
@@ -246,8 +255,30 @@ public class SeedEventManager : Singleton<SeedEventManager>
 
     private void AutoResolveEvent(Seed seed)
     {
-        seed.Options[seed.DefaultOption - 1].ExecuteOption();
+        Option option = seed.Options[seed.DefaultOption - 1];
+        if (onEventSettled == null)
+        {
+            option.ExecuteOption();
+            RemoveSeed(seed);
+            return;
+        }
+
+        Dictionary<Resource, int> before = resources.Snapshot();
+        var outcomes = new List<string>();
+        capturedOutcomes = outcomes;
+        try
+        {
+            option.ExecuteOption();
+        }
+        finally
+        {
+            capturedOutcomes = null;
+        }
+
+        var changes = new List<ResourceDelta>();
+        resources.GetChangesSince(before, changes);
         RemoveSeed(seed);
+        onEventSettled.Invoke(new SettledEvent(seed, option, string.Join("\n\n", outcomes), changes));
     }
 
     private void TryPlantResourceSeeds()
