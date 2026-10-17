@@ -131,7 +131,7 @@ public class MapStatsPanel : MonoBehaviour
         if (focusedZone != null)
         {
             RenderNode(MapStatsQuery.CaptureNode(focusedZone));
-            Button back = MapStatsUiBuilder.SpawnActionButton(view, "Volver al distrito");
+            Button back = MapStatsUiBuilder.SpawnActionButton(view, "Back to district");
             if (back != null)
             {
                 Districts district = focusedZone.District;
@@ -161,15 +161,15 @@ public class MapStatsPanel : MonoBehaviour
     {
         if (focusedZone != null)
         {
-            return "Estadísticas — " + MapStatsQuery.DistrictLabel(focusedZone.District) + " / " + focusedZone.SectorName;
+            return "Stats — " + MapStatsQuery.DistrictLabel(focusedZone.District) + " / " + focusedZone.SectorName;
         }
 
         if (selectedDistrict.HasValue)
         {
-            return "Estadísticas — " + MapStatsQuery.DistrictLabel(selectedDistrict.Value);
+            return "Stats — " + MapStatsQuery.DistrictLabel(selectedDistrict.Value);
         }
 
-        return "Estadísticas — Ciudad";
+        return "Stats — City";
     }
 
     private void RenderGlobal(MapStatsGlobalSnapshot snapshot)
@@ -177,21 +177,21 @@ public class MapStatsPanel : MonoBehaviour
         Track(MapStatsUiBuilder.SpawnSection(view, "Faith Eclipse"));
         Track(MapStatsUiBuilder.SpawnBody(view, snapshot.FaithEclipseLeaderLine));
         Track(MapStatsUiBuilder.SpawnBody(view,
-            "Zonas: " + snapshot.PlayableZones
-            + "  ·  controladas " + snapshot.ControlledZones
-            + "  ·  en disputa " + snapshot.ContestedZones
+            "Zones: " + snapshot.PlayableZones
+            + "  ·  controlled " + snapshot.ControlledZones
+            + "  ·  contested " + snapshot.ContestedZones
             + "  ·  seeds " + snapshot.OccupiedZones));
 
-        Track(MapStatsUiBuilder.SpawnSection(view, "Control por facción"));
+        Track(MapStatsUiBuilder.SpawnSection(view, "Control by faction"));
         for (int i = 0; i < snapshot.Factions.Count; i++)
         {
             MapStatsFactionRow row = snapshot.Factions[i];
             string behavior = string.IsNullOrEmpty(row.Behavior) ? string.Empty : row.Behavior + "  ·  ";
-            string value = behavior + row.ControlledZones + " zonas  ·  pool " + row.PoolClerics + "  ·  asignados " + row.Clerics;
+            string value = behavior + row.ControlledZones + " zones  ·  pool " + row.PoolClerics + "  ·  assigned " + row.Clerics;
             Track(MapStatsUiBuilder.SpawnFactionRow(view, row, value));
         }
 
-        Track(MapStatsUiBuilder.SpawnSection(view, "Distritos"));
+        Track(MapStatsUiBuilder.SpawnSection(view, "Districts"));
         for (int i = 0; i < snapshot.Districts.Count; i++)
         {
             MapStatsDistrictRow row = snapshot.Districts[i];
@@ -201,10 +201,10 @@ public class MapStatsPanel : MonoBehaviour
             Track(button != null ? button.gameObject : null);
         }
 
-        Track(MapStatsUiBuilder.SpawnSection(view, "Seeds activas"));
+        Track(MapStatsUiBuilder.SpawnSection(view, "Active seeds"));
         if (snapshot.Seeds.Count == 0)
         {
-            Track(MapStatsUiBuilder.SpawnBody(view, "Ninguna seed plantada."));
+            Track(MapStatsUiBuilder.SpawnBody(view, "No seeds planted."));
             return;
         }
 
@@ -223,25 +223,25 @@ public class MapStatsPanel : MonoBehaviour
         Track(MapStatsUiBuilder.SpawnBody(view, snapshot.ControlLabel));
         Track(MapStatsUiBuilder.SpawnBody(view, snapshot.ProductionLine));
         Track(MapStatsUiBuilder.SpawnBody(view,
-            "Nodos: " + snapshot.ZoneCount
-            + "  ·  controlados " + snapshot.ControlledCount
+            "Zones: " + snapshot.ZoneCount
+            + "  ·  controlled " + snapshot.ControlledCount
             + "  ·  seeds " + snapshot.OccupiedCount
-            + (snapshot.SpecialEventsUnlocked ? "  ·  eventos especiales" : "")));
+            + (snapshot.SpecialEventsUnlocked ? "  ·  special events" : "")));
 
-        Track(MapStatsUiBuilder.SpawnSection(view, "Breakdown de control"));
+        Track(MapStatsUiBuilder.SpawnSection(view, "Control breakdown"));
         for (int i = 0; i < snapshot.Factions.Count; i++)
         {
             MapStatsFactionRow row = snapshot.Factions[i];
-            string value = row.ControlledZones + " zonas  ·  inf "
+            string value = row.ControlledZones + " zones  ·  inf "
                 + row.Influence + " (" + Mathf.RoundToInt(row.SharePercent) + "%)  ·  "
-                + row.Clerics + " clérigos";
+                + row.Clerics + " clerics";
             Track(MapStatsUiBuilder.SpawnFactionRow(view, row, value));
         }
 
-        Track(MapStatsUiBuilder.SpawnSection(view, "Seeds en el distrito"));
+        Track(MapStatsUiBuilder.SpawnSection(view, "Seeds in this district"));
         if (snapshot.Seeds.Count == 0)
         {
-            Track(MapStatsUiBuilder.SpawnBody(view, "Ninguna seed plantada."));
+            Track(MapStatsUiBuilder.SpawnBody(view, "No seeds planted."));
         }
         else
         {
@@ -254,7 +254,7 @@ public class MapStatsPanel : MonoBehaviour
             }
         }
 
-        Track(MapStatsUiBuilder.SpawnSection(view, "Nodos"));
+        Track(MapStatsUiBuilder.SpawnSection(view, "Zones"));
         for (int i = 0; i < snapshot.Nodes.Count; i++)
         {
             MapStatsNodeRow row = snapshot.Nodes[i];
@@ -269,23 +269,23 @@ public class MapStatsPanel : MonoBehaviour
     {
         Track(MapStatsUiBuilder.SpawnSection(view, snapshot.SectorName));
         Track(MapStatsUiBuilder.SpawnBody(view, snapshot.DistrictName + "  ·  " + snapshot.ControlLabel));
-        Track(MapStatsUiBuilder.SpawnBody(view, "Influencia: " + snapshot.TotalInfluence + "/" + snapshot.Cap));
+        Track(MapStatsUiBuilder.SpawnBody(view, "Influence: " + snapshot.TotalInfluence + "/" + snapshot.Cap));
         Track(MapStatsUiBuilder.SpawnBody(view, snapshot.IntentLine));
         Track(MapStatsUiBuilder.SpawnBody(view, snapshot.TitheLine));
 
-        Track(MapStatsUiBuilder.SpawnSection(view, "Presencia"));
+        Track(MapStatsUiBuilder.SpawnSection(view, "Presence"));
         if (snapshot.Factions.Count == 0)
         {
-            Track(MapStatsUiBuilder.SpawnBody(view, "Sin presencia de facciones."));
+            Track(MapStatsUiBuilder.SpawnBody(view, "No faction present."));
         }
         else
         {
             for (int i = 0; i < snapshot.Factions.Count; i++)
             {
                 MapStatsFactionRow row = snapshot.Factions[i];
-                string expelled = row.ExpelledAtCap ? "  ·  expulsada (cap)" : string.Empty;
+                string expelled = row.ExpelledAtCap ? "  ·  expelled (cap)" : string.Empty;
                 string value = row.Influence + " (" + Mathf.RoundToInt(row.SharePercent) + "%)  ·  "
-                    + row.Clerics + " clérigos" + expelled;
+                    + row.Clerics + " clerics" + expelled;
                 Track(MapStatsUiBuilder.SpawnFactionRow(view, row, value));
             }
         }
@@ -293,7 +293,7 @@ public class MapStatsPanel : MonoBehaviour
         Track(MapStatsUiBuilder.SpawnSection(view, "Seed"));
         if (snapshot.PlantedSeed == null)
         {
-            Track(MapStatsUiBuilder.SpawnBody(view, "Libre — no hay seed corriendo."));
+            Track(MapStatsUiBuilder.SpawnBody(view, "Free — no seed growing."));
         }
         else
         {
@@ -307,7 +307,7 @@ public class MapStatsPanel : MonoBehaviour
         if (view == null || view.TabsRoot == null) return;
         if (tabButtons.Count > 0) return;
 
-        AddTab("Ciudad", null);
+        AddTab("City", null);
 
         foreach (Districts district in Enum.GetValues(typeof(Districts)))
         {

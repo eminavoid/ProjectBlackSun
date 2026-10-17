@@ -35,6 +35,8 @@ public class GameTime : Singleton<GameTime>
     protected override void OnInitialization()
     {
         CurrentTurn = 1;
+        processingTurn = false;
+        confirmationPopUpOpen = false;
     }
 
     private void Update()

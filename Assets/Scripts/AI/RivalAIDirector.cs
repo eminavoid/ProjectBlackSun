@@ -90,16 +90,16 @@ public class RivalAIDirector : MonoBehaviour
             rest += MapStatsQuery.DistrictLabel(preferred[i]);
         }
 
-        return style + " · primero " + first + ", luego " + rest;
+        return style + " · first " + first + ", then " + rest;
     }
 
     public static string PersonalityLabel(AIPersonality personality)
     {
         switch (personality)
         {
-            case AIPersonality.Clerics: return "Clérigos";
+            case AIPersonality.Clerics: return "Clerics";
             case AIPersonality.Seeds: return "Seeds";
-            default: return "Balanceada";
+            default: return "Balanced";
         }
     }
 

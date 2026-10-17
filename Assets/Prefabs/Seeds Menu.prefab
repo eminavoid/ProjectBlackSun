@@ -660,7 +660,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 522, y: 815}
+  m_AnchoredPosition: {x: 522, y: 829}
   m_SizeDelta: {x: 38, y: 38}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2085767360248446461
@@ -779,8 +779,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 297.5, y: 437.5}
-  m_SizeDelta: {x: 513, y: 805}
+  m_AnchoredPosition: {x: 297.5, y: 449.04584}
+  m_SizeDelta: {x: 513, y: 828.0917}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2292393729151696215
 CanvasRenderer:
@@ -2765,7 +2765,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 274, y: 815}
+  m_AnchoredPosition: {x: 274, y: 829}
   m_SizeDelta: {x: 434, y: 36}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5350343906538436185
@@ -2796,7 +2796,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: PICK A SEED AND A NODE
+  m_text: PICK A SEED AND A ZONE
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1746c488ec43b7d4fbd18172fcc413b4, type: 2}
   m_sharedMaterial: {fileID: 3072357763800881182, guid: 1746c488ec43b7d4fbd18172fcc413b4, type: 2}

@@ -163,11 +163,11 @@ public static class MapStatsQuery
         if (snapshot.FaithEclipseLeader.HasValue && !tie)
         {
             snapshot.FaithEclipseLeaderLine =
-                $"Líder: {FactionIdUtil.DisplayName(snapshot.FaithEclipseLeader.Value)} ({leading} zonas)";
+                $"Leader: {FactionIdUtil.DisplayName(snapshot.FaithEclipseLeader.Value)} ({leading} zones)";
         }
         else
         {
-            snapshot.FaithEclipseLeaderLine = "Líder: empate / nadie";
+            snapshot.FaithEclipseLeaderLine = "Leader: tied / none";
         }
 
         return snapshot;
@@ -300,7 +300,7 @@ public static class MapStatsQuery
             Influence = state != null ? state.TotalInfluence : 0,
             Cap = state != null ? state.Cap : ZoneInfluenceState.DefaultCap,
             LeaderPercent = leader.HasValue && state != null ? state.GetSharePercent(leader.Value) : 0f,
-            SeedTitle = zone != null && zone.PlantedSeed != null ? zone.PlantedSeed.Title : "Libre"
+            SeedTitle = zone != null && zone.PlantedSeed != null ? zone.PlantedSeed.Title : "Free"
         };
     }
 
@@ -343,9 +343,9 @@ public static class MapStatsQuery
         }
 
         string controlLabel;
-        if (imperial) controlLabel = "Imperial (sin control)";
-        else if (districtOwner.HasValue) controlLabel = "Domina: " + FactionIdUtil.DisplayName(districtOwner.Value);
-        else controlLabel = "En disputa";
+        if (imperial) controlLabel = "Imperial (no control)";
+        else if (districtOwner.HasValue) controlLabel = "Ruled by " + FactionIdUtil.DisplayName(districtOwner.Value);
+        else controlLabel = "Contested";
 
         return new MapStatsDistrictRow
         {
@@ -362,25 +362,25 @@ public static class MapStatsQuery
 
     private static string FormatZoneControl(ZoneInfluenceState state)
     {
-        if (state == null || !state.HasAnyPresence) return "Libre";
+        if (state == null || !state.HasAnyPresence) return "Free";
 
         if (state.Status == ZoneControlStatus.Controlled && state.Controller.HasValue)
         {
-            return "Domina: " + FactionIdUtil.DisplayName(state.Controller.Value);
+            return "Ruled by " + FactionIdUtil.DisplayName(state.Controller.Value);
         }
 
         FactionId? leader = LeadingFaction(state);
         if (leader.HasValue)
         {
-            return "Lidera: " + FactionIdUtil.DisplayName(leader.Value) + " (en disputa)";
+            return "Leading: " + FactionIdUtil.DisplayName(leader.Value) + " (contested)";
         }
 
-        return "En disputa";
+        return "Contested";
     }
 
     private static string FormatZoneIntents(DistrictZone zone)
     {
-        if (zone == null || AIIntentBoard.IsNull) return "Este turno: —";
+        if (zone == null || AIIntentBoard.IsNull) return "This turn: —";
 
         IReadOnlyList<AIIntent> intents = AIIntentBoard.Get.Intents;
         List<string> lines = new List<string>();
@@ -391,8 +391,8 @@ public static class MapStatsQuery
             lines.Add(DescribeIntent(intent));
         }
 
-        if (lines.Count == 0) return "Este turno: —";
-        return "Este turno: " + string.Join(" · ", lines);
+        if (lines.Count == 0) return "This turn: —";
+        return "This turn: " + string.Join(" · ", lines);
     }
 
     private static string DescribeIntent(AIIntent intent)
@@ -403,25 +403,25 @@ public static class MapStatsQuery
 
         if (intent.Kind == AIIntentKind.PlantSeed)
         {
-            string seed = string.IsNullOrEmpty(intent.Label) ? "una seed" : intent.Label;
-            return who + " plantan " + seed;
+            string seed = string.IsNullOrEmpty(intent.Label) ? "a seed" : intent.Label;
+            return who + " plants " + seed;
         }
 
-        string unit = intent.Amount == 1 ? "clérigo" : "clérigos";
+        string unit = intent.Amount == 1 ? "cleric" : "clerics";
         return who + " +" + intent.Amount + " " + unit;
     }
 
     private static string FormatZoneTithe(DistrictZone zone, ZoneInfluenceState state)
     {
-        if (zone == null || InfluenceManager.IsNull) return "Diezmo: —";
+        if (zone == null || InfluenceManager.IsNull) return "Tithe: —";
 
         DistrictProductionConfig config = InfluenceManager.Get.ProductionConfig;
         if (config == null || !config.TryGetEntry(zone.District, out DistrictProductionConfig.ProductionEntry entry))
         {
-            return "Diezmo: —";
+            return "Tithe: —";
         }
 
-        if (entry.isImperial) return "Diezmo: — (imperial)";
+        if (entry.isImperial) return "Tithe: — (imperial)";
 
         if (entry.usesPerZoneAmount)
         {
@@ -431,43 +431,43 @@ public static class MapStatsQuery
         string resources = FormatResourceAmounts(entry);
         if (state != null && state.Status == ZoneControlStatus.Controlled && state.Controller.HasValue)
         {
-            return "Diezmo: " + resources + " → " + FactionIdUtil.DisplayName(state.Controller.Value);
+            return "Tithe: " + resources + " → " + FactionIdUtil.DisplayName(state.Controller.Value);
         }
 
         if (state != null && state.TotalInfluence > 0)
         {
-            return "Diezmo: " + resources + " proporcional a influencia";
+            return "Tithe: " + resources + " split by influence";
         }
 
-        return "Diezmo: " + resources + " (sin dueño, se pierde)";
+        return "Tithe: " + resources + " (no owner, lost)";
     }
 
     private static string FormatProductionLine(Districts district, bool districtControlled)
     {
-        if (InfluenceManager.IsNull) return "Producción: —";
+        if (InfluenceManager.IsNull) return "Production: —";
 
         DistrictProductionConfig config = InfluenceManager.Get.ProductionConfig;
         if (config == null || !config.TryGetEntry(district, out DistrictProductionConfig.ProductionEntry entry))
         {
-            return "Producción: —";
+            return "Production: —";
         }
 
-        if (entry.isImperial) return "Producción: sin diezmo (imperial)";
+        if (entry.isImperial) return "Production: no tithe (imperial)";
 
         if (entry.usesPerZoneAmount)
         {
-            return "Producción: " + FormatZoneAmountSpan(district, entry.primaryAmountPerZone)
-                + " " + entry.primaryResource + " por cuadra, según % de influencia";
+            return "Production: " + FormatZoneAmountSpan(district, entry.primaryAmountPerZone)
+                + " " + entry.primaryResource + " per block, by influence share";
         }
 
         string resources = FormatResourceAmounts(entry);
         if (districtControlled)
         {
-            return "Producción: " + resources + " por nodo (x"
-                + config.DistrictControlProductionMultiplier.ToString("0.##") + " por control)";
+            return "Production: " + resources + " per zone (x"
+                + config.DistrictControlProductionMultiplier.ToString("0.##") + " for control)";
         }
 
-        return "Producción: " + resources + " por nodo";
+        return "Production: " + resources + " per zone";
     }
 
     private static string FormatZoneShareTithe(
@@ -479,7 +479,7 @@ public static class MapStatsQuery
         string resource = entry.primaryResource.ToString();
         if (state == null || state.TotalInfluence <= 0)
         {
-            return "Diezmo: " + production + " " + resource + " (sin influencia, se pierde)";
+            return "Tithe: " + production + " " + resource + " (no influence, lost)";
         }
 
         List<string> parts = new List<string>();
@@ -495,10 +495,10 @@ public static class MapStatsQuery
 
         if (parts.Count == 0)
         {
-            return "Diezmo: " + production + " " + resource + " (no llega a 1, se pierde)";
+            return "Tithe: " + production + " " + resource + " (under 1, lost)";
         }
 
-        return "Diezmo: " + production + " " + resource + " → " + string.Join(", ", parts);
+        return "Tithe: " + production + " " + resource + " → " + string.Join(", ", parts);
     }
 
     private static string FormatZoneAmountSpan(Districts district, int fallback)

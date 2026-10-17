@@ -26,6 +26,12 @@ public class EventsMenu : MonoBehaviour
         SeedEventManager.onSeedRemoved += OnSeedRemoved;
     }
 
+    private void OnDestroy()
+    {
+        SeedEventManager.onSeedStored -= OnSeedQueued;
+        SeedEventManager.onSeedRemoved -= OnSeedRemoved;
+    }
+
     //Temporal
     private void OnSeedQueued(Seed seed)
     {

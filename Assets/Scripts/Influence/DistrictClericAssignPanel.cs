@@ -39,16 +39,16 @@ public class DistrictClericAssignPanel : MonoBehaviour
         Rect rect = new Rect(x, y, width, height);
         OnGuiClickBlocker.RegisterGuiRect(rect);
         GUILayout.BeginArea(rect, GUI.skin.box);
-        GUILayout.Label($"Clérigos → {zone.SectorName} (C)");
-        GUILayout.Label($"Pool: {manager.GetClericPool(FactionId.Player)} | Zona: {state.GetClerics(FactionId.Player)}");
+        GUILayout.Label($"Clerics → {zone.SectorName} (C)");
+        GUILayout.Label($"Pool: {manager.GetClericPool(FactionId.Player)} | Zone: {state.GetClerics(FactionId.Player)}");
 
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Asignar 1"))
+        if (GUILayout.Button("Assign 1"))
         {
             manager.TryAssignClerics(zone, FactionId.Player, 1, out _);
         }
 
-        if (GUILayout.Button("Retirar 1"))
+        if (GUILayout.Button("Withdraw 1"))
         {
             manager.TryAssignClerics(zone, FactionId.Player, -1, out _);
         }

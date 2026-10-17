@@ -40,7 +40,7 @@ public static class FactionIdUtil
     {
         switch (id)
         {
-            case FactionId.Player: return "Jugador";
+            case FactionId.Player: return "You";
             case FactionId.Rival1: return "Crimson Choir";
             case FactionId.Rival2: return "Azure Ledger";
             case FactionId.Rival3: return "Verdant Flock";

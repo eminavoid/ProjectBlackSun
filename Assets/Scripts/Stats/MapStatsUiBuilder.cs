@@ -131,7 +131,7 @@ public static class MapStatsUiBuilder
         titleRect.offsetMin = new Vector2(16f, 4f);
         titleRect.offsetMax = new Vector2(-72f, -4f);
         TextMeshProUGUI title = AddTmp(titleGo, 22, TextAlignmentOptions.MidlineLeft);
-        title.text = "Estadísticas";
+        title.text = "Stats";
         Register(window, titleGo, "Title", title);
 
         GameObject closeGo = CreateUiObject("Close", header.transform);
@@ -267,7 +267,7 @@ public static class MapStatsUiBuilder
         titleLe.minHeight = 22f;
         titleLe.preferredHeight = 22f;
         TextMeshProUGUI title = AddTmp(titleGo, 14, TextAlignmentOptions.MidlineLeft);
-        title.text = "Mapa";
+        title.text = "Map";
 
         GameObject actionGo = CreateUiObject("Action", root.transform);
         LayoutElement actionLe = actionGo.AddComponent<LayoutElement>();
@@ -279,7 +279,7 @@ public static class MapStatsUiBuilder
         GameObject actionLabelGo = CreateUiObject("Label", actionGo.transform);
         Stretch(actionLabelGo.GetComponent<RectTransform>());
         TextMeshProUGUI actionLabel = AddTmp(actionLabelGo, 15, TextAlignmentOptions.Center);
-        actionLabel.text = "Estadísticas";
+        actionLabel.text = "Stats";
 
         return new MapContextMenuView
         {
@@ -359,7 +359,7 @@ public static class MapStatsUiBuilder
         go.SetActive(true);
         SetNamedText(go.transform, "Title", row.Title);
         SetNamedText(go.transform, "Meta",
-            $"{row.DistrictName} / {row.SectorName} · {row.TurnsRemaining} turno(s) · {row.EventType} {row.Difficulty}");
+            $"{row.DistrictName} / {row.SectorName} · {row.TurnsRemaining} turn(s) · {row.EventType} {row.Difficulty}");
 
         Image image = go.GetComponent<Image>();
         if (image != null) image.raycastTarget = true;
@@ -390,7 +390,7 @@ public static class MapStatsUiBuilder
         go.SetActive(true);
         SetNamedText(go.transform, "Name", row.DisplayName);
         SetNamedText(go.transform, "Control",
-            row.ControlLabel + "  ·  " + row.ControlledCount + "/" + row.ZoneCount + " zonas · seeds " + row.OccupiedCount);
+            row.ControlLabel + "  ·  " + row.ControlledCount + "/" + row.ZoneCount + " zones · seeds " + row.OccupiedCount);
         Button button = go.GetComponent<Button>();
         if (button != null && go.GetComponent<UIClickSound>() == null)
         {
@@ -556,7 +556,7 @@ public static class MapStatsUiBuilder
         go.AddComponent<Button>();
         GameObject labelGo = CreateUiObject("Label", go.transform);
         Stretch(labelGo.GetComponent<RectTransform>());
-        AddTmp(labelGo, 14, TextAlignmentOptions.Center).text = "Acción";
+        AddTmp(labelGo, 14, TextAlignmentOptions.Center).text = "Action";
         return go;
     }
 

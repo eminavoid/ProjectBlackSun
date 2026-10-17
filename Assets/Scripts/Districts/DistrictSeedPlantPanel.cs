@@ -139,7 +139,7 @@ public class DistrictSeedPlantPanel : MonoBehaviour
     {
         if (!isOpen)
         {
-            statusMessage = "Abre el menú de seeds primero.";
+            statusMessage = "Open the seeds menu first.";
             UpdatePanelTexts();
             return;
         }
@@ -147,7 +147,7 @@ public class DistrictSeedPlantPanel : MonoBehaviour
         DistrictZone targetZone = DistrictSelectionController.SelectedZone;
         if (targetZone == null)
         {
-            statusMessage = "Selecciona un nodo/sector en el mapa antes de plantar.";
+            statusMessage = "Pick a zone on the map first.";
             UpdatePanelTexts();
             UpdatePlantButtonState();
             return;
@@ -155,7 +155,7 @@ public class DistrictSeedPlantPanel : MonoBehaviour
 
         if (selectedSeedIndex < 0 || selectedSeedIndex >= cachedSeeds.Count)
         {
-            statusMessage = "Selecciona una seed primero.";
+            statusMessage = "Pick a seed first.";
             UpdatePanelTexts();
             return;
         }
@@ -164,7 +164,7 @@ public class DistrictSeedPlantPanel : MonoBehaviour
 
         if (targetZone.IsOccupied || !targetZone.AddSeed(selectedSeed, FactionId.Player))
         {
-            ShowPlantPopup($"No se puede plantar: el nodo '{targetZone.SectorName}' ya está ocupado.");
+            ShowPlantPopup("That zone already has a seed growing. Pick another one.");
             return;
         }
 
@@ -178,7 +178,7 @@ public class DistrictSeedPlantPanel : MonoBehaviour
             AudioManager.Instance.PlaySeedPlant();
         }
 
-        ShowPlantPopup($"Seed '{selectedSeed.Title}' plantada en {targetZone.SectorName} ({targetZone.District}).");
+        ShowPlantPopup($"{selectedSeed.Title} planted in the {DistrictColorMapping.GetDefaultDisplayName(targetZone.District)} district.");
 
         UpdateSeedInventory(selectedSeed, -1);
         RefreshSeedList();
@@ -188,18 +188,13 @@ public class DistrictSeedPlantPanel : MonoBehaviour
     {
         currentSeeds[seed] += amount;
 
-        if (currentSeeds[seed] <= 0)
-        {
-            currentSeeds.Remove(seed);
-
-            ShowPlantPopup($"removed {seed} from inventory");
-        }
+        if (currentSeeds[seed] <= 0) currentSeeds.Remove(seed);
     }
 
     private void ShowPlantPopup(string message)
     {
         CloseMenu();
-        TopScreenNotification.Show(message, 10f);
+        TopScreenNotification.Show(message, 4f);
     }
 
     private void ResolveOpenMenuButton()
@@ -275,11 +270,11 @@ public class DistrictSeedPlantPanel : MonoBehaviour
             DistrictZone selectedZone = DistrictSelectionController.SelectedZone;
             if (selectedZone == null)
             {
-                districtLabel.text = "Nodo: (ninguno)";
+                districtLabel.text = "Zone: none";
             }
             else
             {
-                districtLabel.text = $"Nodo: {selectedZone.SectorName} ({selectedZone.District})";
+                districtLabel.text = $"Zone: {DistrictColorMapping.GetDefaultDisplayName(selectedZone.District)} district";
             }
         }
 

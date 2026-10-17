@@ -107,7 +107,7 @@ namespace Zeke.Tooltips
             zone.EnsureInfluenceState();
             ZoneInfluenceState state = zone.Influence;
 
-            string owner = "Nadie";
+            string owner = "Unclaimed";
             if (state != null && state.Status == ZoneControlStatus.Controlled && state.Controller.HasValue)
             {
                 owner = FactionIdUtil.DisplayName(state.Controller.Value);

@@ -78,8 +78,8 @@ public class MapContextMenu : MonoBehaviour
         if (view.ActionLabel != null)
         {
             view.ActionLabel.text = pendingNodeLevel
-                ? "Estadísticas de " + zone.SectorName
-                : "Estadísticas de " + districtName;
+                ? "Stats: " + zone.SectorName
+                : "Stats: " + districtName;
         }
 
         PlaceAtScreen(screenPosition);

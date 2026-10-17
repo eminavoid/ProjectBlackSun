@@ -30,11 +30,11 @@ public class PlayerResources : ScriptableObject
 
         int flock = resources[Resource.Flock];
         resources[Resource.Flock] = Math.Clamp(flock, 0, int.MaxValue);
+    }
 
-        if (flock == 0)
-        {
-            GlobalEventBus.Invoke(new LoseEvent("TEST MESSAGE"));
-        }
+    public void Clear()
+    {
+        foreach (Resource resource in new List<Resource>(resources.Keys)) resources[resource] = 0;
     }
 
     public int GetResourceAmount(Resource resource)

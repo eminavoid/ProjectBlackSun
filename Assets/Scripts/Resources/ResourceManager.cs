@@ -34,6 +34,7 @@ public class ResourceManager : Singleton<ResourceManager>
 
     protected override void OnInitialization()
     {
+        playerResources.Clear();
         playerResources.AddResource(Resource.Wealth, startWealth);
         playerResources.AddResource(Resource.Zeal, startZeal);
         playerResources.AddResource(Resource.Flock, startFlock);
@@ -45,15 +46,5 @@ public class ResourceManager : Singleton<ResourceManager>
         resourceWindow = Instantiate(uiWindow, GlobalReferences.ScreenCanvas.transform);
         sidebar = resourceWindow.GetComponent<ResourceSidebar>();
         sidebar.Initialize(playerResources);
-    }
-
-    private void Start()
-    {
-        GameTime.OnTurnEnded += OnTurnEnd;
-    }
-
-    private void OnTurnEnd()
-    {
-        //Nothing
     }
 }

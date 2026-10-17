@@ -428,6 +428,12 @@ public class SeedEventManager : Singleton<SeedEventManager>
         ApplyOptionsWindowVisibility(condition);
     }
 
+    private void OnDestroy()
+    {
+        GameTime.OnTurnStarted -= OnTurnStarted;
+        GameTime.OnTurnEndedLate -= OnTurnEndedLate;
+    }
+
     private void OnDisable()
     {
         optionsVisible = false;
