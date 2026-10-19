@@ -11,6 +11,7 @@ public class LoseScreen : MonoBehaviour
     [SerializeField] private TextMeshProUGUI turnsText;
     [SerializeField] private string mainMenuScene = "MainMenu";
     [SerializeField] private string revealEvent = "Play_UI_Outcome";
+    [SerializeField] private ScreenFade fade;
 
     private void Awake()
     {
@@ -38,7 +39,7 @@ public class LoseScreen : MonoBehaviour
 
     private void Leave(string scene)
     {
-        if (AudioManager.Instance != null) AudioManager.Instance.StopBackgroundMusic(500);
-        SceneManager.LoadScene(scene);
+        if (AudioManager.Instance != null) AudioManager.Instance.StopBackgroundMusic(800);
+        fade.LoadScene(scene);
     }
 }

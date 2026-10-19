@@ -9,6 +9,7 @@ public class EventsMenu : MonoBehaviour
     [SerializeField] private GameObject ui;
     [SerializeField] private RectTransform content;
     [SerializeField] private UIWindow elementPrefab;
+    [SerializeField] private GameObject emptyState;
 
     private MapCameraController mapCameraController;
 
@@ -24,6 +25,7 @@ public class EventsMenu : MonoBehaviour
     {
         SeedEventManager.onSeedStored += OnSeedQueued;
         SeedEventManager.onSeedRemoved += OnSeedRemoved;
+        RefreshEmptyState();
     }
 
     private void OnDestroy()
@@ -38,6 +40,7 @@ public class EventsMenu : MonoBehaviour
         UIWindow window = CreateElement(seed);
         Debug.Log($"Adding {window} window to dictionary with seed: {seed} with id: {seed.UniqueID}");
         seedWindows.Add(seed.UniqueID, window);
+        RefreshEmptyState();
     }
 
     private void OnSeedRemoved(Seed seed)
@@ -45,6 +48,12 @@ public class EventsMenu : MonoBehaviour
         Debug.Log($"Trying to remove {seed} with id: {seed.UniqueID}");
         seedWindows[seed.UniqueID].DestroyWindow();
         seedWindows.Remove(seed.UniqueID);
+        RefreshEmptyState();
+    }
+
+    private void RefreshEmptyState()
+    {
+        if (emptyState != null) emptyState.SetActive(seedWindows.Count == 0);
     }
 
     //Needs a dequeue method to destroy them 
@@ -54,7 +63,7 @@ public class EventsMenu : MonoBehaviour
         UIWindow window = Instantiate(elementPrefab, content);
 
         window.TryGetElement<TextMeshProUGUI>("Name").text = seed.Title;
-        window.TryGetElement<TextMeshProUGUI>("Position Text").text = seed.CurrentZone.name;
+        window.TryGetElement<TextMeshProUGUI>("Position Text").text = $"{MapStatsQuery.DistrictLabel(seed.CurrentZone.District)} district  ·  {MapStatsQuery.ZoneLabel(seed.CurrentZone)}";
 
         window.TryGetElement<Button>("Position Clickbox").onClick.AddListener(() => mapCameraController.FocusOnZone(seed.CurrentZone));
         window.TryGetElement<Button>("Position Clickbox").onClick.AddListener(() => ui.SetActive(false));

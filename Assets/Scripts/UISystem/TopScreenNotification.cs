@@ -1,4 +1,5 @@
 using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -16,6 +17,7 @@ public class TopScreenNotification : MonoBehaviour
     [SerializeField] private float durationSeconds = DefaultDurationSeconds;
 
     private RectTransform root;
+    private CanvasGroup group;
     private Image background;
     private TextMeshProUGUI label;
     private Coroutine hideRoutine;
@@ -87,8 +89,18 @@ public class TopScreenNotification : MonoBehaviour
 
         background = GetComponent<Image>();
         if (background == null) background = gameObject.AddComponent<Image>();
-        background.color = new Color(0.06f, 0.07f, 0.1f, 0.92f);
+        background.color = new Color(0.09f, 0.06f, 0.04f, 0.94f);
         background.raycastTarget = false;
+
+        Outline outline = gameObject.GetComponent<Outline>();
+        if (outline == null) outline = gameObject.AddComponent<Outline>();
+        outline.effectColor = new Color(0.88f, 0.71f, 0.38f, 0.55f);
+        outline.effectDistance = new Vector2(2f, -2f);
+
+        group = GetComponent<CanvasGroup>();
+        if (group == null) group = gameObject.AddComponent<CanvasGroup>();
+        group.blocksRaycasts = false;
+        group.alpha = 0f;
 
         GameObject textObject = new GameObject("Message", typeof(RectTransform));
         textObject.transform.SetParent(transform, false);
@@ -102,7 +114,7 @@ public class TopScreenNotification : MonoBehaviour
         label = textObject.AddComponent<TextMeshProUGUI>();
         label.alignment = TextAlignmentOptions.Center;
         label.fontSize = 28f;
-        label.color = Color.white;
+        label.color = new Color(0.94f, 0.86f, 0.66f);
         label.textWrappingMode = TextWrappingModes.Normal;
         label.raycastTarget = false;
         label.text = string.Empty;
@@ -115,6 +127,11 @@ public class TopScreenNotification : MonoBehaviour
         label.text = message ?? string.Empty;
         transform.SetAsLastSibling();
         SetVisible(true);
+        group.DOKill();
+        group.DOFade(1f, 0.25f).SetUpdate(true).SetLink(gameObject);
+        root.DOKill();
+        root.anchoredPosition = new Vector2(0f, -84f);
+        root.DOAnchorPosY(-100f, 0.35f).SetEase(Ease.OutCubic).SetUpdate(true).SetLink(gameObject);
 
         if (hideRoutine != null) StopCoroutine(hideRoutine);
         hideRoutine = StartCoroutine(HideAfterSeconds(duration));
@@ -123,8 +140,9 @@ public class TopScreenNotification : MonoBehaviour
     private IEnumerator HideAfterSeconds(float seconds)
     {
         yield return new WaitForSecondsRealtime(Mathf.Max(0.1f, seconds));
-        SetVisible(false);
         hideRoutine = null;
+        group.DOKill();
+        group.DOFade(0f, 0.35f).SetUpdate(true).SetLink(gameObject).OnComplete(() => SetVisible(false));
     }
 
     private void SetVisible(bool visible)

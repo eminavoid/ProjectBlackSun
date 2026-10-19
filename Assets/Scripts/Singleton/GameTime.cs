@@ -70,7 +70,7 @@ public class GameTime : Singleton<GameTime>
 
             UIWindow popUp = Instantiate(Instance.seedConfirmationPopUp, GlobalReferences.ScreenCanvas.transform);
 
-            popUp.TryGetElement<TextMeshProUGUI>("Description").text = "There are still events left, continue and auto-resolve all of them? The free option will be automatically chosen";
+            popUp.TryGetElement<TextMeshProUGUI>("Description").text = "Some events still await your judgement. End the turn anyway? Your advisors will take the free option on each one.";
 
             Button confirmButton = popUp.TryGetElement<Button>("Confirm Button");
 

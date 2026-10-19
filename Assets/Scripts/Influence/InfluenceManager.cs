@@ -154,7 +154,7 @@ public class InfluenceManager : Singleton<InfluenceManager>
         error = null;
         if (zone == null || !zone.IsPlayable)
         {
-            error = "Zona inválida.";
+            error = "That zone can't be used.";
             return false;
         }
 
@@ -167,14 +167,14 @@ public class InfluenceManager : Singleton<InfluenceManager>
         {
             if (!state.CanEnterByNormalMeans(faction))
             {
-                error = "No se puede ingresar: zona en cap sin presencia (expulsión / Lucha Ideológica).";
+                error = "This zone is full and your faith has no foothold here.";
                 return false;
             }
 
             FactionStock stock = GetStock(faction);
             if (!stock.TrySpendClerics(amount))
             {
-                error = "Clérigos insuficientes en el pool.";
+                error = "You have no clerics in reserve.";
                 return false;
             }
 
@@ -187,7 +187,7 @@ public class InfluenceManager : Singleton<InfluenceManager>
             int actual = Mathf.Min(remove, assigned);
             if (actual <= 0)
             {
-                error = "No hay clérigos asignados para retirar.";
+                error = "You have no clerics here to withdraw.";
                 return false;
             }
 

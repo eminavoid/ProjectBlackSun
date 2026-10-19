@@ -75,7 +75,6 @@ namespace Zeke.Tooltips
         private static bool IsPointerOverBlockingUi()
         {
             Vector2 screenPosition = ReadPointer();
-            if (OnGuiClickBlocker.IsPointerOverBlockedArea(screenPosition)) return true;
             if (EventSystem.current == null) return false;
 
             PointerEventData pointerData = new PointerEventData(EventSystem.current) { position = screenPosition };

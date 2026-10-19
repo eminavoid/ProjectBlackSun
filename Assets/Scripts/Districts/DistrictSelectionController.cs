@@ -533,9 +533,6 @@ public class DistrictSelectionController : MonoBehaviour
 
     private bool IsPointerOverUi(Vector2 screenPosition)
     {
-        // OnGUI cleric assign is not an EventSystem graphic.
-        if (OnGuiClickBlocker.IsPointerOverBlockedArea(screenPosition)) return true;
-
         if (EventSystem.current == null) return false;
 
         PointerEventData pointerData = new PointerEventData(EventSystem.current) { position = screenPosition };

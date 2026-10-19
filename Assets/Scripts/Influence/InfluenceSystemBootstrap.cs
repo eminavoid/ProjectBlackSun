@@ -48,11 +48,6 @@ public class InfluenceSystemBootstrap : MonoBehaviour
             gameObject.AddComponent<RivalAIDirector>();
         }
 
-        if (FindAnyObjectByType<DistrictClericAssignPanel>() == null)
-        {
-            gameObject.AddComponent<DistrictClericAssignPanel>();
-        }
-
         if (ensureInfluenceOverlay && FindAnyObjectByType<InfluenceOverlayRenderer>() == null)
         {
             gameObject.AddComponent<InfluenceOverlayRenderer>();
