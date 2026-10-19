@@ -94,7 +94,6 @@ public class MapStatsGlobalSnapshot
     public int ContestedZones;
     public FactionId? FaithEclipseLeader;
     public int FaithEclipseLeading;
-    public string FaithEclipseLeaderLine;
     public List<MapStatsFactionRow> Factions = new List<MapStatsFactionRow>();
     public List<MapStatsDistrictRow> Districts = new List<MapStatsDistrictRow>();
     public List<MapStatsSeedRow> Seeds = new List<MapStatsSeedRow>();
@@ -109,6 +108,13 @@ public static class MapStatsQuery
     {
         DistrictColorMapping mapping = ResolveColorMapping();
         return DistrictColorMapping.GetDisplayName(district, mapping);
+    }
+
+    public static string ZoneLabel(DistrictZone zone)
+    {
+        string name = zone.SectorName;
+        int split = name.LastIndexOf('_');
+        return split >= 0 && int.TryParse(name.Substring(split + 1), out int number) ? $"Zone {number}" : name;
     }
 
     public static MapStatsGlobalSnapshot CaptureGlobal()
@@ -158,17 +164,9 @@ public static class MapStatsQuery
             snapshot.Factions.Add(row);
         }
 
-        snapshot.FaithEclipseLeader = ResolveFaithEclipseLeader(snapshot.Factions, out int leading, out bool tie);
+        FactionId? leader = ResolveFaithEclipseLeader(snapshot.Factions, out int leading, out bool tie);
+        snapshot.FaithEclipseLeader = tie ? null : leader;
         snapshot.FaithEclipseLeading = leading;
-        if (snapshot.FaithEclipseLeader.HasValue && !tie)
-        {
-            snapshot.FaithEclipseLeaderLine =
-                $"Leader: {FactionIdUtil.DisplayName(snapshot.FaithEclipseLeader.Value)} ({leading} zones)";
-        }
-        else
-        {
-            snapshot.FaithEclipseLeaderLine = "Leader: tied / none";
-        }
 
         return snapshot;
     }
@@ -244,7 +242,7 @@ public static class MapStatsQuery
         ZoneInfluenceState state = zone.Influence;
 
         snapshot.Zone = zone;
-        snapshot.SectorName = zone.SectorName;
+        snapshot.SectorName = ZoneLabel(zone);
         snapshot.District = zone.District;
         snapshot.DistrictName = DistrictLabel(zone.District);
         snapshot.ControlLabel = FormatZoneControl(state);
@@ -294,7 +292,7 @@ public static class MapStatsQuery
         return new MapStatsNodeRow
         {
             Zone = zone,
-            SectorName = zone != null ? zone.SectorName : string.Empty,
+            SectorName = zone != null ? ZoneLabel(zone) : string.Empty,
             ControlLabel = FormatZoneControl(state),
             Controller = leader,
             Influence = state != null ? state.TotalInfluence : 0,
@@ -490,7 +488,7 @@ public static class MapStatsQuery
                 state.GetShare(faction),
                 state.TotalInfluence);
             if (amount <= 0) continue;
-            parts.Add(FactionIdUtil.ShortLabel(faction) + " " + amount);
+            parts.Add(FactionIdUtil.DisplayName(faction) + " " + amount);
         }
 
         if (parts.Count == 0)
@@ -618,7 +616,7 @@ public static class MapStatsQuery
             Title = seed.Title,
             District = zone.District,
             DistrictName = DistrictLabel(zone.District),
-            SectorName = zone.SectorName,
+            SectorName = ZoneLabel(zone),
             TurnsRemaining = seed.TurnsRemaining,
             EventType = seed.EventType,
             Difficulty = seed.Difficulty

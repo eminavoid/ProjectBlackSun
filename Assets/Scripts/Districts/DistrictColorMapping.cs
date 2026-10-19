@@ -65,7 +65,7 @@ public class DistrictColorMapping : ScriptableObject
     {
         if (TryGetPartNamesForDistrict(district, out List<string> partNames) && partNames.Count > 0)
         {
-            return partNames.Count == 1 ? partNames[0] : string.Join(", ", partNames);
+            return partNames[0];
         }
 
         return GetDefaultDisplayName(district);

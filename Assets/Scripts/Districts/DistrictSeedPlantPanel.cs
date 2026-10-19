@@ -178,7 +178,7 @@ public class DistrictSeedPlantPanel : MonoBehaviour
             AudioManager.Instance.PlaySeedPlant();
         }
 
-        ShowPlantPopup($"{selectedSeed.Title} planted in the {DistrictColorMapping.GetDefaultDisplayName(targetZone.District)} district.");
+        ShowPlantPopup($"{selectedSeed.Title} planted in the {MapStatsQuery.DistrictLabel(targetZone.District)} district.");
 
         UpdateSeedInventory(selectedSeed, -1);
         RefreshSeedList();
@@ -274,7 +274,7 @@ public class DistrictSeedPlantPanel : MonoBehaviour
             }
             else
             {
-                districtLabel.text = $"Zone: {DistrictColorMapping.GetDefaultDisplayName(selectedZone.District)} district";
+                districtLabel.text = $"Zone: {MapStatsQuery.DistrictLabel(selectedZone.District)} district";
             }
         }
 

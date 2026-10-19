@@ -64,16 +64,6 @@ public class InfluenceSystemBootstrap : MonoBehaviour
             if (FindAnyObjectByType<AIIntentOverlay>() == null) gameObject.AddComponent<AIIntentOverlay>();
         }
 
-        if (FindAnyObjectByType<MapStatsPanel>() == null)
-        {
-            gameObject.AddComponent<MapStatsPanel>();
-        }
-
-        if (FindAnyObjectByType<MapContextMenu>() == null)
-        {
-            gameObject.AddComponent<MapContextMenu>();
-        }
-
         manager.RefreshZoneCache();
         manager.EnsureZonesInitialized();
         manager.RebuildAdjacency();

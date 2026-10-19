@@ -1,75 +1,56 @@
-using System;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class MapStatsPanel : MonoBehaviour
 {
     public static MapStatsPanel Instance { get; private set; }
 
-    [SerializeField] private GameObject windowPrefab;
-    [SerializeField] private Button openMenuButton;
-    [SerializeField] private string optionsRectName = "OptionsRect";
-    [SerializeField] private string optionsOpenButtonName = "Button (1)";
+    [SerializeField] private MapStatsBook book;
 
-    private MapStatsWindowView view;
-    private readonly List<GameObject> spawned = new List<GameObject>();
-    private readonly List<Button> tabButtons = new List<Button>();
-    private readonly List<Districts?> tabScopes = new List<Districts?>();
+    private static readonly Color Ink = new Color(0.2f, 0.14f, 0.09f);
 
-    private bool isOpen;
     private Districts? selectedDistrict;
     private DistrictZone focusedZone;
-    private bool gameTimeBound;
-    private bool influenceBound;
-    private bool intentsBound;
+    private DistrictSelectionController selection;
+
+    public bool IsOpen => book.IsOpen;
 
     private void Awake()
     {
         Instance = this;
+        book.PageRequested += district => Show(district, null);
+    }
+
+    private void OnEnable()
+    {
+        MapCameraController.OnMapContextRequested += OnMapContextRequested;
+        GameTime.OnTurnEnded += RefreshIfOpen;
+    }
+
+    private void OnDisable()
+    {
+        MapCameraController.OnMapContextRequested -= OnMapContextRequested;
+        GameTime.OnTurnEnded -= RefreshIfOpen;
+    }
+
+    private void Start()
+    {
+        selection = FindAnyObjectByType<DistrictSelectionController>();
+        if (!InfluenceManager.IsNull) InfluenceManager.Get.OnControlChanged += RefreshIfOpen;
+        if (!AIIntentBoard.IsNull) AIIntentBoard.Get.OnIntentsChanged += RefreshIfOpen;
     }
 
     private void OnDestroy()
     {
         if (Instance == this) Instance = null;
-        UnwireHudButton();
-        UnbindEvents();
+        if (!InfluenceManager.IsNull) InfluenceManager.Get.OnControlChanged -= RefreshIfOpen;
+        if (!AIIntentBoard.IsNull) AIIntentBoard.Get.OnIntentsChanged -= RefreshIfOpen;
     }
 
-    private void Start()
-    {
-        ResolveOpenMenuButton();
-        WireHudButton();
-        BindEvents();
-        EnsureView();
-    }
+    public void OpenGlobal() => Show(null, null);
 
-    private void OnEnable()
-    {
-        BindEvents();
-    }
-
-    private void OnDisable()
-    {
-        UnbindEvents();
-    }
-
-    public void OpenGlobal()
-    {
-        selectedDistrict = null;
-        focusedZone = null;
-        ShowWindow();
-        Refresh();
-    }
-
-    public void OpenDistrict(Districts district)
-    {
-        selectedDistrict = district;
-        focusedZone = null;
-        ShowWindow();
-        Refresh();
-    }
+    public void OpenDistrict(Districts district) => Show(district, null);
 
     public void OpenNode(DistrictZone zone)
     {
@@ -79,424 +60,163 @@ public class MapStatsPanel : MonoBehaviour
             return;
         }
 
-        selectedDistrict = zone.District;
+        Show(zone.District, zone);
+    }
+
+    public void Close() => book.Close();
+
+    private void OnMapContextRequested(Vector2 screenPosition)
+    {
+        if (selection == null || !selection.TryPickPlayableZone(screenPosition, out DistrictZone zone) || zone == null) return;
+
+        if (MapViewLod.IsClose(InfluenceOverlaySettings.LoadOrCreate())) OpenNode(zone);
+        else OpenDistrict(zone.District);
+    }
+
+    private void Show(Districts? district, DistrictZone zone)
+    {
+        bool opening = !book.IsOpen;
+        if (!opening && district == selectedDistrict && zone == focusedZone) return;
+
+        selectedDistrict = district;
         focusedZone = zone;
-        ShowWindow();
-        Refresh();
-    }
-
-    public void Close()
-    {
-        isOpen = false;
-        if (view != null && view.Root != null) view.Root.SetActive(false);
-    }
-
-    public bool IsOpen => isOpen;
-
-    private void ShowWindow()
-    {
-        EnsureView();
-        if (view == null || view.Root == null) return;
-
-        isOpen = true;
-        view.Root.SetActive(true);
-        view.Root.transform.SetAsLastSibling();
-
-        MapContextMenu contextMenu = FindAnyObjectByType<MapContextMenu>();
-        if (contextMenu != null) contextMenu.Close();
+        book.Open(district);
+        Render(true, !opening);
     }
 
     private void RefreshIfOpen()
     {
-        if (this == null || !isOpen) return;
-        Refresh();
+        if (book.IsOpen) Render(false, false);
     }
 
-    private void Refresh()
+    private void Render(bool animate, bool turn)
     {
-        EnsureView();
-        if (view == null || view.Content == null) return;
+        book.SelectTab(selectedDistrict);
+        book.BeginPage(turn);
 
-        if (focusedZone == null) focusedZone = null;
+        if (focusedZone != null) RenderZone(MapStatsQuery.CaptureNode(focusedZone), animate);
+        else if (selectedDistrict.HasValue) RenderDistrict(MapStatsQuery.CaptureDistrict(selectedDistrict.Value), animate);
+        else RenderCity(MapStatsQuery.CaptureGlobal(), animate);
 
-        EnsureTabs();
-        UpdateTabVisuals();
-        ClearSpawned();
-
-        if (view.Title != null)
-        {
-            view.Title.text = BuildTitle();
-        }
-
-        if (focusedZone != null)
-        {
-            RenderNode(MapStatsQuery.CaptureNode(focusedZone));
-            Button back = MapStatsUiBuilder.SpawnActionButton(view, "Back to district");
-            if (back != null)
-            {
-                Districts district = focusedZone.District;
-                back.onClick.AddListener(() => OpenDistrict(district));
-                Track(back.gameObject);
-            }
-        }
-
-        if (!selectedDistrict.HasValue)
-        {
-            RenderGlobal(MapStatsQuery.CaptureGlobal());
-        }
-        else
-        {
-            RenderDistrict(MapStatsQuery.CaptureDistrict(selectedDistrict.Value));
-        }
-
-        ResetScrollToTop();
-        Canvas.ForceUpdateCanvases();
-        if (view.Content != null)
-        {
-            LayoutRebuilder.ForceRebuildLayoutImmediate(view.Content);
-        }
+        book.EndPage(animate);
     }
 
-    private string BuildTitle()
+    private void RenderCity(MapStatsGlobalSnapshot snapshot, bool animate)
     {
-        if (focusedZone != null)
+        book.SetHeading(string.Empty, "THE CITY",
+            $"{snapshot.PlayableZones} zones  ·  {snapshot.ControlledZones} ruled  ·  {snapshot.ContestedZones} contested");
+
+        if (snapshot.FaithEclipseLeader.HasValue) book.SetSeal(snapshot.FaithEclipseLeader, "LEADS THE ECLIPSE", FactionIdUtil.DisplayName(snapshot.FaithEclipseLeader.Value), animate);
+        else book.SetSeal(null, "THE ECLIPSE", "No faith leads it yet", animate);
+
+        book.AddSection("FAITHS");
+        foreach (MapStatsFactionRow row in snapshot.Factions)
         {
-            return "Stats — " + MapStatsQuery.DistrictLabel(focusedZone.District) + " / " + focusedZone.SectorName;
+            string detail = $"{Count(row.ControlledZones, "zone")} ruled  ·  {row.Clerics} in the field  ·  {row.PoolClerics} in reserve";
+            if (!string.IsNullOrEmpty(row.Behavior)) detail += "\n" + row.Behavior;
+            AddFaction(row, detail);
         }
 
-        if (selectedDistrict.HasValue)
+        book.AddSection("DISTRICTS");
+        foreach (MapStatsDistrictRow row in snapshot.Districts)
         {
-            return "Stats — " + MapStatsQuery.DistrictLabel(selectedDistrict.Value);
-        }
-
-        return "Stats — City";
-    }
-
-    private void RenderGlobal(MapStatsGlobalSnapshot snapshot)
-    {
-        Track(MapStatsUiBuilder.SpawnSection(view, "Faith Eclipse"));
-        Track(MapStatsUiBuilder.SpawnBody(view, snapshot.FaithEclipseLeaderLine));
-        Track(MapStatsUiBuilder.SpawnBody(view,
-            "Zones: " + snapshot.PlayableZones
-            + "  ·  controlled " + snapshot.ControlledZones
-            + "  ·  contested " + snapshot.ContestedZones
-            + "  ·  seeds " + snapshot.OccupiedZones));
-
-        Track(MapStatsUiBuilder.SpawnSection(view, "Control by faction"));
-        for (int i = 0; i < snapshot.Factions.Count; i++)
-        {
-            MapStatsFactionRow row = snapshot.Factions[i];
-            string behavior = string.IsNullOrEmpty(row.Behavior) ? string.Empty : row.Behavior + "  ·  ";
-            string value = behavior + row.ControlledZones + " zones  ·  pool " + row.PoolClerics + "  ·  assigned " + row.Clerics;
-            Track(MapStatsUiBuilder.SpawnFactionRow(view, row, value));
-        }
-
-        Track(MapStatsUiBuilder.SpawnSection(view, "Districts"));
-        for (int i = 0; i < snapshot.Districts.Count; i++)
-        {
-            MapStatsDistrictRow row = snapshot.Districts[i];
-            Button button = MapStatsUiBuilder.SpawnDistrictRow(view, row);
             Districts district = row.District;
-            if (button != null) button.onClick.AddListener(() => OpenDistrict(district));
-            Track(button != null ? button.gameObject : null);
+            book.AddEntry(book.MarkerFor(district), Color.clear, $"{row.DisplayName} district",
+                $"{row.ControlLabel}  ·  {row.ControlledCount}/{row.ZoneCount} zones ruled  ·  {Count(row.OccupiedCount, "seed")}",
+                () => OpenDistrict(district));
         }
 
-        Track(MapStatsUiBuilder.SpawnSection(view, "Active seeds"));
-        if (snapshot.Seeds.Count == 0)
-        {
-            Track(MapStatsUiBuilder.SpawnBody(view, "No seeds planted."));
-            return;
-        }
-
-        for (int i = 0; i < snapshot.Seeds.Count; i++)
-        {
-            Button seedButton = MapStatsUiBuilder.SpawnSeedRow(view, snapshot.Seeds[i]);
-            DistrictZone zone = snapshot.Seeds[i].Zone;
-            if (seedButton != null) seedButton.onClick.AddListener(() => OpenNode(zone));
-            Track(seedButton != null ? seedButton.gameObject : null);
-        }
+        AddSeeds("ACTIVE SEEDS", snapshot.Seeds);
     }
 
-    private void RenderDistrict(MapStatsDistrictSnapshot snapshot)
+    private void RenderDistrict(MapStatsDistrictSnapshot snapshot, bool animate)
     {
-        Track(MapStatsUiBuilder.SpawnSection(view, snapshot.DisplayName));
-        Track(MapStatsUiBuilder.SpawnBody(view, snapshot.ControlLabel));
-        Track(MapStatsUiBuilder.SpawnBody(view, snapshot.ProductionLine));
-        Track(MapStatsUiBuilder.SpawnBody(view,
-            "Zones: " + snapshot.ZoneCount
-            + "  ·  controlled " + snapshot.ControlledCount
-            + "  ·  seeds " + snapshot.OccupiedCount
-            + (snapshot.SpecialEventsUnlocked ? "  ·  special events" : "")));
+        book.SetHeading(string.Empty, $"{snapshot.DisplayName} district".ToUpperInvariant(), snapshot.ControlLabel);
+        SealFor(snapshot.Controller, snapshot.ControlLabel, animate);
 
-        Track(MapStatsUiBuilder.SpawnSection(view, "Control breakdown"));
-        for (int i = 0; i < snapshot.Factions.Count; i++)
+        book.AddText(snapshot.ProductionLine);
+        book.AddText($"{Count(snapshot.ZoneCount, "zone")}  ·  {snapshot.ControlledCount} ruled  ·  {Count(snapshot.OccupiedCount, "seed")}"
+            + (snapshot.SpecialEventsUnlocked ? "  ·  special events unlocked" : string.Empty));
+
+        book.AddSection("CONTROL");
+        foreach (MapStatsFactionRow row in snapshot.Factions)
         {
-            MapStatsFactionRow row = snapshot.Factions[i];
-            string value = row.ControlledZones + " zones  ·  inf "
-                + row.Influence + " (" + Mathf.RoundToInt(row.SharePercent) + "%)  ·  "
-                + row.Clerics + " clerics";
-            Track(MapStatsUiBuilder.SpawnFactionRow(view, row, value));
+            AddFaction(row, $"{Count(row.ControlledZones, "zone")} ruled  ·  {row.Influence} influence ({Mathf.RoundToInt(row.SharePercent)}%)  ·  {Count(row.Clerics, "cleric")}");
         }
 
-        Track(MapStatsUiBuilder.SpawnSection(view, "Seeds in this district"));
-        if (snapshot.Seeds.Count == 0)
-        {
-            Track(MapStatsUiBuilder.SpawnBody(view, "No seeds planted."));
-        }
-        else
-        {
-            for (int i = 0; i < snapshot.Seeds.Count; i++)
-            {
-                Button seedButton = MapStatsUiBuilder.SpawnSeedRow(view, snapshot.Seeds[i]);
-                DistrictZone zone = snapshot.Seeds[i].Zone;
-                if (seedButton != null) seedButton.onClick.AddListener(() => OpenNode(zone));
-                Track(seedButton != null ? seedButton.gameObject : null);
-            }
-        }
+        AddSeeds("SEEDS", snapshot.Seeds);
 
-        Track(MapStatsUiBuilder.SpawnSection(view, "Zones"));
-        for (int i = 0; i < snapshot.Nodes.Count; i++)
+        book.AddSection("ZONES");
+        foreach (MapStatsNodeRow row in snapshot.Nodes)
         {
-            MapStatsNodeRow row = snapshot.Nodes[i];
-            Button button = MapStatsUiBuilder.SpawnNodeRow(view, row);
             DistrictZone zone = row.Zone;
-            if (button != null) button.onClick.AddListener(() => OpenNode(zone));
-            Track(button != null ? button.gameObject : null);
+            string detail = $"{row.ControlLabel}  ·  {row.Influence}/{row.Cap} influence";
+            if (zone != null && zone.IsOccupied) detail += $"\nSeed: {row.SeedTitle}";
+            book.AddEntry(null, Swatch(row.Controller), row.SectorName, detail, () => OpenNode(zone));
         }
     }
 
-    private void RenderNode(MapStatsNodeSnapshot snapshot)
+    private void RenderZone(MapStatsNodeSnapshot snapshot, bool animate)
     {
-        Track(MapStatsUiBuilder.SpawnSection(view, snapshot.SectorName));
-        Track(MapStatsUiBuilder.SpawnBody(view, snapshot.DistrictName + "  ·  " + snapshot.ControlLabel));
-        Track(MapStatsUiBuilder.SpawnBody(view, "Influence: " + snapshot.TotalInfluence + "/" + snapshot.Cap));
-        Track(MapStatsUiBuilder.SpawnBody(view, snapshot.IntentLine));
-        Track(MapStatsUiBuilder.SpawnBody(view, snapshot.TitheLine));
+        book.SetHeading($"{snapshot.DistrictName} district".ToUpperInvariant(), snapshot.SectorName.ToUpperInvariant(), snapshot.ControlLabel);
+        SealFor(snapshot.Controller, snapshot.ControlLabel, animate);
 
-        Track(MapStatsUiBuilder.SpawnSection(view, "Presence"));
-        if (snapshot.Factions.Count == 0)
+        book.AddText($"Influence {snapshot.TotalInfluence}/{snapshot.Cap}");
+        book.AddText(snapshot.IntentLine);
+        book.AddText(snapshot.TitheLine);
+
+        book.AddSection("PRESENCE");
+        if (snapshot.Factions.Count == 0) book.AddText("No faith has set foot here.");
+        foreach (MapStatsFactionRow row in snapshot.Factions)
         {
-            Track(MapStatsUiBuilder.SpawnBody(view, "No faction present."));
-        }
-        else
-        {
-            for (int i = 0; i < snapshot.Factions.Count; i++)
-            {
-                MapStatsFactionRow row = snapshot.Factions[i];
-                string expelled = row.ExpelledAtCap ? "  ·  expelled (cap)" : string.Empty;
-                string value = row.Influence + " (" + Mathf.RoundToInt(row.SharePercent) + "%)  ·  "
-                    + row.Clerics + " clerics" + expelled;
-                Track(MapStatsUiBuilder.SpawnFactionRow(view, row, value));
-            }
+            string detail = $"{row.Influence} influence ({Mathf.RoundToInt(row.SharePercent)}%)  ·  {Count(row.Clerics, "cleric")}";
+            if (row.ExpelledAtCap) detail += "  ·  expelled";
+            AddFaction(row, detail);
         }
 
-        Track(MapStatsUiBuilder.SpawnSection(view, "Seed"));
-        if (snapshot.PlantedSeed == null)
-        {
-            Track(MapStatsUiBuilder.SpawnBody(view, "Free — no seed growing."));
-        }
-        else
-        {
-            Button seedButton = MapStatsUiBuilder.SpawnSeedRow(view, snapshot.PlantedSeed);
-            Track(seedButton != null ? seedButton.gameObject : null);
-        }
+        book.AddSection("SEED");
+        if (snapshot.PlantedSeed == null) book.AddText("Free. No seed is growing here.");
+        else AddSeed(snapshot.PlantedSeed, null);
+
+        Districts district = snapshot.District;
+        book.AddAction($"BACK TO {snapshot.DistrictName.ToUpperInvariant()}", () => OpenDistrict(district));
     }
 
-    private void EnsureTabs()
+    private void SealFor(FactionId? controller, string controlLabel, bool animate)
     {
-        if (view == null || view.TabsRoot == null) return;
-        if (tabButtons.Count > 0) return;
-
-        AddTab("City", null);
-
-        foreach (Districts district in Enum.GetValues(typeof(Districts)))
-        {
-            AddTab(MapStatsQuery.DistrictLabel(district), district);
-        }
+        if (controller.HasValue) book.SetSeal(controller, "RULED BY", FactionIdUtil.DisplayName(controller.Value), animate);
+        else book.SetSeal(null, "NO RULER", controlLabel, animate);
     }
 
-    private void AddTab(string label, Districts? district)
+    private void AddFaction(MapStatsFactionRow row, string detail)
     {
-        Button button = MapStatsUiBuilder.CreateTabButton(view.TabsRoot, label);
-        Districts? scope = district;
-        button.onClick.AddListener(() =>
-        {
-            focusedZone = null;
-            selectedDistrict = scope;
-            Refresh();
-        });
-        tabButtons.Add(button);
-        tabScopes.Add(scope);
+        Color ink = Color.Lerp(row.Color, Color.black, 0.45f);
+        book.AddEntry(null, Color.Lerp(row.Color, Color.black, 0.2f),
+            $"<color=#{ColorUtility.ToHtmlStringRGB(ink)}>{row.DisplayName}</color>", detail);
     }
 
-    private void UpdateTabVisuals()
+    private void AddSeeds(string title, List<MapStatsSeedRow> seeds)
     {
-        for (int i = 0; i < tabButtons.Count; i++)
+        book.AddSection(title);
+        if (seeds.Count == 0) book.AddText("No seeds planted.");
+        foreach (MapStatsSeedRow row in seeds)
         {
-            bool selected = selectedDistrict.HasValue
-                ? tabScopes[i].HasValue && tabScopes[i].Value == selectedDistrict.Value
-                : !tabScopes[i].HasValue;
-            MapStatsUiBuilder.SetTabSelected(tabButtons[i], selected);
+            DistrictZone zone = row.Zone;
+            AddSeed(row, () => OpenNode(zone));
         }
     }
 
-    private void Track(GameObject go)
+    private void AddSeed(MapStatsSeedRow row, UnityAction onClick)
     {
-        if (go != null) spawned.Add(go);
+        string turns = row.TurnsRemaining == 1 ? "1 turn left" : $"{row.TurnsRemaining} turns left";
+        book.AddEntry(book.MarkerFor(row.District), Color.clear, row.Title,
+            $"{row.DistrictName} district, {row.SectorName}  ·  {turns}  ·  {row.EventType} {row.Difficulty}", onClick);
     }
 
-    private void ClearSpawned()
+    private static Color Swatch(FactionId? faction)
     {
-        for (int i = 0; i < spawned.Count; i++)
-        {
-            if (spawned[i] != null) Destroy(spawned[i]);
-        }
-
-        spawned.Clear();
+        return faction.HasValue ? Color.Lerp(FactionPalette.For(faction.Value), Color.black, 0.2f) : new Color(Ink.r, Ink.g, Ink.b, 0.25f);
     }
 
-    private void ResetScrollToTop()
-    {
-        if (view == null || view.Scroll == null) return;
-        view.Scroll.StopMovement();
-        view.Scroll.verticalNormalizedPosition = 1f;
-    }
-
-    private void EnsureView()
-    {
-        if (view != null && view.Root != null)
-        {
-            NodeTooltipMenuBlock.Ensure(view.Root);
-            return;
-        }
-
-        Transform canvas = ResolveCanvas();
-        if (canvas == null)
-        {
-            Debug.LogWarning("MapStatsPanel: no hay ScreenCanvas.", this);
-            return;
-        }
-
-        if (windowPrefab != null)
-        {
-            GameObject instance = Instantiate(windowPrefab, canvas);
-            instance.name = "MapStatsWindow";
-            view = MapStatsUiBuilder.BindWindow(instance);
-        }
-        else
-        {
-            view = MapStatsUiBuilder.BuildWindow(canvas);
-        }
-
-        if (view != null && view.CloseButton != null)
-        {
-            view.CloseButton.onClick.AddListener(Close);
-        }
-
-        if (view != null && view.Root != null)
-        {
-            view.Root.SetActive(false);
-            NodeTooltipMenuBlock.Ensure(view.Root);
-        }
-    }
-
-    private static Transform ResolveCanvas()
-    {
-        if (!GlobalReferences.IsNull && GlobalReferences.ScreenCanvas != null)
-        {
-            return GlobalReferences.ScreenCanvas.transform;
-        }
-
-        Canvas canvas = FindAnyObjectByType<Canvas>();
-        return canvas != null ? canvas.transform : null;
-    }
-
-    private void ResolveOpenMenuButton()
-    {
-        if (openMenuButton != null) return;
-
-        GameObject optionsRect = GameObject.Find(optionsRectName);
-        if (optionsRect == null)
-        {
-            Debug.LogWarning($"MapStatsPanel: no se encontró '{optionsRectName}'.", this);
-            return;
-        }
-
-        Transform buttonTransform = optionsRect.transform.Find(optionsOpenButtonName);
-        if (buttonTransform == null)
-        {
-            Debug.LogWarning($"MapStatsPanel: no se encontró '{optionsOpenButtonName}' bajo '{optionsRectName}'.", this);
-            return;
-        }
-
-        Button candidate = buttonTransform.GetComponent<Button>();
-        if (candidate == null)
-        {
-            Debug.LogWarning($"MapStatsPanel: '{optionsOpenButtonName}' no tiene componente Button.", this);
-            return;
-        }
-
-        // Button (1) ya abre el tray de seeds. No sumarle el menú de influencia.
-        if (candidate.onClick.GetPersistentEventCount() > 0)
-        {
-            return;
-        }
-
-        openMenuButton = candidate;
-
-        TMP_Text label = openMenuButton.GetComponentInChildren<TMP_Text>(true);
-        if (label != null) label.text = "Stats";
-    }
-
-    private void WireHudButton()
-    {
-        if (openMenuButton != null) openMenuButton.onClick.AddListener(OpenGlobal);
-    }
-
-    private void UnwireHudButton()
-    {
-        if (openMenuButton != null) openMenuButton.onClick.RemoveListener(OpenGlobal);
-    }
-
-    private void BindEvents()
-    {
-        if (!gameTimeBound)
-        {
-            GameTime.OnTurnEnded += RefreshIfOpen;
-            gameTimeBound = true;
-        }
-
-        if (!influenceBound && !InfluenceManager.IsNull)
-        {
-            InfluenceManager.Get.OnControlChanged += RefreshIfOpen;
-            influenceBound = true;
-        }
-
-        if (!intentsBound && !AIIntentBoard.IsNull)
-        {
-            AIIntentBoard.Get.OnIntentsChanged += RefreshIfOpen;
-            intentsBound = true;
-        }
-    }
-
-    private void UnbindEvents()
-    {
-        if (gameTimeBound)
-        {
-            GameTime.OnTurnEnded -= RefreshIfOpen;
-            gameTimeBound = false;
-        }
-
-        if (influenceBound && !InfluenceManager.IsNull)
-        {
-            InfluenceManager.Get.OnControlChanged -= RefreshIfOpen;
-            influenceBound = false;
-        }
-
-        if (intentsBound && !AIIntentBoard.IsNull)
-        {
-            AIIntentBoard.Get.OnIntentsChanged -= RefreshIfOpen;
-            intentsBound = false;
-        }
-    }
+    private static string Count(int amount, string noun) => amount == 1 ? $"1 {noun}" : $"{amount} {noun}s";
 }
