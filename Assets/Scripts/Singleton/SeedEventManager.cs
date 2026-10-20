@@ -14,8 +14,40 @@ public class SeedEventManager : Singleton<SeedEventManager>
     {
         public Resource Resource;
         public SeedsPool SeedPool;
-        [Range(0, 100)] public int SeedChance = 100;
         public int TriggerBelowAmount = 0;
+
+        [Space]
+
+        public int maxTicks = 10;
+        public int eventRepeatCooldown = 3;
+        [HideInInspector] public int ticksSinceTriggered = 0;
+
+        public readonly List<CooldownSeedsElement> cooldownSeeds = new List<CooldownSeedsElement>();
+
+        public bool InCooldown(Seed seed)
+        {
+            for (int i = 0; i < cooldownSeeds.Count; i++)
+            {
+                if (cooldownSeeds[i].seed == seed)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public class CooldownSeedsElement
+        {
+            public Seed seed;
+            public int cooldown;
+
+            public CooldownSeedsElement(Seed seed, int cooldown)
+            {
+                this.seed = seed;
+                this.cooldown = cooldown;
+            }
+        }
     }
 
     [SerializeField] private PlayerResources resources;
@@ -242,6 +274,8 @@ public class SeedEventManager : Singleton<SeedEventManager>
 
     private void OnTurnStarted()
     {
+        UpdateResourceSeedTicks();
+        UpdateResourceSeedEventFilter();
         TryPlantResourceSeeds();
     }
 
@@ -302,18 +336,105 @@ public class SeedEventManager : Singleton<SeedEventManager>
                 continue;
             }
 
-            int seedChance = Mathf.Clamp(resourceSeedPool.SeedChance, 0, 100);
+            float multiplier = resourceSeedPool.ticksSinceTriggered / (float)resourceSeedPool.maxTicks;
+            int chance = Mathf.FloorToInt(100f * multiplier);
 
-            if (UnityEngine.Random.Range(0, 100) >= seedChance)
+            int roll = UnityEngine.Random.Range(1, 100);
+
+            bool success = roll < chance;
+
+            Debug.Log($"Plant {resourceSeedPool.Resource} seed pool {success} with roll {roll} with chance of {chance}%");
+
+            if (!success) continue;
+
+            List<Seed> filteredEvents = new List<Seed>();
+            List<Seed> unfilteredEvents = resourceSeedPool.SeedPool.EvilSeeds;
+
+            for (int x = 0; x < unfilteredEvents.Count; x++)
             {
+                Seed tempSeed = unfilteredEvents[x];
+
+                if (!resourceSeedPool.InCooldown(tempSeed))
+                {
+                    filteredEvents.Add(tempSeed);
+                }
+            }
+
+            if (filteredEvents.Count <= 0)
+            {
+                Debug.Log($"All {resourceSeedPool.Resource} seed pool events might be on cooldown but roll was successful");
                 continue;
             }
 
-            Seed seed = resourceSeedPool.SeedPool.EvilSeeds[UnityEngine.Random.Range(0, resourceSeedPool.SeedPool.EvilSeeds.Count)];
+            Seed seed = filteredEvents[UnityEngine.Random.Range(0, filteredEvents.Count)];
 
             if (TryPlantSeed(seed))
             {
                 Debug.Log($"Played seed due to low {resourceSeedPool.Resource}");
+                resourceSeedPool.cooldownSeeds.Add(new ResourceSeedPool.CooldownSeedsElement(seed, -1));
+            }
+
+            resourceSeedPool.ticksSinceTriggered = -1;
+        }
+    }
+
+    private void UpdateResourceSeedTicks()
+    {
+        if (resourceSeedPools == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < resourceSeedPools.Count; i++)
+        {
+            ResourceSeedPool resourceSeedPool = resourceSeedPools[i];
+
+            if (resources.GetResourceAmount(resourceSeedPool.Resource) >= resourceSeedPool.TriggerBelowAmount)
+            {
+                continue;
+            }
+
+            if (resourceSeedPool == null || resourceSeedPool.SeedPool == null)
+            {
+                continue;
+            }
+
+            resourceSeedPools[i].ticksSinceTriggered += 1;
+        }
+    }
+
+    private void UpdateResourceSeedEventFilter()
+    {
+        if (resourceSeedPools == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < resourceSeedPools.Count; i++)
+        {
+            ResourceSeedPool resourceSeedPool = resourceSeedPools[i];
+
+            if (resourceSeedPool == null || resourceSeedPool.cooldownSeeds == null)
+            {
+                continue;
+            }
+
+            List<ResourceSeedPool.CooldownSeedsElement> remove = new List<ResourceSeedPool.CooldownSeedsElement>();
+
+            for (int x = 0; x < resourceSeedPool.cooldownSeeds.Count; x++)
+            {
+                resourceSeedPool.cooldownSeeds[x].cooldown += 1;
+
+                if (resourceSeedPool.cooldownSeeds[x].cooldown >= resourceSeedPool.eventRepeatCooldown)
+                {
+                    remove.Add(resourceSeedPool.cooldownSeeds[x]);
+                }
+            }
+
+            for (int x = 0; x < remove.Count; x++)
+            {
+                Debug.Log($"Removing {remove[x].seed} seed from {resourceSeedPool.Resource} resource pool");
+                resourceSeedPool.cooldownSeeds.Remove(remove[x]);
             }
         }
     }
@@ -352,7 +473,6 @@ public class SeedEventManager : Singleton<SeedEventManager>
         {
             Resource = Resource.Wealth,
             SeedPool = wealthSeedPool,
-            SeedChance = wealthSeedChance,
             TriggerBelowAmount = 0
         });
     }
