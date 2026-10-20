@@ -60,7 +60,7 @@ public class SeedEventManager : Singleton<SeedEventManager>
 
     public static void CreateSeedEventMenu(Seed seed)
     {
-        Instance.spawnOptionsWindow.gameObject.SetActive(true);
+        MenuTransition.Show(Instance.spawnOptionsWindow.gameObject);
         Instance.SetOptionsWindowVisibility(true);
         Instance.CreateSeedOptionsInCanvas(seed);
 

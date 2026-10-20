@@ -2578,7 +2578,6 @@ GameObject:
   - component: {fileID: 1771160252740399758}
   - component: {fileID: 3759638260617533663}
   - component: {fileID: 1970934534367661795}
-  - component: {fileID: 8047921735854493351}
   m_Layer: 0
   m_Name: Panel
   m_TagString: Untagged
@@ -2639,20 +2638,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0ae33ee986487640a0e7c225b7db91a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FitToScreenHeight
---- !u!114 &8047921735854493351
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6953423529570016976}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d871c93d3fc59ff49b60b4d3fe1e1e54, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SlideInOnEnable
-  from: {x: -80, y: 0}
-  duration: 0.35
 --- !u!1 &7966165670331705546
 GameObject:
   m_ObjectHideFlags: 0
@@ -3089,10 +3074,56 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 10275093458068444, guid: 1bbaffce2bb8a634188af66f04a04d5b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1771160252740399758}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5739786016802657970, guid: 1bbaffce2bb8a634188af66f04a04d5b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1519587350728472705}
+    - targetCorrespondingSourceObject: {fileID: 5739786016802657970, guid: 1bbaffce2bb8a634188af66f04a04d5b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2176355805378986700}
   m_SourcePrefab: {fileID: 100100000, guid: 1bbaffce2bb8a634188af66f04a04d5b, type: 3}
 --- !u!224 &28660676089141226 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 10275093458068444, guid: 1bbaffce2bb8a634188af66f04a04d5b, type: 3}
   m_PrefabInstance: {fileID: 18387816770368566}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &5757433654402622084 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5739786016802657970, guid: 1bbaffce2bb8a634188af66f04a04d5b, type: 3}
+  m_PrefabInstance: {fileID: 18387816770368566}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1519587350728472705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5757433654402622084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 964e7da4efc1b0c4791cf74874bb2186, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MenuTransition
+  panel: {fileID: 1771160252740399758}
+  group: {fileID: 2176355805378986700}
+  style: 0
+  slideOffset: {x: -80, y: 0}
+  popScale: 0.92
+  duration: 0.35
+  playOnEnable: 1
+  destroyOnClose: 0
+  onClosed:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!225 &2176355805378986700
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5757433654402622084}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0

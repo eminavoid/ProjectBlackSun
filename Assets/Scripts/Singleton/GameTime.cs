@@ -75,12 +75,12 @@ public class GameTime : Singleton<GameTime>
             Button confirmButton = popUp.TryGetElement<Button>("Confirm Button");
 
             confirmButton.onClick.AddListener(Instance.ForceNextTurn);
-            confirmButton.onClick.AddListener(() => Destroy(popUp.gameObject));
+            confirmButton.onClick.AddListener(() => MenuTransition.Hide(popUp.gameObject));
             confirmButton.onClick.AddListener(() => confirmationPopUpOpen = false);
 
             Button cancelButton = popUp.TryGetElement<Button>("Cancel Button");
 
-            cancelButton.onClick.AddListener(() => Destroy(popUp.gameObject));
+            cancelButton.onClick.AddListener(() => MenuTransition.Hide(popUp.gameObject));
             cancelButton.onClick.AddListener(() => confirmationPopUpOpen = false);
         }
         else

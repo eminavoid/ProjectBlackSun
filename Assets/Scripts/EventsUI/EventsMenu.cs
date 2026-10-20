@@ -66,12 +66,12 @@ public class EventsMenu : MonoBehaviour
         window.TryGetElement<TextMeshProUGUI>("Position Text").text = $"{MapStatsQuery.DistrictLabel(seed.CurrentZone.District)} district  ·  {MapStatsQuery.ZoneLabel(seed.CurrentZone)}";
 
         window.TryGetElement<Button>("Position Clickbox").onClick.AddListener(() => mapCameraController.FocusOnZone(seed.CurrentZone));
-        window.TryGetElement<Button>("Position Clickbox").onClick.AddListener(() => ui.SetActive(false));
+        window.TryGetElement<Button>("Position Clickbox").onClick.AddListener(() => MenuTransition.Hide(ui));
 
         Button elementClickbox = window.TryGetElement<Button>("Event Clickbox");
 
         elementClickbox.onClick.AddListener(() => SeedEventManager.CreateSeedEventMenu(seed));
-        elementClickbox.onClick.AddListener(() => ui.SetActive(false));
+        elementClickbox.onClick.AddListener(() => MenuTransition.Hide(ui));
 
         return window;
     }

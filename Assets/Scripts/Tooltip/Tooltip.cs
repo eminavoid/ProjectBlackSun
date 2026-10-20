@@ -1,3 +1,4 @@
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 #if ENABLE_INPUT_SYSTEM
@@ -19,11 +20,15 @@ namespace Zeke.Tooltips
         [Space]
 
         [SerializeField] private float showDelay = 1f;
+        [SerializeField, Min(0.01f)] private float appearDuration = 0.14f;
+        [SerializeField, Min(0.01f)] private float hideDuration = 0.08f;
 
         private const float CursorHeight = 28f;
 
         private State state = State.Hide;
         private float timer = 0f;
+        private CanvasGroup group;
+        private bool hiding;
 
         private enum State
         {
@@ -48,13 +53,14 @@ namespace Zeke.Tooltips
         {
             SetText(text);
             Instance.state = State.Show;
+            if (Instance.hiding) Instance.Appear(false);
         }
 
         public static void Hide()
         {
             Instance.timer = 0f;
             Instance.state = State.Hide;
-            Instance.tooltipObject.SetActive(false);
+            Instance.Disappear();
         }
 
         public static bool IsPartOfTooltip(GameObject candidate)
@@ -68,12 +74,12 @@ namespace Zeke.Tooltips
 
         private void Awake()
         {
-            CanvasGroup group = tooltipObject.GetComponent<CanvasGroup>();
+            group = tooltipObject.GetComponent<CanvasGroup>();
             if (group == null) group = tooltipObject.AddComponent<CanvasGroup>();
             group.blocksRaycasts = false;
             group.interactable = false;
 
-            Hide();
+            tooltipObject.SetActive(false);
         }
 
         private void Update()
@@ -124,6 +130,35 @@ namespace Zeke.Tooltips
             rectTransform.position = position;
         }
 
+        private void Appear(bool grow)
+        {
+            hiding = false;
+            group.DOKill();
+            tooltipRect.DOKill();
+            if (grow)
+            {
+                group.alpha = 0f;
+                tooltipRect.localScale = Vector3.one * 0.9f;
+            }
+
+            tooltipRect.DOScale(1f, appearDuration).SetEase(Ease.OutBack).SetUpdate(true).SetLink(tooltipObject);
+            group.DOFade(1f, appearDuration).SetUpdate(true).SetLink(tooltipObject);
+        }
+
+        private void Disappear()
+        {
+            if (!tooltipObject.activeSelf || hiding) return;
+            hiding = true;
+            group.DOKill();
+            tooltipRect.DOKill();
+            tooltipRect.DOScale(0.95f, hideDuration).SetUpdate(true).SetLink(tooltipObject);
+            group.DOFade(0f, hideDuration).SetUpdate(true).SetLink(tooltipObject).OnComplete(() =>
+            {
+                hiding = false;
+                tooltipObject.SetActive(false);
+            });
+        }
+
         private void UpdateState()
         {
             if (state == State.Show && !tooltipObject.activeSelf)
@@ -133,6 +168,7 @@ namespace Zeke.Tooltips
                 if (timer > showDelay)
                 {
                     tooltipObject.SetActive(true);
+                    Appear(true);
                 }
             }
         }

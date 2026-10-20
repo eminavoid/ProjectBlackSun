@@ -420,9 +420,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 6986076241118867485}
-        m_TargetAssemblyTypeName: Zeke.UI.UIWindow, Assembly-CSharp
-        m_MethodName: DestroyWindow
+      - m_Target: {fileID: 5244742054518534701}
+        m_TargetAssemblyTypeName: MenuTransition, Assembly-CSharp
+        m_MethodName: Close
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -856,6 +856,8 @@ GameObject:
   - component: {fileID: 6126696679730690596}
   - component: {fileID: 6986076241118867485}
   - component: {fileID: 3746611974711154556}
+  - component: {fileID: 5244742054518534701}
+  - component: {fileID: 4950181709800407366}
   m_Layer: 5
   m_Name: Event Output Window
   m_TagString: Untagged
@@ -951,6 +953,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HierarchyOrder
   order: 999
+--- !u!114 &5244742054518534701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6881497727134413862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 964e7da4efc1b0c4791cf74874bb2186, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MenuTransition
+  panel: {fileID: 1045990411677357482}
+  group: {fileID: 4950181709800407366}
+  style: 1
+  slideOffset: {x: 0, y: 0}
+  popScale: 0.92
+  duration: 0.28
+  playOnEnable: 0
+  destroyOnClose: 1
+  onClosed:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!225 &4950181709800407366
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6881497727134413862}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &7003107818897018172
 GameObject:
   m_ObjectHideFlags: 0

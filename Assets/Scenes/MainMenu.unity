@@ -15,18 +15,18 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
   m_Fog: 1
-  m_FogColor: {r: 0.78, g: 0.52, b: 0.46, a: 1}
+  m_FogColor: {r: 0.56, g: 0.36, b: 0.36, a: 1}
   m_FogMode: 2
   m_FogDensity: 0.022
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.62, g: 0.48, b: 0.52, a: 1}
-  m_AmbientEquatorColor: {r: 0.62, g: 0.42, b: 0.34, a: 1}
-  m_AmbientGroundColor: {r: 0.18, g: 0.12, b: 0.1, a: 1}
+  m_AmbientSkyColor: {r: 0.34, g: 0.28, b: 0.46, a: 1}
+  m_AmbientEquatorColor: {r: 0.7, g: 0.42, b: 0.32, a: 1}
+  m_AmbientGroundColor: {r: 0.16, g: 0.1, b: 0.08, a: 1}
   m_AmbientIntensity: 1
   m_AmbientMode: 1
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: 248995e18dff2d44cbb6561d7c188006, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 537143829dab5534a855c35d0df88492, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -319,10 +319,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 299680247}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 8008105147795272016}
+        m_TargetAssemblyTypeName: MenuTransition, Assembly-CSharp
+        m_MethodName: Open
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: 
@@ -764,11 +764,6 @@ RectTransform:
   m_AnchoredPosition: {x: 6, y: -2}
   m_SizeDelta: {x: 77, y: 79}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &299680247 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7812032725941354406, guid: 1f14a63481589ce438f38cfa126b956a, type: 3}
-  m_PrefabInstance: {fileID: 8008105147795272015}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &299680249 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2929010867993196943, guid: 1f14a63481589ce438f38cfa126b956a, type: 3}
@@ -2673,11 +2668,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -32, y: -12}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &934503431 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8342988992295362882, guid: 4e3399c4aaff5fa41afc20ff3d6730ae, type: 3}
-  m_PrefabInstance: {fileID: 840467609427065182}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &934503432 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6244536157367704270, guid: 4e3399c4aaff5fa41afc20ff3d6730ae, type: 3}
@@ -3267,10 +3257,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 934503431}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 840467609427065183}
+        m_TargetAssemblyTypeName: MenuTransition, Assembly-CSharp
+        m_MethodName: Open
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: 
@@ -8527,6 +8517,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4e3399c4aaff5fa41afc20ff3d6730ae, type: 3}
+--- !u!114 &840467609427065183 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7011409005582166788, guid: 4e3399c4aaff5fa41afc20ff3d6730ae, type: 3}
+  m_PrefabInstance: {fileID: 840467609427065182}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 964e7da4efc1b0c4791cf74874bb2186, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MenuTransition
 --- !u!1001 &8008105147795272015
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8624,6 +8625,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1f14a63481589ce438f38cfa126b956a, type: 3}
+--- !u!114 &8008105147795272016 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2784755079272435687, guid: 1f14a63481589ce438f38cfa126b956a, type: 3}
+  m_PrefabInstance: {fileID: 8008105147795272015}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 964e7da4efc1b0c4791cf74874bb2186, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MenuTransition
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

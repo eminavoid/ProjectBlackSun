@@ -58,7 +58,7 @@ public class DoctrinesController : MonoBehaviour
     public void OnDoctrineSelected(Doctrine doctrine)
     {
         AddDoctrine(doctrine);
-        selectorMenu.gameObject.SetActive(false);
+        MenuTransition.Hide(selectorMenu.gameObject);
     }
 
     public void OpenSelectorMenu()
@@ -66,7 +66,7 @@ public class DoctrinesController : MonoBehaviour
         if (doctrineSlots.Count >= maxDoctrines) return;
         if (!CanPlaceFreeAny()) return;
 
-        selectorMenu.gameObject.SetActive(true);
+        MenuTransition.Show(selectorMenu.gameObject);
 
         LayoutGroup layout = selectorMenu.TryGetElement<LayoutGroup>("Layout");
 

@@ -606,7 +606,7 @@ GameObject:
   - component: {fileID: 3496592302020405966}
   - component: {fileID: 918410690522082461}
   - component: {fileID: 5263730860369131917}
-  - component: {fileID: 3072433202080157053}
+  - component: {fileID: 1656646826489409579}
   m_Layer: 5
   m_Name: ConfirmationPopUp
   m_TagString: Untagged
@@ -701,7 +701,7 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &3072433202080157053
+--- !u!114 &1656646826489409579
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -710,11 +710,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 6820489845051767381}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d871c93d3fc59ff49b60b4d3fe1e1e54, type: 3}
+  m_Script: {fileID: 11500000, guid: 964e7da4efc1b0c4791cf74874bb2186, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SlideInOnEnable
-  from: {x: 0, y: -30}
+  m_EditorClassIdentifier: Assembly-CSharp::MenuTransition
+  panel: {fileID: 3429098808110899728}
+  group: {fileID: 5263730860369131917}
+  style: 0
+  slideOffset: {x: 0, y: -30}
+  popScale: 0.92
   duration: 0.3
+  playOnEnable: 1
+  destroyOnClose: 1
+  onClosed:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &7823666280229142060
 GameObject:
   m_ObjectHideFlags: 0

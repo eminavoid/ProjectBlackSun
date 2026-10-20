@@ -368,10 +368,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7812032725941354406}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 2784755079272435687}
+        m_TargetAssemblyTypeName: MenuTransition, Assembly-CSharp
+        m_MethodName: Close
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: 
@@ -853,10 +853,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7812032725941354406}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 2784755079272435687}
+        m_TargetAssemblyTypeName: MenuTransition, Assembly-CSharp
+        m_MethodName: Close
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: 
@@ -1294,7 +1294,6 @@ GameObject:
   - component: {fileID: 6867414359201276497}
   - component: {fileID: 3182115331754891772}
   - component: {fileID: 8019174581151607321}
-  - component: {fileID: 2920100405454960589}
   m_Layer: 0
   m_Name: Sheet
   m_TagString: Untagged
@@ -1377,20 +1376,6 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &2920100405454960589
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7423076098633214376}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d871c93d3fc59ff49b60b4d3fe1e1e54, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SlideInOnEnable
-  from: {x: 0, y: -40}
-  duration: 0.3
 --- !u!1 &7507837588304531968
 GameObject:
   m_ObjectHideFlags: 0
@@ -1538,6 +1523,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2929010867993196943}
   - component: {fileID: 749292974177928152}
+  - component: {fileID: 2784755079272435687}
+  - component: {fileID: 1480831977652432791}
   m_Layer: 0
   m_Name: Options Menu
   m_TagString: Untagged
@@ -1580,6 +1567,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ConfigMenuController
   musicSlider: {fileID: 5429306694798128508}
   sfxSlider: {fileID: 727621597524167052}
+--- !u!114 &2784755079272435687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7812032725941354406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 964e7da4efc1b0c4791cf74874bb2186, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MenuTransition
+  panel: {fileID: 2051850605224093841}
+  group: {fileID: 1480831977652432791}
+  style: 0
+  slideOffset: {x: 0, y: -40}
+  popScale: 0.92
+  duration: 0.3
+  playOnEnable: 1
+  destroyOnClose: 0
+  onClosed:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!225 &1480831977652432791
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7812032725941354406}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &7887032346419247615
 GameObject:
   m_ObjectHideFlags: 0
