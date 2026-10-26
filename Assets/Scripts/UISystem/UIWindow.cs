@@ -5,56 +5,65 @@ namespace Zeke.UI
 {
     public class UIWindow : MonoBehaviour
     {
-        private readonly Dictionary<string, UIElement> elements = new Dictionary<string, UIElement>();
+        [HideInInspector, SerializeField] private Dictionary<string, UIElement> elements = new Dictionary<string, UIElement>();
+
+        public IReadOnlyDictionary<string, UIElement> Elements => elements;
 
         public UIElement TryGetElement(string name)
         {
-            if (TryGetCachedElement(name, out UIElement uiElement))
-            {
-                return uiElement;
-            }
-
-            RegisterChildElements();
-            TryGetCachedElement(name, out uiElement);
+            if (string.IsNullOrEmpty(name)) return null;
+            elements.TryGetValue(name, out UIElement uiElement);
             return uiElement;
         }
 
         public T TryGetElement<T>(string name) where T : Component
         {
-            UIElement uiElement = TryGetElement(name);
-            return uiElement != null ? uiElement.GetElement<T>() : null;
-        }
-
-        private bool TryGetCachedElement(string name, out UIElement uiElement)
-        {
-            return elements.TryGetValue(name, out uiElement);
-        }
-
-        private void RegisterChildElements()
-        {
-            UIElement[] childElements = GetComponentsInChildren<UIElement>(true);
-            for (int i = 0; i < childElements.Length; i++)
+            if (elements.TryGetValue(name, out UIElement uiElement))
             {
-                UIElement element = childElements[i];
-                if (element == null || element.Window != this) continue;
-                elements[element.Name] = element;
+                return uiElement.GetElement<T>();
             }
+            return null;
+        }
+
+        public bool Contains(UIElement element)
+        {
+            return elements.ContainsKey(element.Name);
         }
 
         public void Add(UIElement element)
         {
-            if (elements.TryGetValue(element.Name, out UIElement existing))
+            if (element == null || string.IsNullOrEmpty(element.Name)) return;
+
+            if (elements.ContainsKey(element.Name))
             {
-                if (existing == element) return;
                 Debug.LogWarning($"Duplicate '{element.Name}' UIElement naming:", element);
+                return;
             }
 
-            elements[element.Name] = element;
+            elements.Add(element.Name, element);
+        }
+
+        public void Remove(UIElement element)
+        {
+            if (element == null || string.IsNullOrEmpty(element.Name)) return;
+
+            if (elements.TryGetValue(element.Name, out var registeredElement) && registeredElement == element)
+            {
+                elements.Remove(element.Name);
+            }
         }
 
         public void DestroyWindow()
         {
             Destroy(gameObject);
         }
+
+#if UNITY_EDITOR
+        public void SetDictionary(Dictionary<string, UIElement> newElements)
+        {
+            elements = newElements;
+            UnityEditor.EditorUtility.SetDirty(this);
+        }
+#endif
     }
 }
