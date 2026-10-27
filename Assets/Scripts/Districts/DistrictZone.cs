@@ -221,6 +221,7 @@ public class DistrictZone : MonoBehaviour
     private bool TryUseMeshCollider(Mesh mesh)
     {
         if (mesh == null) return false;
+        if (TryGetComponent(out MeshCollider authored) && authored.sharedMesh != null) return true;
 
         if (TryGetComponent(out BoxCollider boxCollider))
         {
