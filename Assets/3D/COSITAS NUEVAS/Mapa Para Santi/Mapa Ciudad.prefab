@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8747026379634616061}
   - component: {fileID: 1247483449205946143}
   - component: {fileID: 716061363678841226}
+  - component: {fileID: 3819708503829783273}
   m_Layer: 0
   m_Name: Tierra
   m_TagString: Untagged
@@ -48,7 +49,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 149335197547678732}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -90,6 +91,28 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &3819708503829783273
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 149335197547678732}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -462981019419857548, guid: 39ea2f44d9bbaff4d8ec9ba6c841522f, type: 3}
 --- !u!1 &174706362202597729
 GameObject:
   m_ObjectHideFlags: 0
@@ -984,6 +1007,7 @@ Transform:
   - {fileID: 7730718474782739176}
   - {fileID: 6185934769409459035}
   - {fileID: 8747026379634616061}
+  - {fileID: 6233365769863002743}
   m_Father: {fileID: 4048123108300787173}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1170035975638937470
@@ -6945,6 +6969,79 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -7594269192772778543, guid: 394da023e12602845afd2d4520925385, type: 2}
+--- !u!1 &8716370199793735885
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6233365769863002743}
+  - component: {fileID: 2152578030586157782}
+  m_Layer: 0
+  m_Name: Trigo
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &6233365769863002743
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8716370199793735885}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.0853767, y: 631.42035, z: -0.87078846}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8411261463223138399}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2152578030586157782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8716370199793735885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 785c12b82f767a74db2fb3fd96191410, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrassInstancer
+  grassMesh: {fileID: 4300000, guid: bd2a9417e6b386a47b596c39e38388c6, type: 2}
+  grassMaterial: {fileID: 2100000, guid: feeceb8fb92463947b0dcf6cc0376715, type: 2}
+  grassAmount: 400000
+  gridSize: {x: 18.518644, y: 18.518642}
+  spacing: 0.028
+  surfaces: []
+  raycastHeight: 2
+  raycastDistance: 5
+  groundLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  ignoredLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  placementMask: {fileID: 2800000, guid: 660563358d7bfb643a923412cf32edbe, type: 3}
+  maskArea: {fileID: 716061363678841226}
+  maskThreshold: 0.5
+  randomScale: {x: 0.018, y: 0.026}
+  randomRotation: 1
+  alignToGround: 0
+  leanAngles: {x: 20, y: 40}
+  verticalOffset: 0
+  randomSeed: 12345
+  generateOnStart: 1
+  subMeshIndex: 0
+  shadowMode: 0
+  receiveShadows: 1
+  chunkSize: 0.75
+  drawDistance: 6
 --- !u!1 &8849743946276803848
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,31 +14,48 @@ public class GrassInstancer : MonoBehaviour
     public float spacing = 1f;
 
     [Header("Ground Detection")]
+    public Collider[] surfaces;
     public float raycastHeight = 500f;
     public float raycastDistance = 1000f;
     public LayerMask groundLayers = ~0;
     public LayerMask ignoredLayers;
 
+    [Header("Placement Mask")]
+    public Texture2D placementMask;
+    public Renderer maskArea;
+    [Range(0f, 1f)] public float maskThreshold = 0.5f;
+
     [Header("Placement")]
     public Vector2 randomScale = new Vector2(0.8f, 1.3f);
     public bool randomRotation = true;
     public bool alignToGround = false;
+    public Vector2 leanAngles = Vector2.zero;
     public float verticalOffset = 0.02f;
     public int randomSeed = 12345;
+    public bool generateOnStart = true;
 
     [Header("Rendering")]
     public int subMeshIndex = 0;
     public ShadowCastingMode shadowMode = ShadowCastingMode.Off;
     public bool receiveShadows = false;
+    public float chunkSize = 10f;
+    public float drawDistance = 100f;
 
     private const int BatchSize = 1023;
 
-    private readonly List<Matrix4x4> matrices = new();
-    private readonly Matrix4x4[] batchBuffer =
-        new Matrix4x4[BatchSize];
+    private sealed class Chunk
+    {
+        public Bounds bounds;
+        public Matrix4x4[] matrices;
+    }
 
-    private Bounds grassBounds;
-    private bool generated;
+    private readonly List<Chunk> chunks = new();
+    private readonly Plane[] frustum = new Plane[6];
+
+    private void Start()
+    {
+        if (generateOnStart) GenerateGrass();
+    }
 
     [ContextMenu("Generate Grass")]
     public void GenerateGrass()
@@ -49,9 +66,9 @@ public class GrassInstancer : MonoBehaviour
             return;
         }
 
-        if (spacing <= 0 || grassAmount <= 0)
+        if (spacing <= 0 || grassAmount <= 0 || chunkSize <= 0)
         {
-            Debug.LogError("Spacing and Grass Amount must be positive!");
+            Debug.LogError("Spacing, Chunk Size and Grass Amount must be positive!");
             return;
         }
 
@@ -62,9 +79,9 @@ public class GrassInstancer : MonoBehaviour
             return;
         }
 
-        matrices.Clear();
-        generated = false;
+        chunks.Clear();
 
+        Random.State previousState = Random.state;
         Random.InitState(randomSeed);
 
         int columns = Mathf.CeilToInt(gridSize.x / spacing);
@@ -73,16 +90,19 @@ public class GrassInstancer : MonoBehaviour
         int validMask =
             groundLayers.value & ~ignoredLayers.value;
 
+        var cells = new Dictionary<Vector2Int, List<Matrix4x4>>();
+        int placed = 0;
         int raycastHits = 0;
 
-        bool hasBounds = false;
-
-        for (int x = 0; x < columns && matrices.Count < grassAmount; x++)
+        for (int x = 0; x < columns && placed < grassAmount; x++)
         {
-            for (int z = 0; z < rows && matrices.Count < grassAmount; z++)
+            for (int z = 0; z < rows && placed < grassAmount; z++)
             {
                 float offsetX = Random.Range(-spacing * 0.3f, spacing * 0.3f);
                 float offsetZ = Random.Range(-spacing * 0.3f, spacing * 0.3f);
+                float scale = Random.Range(randomScale.x, randomScale.y);
+                float yaw = Random.Range(0f, 360f);
+                float lean = Random.Range(leanAngles.x, leanAngles.y);
 
                 Vector3 origin = transform.position + new Vector3(
                     (x + 0.5f) * spacing - gridSize.x * 0.5f + offsetX,
@@ -90,22 +110,13 @@ public class GrassInstancer : MonoBehaviour
                     (z + 0.5f) * spacing - gridSize.y * 0.5f + offsetZ
                 );
 
-                if (!Physics.Raycast(
-                    origin,
-                    Vector3.down,
-                    out RaycastHit hit,
-                    raycastDistance,
-                    validMask))
-                {
+                if (!TryFindGround(new Ray(origin, Vector3.down), validMask, out RaycastHit hit))
                     continue;
-                }
 
                 raycastHits++;
 
-                float scale = Random.Range(
-                    randomScale.x,
-                    randomScale.y
-                );
+                if (!PassesMask(hit.point))
+                    continue;
 
                 Quaternion rotation = Quaternion.identity;
 
@@ -114,96 +125,137 @@ public class GrassInstancer : MonoBehaviour
                         Vector3.up, hit.normal);
 
                 if (randomRotation)
-                {
-                    rotation *= Quaternion.Euler(
-                        0, Random.Range(0f, 360f), 0);
-                }
+                    rotation *= Quaternion.Euler(0, yaw, 0);
+
+                rotation = Quaternion.Euler(-lean, 0, 0) * rotation;
 
                 Vector3 position = hit.point +
                     hit.normal * verticalOffset;
 
-                Matrix4x4 matrix = Matrix4x4.TRS(
-                    position,
-                    rotation,
-                    Vector3.one * scale
-                );
+                var key = new Vector2Int(
+                    Mathf.FloorToInt(position.x / chunkSize),
+                    Mathf.FloorToInt(position.z / chunkSize));
 
-                matrices.Add(matrix);
+                if (!cells.TryGetValue(key, out List<Matrix4x4> list))
+                {
+                    list = new List<Matrix4x4>();
+                    cells.Add(key, list);
+                }
 
-                if (!hasBounds)
-                {
-                    grassBounds = new Bounds(position, Vector3.one);
-                    hasBounds = true;
-                }
-                else
-                {
-                    grassBounds.Encapsulate(position);
-                }
+                list.Add(Matrix4x4.TRS(position, rotation, Vector3.one * scale));
+                placed++;
             }
         }
 
-        if (!hasBounds)
+        Random.state = previousState;
+
+        if (placed == 0)
         {
             Debug.LogError(
                 "ZERO GRASS GENERATED! No raycasts hit the ground. " +
-                "Check Ground Layers, Terrain Collider and raycast height."
+                "Check Surfaces, Ground Layers, raycast height and Placement Mask."
             );
             return;
         }
 
-        float extraSize =
-            grassMesh.bounds.size.magnitude *
-            randomScale.y * 2f + 5f;
+        float padding = grassMesh.bounds.size.magnitude * randomScale.y;
 
-        grassBounds.Expand(extraSize);
+        foreach (List<Matrix4x4> list in cells.Values)
+        {
+            var bounds = new Bounds(list[0].GetPosition(), Vector3.zero);
+            for (int i = 1; i < list.Count; i++)
+                bounds.Encapsulate(list[i].GetPosition());
+
+            bounds.Expand(padding);
+            chunks.Add(new Chunk { bounds = bounds, matrices = list.ToArray() });
+        }
 
         grassMaterial.enableInstancing = true;
 
-        generated = true;
-
         Debug.Log(
-            $"GRASS GENERATED: {matrices.Count} instances. " +
+            $"GRASS GENERATED: {placed} instances in {chunks.Count} chunks. " +
             $"Successful raycasts: {raycastHits}. " +
             $"Grid: {columns} x {rows}."
         );
     }
 
+    private bool TryFindGround(Ray ray, int validMask, out RaycastHit hit)
+    {
+        if (surfaces == null || surfaces.Length == 0)
+            return Physics.Raycast(ray, out hit, raycastDistance, validMask);
+
+        hit = default;
+        bool found = false;
+
+        for (int i = 0; i < surfaces.Length; i++)
+        {
+            if (surfaces[i] == null) continue;
+            if (!surfaces[i].Raycast(ray, out RaycastHit candidate, raycastDistance)) continue;
+            if (found && candidate.distance >= hit.distance) continue;
+
+            hit = candidate;
+            found = true;
+        }
+
+        return found;
+    }
+
+    private bool PassesMask(Vector3 point)
+    {
+        if (placementMask == null || maskArea == null) return true;
+
+        Bounds area = maskArea.bounds;
+        float u = Mathf.InverseLerp(area.min.x, area.max.x, point.x);
+        float v = Mathf.InverseLerp(area.min.z, area.max.z, point.z);
+        return placementMask.GetPixelBilinear(u, v).r >= maskThreshold;
+    }
+
     private void Update()
     {
-        if (!generated || matrices.Count == 0)
+        if (chunks.Count == 0)
             return;
+
+        Camera cam = Camera.main;
+        if (cam == null)
+            return;
+
+        GeometryUtility.CalculateFrustumPlanes(cam, frustum);
+        Vector3 eye = cam.transform.position;
+        float maxDistanceSqr = drawDistance * drawDistance;
 
         RenderParams renderParams = new RenderParams(grassMaterial)
         {
-            worldBounds = grassBounds,
             shadowCastingMode = shadowMode,
-            receiveShadows = receiveShadows
+            receiveShadows = receiveShadows,
+            layer = gameObject.layer
         };
 
-        for (int i = 0; i < matrices.Count; i += BatchSize)
+        for (int c = 0; c < chunks.Count; c++)
         {
-            int count = Mathf.Min(
-                BatchSize,
-                matrices.Count - i
-            );
+            Chunk chunk = chunks[c];
+            if (chunk.bounds.SqrDistance(eye) > maxDistanceSqr) continue;
+            if (!GeometryUtility.TestPlanesAABB(frustum, chunk.bounds)) continue;
 
-            matrices.CopyTo(i, batchBuffer, 0, count);
+            renderParams.worldBounds = chunk.bounds;
 
-            Graphics.RenderMeshInstanced(
-                renderParams,
-                grassMesh,
-                subMeshIndex,
-                batchBuffer,
-                count
-            );
+            for (int i = 0; i < chunk.matrices.Length; i += BatchSize)
+            {
+                Graphics.RenderMeshInstanced(
+                    renderParams,
+                    grassMesh,
+                    subMeshIndex,
+                    chunk.matrices,
+                    Mathf.Min(BatchSize, chunk.matrices.Length - i),
+                    i
+                );
+            }
         }
     }
 
     [ContextMenu("Clear Grass")]
     public void ClearGrass()
     {
-        matrices.Clear();
-        generated = false;
+        chunks.Clear();
 
         Debug.Log("Grass cleared.");
     }
