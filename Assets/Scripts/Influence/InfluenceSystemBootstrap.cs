@@ -48,6 +48,11 @@ public class InfluenceSystemBootstrap : MonoBehaviour
             gameObject.AddComponent<RivalAIDirector>();
         }
 
+        if (FindAnyObjectByType<ZoneTravelGraph>() == null)
+        {
+            gameObject.AddComponent<ZoneTravelGraph>();
+        }
+
         if (ensureInfluenceOverlay && FindAnyObjectByType<InfluenceOverlayRenderer>() == null)
         {
             gameObject.AddComponent<InfluenceOverlayRenderer>();

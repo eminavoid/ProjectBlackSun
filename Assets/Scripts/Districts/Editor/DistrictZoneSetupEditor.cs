@@ -67,7 +67,18 @@ public class DistrictZoneEditor : Editor
 {
     public override void OnInspectorGUI()
     {
-        DrawDefaultInspector();
+        serializedObject.Update();
+
+        EditorGUILayout.LabelField("Connections", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField(
+            "Zones this one touches. Same-district links stay inside the district. Cross-district links leave it. Rebuild on Zone Travel Graph fills both sides of each touch.",
+            EditorStyles.wordWrappedLabel);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("travelLinks"), new GUIContent("Touches"), true);
+        EditorGUILayout.Space(8f);
+
+        DrawPropertiesExcluding(serializedObject, "m_Script", "travelLinks");
+        serializedObject.ApplyModifiedProperties();
+
         DistrictZone zone = (DistrictZone)target;
 
         if (GUILayout.Button("Resolve district from parent"))

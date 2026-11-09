@@ -65,6 +65,20 @@ public class AIInfluenceController : MonoBehaviour
         return profile != null ? profile.PreferredDistricts : null;
     }
 
+    public IReadOnlyList<AIObjective> GetObjectives(FactionId faction)
+    {
+        EnsureInitialized();
+        AIInfluenceProfile profile = FindProfile(faction);
+        return profile != null ? profile.Objectives : null;
+    }
+
+    public int ObjectiveWeight(FactionId faction, Districts district)
+    {
+        EnsureInitialized();
+        AIInfluenceProfile profile = FindProfile(faction);
+        return profile != null ? profile.WeightOf(district) : 0;
+    }
+
     public bool ExecuteIntent(AIIntent intent)
     {
         if (intent == null || intent.Kind != AIIntentKind.AssignClerics || !intent.Faction.HasValue) return false;
@@ -186,6 +200,8 @@ public class AIInfluenceController : MonoBehaviour
 
         pool.Sort((a, b) =>
         {
+            int weight = profile.WeightOf(b.District).CompareTo(profile.WeightOf(a.District));
+            if (weight != 0) return weight;
             int presenceA = Presence(a, profile.Faction);
             int presenceB = Presence(b, profile.Faction);
             if (presenceA != presenceB) return presenceB.CompareTo(presenceA);
@@ -234,7 +250,8 @@ public class AIInfluenceController : MonoBehaviour
 
         AIInfluenceProfile preferred = null;
         AIInfluenceProfile present = null;
-        int preferredPresence = int.MinValue;
+        int bestWeight = int.MinValue;
+        int bestWeightPresence = int.MinValue;
         int presentScore = int.MinValue;
 
         for (int i = 0; i < rivalProfiles.Count; i++)
@@ -252,11 +269,14 @@ public class AIInfluenceController : MonoBehaviour
                 present = profile;
             }
 
-            if (zone != null && profile.Prefers(zone.District) && presence >= preferredPresence)
-            {
-                preferredPresence = presence;
-                preferred = profile;
-            }
+            int weight = zone != null ? profile.WeightOf(zone.District) : 0;
+            if (weight <= 0) continue;
+            if (weight < bestWeight) continue;
+            if (weight == bestWeight && presence < bestWeightPresence) continue;
+
+            bestWeight = weight;
+            bestWeightPresence = presence;
+            preferred = profile;
         }
 
         if (preferred != null) return preferred.Faction;
@@ -290,30 +310,33 @@ public class AIInfluenceController : MonoBehaviour
 
         rivalProfiles = new List<AIInfluenceProfile>
         {
-            // Seeds: arranca en rojo y se abre a white y yellow.
+            // Roja: rojo, luego white, green y purple.
             AIInfluenceProfile.CreateRuntime(
                 FactionId.Rival1,
                 "Crimson Choir",
                 15,
-                Districts.District1,
-                Districts.District6,
-                Districts.District4),
-            // Balanceada: arranca en white y prioriza rojo, después green y violet.
+                AIObjective.Of(Districts.District1, 4),
+                AIObjective.Of(Districts.District6, 3),
+                AIObjective.Of(Districts.District3, 2),
+                AIObjective.Of(Districts.District5, 1)),
+            // Azul: pink, luego green, white y purple.
             AIInfluenceProfile.CreateRuntime(
                 FactionId.Rival2,
                 "Azure Ledger",
                 15,
-                Districts.District1,
-                Districts.District3,
-                Districts.District5),
-            // Clérigos: arranca en green y se abre a white y pink.
+                AIObjective.Of(Districts.District2, 4),
+                AIObjective.Of(Districts.District3, 3),
+                AIObjective.Of(Districts.District6, 2),
+                AIObjective.Of(Districts.District5, 1)),
+            // Verde: yellow, luego purple, y white junto con green.
             AIInfluenceProfile.CreateRuntime(
                 FactionId.Rival3,
                 "Verdant Flock",
                 15,
-                Districts.District3,
-                Districts.District6,
-                Districts.District2)
+                AIObjective.Of(Districts.District4, 4),
+                AIObjective.Of(Districts.District5, 3),
+                AIObjective.Of(Districts.District6, 2),
+                AIObjective.Of(Districts.District3, 2))
         };
     }
 
@@ -333,12 +356,10 @@ public class AIInfluenceController : MonoBehaviour
 
     private void ClaimOpeningZones()
     {
-        ClaimZone(FactionId.Rival1, "ZONE_RED_4");
-        ClaimZone(FactionId.Rival2, "ZONE_WHITE_9");
-        ClaimZone(FactionId.Rival3, "ZONE_GREEN_5");
-
-        string playerZone = UnityEngine.Random.value < 0.5f ? "ZONE_YELLOW_1" : "ZONE_PINK_4";
-        ClaimZone(FactionId.Player, playerZone);
+        ClaimZone(FactionId.Rival1, "ZONE_RED_6");
+        ClaimZone(FactionId.Rival2, "ZONE_PINK_3");
+        ClaimZone(FactionId.Rival3, "ZONE_YELLOW_7");
+        ClaimZone(FactionId.Player, "ZONE_GREEN_7");
     }
 
     private static void ClaimZone(FactionId faction, string zoneName)

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -21,6 +22,9 @@ public class DistrictZone : MonoBehaviour
     [Tooltip("Producción base de esta cuadra. Se reparte según el % de influencia y se redondea hacia abajo; el resto se pierde. Temporal: ahora está en 10.")]
     [Min(0)]
     [SerializeField] private int productionAmount = DefaultProductionAmount;
+
+    [Tooltip("Zones this one touches. A cross-district link costs the AI more when it has no foothold there.")]
+    [SerializeField] private List<ZoneTravelLink> travelLinks = new List<ZoneTravelLink>();
 
     private static Material plantedTemplate;
     private static Material selectedTemplate;
@@ -52,6 +56,20 @@ public class DistrictZone : MonoBehaviour
     public FactionId? PlantedBy => plantedBy;
     public string SectorName => gameObject.name;
     public ZoneInfluenceState Influence => influence;
+    public IReadOnlyList<ZoneTravelLink> TravelLinks
+    {
+        get
+        {
+            if (travelLinks == null) travelLinks = new List<ZoneTravelLink>();
+            return travelLinks;
+        }
+    }
+
+    public void SetTravelLinks(List<ZoneTravelLink> links)
+    {
+        travelLinks = links ?? new List<ZoneTravelLink>();
+        ZoneTravelGraph.NotifyLinksChanged();
+    }
 
     /// <summary>
     /// True for playable cuadras under a DistrictPart. False for map props like Plane.122.
@@ -595,5 +613,12 @@ public class DistrictZone : MonoBehaviour
     {
         DistrictPart part = GetComponentInParent<DistrictPart>();
         if (part != null) district = part.District;
+        ZoneTravelGraph.NotifyLinksChanged();
+#if UNITY_EDITOR
+        if (!Application.isPlaying && UnityEditor.SceneView.lastActiveSceneView != null)
+        {
+            UnityEditor.SceneView.RepaintAll();
+        }
+#endif
     }
 }
