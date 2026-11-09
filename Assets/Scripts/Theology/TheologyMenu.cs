@@ -88,8 +88,6 @@ public class TheologyMenu : MonoBehaviour
             if (flight != null) yield return flight.WaitForCompletion();
             ResourceManager.Resources.AddResource(costResource, -cost);
             ResourceManager.Sidebar.Release(this);
-
-            onSacrificed?.Invoke();
         }
 
         cost += costIncrease;
