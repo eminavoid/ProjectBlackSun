@@ -51,6 +51,12 @@ public class PlayerStats : ScriptableObject
         DoctrineInventory.Remove(doctrine);
     }
 
+    public void ClearDoctrines()
+    {
+        if (DoctrineInventory == null) DoctrineInventory = new List<Doctrine>();
+        else DoctrineInventory.Clear();
+    }
+
     public enum PlayerStat
     {
         None,

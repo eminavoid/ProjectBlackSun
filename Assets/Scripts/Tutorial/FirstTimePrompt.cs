@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public class FirstTimePrompt : MonoBehaviour
 {
     private const float ColumnX = 205f;
-    private const float DescriptionY = -500f;
+    private const float DescriptionY = -590f;
     private const float ActionY = -680f;
     private const float ActionStep = 92f;
 

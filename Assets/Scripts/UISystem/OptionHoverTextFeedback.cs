@@ -12,6 +12,8 @@ public class OptionHoverTextFeedback : MonoBehaviour, IPointerEnterHandler, IPoi
 
     private Color[] originalColors;
     private bool locked;
+    private bool appearanceReady;
+    private bool shownInteractable;
 
     public void LockHighlighted()
     {
@@ -27,6 +29,17 @@ public class OptionHoverTextFeedback : MonoBehaviour, IPointerEnterHandler, IPoi
             if (texts[i] != null) originalColors[i] = texts[i].color;
         }
 
+        appearanceReady = true;
+        shownInteractable = IsInteractable();
+        ApplyBaseAppearance();
+    }
+
+    private void LateUpdate()
+    {
+        if (!appearanceReady) return;
+        bool interactable = IsInteractable();
+        if (interactable == shownInteractable) return;
+        shownInteractable = interactable;
         ApplyBaseAppearance();
     }
 

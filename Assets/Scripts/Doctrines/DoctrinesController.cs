@@ -205,6 +205,20 @@ public class DoctrinesController : MonoBehaviour
         return amount;
     }
 
+    public bool HasEquippedDoctrine(string doctrineName)
+    {
+        if (string.IsNullOrWhiteSpace(doctrineName)) return false;
+
+        for (int i = 0; i < doctrineSlots.Count; i++)
+        {
+            Doctrine doctrine = doctrineSlots[i].doctrine;
+            if (doctrine == null || string.IsNullOrWhiteSpace(doctrine.Name)) continue;
+            if (string.Equals(doctrine.Name, doctrineName, System.StringComparison.OrdinalIgnoreCase)) return true;
+        }
+
+        return false;
+    }
+
     private void StartFreeSlotTimer()
     {
         for (int i = 0; i < placeSlots.Count; i++)

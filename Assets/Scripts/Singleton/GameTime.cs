@@ -43,23 +43,31 @@ public class GameTime : Singleton<GameTime>
 
     private void Update()
     {
-#if ENABLE_INPUT_SYSTEM
-        if (Keyboard.current?.escapeKey.wasPressedThisFrame == true)
-#else
-        if (Input.GetKeyDown(KeyCode.Escape))
-#endif
-        {
-            QuitGame();
-        }
+        if (!EscapePressed()) return;
+        if (DistrictSeedPlantPanel.TryCloseOpen()) return;
+        ToggleOptions();
     }
 
-    private static void QuitGame()
+    private static bool EscapePressed()
     {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
+#if ENABLE_INPUT_SYSTEM
+        return Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame;
 #else
-        Application.Quit();
+        return Input.GetKeyDown(KeyCode.Escape);
 #endif
+    }
+
+    private static void ToggleOptions()
+    {
+        MenuTransition[] menus = FindObjectsByType<MenuTransition>(FindObjectsInactive.Include);
+        for (int i = 0; i < menus.Length; i++)
+        {
+            MenuTransition menu = menus[i];
+            if (menu == null || menu.gameObject.name != "Options Menu") continue;
+            if (menu.gameObject.activeInHierarchy) menu.Close();
+            else MenuTransition.Show(menu.gameObject);
+            return;
+        }
     }
 
     public static void NextTurn()

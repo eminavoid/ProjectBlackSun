@@ -32,6 +32,7 @@ public class Unlocked : ScriptableObject
 
     public void Clear()
     {
-        unlocked.Clear();
+        if (unlocked != null) unlocked.Clear();
+        filtered.Clear();
     }
 }

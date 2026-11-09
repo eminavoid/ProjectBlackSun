@@ -33,7 +33,15 @@ public class UnlockerMenuTest : MonoBehaviour
 
     public void GenerateUnlocks()
     {
-        CreateWindows(GenerateOptions());
+        List<Unlockeable> options = GenerateOptions();
+        if (options == null || options.Count == 0)
+        {
+            if (window != null) window.gameObject.SetActive(false);
+            return;
+        }
+
+        ClearRoot();
+        CreateWindows(options);
     }
 
     private void Start()

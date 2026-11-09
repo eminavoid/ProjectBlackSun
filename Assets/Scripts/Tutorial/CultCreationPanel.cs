@@ -153,11 +153,13 @@ public class CultCreationPanel : MonoBehaviour
         if (!InfluenceManager.IsNull) Once(InfluenceManager.Get.Stats);
         DoctrinesController doctrines = FindAnyObjectByType<DoctrinesController>();
         if (doctrines != null) Once(doctrines.Stats);
+        TheologyMenu.PrepareNewMatch();
 
         void Once(PlayerStats stats)
         {
             if (stats == null || !seen.Add(stats)) return;
             stats.ResetValues();
+            stats.ClearDoctrines();
             if (stat != PlayerStats.PlayerStat.None) stats.ChangeStat(stat, 1);
         }
     }

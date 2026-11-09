@@ -109,6 +109,9 @@ public class SeedEventManager : Singleton<SeedEventManager>
 
     public static void StoreSeedEvent(Seed seed)
     {
+        if (seed == null) return;
+        if (TutorialSession.SuppressAmbientEvents && !TutorialContent.IsTutorialSeed(seed)) return;
+
         Instance.seedEvents.Add(seed);
         onSeedStored?.Invoke(seed);
 
@@ -244,7 +247,7 @@ public class SeedEventManager : Singleton<SeedEventManager>
         }
     }
 
-    public static void CreateEventOutputWindow(string title, string description, IReadOnlyList<ResourceDelta> resourceChanges = null)
+    public static void CreateEventOutputWindow(string title, string description, IReadOnlyList<ResourceDelta> resourceChanges = null, bool dimBackground = true)
     {
         if (Instance.capturedOutcomes != null)
         {
@@ -252,12 +255,25 @@ public class SeedEventManager : Singleton<SeedEventManager>
             return;
         }
 
+        if (Instance.currentOutput != null)
+        {
+            Destroy(Instance.currentOutput.gameObject);
+            Instance.currentOutput = null;
+        }
+
         UIWindow windowInstance = Instantiate(Instance.eventOutputWindowPrefab, GlobalReferences.ScreenCanvas.transform);
+        Instance.currentOutput = windowInstance;
         windowInstance.TryGetElement<TextMeshProUGUI>("Title").text = title;
         windowInstance.TryGetElement<TextMeshProUGUI>("Description").text = description;
 
         ResourceAmountRow resourceRow = windowInstance.GetComponentInChildren<ResourceAmountRow>(true);
         if (resourceRow != null) resourceRow.Show(resourceChanges);
+
+        if (!dimBackground)
+        {
+            UIBackgroundBlur blur = windowInstance.GetComponentInChildren<UIBackgroundBlur>(true);
+            if (blur != null) blur.gameObject.SetActive(false);
+        }
 
         Instance.StartCoroutine(Instance.ShowOutputWindowAfterBlur(windowInstance, Instance.choiceOrigin));
     }
@@ -533,6 +549,7 @@ public class SeedEventManager : Singleton<SeedEventManager>
     private CanvasGroup[] optionsContent;
     private int resourceWindowOriginalIndex = -1;
     private int openOutputWindows;
+    private UIWindow currentOutput;
     private bool choosing;
     private bool optionsVisible;
     private bool nodeTooltipBlocked;
@@ -592,26 +609,54 @@ public class SeedEventManager : Singleton<SeedEventManager>
 
         CanvasGroup group = GroupOf(window.gameObject);
         group.alpha = 0f;
+        group.blocksRaycasts = false;
 
         UIBackgroundBlur blur = window.GetComponentInChildren<UIBackgroundBlur>();
-        while (blur != null && !blur.IsReady) yield return null;
-
-        if (window != null)
+        float waited = 0f;
+        while (blur != null && !blur.IsReady && waited < 1.5f)
         {
-            KeepResourceWindowSharp(window.transform);
-            if (origin.HasValue) Unroll(window, group, origin.Value);
-            else group.DOFade(1f, blur != null ? blur.FadeDuration : 0f).SetLink(window.gameObject).SetUpdate(true);
+            waited += Time.unscaledDeltaTime;
+            yield return null;
         }
+
+        if (window == null)
+        {
+            openOutputWindows--;
+            RefreshNodeTooltipBlock();
+            yield break;
+        }
+
+        KeepResourceWindowSharp(window.transform);
+        CloseWhenBlurClicked(window, blur);
+        group.blocksRaycasts = true;
+        if (origin.HasValue) Unroll(window, group, origin.Value);
+        else group.DOFade(1f, blur != null ? blur.FadeDuration : 0.22f).SetLink(window.gameObject).SetUpdate(true);
 
         while (window != null) yield return null;
 
         while (ResourceManager.Sidebar != null && ResourceManager.Sidebar.IsBusy) yield return null;
 
         openOutputWindows--;
+        if (currentOutput == window) currentOutput = null;
         RefreshNodeTooltipBlock();
         if (openOutputWindows > 0) yield break;
 
         SetOptionsWindowVisibility(false);
+    }
+
+    private static void CloseWhenBlurClicked(UIWindow window, UIBackgroundBlur blur)
+    {
+        if (blur == null) return;
+
+        Button button = blur.GetComponent<Button>();
+        if (button == null) button = blur.gameObject.AddComponent<Button>();
+        button.onClick.RemoveAllListeners();
+        button.onClick.AddListener(() =>
+        {
+            if (window == null) return;
+            if (window.TryGetComponent(out MenuTransition transition)) transition.Close();
+            else Destroy(window.gameObject);
+        });
     }
 
     private void Unroll(UIWindow window, CanvasGroup windowGroup, (Vector3 center, Vector2 size) origin)

@@ -99,6 +99,7 @@ public class AIIntentBoard : Singleton<AIIntentBoard>
         if (TutorialSession.UseScriptedPlans)
         {
             TutorialContent.FillIntents(intents, GameTime.CurrentTurn);
+            AppendLiveSeedPlans(intents);
         }
         else if (director != null)
         {
@@ -124,6 +125,26 @@ public class AIIntentBoard : Singleton<AIIntentBoard>
         }
 
         OnIntentsChanged?.Invoke();
+    }
+
+    public void PlayLivePlans()
+    {
+        if (TutorialSession.UseScriptedPlans) return;
+        PlanTurn();
+    }
+
+    private void AppendLiveSeedPlans(List<AIIntent> intents)
+    {
+        List<AIIntent> planned = new List<AIIntent>();
+        if (director != null) director.PlanIntents(planned);
+        else if (seedAi != null) seedAi.PlanIntents(planned);
+
+        for (int i = 0; i < planned.Count; i++)
+        {
+            AIIntent intent = planned[i];
+            if (intent.Kind != AIIntentKind.PlantSeed || TutorialContent.IsTutorialSeed(intent.Seed)) continue;
+            intents.Add(intent);
+        }
     }
 
     private void ResolveAgents()

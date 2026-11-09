@@ -214,6 +214,63 @@ public class ResourceSidebar : MonoBehaviour
         }
     }
 
+    public int Available(Resource resource)
+    {
+        if (resources == null) return 0;
+
+        int amount = resources.GetResourceAmount(resource);
+        for (int i = 0; i < held.Count; i++)
+        {
+            if (held[i].resource == resource) amount -= held[i].amount;
+        }
+
+        return amount;
+    }
+
+    public int Visible(Resource resource)
+    {
+        int available = Available(resource);
+        if (!TryShown(resource, out int shown)) return available;
+        return Mathf.Min(available, shown);
+    }
+
+    public bool TryMatchIcon(Sprite sprite, out int amount)
+    {
+        amount = 0;
+        if (sprite == null) return false;
+
+        foreach (KeyValuePair<Resource, Slot> pair in slots)
+        {
+            Slot slot = pair.Value;
+            if (slot.icon == null) continue;
+            Image image = slot.icon.GetComponent<Image>();
+            if (image == null || image.sprite != sprite) continue;
+            amount = Visible(pair.Key);
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool TryShown(Resource resource, out int shown)
+    {
+        shown = 0;
+        if (!slots.TryGetValue(resource, out Slot slot)) return false;
+
+        shown = Mathf.RoundToInt(slot.shown);
+        if (slot.text != null && TryReadAmount(slot.text.text, out int parsed)) shown = parsed;
+        return true;
+    }
+
+    private static bool TryReadAmount(string text, out int amount)
+    {
+        amount = 0;
+        if (string.IsNullOrWhiteSpace(text)) return false;
+        text = text.Trim();
+        if (text.EndsWith("%")) text = text.Substring(0, text.Length - 1);
+        return int.TryParse(text, out amount);
+    }
+
     private void Land(Object owner, Color color)
     {
         for (int i = held.Count - 1; i >= 0; i--)

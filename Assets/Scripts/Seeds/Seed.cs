@@ -30,6 +30,7 @@ public class Seed : ScriptableObject
     [SerializeField] private Region region;
     [SerializeField] private SeedEventType eventType;
     [SerializeField] private SeedDifficulty difficulty;
+    [SerializeField] private bool guideSeed;
     [field: SerializeField] public List<Option> Options { get; private set; }
     [field: Tooltip("Not index (1 == 0 index)")]
     [field: SerializeField] public int DefaultOption { get; private set; } = 4;
@@ -39,6 +40,7 @@ public class Seed : ScriptableObject
     public SeedDifficulty Difficulty => difficulty;
     public int DifficultyValue => (int)difficulty;
     public string Title => string.IsNullOrWhiteSpace(title) ? name : title;
+    public bool HasDisplayTitle => !string.IsNullOrWhiteSpace(title);
     public string Description => description;
     public Sprite Icon => icon;
     public DistrictZone CurrentZone => currentZone;
@@ -48,6 +50,9 @@ public class Seed : ScriptableObject
     public bool IsPlanted => currentZone != null;
 
     public bool CanPlantInDistrict(Districts district) => true;
+    public bool IsGuideSeed => guideSeed;
+
+    public void MarkGuideSeed() => guideSeed = true;
 
     public static Seed CreateRuntime(
         string seedTitle,

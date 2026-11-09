@@ -36,6 +36,7 @@ public class TutorialDirector : MonoBehaviour
         DoctrinesController.DoctrineAdded += OnDoctrineAdded;
         UnlockerMenuTest.RewardChosen += OnReward;
         TheologyMenu.Communed += OnCommuned;
+        TheologyMenu.RewardGranted += OnTheologyReward;
     }
 
     private void OnDisable()
@@ -46,6 +47,7 @@ public class TutorialDirector : MonoBehaviour
         DoctrinesController.DoctrineAdded -= OnDoctrineAdded;
         UnlockerMenuTest.RewardChosen -= OnReward;
         TheologyMenu.Communed -= OnCommuned;
+        TheologyMenu.RewardGranted -= OnTheologyReward;
         StopTourListen();
         UnhookJournal();
     }
@@ -70,6 +72,7 @@ public class TutorialDirector : MonoBehaviour
         if (!TutorialSession.Guide)
         {
             while (cult != null && !cult.Confirmed) yield return null;
+            TutorialContent.GiveTutorialSeeds(false);
             yield break;
         }
 
@@ -104,7 +107,7 @@ public class TutorialDirector : MonoBehaviour
         yield return TrayStep(
             TutorialContent.CreateReward(HomeZone()),
             "A seed of your own came back through the tray. This is where rewards and rival plays arrive. Open it.",
-            TutorialContent.CreatePlantable("Returned Seed", "Yours to plant on a free zone."));
+            TutorialContent.ReturnedSeed);
         if (Stopped) yield break;
         yield return TheologyStep();
         if (Stopped) yield break;
@@ -112,6 +115,7 @@ public class TutorialDirector : MonoBehaviour
         if (Stopped) yield break;
 
         doctrineKept = true;
+        TutorialContent.GiveTutorialSeeds(true);
         TutorialSession.Complete();
         CleanupGuide();
     }
@@ -216,9 +220,8 @@ public class TutorialDirector : MonoBehaviour
             yield break;
         }
 
-        panel.Grant(TutorialContent.CreatePlantable(
-            "First Seed",
-            "Plant this on a free zone. Its name and the turns it still needs are how you read a seed."), 1);
+        panel.Grant(TutorialContent.FirstSeed, 1);
+        TutorialContent.MarkFirstSeedGranted();
 
         highlight.Track(panel.MenuButton);
         Hold("Seeds are how a cult acts on a street. Open the seed menu.", false);
@@ -308,34 +311,27 @@ public class TutorialDirector : MonoBehaviour
         if (Stopped || rewardClaimed) yield break;
 
         highlight.Track(commune);
-        yield return WaitContinue("Theology costs Zeal. The first offering is free. After that, the price rises.", true);
+        yield return WaitContinue("Commune costs Zeal. The price sits in the middle, and the first one is free.", true);
         if (Stopped) yield break;
         highlight.Track(commune);
-        yield return WaitContinue("The offering buys a reward. Yours is a doctrine: First Vigil.", true);
+        yield return WaitContinue("Offerings spend Wealth, doubling from 25 up to 200, for a kinder reward. Sacrifices stay locked until the cult keeps Human Sacrifices.", true);
         if (Stopped) yield break;
         highlight.Track(commune);
-        yield return WaitContinue("The Zeal you spend is the sacrifice. Press Commune.", true);
+        yield return WaitContinue("Press Commune, then wake the eye. The first touch locks the offerings.", true);
         if (Stopped || rewardClaimed) yield break;
 
         if (!communed)
         {
             highlight.Track(commune);
-            Hold("Press Commune.", false);
+            Hold("Press Commune. It costs Zeal.", false);
             while (!communed && !rewardClaimed && !Stopped) yield return null;
         }
 
         if (Stopped || rewardClaimed) yield break;
 
-        Button unlock = FindByMethod("TryPurchaseUnlock");
-        RevealCodex(unlock);
-        if (unlock == null)
-        {
-            yield return WaitContinue("Press Unlock and take First Vigil.");
-            yield break;
-        }
-
-        highlight.Track(unlock);
-        Hold("Press Unlock and take First Vigil.", false);
+        Button eye = FindByMethod("AdvanceEye");
+        highlight.Track(eye);
+        Hold("Offer Wealth before you touch the eye. The first touch locks offerings. Wake the eye to receive the reward.", false);
         while (!rewardClaimed && !Stopped) yield return null;
     }
 
@@ -394,7 +390,9 @@ public class TutorialDirector : MonoBehaviour
         }
 
         ForgetPending();
+        TutorialContent.GiveTutorialSeeds(false);
         TutorialSession.Skip();
+        if (!AIIntentBoard.IsNull) AIIntentBoard.Get.PlayLivePlans();
         CleanupGuide();
         StopAllCoroutines();
     }
@@ -460,6 +458,8 @@ public class TutorialDirector : MonoBehaviour
 
     private void OnCommuned() => communed = true;
 
+    private void OnTheologyReward() => rewardClaimed = true;
+
     private void OnCameraNudged() => tourCancel = true;
 
     private void OnJournalPage() => journalOpened = true;
@@ -485,9 +485,7 @@ public class TutorialDirector : MonoBehaviour
 
     private static DistrictZone IntentZone()
     {
-        return TutorialContent.ScriptedSeedZone != null
-            ? TutorialContent.ScriptedSeedZone
-            : TutorialContent.ScriptedClericZone;
+        return TutorialContent.ScriptedClericZone;
     }
 
     private RectTransform TrayMark()
@@ -513,14 +511,6 @@ public class TutorialDirector : MonoBehaviour
         }
 
         return doctrineMenu;
-    }
-
-    private static void RevealCodex(Button unlock)
-    {
-        if (unlock != null && unlock.gameObject.activeInHierarchy) return;
-
-        UnlockCodex codex = FindAnyObjectByType<UnlockCodex>(FindObjectsInactive.Include);
-        if (codex != null && !codex.gameObject.activeSelf) codex.gameObject.SetActive(true);
     }
 
     private static Button FindByMethod(string methodName)

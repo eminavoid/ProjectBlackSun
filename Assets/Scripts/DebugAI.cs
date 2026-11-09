@@ -165,6 +165,7 @@ public class DebugAI : MonoBehaviour
         {
             Seed seed = seedsPool.EvilSeeds[i];
             if (seed == null) continue;
+            if (TutorialContent.IsTutorialSeed(seed)) continue;
 
             if (aiProfile != null && !aiProfile.CanUse(seed)) continue;
 

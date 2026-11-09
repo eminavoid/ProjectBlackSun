@@ -7,16 +7,43 @@ using UnityEngine;
 public static class TutorialContent
 {
     public static DistrictZone ScriptedClericZone { get; private set; }
-    public static DistrictZone ScriptedSeedZone { get; private set; }
 
-    private static Seed choirSeed;
+    private static readonly HashSet<Seed> tutorialSeeds = new HashSet<Seed>();
+    private static Seed firstSeed;
+    private static Seed returnedSeed;
+
+    public static Seed FirstSeed => firstSeed != null ? firstSeed : (firstSeed = CreatePlantable(
+        "First Seed",
+        "Plant this on a free zone. Its name and the turns it still needs are how you read a seed."));
+
+    public static Seed ReturnedSeed => returnedSeed != null ? returnedSeed : (returnedSeed = CreatePlantable(
+        "Returned Seed",
+        "Yours to plant on a free zone."));
+
+    public static bool IsTutorialSeed(Seed seed) =>
+        seed != null && (seed.IsGuideSeed || tutorialSeeds.Contains(seed));
+
+    private static bool firstSeedGranted;
+
+    public static void MarkFirstSeedGranted() => firstSeedGranted = true;
+
+    public static void GiveTutorialSeeds(bool returnedOnly)
+    {
+        DistrictSeedPlantPanel.ReleaseStandardSeeds();
+        if (!returnedOnly && !firstSeedGranted) EnsureOwned(FirstSeed);
+        ForgetReturnedSeed();
+    }
+
+    public static void ForgetReturnedSeed()
+    {
+        if (returnedSeed == null) return;
+        DistrictSeedPlantPanel.ForgetSeed(returnedSeed);
+    }
 
     public static void FillIntents(List<AIIntent> intents, int turn)
     {
-        if (intents == null) return;
-
-        if (turn <= 1) AddClericIntent(intents);
-        else if (turn == 2) AddSeedIntent(intents);
+        if (intents == null || turn > 1) return;
+        AddClericIntent(intents);
     }
 
     public static Seed CreateWhisper(DistrictZone zone)
@@ -54,13 +81,30 @@ public static class TutorialContent
 
     public static Seed CreatePlantable(string title, string description)
     {
-        return Seed.CreateRuntime(
+        return Remember(Seed.CreateRuntime(
             title,
             description,
             "Wait",
             "It takes root.",
             3,
-            Region.Warrens);
+            Region.Warrens));
+    }
+
+    private static void EnsureOwned(Seed seed)
+    {
+        if (seed == null) return;
+        if (seed == firstSeed) firstSeedGranted = true;
+        DistrictSeedPlantPanel panel = Object.FindAnyObjectByType<DistrictSeedPlantPanel>();
+        if (panel == null || panel.Owned(seed) > 0) return;
+        panel.Grant(seed, 1);
+    }
+
+    private static Seed Remember(Seed seed)
+    {
+        if (seed == null) return null;
+        seed.MarkGuideSeed();
+        tutorialSeeds.Add(seed);
+        return seed;
     }
 
     public static Doctrine CreateVigil()
@@ -135,7 +179,7 @@ public static class TutorialContent
         DistrictZone zone,
         Region region)
     {
-        Seed seed = Seed.CreateRuntime(title, description, optionTitle, optionBody, 1, region);
+        Seed seed = Remember(Seed.CreateRuntime(title, description, optionTitle, optionBody, 1, region));
         if (zone != null) seed.Initialize(zone);
         return seed;
     }
@@ -153,37 +197,6 @@ public static class TutorialContent
             Target = zone,
             Amount = 1,
             Label = FactionIdUtil.DisplayName(FactionId.Rival1)
-        });
-    }
-
-    private static void AddSeedIntent(List<AIIntent> intents)
-    {
-        if (!DistrictsManager.TryGetRandomFreeZoneAnyDistrict(out DistrictZone zone) || zone == null)
-        {
-            ScriptedSeedZone = null;
-            return;
-        }
-
-        ScriptedSeedZone = zone;
-        if (choirSeed == null)
-        {
-            choirSeed = Seed.CreateRuntime(
-                "Choir Sermon",
-                "The Crimson Choir plants a sermon.",
-                "Listen",
-                "The street hears them.",
-                2,
-                Region.Agora);
-        }
-
-        intents.Add(new AIIntent
-        {
-            Kind = AIIntentKind.PlantSeed,
-            Faction = FactionId.Rival1,
-            Target = zone,
-            Seed = choirSeed,
-            Amount = 1,
-            Label = choirSeed.Title
         });
     }
 

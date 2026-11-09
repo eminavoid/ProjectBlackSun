@@ -33,22 +33,22 @@ public class DistrictSeedPlantPanel : MonoBehaviour
     private int selectedSeedIndex = -1;
     private string statusMessage = string.Empty;
 
+    private bool standardPoolReleased;
+
     private void Awake()
     {
         SetPanelVisible(false);
-        DebugLoadSeedsFromPool();
+        if (!TutorialSession.SuppressAmbientEvents) ReleaseStandardPool();
     }
 
     private void DebugLoadSeedsFromPool()
     {
         for (int i = 0; i < loadSeeds.EvilSeeds.Count; i++)
         {
-            if (!currentSeeds.ContainsKey(loadSeeds.EvilSeeds[i]))
-            {
-                currentSeeds.Add(loadSeeds.EvilSeeds[i], 0);
-            }
-
-            currentSeeds[loadSeeds.EvilSeeds[i]] += 1;
+            Seed seed = loadSeeds.EvilSeeds[i];
+            if (seed == null || !seed.HasDisplayTitle) continue;
+            if (!currentSeeds.ContainsKey(seed)) currentSeeds.Add(seed, 0);
+            currentSeeds[seed] += 1;
         }
     }
 
@@ -103,9 +103,62 @@ public class DistrictSeedPlantPanel : MonoBehaviour
         SetPanelVisible(false);
     }
 
+    public static bool TryCloseOpen()
+    {
+        DistrictSeedPlantPanel panel = FindAnyObjectByType<DistrictSeedPlantPanel>();
+        if (panel == null || !panel.isOpen) return false;
+        panel.CloseMenu();
+        return true;
+    }
+
     public bool MenuOpen => isOpen;
     public Button MenuButton => openMenuButton;
     public Button PlantButton => plantButton;
+    public System.Collections.Generic.IReadOnlyList<Seed> KnownSeeds =>
+        loadSeeds != null && loadSeeds.EvilSeeds != null ? loadSeeds.EvilSeeds : System.Array.Empty<Seed>();
+
+    public static void ReleaseStandardSeeds()
+    {
+        DistrictSeedPlantPanel panel = FindAnyObjectByType<DistrictSeedPlantPanel>();
+        if (panel != null) panel.ReleaseStandardPool();
+    }
+
+    public void ReleaseStandardPool()
+    {
+        if (standardPoolReleased) return;
+        standardPoolReleased = true;
+        DebugLoadSeedsFromPool();
+        if (!isOpen) return;
+
+        RefreshSeedList();
+        BuildSeedButtons();
+        UpdatePanelTexts();
+        UpdatePlantButtonState();
+    }
+
+    public static void ForgetSeed(Seed seed)
+    {
+        DistrictSeedPlantPanel panel = FindAnyObjectByType<DistrictSeedPlantPanel>();
+        if (panel != null) panel.Forget(seed);
+    }
+
+    public void Forget(Seed seed)
+    {
+        if (seed == null || !currentSeeds.ContainsKey(seed)) return;
+        currentSeeds.Remove(seed);
+        if (!isOpen) return;
+
+        RefreshSeedList();
+        BuildSeedButtons();
+        UpdatePanelTexts();
+        UpdatePlantButtonState();
+    }
+
+    public int Owned(Seed seed)
+    {
+        if (seed == null) return 0;
+        return currentSeeds.TryGetValue(seed, out int amount) ? amount : 0;
+    }
 
     public void Grant(Seed seed, int amount)
     {
@@ -150,7 +203,8 @@ public class DistrictSeedPlantPanel : MonoBehaviour
 
         foreach (Seed seed in currentSeeds.Keys)
         {
-            if (seed == null) continue;
+            if (seed == null || !seed.HasDisplayTitle) continue;
+            if (seed == TutorialContent.ReturnedSeed && !TutorialSession.SuppressAmbientEvents) continue;
 
             if (filterDistrict.HasValue && !seed.CanPlantInDistrict(filterDistrict.Value)) continue;
 
@@ -204,6 +258,7 @@ public class DistrictSeedPlantPanel : MonoBehaviour
         ShowPlantPopup($"{selectedSeed.Title} planted in the {MapStatsQuery.DistrictLabel(targetZone.District)} district.");
 
         UpdateSeedInventory(selectedSeed, -1);
+        if (selectedSeed == TutorialContent.FirstSeed) ReleaseStandardPool();
         RefreshSeedList();
         Planted?.Invoke();
     }
@@ -252,7 +307,7 @@ public class DistrictSeedPlantPanel : MonoBehaviour
 
         if (plantButton != null) plantButton.onClick.AddListener(TryPlantSelectedSeed);
         if (closeButton != null) closeButton.onClick.AddListener(CloseMenu);
-        if (openMenuButton != null) openMenuButton.onClick.AddListener(OpenMenu);
+        if (openMenuButton != null) openMenuButton.onClick.AddListener(ToggleMenu);
         if (toggleMenuButton != null) toggleMenuButton.onClick.AddListener(ToggleMenu);
 
         if (openMenuButton == null)
@@ -265,7 +320,7 @@ public class DistrictSeedPlantPanel : MonoBehaviour
     {
         if (plantButton != null) plantButton.onClick.RemoveListener(TryPlantSelectedSeed);
         if (closeButton != null) closeButton.onClick.RemoveListener(CloseMenu);
-        if (openMenuButton != null) openMenuButton.onClick.RemoveListener(OpenMenu);
+        if (openMenuButton != null) openMenuButton.onClick.RemoveListener(ToggleMenu);
         if (toggleMenuButton != null) toggleMenuButton.onClick.RemoveListener(ToggleMenu);
     }
 
@@ -279,6 +334,7 @@ public class DistrictSeedPlantPanel : MonoBehaviour
         }
 
         NodeTooltipMenuBlock.Ensure(panelRoot);
+        if (closeButton != null) closeButton.transform.SetAsLastSibling();
         MenuTransition.Show(panelRoot);
     }
 
