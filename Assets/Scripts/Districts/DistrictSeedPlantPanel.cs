@@ -27,6 +27,8 @@ public class DistrictSeedPlantPanel : MonoBehaviour
     private readonly List<Seed> cachedSeeds = new List<Seed>();
     private readonly List<Button> runtimeSeedButtons = new List<Button>();
 
+    public static event System.Action Planted;
+
     private bool isOpen;
     private int selectedSeedIndex = -1;
     private string statusMessage = string.Empty;
@@ -99,6 +101,27 @@ public class DistrictSeedPlantPanel : MonoBehaviour
     {
         isOpen = false;
         SetPanelVisible(false);
+    }
+
+    public bool MenuOpen => isOpen;
+    public Button MenuButton => openMenuButton;
+    public Button PlantButton => plantButton;
+
+    public void Grant(Seed seed, int amount)
+    {
+        if (seed == null || amount == 0) return;
+        if (!currentSeeds.ContainsKey(seed)) currentSeeds.Add(seed, 0);
+        currentSeeds[seed] += amount;
+        if (currentSeeds[seed] <= 0)
+        {
+            currentSeeds.Remove(seed);
+        }
+
+        if (!isOpen) return;
+        RefreshSeedList();
+        BuildSeedButtons();
+        UpdatePanelTexts();
+        UpdatePlantButtonState();
     }
 
     public void ToggleMenu()
@@ -182,6 +205,7 @@ public class DistrictSeedPlantPanel : MonoBehaviour
 
         UpdateSeedInventory(selectedSeed, -1);
         RefreshSeedList();
+        Planted?.Invoke();
     }
 
     private void UpdateSeedInventory(Seed seed, int amount)

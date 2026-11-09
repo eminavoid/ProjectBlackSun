@@ -12,8 +12,18 @@ public class Unlockeable : ScriptableObject
     public ScriptableObject Scriptable => scriptable;
     public Rarity Rarity => rarity;
 
+    public static Unlockeable CreateRuntime(string unlockName, ScriptableObject payload)
+    {
+        Unlockeable unlock = CreateInstance<Unlockeable>();
+        unlock.name = unlockName;
+        unlock.scriptable = payload;
+        return unlock;
+    }
+
     public void Unlock()
     {
+        if (target == null || scriptable == null) return;
+
         if (!target.Contains(scriptable))
         {
             target.Add(scriptable, rarity);

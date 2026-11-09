@@ -13,6 +13,7 @@ public class MainMenu : MonoBehaviour
 
     private Vector2[] buttonHome;
     private DifficultySelectMenu difficulty;
+    private FirstTimePrompt firstTime;
     private bool leaving;
 
     private void Awake()
@@ -23,6 +24,8 @@ public class MainMenu : MonoBehaviour
 
         difficulty = gameObject.AddComponent<DifficultySelectMenu>();
         difficulty.Initialize(this, buttons[0].gameObject, curtain.transform);
+        firstTime = gameObject.AddComponent<FirstTimePrompt>();
+        firstTime.Initialize(this, difficulty, buttons[0].gameObject, curtain.transform);
     }
 
     private void Start()
@@ -54,7 +57,7 @@ public class MainMenu : MonoBehaviour
     public void NewGame()
     {
         if (leaving) return;
-        difficulty.OpenFromTitle();
+        firstTime.Open();
     }
 
     public void BeginGame()

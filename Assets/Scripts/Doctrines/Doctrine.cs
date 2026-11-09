@@ -14,10 +14,33 @@ public class Doctrine : ScriptableObject
     [SerializeField] private List<StatUpdate> statUpdates;
     [SerializeField] private List<DoctrineBehaviour> behaviours;
 
-    public void OnTickStart() => behaviours.ForEach(behaviour => behaviour.OnTickStart());
-    public void OnTickEnd() => behaviours.ForEach(behaviour => behaviour.OnTickEnd());
+    public void OnTickStart()
+    {
+        if (behaviours == null) return;
+        behaviours.ForEach(behaviour => behaviour.OnTickStart());
+    }
+
+    public void OnTickEnd()
+    {
+        if (behaviours == null) return;
+        behaviours.ForEach(behaviour => behaviour.OnTickEnd());
+    }
 
     public List<StatUpdate> StatUpdates => statUpdates;
+
+    public static Doctrine CreateRuntime(string doctrineName, string doctrineDescription, PlayerStat stat, int amount)
+    {
+        Doctrine doctrine = CreateInstance<Doctrine>();
+        doctrine.Name = doctrineName;
+        doctrine.Description = doctrineDescription;
+        doctrine.statUpdates = new List<StatUpdate>
+        {
+            new StatUpdate { playerStat = stat, changeAmount = amount }
+        };
+        doctrine.behaviours = new List<DoctrineBehaviour>();
+        doctrine.name = doctrineName;
+        return doctrine;
+    }
 
     [Serializable]
     public struct StatUpdate

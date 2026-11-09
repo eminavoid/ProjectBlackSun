@@ -39,6 +39,7 @@ public class DifficultySelectMenu : MonoBehaviour
     private GameObject template;
     private TextMeshProUGUI style;
     private TextMeshProUGUI description;
+    private TextMeshProUGUI guideNote;
     private CanvasGroup rootGroup;
     private CanvasGroup presetGroup;
     private CanvasGroup matrixGroup;
@@ -100,6 +101,7 @@ public class DifficultySelectMenu : MonoBehaviour
         Highlight(PresetChoice.Normal);
         menu.HideTitleButtons();
         Fade(rootGroup, true);
+        EnsureGuideNote();
     }
 
     public void Dismiss()
@@ -109,6 +111,31 @@ public class DifficultySelectMenu : MonoBehaviour
         rootGroup.blocksRaycasts = false;
         if (presetGroup != null) presetGroup.blocksRaycasts = false;
         if (matrixGroup != null) matrixGroup.blocksRaycasts = false;
+    }
+
+    private void EnsureGuideNote()
+    {
+        bool show = TutorialSession.Guide;
+        if (!show)
+        {
+            if (guideNote != null) guideNote.gameObject.SetActive(false);
+            return;
+        }
+
+        if (guideNote == null)
+        {
+            guideNote = MakeText(
+                "Easy wastes plays. Hard acts more and hunts you. Begin whenever you want.",
+                new Vector2(ColumnX, DescriptionY - 96f),
+                new Vector2(520f, 72f),
+                20f,
+                TextAlignmentOptions.TopLeft,
+                1f,
+                rootGroup.transform,
+                true);
+        }
+
+        guideNote.gameObject.SetActive(true);
     }
 
     private void BuildPresets()

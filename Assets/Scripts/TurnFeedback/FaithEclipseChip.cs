@@ -26,7 +26,14 @@ public class FaithEclipseChip : MonoBehaviour, IPointerEnterHandler, IPointerExi
         countColor = count.color;
         swatch.color = FactionPalette.For(faction);
         label.gameObject.SetActive(FactionIdUtil.IsPlayer(faction));
+        if (FactionIdUtil.IsPlayer(faction)) label.text = FactionIdUtil.DisplayName(faction);
         leaderMark.SetActive(false);
+    }
+
+    public void RefreshName()
+    {
+        if (!FactionIdUtil.IsPlayer(Faction) || label == null) return;
+        label.text = FactionIdUtil.DisplayName(Faction);
     }
 
     public void Show(int controlledZones, bool isLeader)
@@ -46,7 +53,7 @@ public class FaithEclipseChip : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        string title = FactionIdUtil.IsPlayer(Faction) ? "YOUR FAITH" : FactionIdUtil.DisplayName(Faction).ToUpperInvariant();
+        string title = FactionIdUtil.DisplayName(Faction).ToUpperInvariant();
         string zonesText = zones == 1 ? "1 zone" : $"{Mathf.Max(0, zones)} zones";
         string text = $"{title}\nControls {zonesText}.";
         if (leads) text += "\nControls the most zones in the city.";

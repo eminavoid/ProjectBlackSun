@@ -706,7 +706,7 @@ public static class MapStatsQuery
             return new List<DistrictZone>(InfluenceManager.Get.GetPlayableZones());
         }
 
-        DistrictZone[] found = UnityEngine.Object.FindObjectsByType<DistrictZone>(FindObjectsSortMode.None);
+        DistrictZone[] found = UnityEngine.Object.FindObjectsByType<DistrictZone>();
         List<DistrictZone> zones = new List<DistrictZone>();
         for (int i = 0; i < found.Length; i++)
         {

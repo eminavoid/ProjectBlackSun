@@ -29,6 +29,8 @@ public class TheologyMenu : MonoBehaviour
     private int cost;
     private int phase;
 
+    public static event System.Action Communed;
+
     private void Awake() => cost = startCost;
 
     private void OnEnable()
@@ -51,7 +53,11 @@ public class TheologyMenu : MonoBehaviour
         if (!ResourceManager.IsNull && ResourceManager.Sidebar != null) ResourceManager.Sidebar.Release(this);
     }
 
-    public void Commune() => StartCoroutine(PayAndOpen());
+    public void Commune()
+    {
+        Communed?.Invoke();
+        StartCoroutine(PayAndOpen());
+    }
 
     public void AdvanceEye()
     {

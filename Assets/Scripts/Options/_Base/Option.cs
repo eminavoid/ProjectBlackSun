@@ -31,6 +31,18 @@ public class Option : ScriptableObject
         this.seed = seed;
     }
 
+    public static Option CreateRuntime(string optionTitle, string optionDescription)
+    {
+        Option option = CreateInstance<Option>();
+        option.title = optionTitle;
+        option.description = optionDescription;
+        option.modules = new List<OptionModule>();
+        option.followUpSeeds = new List<FollowUpSeedConfig>();
+        option.endsQuestline = true;
+        option.name = optionTitle;
+        return option;
+    }
+
     public bool CanExecute()
     {
         for (int i = 0; i < modules.Count; i++)

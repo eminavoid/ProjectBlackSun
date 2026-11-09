@@ -6,6 +6,7 @@ using Zeke.UI;
 
 public class DoctrinesController : MonoBehaviour
 {
+    public static event System.Action<Doctrine> DoctrineAdded;
     [SerializeField] private PlayerStats stats;
 
     public PlayerStats Stats => stats;
@@ -113,6 +114,7 @@ public class DoctrinesController : MonoBehaviour
         StartFreeSlotTimer();
 
         UpdateAddDoctrineMenuState();
+        DoctrineAdded?.Invoke(doctrine);
     }
 
     public void RemoveDoctrine(Doctrine doctrine)

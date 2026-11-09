@@ -96,7 +96,11 @@ public class AIIntentBoard : Singleton<AIIntentBoard>
 
         intents.Clear();
 
-        if (director != null)
+        if (TutorialSession.UseScriptedPlans)
+        {
+            TutorialContent.FillIntents(intents, GameTime.CurrentTurn);
+        }
+        else if (director != null)
         {
             director.PlanIntents(intents);
         }

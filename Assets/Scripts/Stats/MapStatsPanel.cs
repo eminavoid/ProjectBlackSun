@@ -14,7 +14,8 @@ public class MapStatsPanel : MonoBehaviour
     private DistrictZone focusedZone;
     private DistrictSelectionController selection;
 
-    public bool IsOpen => book.IsOpen;
+    public bool IsOpen => book != null && book.IsOpen;
+    public event System.Action PageOpened;
 
     private void Awake()
     {
@@ -82,6 +83,7 @@ public class MapStatsPanel : MonoBehaviour
         focusedZone = zone;
         book.Open(district);
         Render(true, !opening);
+        PageOpened?.Invoke();
     }
 
     private void RefreshIfOpen()

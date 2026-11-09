@@ -70,6 +70,9 @@ public class MapCameraController : MonoBehaviour
     /// <summary>Click derecho corto sobre el mapa (no UI, sin arrastre). Screen-space.</summary>
     public static event Action<Vector2> OnMapContextRequested;
 
+    /// <summary>El jugador movió o hizo zoom. No se dispara al enfocar una zona por código.</summary>
+    public event Action OnUserAdjusted;
+
     public float CurrentHeight => transform.position.y;
 
     private void Awake()
@@ -132,6 +135,13 @@ public class MapCameraController : MonoBehaviour
 
         // Angled top-down: place the camera so the view ray hits lookAt, not directly above it.
         targetPosition = ResolveFocusCameraPosition(lookAt, height);
+        ClampTargetToMap();
+    }
+
+    /// <summary>Sube al zoom out máximo, el encuadre de la ciudad, sin apuntar a un distrito.</summary>
+    public void ZoomToMax()
+    {
+        targetPosition.y = maxHeight;
         ClampTargetToMap();
     }
 
@@ -241,7 +251,7 @@ public class MapCameraController : MonoBehaviour
 
         bool found = false;
         Bounds bounds = default;
-        DistrictZone[] zones = FindObjectsByType<DistrictZone>(FindObjectsSortMode.None);
+        DistrictZone[] zones = FindObjectsByType<DistrictZone>();
         for (int i = 0; i < zones.Length; i++)
         {
             DistrictZone zone = zones[i];
@@ -309,6 +319,7 @@ public class MapCameraController : MonoBehaviour
         float speed = keyboardPanSpeed * Mathf.Lerp(1f, 0.3f, freedom);
         Vector3 delta = (right * input.x + forward * input.y) * speed * Time.unscaledDeltaTime;
         targetPosition += new Vector3(delta.x, 0f, delta.z);
+        OnUserAdjusted?.Invoke();
     }
 
     private void HandleMousePan()
@@ -388,6 +399,7 @@ public class MapCameraController : MonoBehaviour
         {
             Vector3 delta = previousGround - currentGround;
             targetPosition += new Vector3(delta.x, 0f, delta.z);
+            OnUserAdjusted?.Invoke();
         }
 
         lastPanPointerPosition = pointer;
@@ -402,6 +414,7 @@ public class MapCameraController : MonoBehaviour
 
         float nextHeight = targetPosition.y - scroll * zoomStep;
         targetPosition.y = Mathf.Clamp(nextHeight, minHeight, maxHeight);
+        OnUserAdjusted?.Invoke();
     }
 
     private void GetPanAxes(out Vector3 right, out Vector3 forward)

@@ -26,6 +26,7 @@ public class InfluenceManager : Singleton<InfluenceManager>
     private bool graphBuilt;
 
     public DistrictProductionConfig ProductionConfig => productionConfig;
+    public PlayerStats Stats => playerStats;
     public ZoneAdjacencyGraph Adjacency => adjacency;
 
     public static InfluenceManager Get => Instance;

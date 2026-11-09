@@ -31,10 +31,24 @@ public class PlayerStats : ScriptableObject
 
     public void ResetValues()
     {
-        foreach (PlayerStat playerStat in playerStats.Keys)
+        List<PlayerStat> stats = new List<PlayerStat>(playerStats.Keys);
+        for (int i = 0; i < stats.Count; i++)
         {
-            playerStats[playerStat] = 0;
+            playerStats[stats[i]] = 0;
         }
+    }
+
+    public void RememberDoctrine(Doctrine doctrine)
+    {
+        if (doctrine == null) return;
+        if (DoctrineInventory == null) DoctrineInventory = new List<Doctrine>();
+        if (!DoctrineInventory.Contains(doctrine)) DoctrineInventory.Add(doctrine);
+    }
+
+    public void ForgetDoctrine(Doctrine doctrine)
+    {
+        if (doctrine == null || DoctrineInventory == null) return;
+        DoctrineInventory.Remove(doctrine);
     }
 
     public enum PlayerStat

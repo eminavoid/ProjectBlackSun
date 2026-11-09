@@ -63,4 +63,9 @@ public class FaithEclipseBar : MonoBehaviour
             chips[i].Show(influence.CountControlledZones(faction), leader == faction);
         }
     }
+
+    public void RefreshNames()
+    {
+        for (int i = 0; i < chips.Count; i++) chips[i].RefreshName();
+    }
 }

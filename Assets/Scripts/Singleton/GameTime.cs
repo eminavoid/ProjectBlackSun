@@ -37,6 +37,8 @@ public class GameTime : Singleton<GameTime>
         CurrentTurn = 1;
         processingTurn = false;
         confirmationPopUpOpen = false;
+        if (FindAnyObjectByType<TutorialDirector>() == null)
+            gameObject.AddComponent<TutorialDirector>();
     }
 
     private void Update()

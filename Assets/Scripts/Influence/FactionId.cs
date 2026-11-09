@@ -12,6 +12,8 @@ public enum FactionId
 
 public static class FactionIdUtil
 {
+    private static string playerCultName;
+
     public static readonly FactionId[] All =
     {
         FactionId.Player,
@@ -22,6 +24,11 @@ public static class FactionIdUtil
     };
 
     public static bool IsPlayer(FactionId id) => id == FactionId.Player;
+
+    public static void SetPlayerName(string name)
+    {
+        playerCultName = string.IsNullOrWhiteSpace(name) ? null : name.Trim();
+    }
 
     public static string ShortLabel(FactionId id)
     {
@@ -40,7 +47,7 @@ public static class FactionIdUtil
     {
         switch (id)
         {
-            case FactionId.Player: return "You";
+            case FactionId.Player: return string.IsNullOrEmpty(playerCultName) ? "You" : playerCultName;
             case FactionId.Rival1: return "Crimson Choir";
             case FactionId.Rival2: return "Rose Ledger";
             case FactionId.Rival3: return "Ochre Flock";

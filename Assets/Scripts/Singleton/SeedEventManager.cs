@@ -82,6 +82,11 @@ public class SeedEventManager : Singleton<SeedEventManager>
 
     public static bool HasUnresolvedEvents => Instance.seedEvents.Count > 0;
 
+    public static RectTransform UnresolvedBadge =>
+        !IsNull && Instance.seedsUnresolvedPopUp != null
+            ? Instance.seedsUnresolvedPopUp.transform as RectTransform
+            : null;
+
     private readonly List<Seed> seedEvents = new List<Seed>();
 
     public static Action<Seed> onSeedStored;
@@ -213,6 +218,7 @@ public class SeedEventManager : Singleton<SeedEventManager>
     {
         Debug.Log($"calling remove seed with {option.Seed}");
         RemoveSeed(seed);
+        onEventSettled?.Invoke(new SettledEvent(seed, option, string.Empty, System.Array.Empty<ResourceDelta>()));
         LayoutGroup layout = spawnOptionsWindow.TryGetElement<LayoutGroup>("Layout Group");
 
         if (openOutputWindows > 0)
@@ -317,6 +323,8 @@ public class SeedEventManager : Singleton<SeedEventManager>
 
     private void TryPlantResourceSeeds()
     {
+        if (TutorialSession.SuppressAmbientEvents) return;
+
         if (resourceSeedPools == null)
         {
             return;

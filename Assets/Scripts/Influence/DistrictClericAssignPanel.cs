@@ -17,9 +17,13 @@ public class DistrictClericAssignPanel : MonoBehaviour
     [SerializeField] private float hiddenDrop = 170f;
     [SerializeField, Min(0.01f)] private float slideDuration = 0.3f;
 
+    public static event System.Action Assigned;
+
     private DistrictZone shown;
     private bool visible = true;
     private float restY;
+
+    public Button AssignButton => assignButton;
 
     private void Awake()
     {
@@ -98,6 +102,7 @@ public class DistrictClericAssignPanel : MonoBehaviour
         }
 
         Refresh();
+        if (amount > 0) Assigned?.Invoke();
         counts.transform.DOComplete();
         counts.transform.DOPunchScale(Vector3.one * 0.08f, 0.25f, 6, 0.6f).SetLink(gameObject);
     }

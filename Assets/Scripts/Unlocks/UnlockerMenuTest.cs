@@ -29,6 +29,8 @@ public class UnlockerMenuTest : MonoBehaviour
         public readonly int Weight => weight;
     }
 
+    public static event Action<Unlockeable> RewardChosen;
+
     public void GenerateUnlocks()
     {
         CreateWindows(GenerateOptions());
@@ -41,10 +43,21 @@ public class UnlockerMenuTest : MonoBehaviour
 
     private void OnOptionSelected(Unlockeable unlockeable)
     {
-        unlockeable.Unlock();
+        if (!TutorialSession.ClaimFixedUnlock(unlockeable))
+        {
+            unlockeable.Unlock();
+        }
+        else if (unlockeable.Scriptable is Doctrine doctrine)
+        {
+            DoctrinesController doctrines = FindAnyObjectByType<DoctrinesController>();
+            if (doctrines != null && doctrines.Stats != null)
+                doctrines.Stats.RememberDoctrine(doctrine);
+        }
+
         ClearRoot();
 
         onOptionSelected?.Invoke();
+        RewardChosen?.Invoke(unlockeable);
     }
 
     private void ClearRoot()
@@ -59,7 +72,11 @@ public class UnlockerMenuTest : MonoBehaviour
 
     private List<Unlockeable> GenerateOptions()
     {
+        if (TutorialSession.FixedUnlock != null)
+            return new List<Unlockeable> { TutorialSession.FixedUnlock };
+
         List<Unlockeable> options = new List<Unlockeable>();
+        if (drops == null || drops.Count == 0) return options;
 
         for (int i = 0; i < amount; i++)
         {

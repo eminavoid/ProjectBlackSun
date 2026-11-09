@@ -13,6 +13,8 @@ public class EventsMenu : MonoBehaviour
 
     private MapCameraController mapCameraController;
 
+    public GameObject Panel => ui;
+
     private readonly Dictionary<int, UIWindow> seedWindows = new Dictionary<int, UIWindow>();
 
     private void Awake()
@@ -62,11 +64,19 @@ public class EventsMenu : MonoBehaviour
     {
         UIWindow window = Instantiate(elementPrefab, content);
 
+        DistrictZone zone = seed.CurrentZone;
         window.TryGetElement<TextMeshProUGUI>("Name").text = seed.Title;
-        window.TryGetElement<TextMeshProUGUI>("Position Text").text = $"{MapStatsQuery.DistrictLabel(seed.CurrentZone.District)} district  ·  {MapStatsQuery.ZoneLabel(seed.CurrentZone)}";
+        window.TryGetElement<TextMeshProUGUI>("Position Text").text = zone != null
+            ? $"{MapStatsQuery.DistrictLabel(zone.District)} district  ·  {MapStatsQuery.ZoneLabel(zone)}"
+            : "The city";
 
-        window.TryGetElement<Button>("Position Clickbox").onClick.AddListener(() => mapCameraController.FocusOnZone(seed.CurrentZone));
-        window.TryGetElement<Button>("Position Clickbox").onClick.AddListener(() => MenuTransition.Hide(ui));
+        Button position = window.TryGetElement<Button>("Position Clickbox");
+        if (position != null)
+        {
+            if (zone != null && mapCameraController != null)
+                position.onClick.AddListener(() => mapCameraController.FocusOnZone(zone));
+            position.onClick.AddListener(() => MenuTransition.Hide(ui));
+        }
 
         Button elementClickbox = window.TryGetElement<Button>("Event Clickbox");
 

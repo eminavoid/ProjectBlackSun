@@ -49,6 +49,27 @@ public class Seed : ScriptableObject
 
     public bool CanPlantInDistrict(Districts district) => true;
 
+    public static Seed CreateRuntime(
+        string seedTitle,
+        string seedDescription,
+        string optionTitle,
+        string optionDescription,
+        int turns,
+        Region seedRegion)
+    {
+        Seed seed = CreateInstance<Seed>();
+        seed.title = seedTitle;
+        seed.description = seedDescription;
+        seed.ticks = Mathf.Max(1, turns);
+        seed.region = seedRegion;
+        seed.eventType = SeedEventType.Social;
+        seed.difficulty = SeedDifficulty.Easy;
+        seed.Options = new List<Option> { Option.CreateRuntime(optionTitle, optionDescription) };
+        seed.DefaultOption = 1;
+        seed.name = seedTitle;
+        return seed;
+    }
+
     private DistrictZone currentZone;
 
     public int UniqueID { get; private set; } = -9999;
