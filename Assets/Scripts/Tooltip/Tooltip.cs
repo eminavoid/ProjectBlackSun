@@ -14,9 +14,6 @@ namespace Zeke.Tooltips
         [SerializeField] private RectTransform tooltipRect;
         [SerializeField] private TMP_Text tooltipText;
 
-        [Header("Tooltip")]
-        [SerializeField] private Vector2 maxSize = new Vector2(400f, 400f);
-
         [Space]
 
         [SerializeField] private float showDelay = 1f;
@@ -39,14 +36,6 @@ namespace Zeke.Tooltips
         public static void SetText(string text)
         {
             Instance.tooltipText.text = text;
-            Vector2 sizeDelta = Vector2.zero;
-
-            Vector2 textSize = Instance.tooltipText.GetPreferredValues(text, Instance.maxSize.x, Instance.maxSize.y);
-
-            sizeDelta.x = Mathf.Clamp(textSize.x, 0f, Instance.maxSize.x);
-            sizeDelta.y = Mathf.Clamp(textSize.y, 0f, Instance.maxSize.y);
-
-            Instance.tooltipRect.sizeDelta = sizeDelta;
         }
 
         public static void Show(string text)
@@ -72,7 +61,7 @@ namespace Zeke.Tooltips
             return hit == root || hit.IsChildOf(root);
         }
 
-        private void Awake()
+        protected override void OnInitialization()
         {
             group = tooltipObject.GetComponent<CanvasGroup>();
             if (group == null) group = tooltipObject.AddComponent<CanvasGroup>();
