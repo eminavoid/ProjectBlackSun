@@ -3,9 +3,13 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class TheologyMenu : MonoBehaviour
 {
+    [SerializeField] private UnityEvent onSacrificed;
+    //Temporal patch
+
     [SerializeField] private Resource costResource = Resource.Zeal;
     [SerializeField, Min(0)] private int startCost = 0;
     [SerializeField, Min(0)] private int costIncrease = 15;
@@ -84,6 +88,8 @@ public class TheologyMenu : MonoBehaviour
             if (flight != null) yield return flight.WaitForCompletion();
             ResourceManager.Resources.AddResource(costResource, -cost);
             ResourceManager.Sidebar.Release(this);
+
+            onSacrificed?.Invoke();
         }
 
         cost += costIncrease;
