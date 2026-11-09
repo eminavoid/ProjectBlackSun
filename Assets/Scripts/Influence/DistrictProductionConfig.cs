@@ -6,6 +6,13 @@ using UnityEngine;
 public class DistrictProductionConfig : ScriptableObject
 {
     [Serializable]
+    public struct ResourceYield
+    {
+        public Resource resource;
+        public int parts;
+    }
+
+    [Serializable]
     public struct ProductionEntry
     {
         public string partColorName;
@@ -16,12 +23,19 @@ public class DistrictProductionConfig : ScriptableObject
         public Resource secondaryResource;
         public int secondaryAmountPerZone;
         public PlayerStats.PlayerStat influenceStat;
+        public ResourceYield[] yields;
 
         /// <summary>
         /// True: el monto sale de DistrictZone.ProductionAmount y se reparte por % de influencia.
         /// False: camino viejo (el centro). No cambiar esa entrada.
         /// </summary>
         public bool usesPerZoneAmount;
+    }
+
+    public struct ScaledYield
+    {
+        public Resource resource;
+        public int amount;
     }
 
     /// <summary>
@@ -44,7 +58,12 @@ public class DistrictProductionConfig : ScriptableObject
             primaryResource = Resource.Wealth,
             primaryAmountPerZone = 10,
             influenceStat = PlayerStats.PlayerStat.Stewardship,
-            usesPerZoneAmount = true
+            usesPerZoneAmount = true,
+            yields = new[]
+            {
+                new ResourceYield { resource = Resource.Secrets, parts = 1 },
+                new ResourceYield { resource = Resource.Wealth, parts = 2 }
+            }
         },
         new ProductionEntry
         {
@@ -53,7 +72,12 @@ public class DistrictProductionConfig : ScriptableObject
             primaryResource = Resource.Flock,
             primaryAmountPerZone = 10,
             influenceStat = PlayerStats.PlayerStat.Diplomacy,
-            usesPerZoneAmount = true
+            usesPerZoneAmount = true,
+            yields = new[]
+            {
+                new ResourceYield { resource = Resource.Zeal, parts = 1 },
+                new ResourceYield { resource = Resource.Flock, parts = 2 }
+            }
         },
         new ProductionEntry
         {
@@ -62,27 +86,43 @@ public class DistrictProductionConfig : ScriptableObject
             primaryResource = Resource.Zeal,
             primaryAmountPerZone = 10,
             influenceStat = PlayerStats.PlayerStat.Learning,
-            usesPerZoneAmount = true
+            usesPerZoneAmount = true,
+            yields = new[]
+            {
+                new ResourceYield { resource = Resource.Secrets, parts = 1 },
+                new ResourceYield { resource = Resource.Zeal, parts = 2 }
+            }
         },
         new ProductionEntry
         {
             partColorName = "Red",
             district = Districts.District1,
-            primaryResource = Resource.Materials,
+            primaryResource = Resource.Wealth,
             primaryAmountPerZone = 10,
             influenceStat = PlayerStats.PlayerStat.Aggresion,
-            usesPerZoneAmount = true
+            usesPerZoneAmount = true,
+            yields = new[]
+            {
+                new ResourceYield { resource = Resource.Wealth, parts = 1 },
+                new ResourceYield { resource = Resource.Flock, parts = 1 },
+                new ResourceYield { resource = Resource.Zeal, parts = 1 }
+            }
         },
         new ProductionEntry
         {
             partColorName = "Purple",
             district = Districts.District5,
-            // Centro: no tocar. Sigue el reparto anterior.
-            primaryResource = Resource.Wealth,
-            primaryAmountPerZone = 2,
-            secondaryResource = Resource.Happiness,
-            secondaryAmountPerZone = 1,
-            influenceStat = PlayerStats.PlayerStat.Intrigue
+            primaryResource = Resource.Secrets,
+            primaryAmountPerZone = 10,
+            influenceStat = PlayerStats.PlayerStat.Intrigue,
+            usesPerZoneAmount = true,
+            yields = new[]
+            {
+                new ResourceYield { resource = Resource.Secrets, parts = 1 },
+                new ResourceYield { resource = Resource.Zeal, parts = 1 },
+                new ResourceYield { resource = Resource.Wealth, parts = 1 },
+                new ResourceYield { resource = Resource.Flock, parts = 1 }
+            }
         },
         new ProductionEntry
         {
@@ -91,7 +131,12 @@ public class DistrictProductionConfig : ScriptableObject
             primaryResource = Resource.Secrets,
             primaryAmountPerZone = 10,
             influenceStat = PlayerStats.PlayerStat.Intrigue,
-            usesPerZoneAmount = true
+            usesPerZoneAmount = true,
+            yields = new[]
+            {
+                new ResourceYield { resource = Resource.Wealth, parts = 1 },
+                new ResourceYield { resource = Resource.Secrets, parts = 2 }
+            }
         }
     };
 
@@ -114,5 +159,65 @@ public class DistrictProductionConfig : ScriptableObject
     public bool IsImperial(Districts district)
     {
         return TryGetEntry(district, out ProductionEntry entry) && entry.isImperial;
+    }
+
+    /// <summary>
+    /// Parte la producción del nodo en los recursos del distrito. Con producción 10,
+    /// 1:2 da 3 y 6, 1:1:1 da 3 cada uno, y cuatro partes iguales dan 2 cada una.
+    /// </summary>
+    public static void ScaleYields(ProductionEntry entry, int production, List<ScaledYield> into)
+    {
+        into.Clear();
+        if (production <= 0) return;
+
+        if (entry.yields != null && entry.yields.Length > 0)
+        {
+            int parts = 0;
+            for (int i = 0; i < entry.yields.Length; i++)
+            {
+                parts += Mathf.Max(0, entry.yields[i].parts);
+            }
+
+            if (parts <= 0) return;
+
+            for (int i = 0; i < entry.yields.Length; i++)
+            {
+                int share = Mathf.Max(0, entry.yields[i].parts);
+                int amount = FloorShare(production, share, parts);
+                if (amount <= 0) continue;
+                into.Add(new ScaledYield { resource = entry.yields[i].resource, amount = amount });
+            }
+
+            return;
+        }
+
+        if (entry.usesPerZoneAmount)
+        {
+            into.Add(new ScaledYield { resource = entry.primaryResource, amount = production });
+            return;
+        }
+
+        if (entry.primaryAmountPerZone > 0)
+        {
+            into.Add(new ScaledYield { resource = entry.primaryResource, amount = entry.primaryAmountPerZone });
+        }
+
+        if (entry.secondaryAmountPerZone > 0)
+        {
+            into.Add(new ScaledYield { resource = entry.secondaryResource, amount = entry.secondaryAmountPerZone });
+        }
+    }
+
+    public static string FormatYields(List<ScaledYield> yields)
+    {
+        if (yields == null || yields.Count == 0) return "—";
+
+        string line = yields[0].amount + " " + yields[0].resource;
+        for (int i = 1; i < yields.Count; i++)
+        {
+            line += " + " + yields[i].amount + " " + yields[i].resource;
+        }
+
+        return line;
     }
 }

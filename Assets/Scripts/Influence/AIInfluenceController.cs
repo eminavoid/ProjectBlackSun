@@ -319,19 +319,19 @@ public class AIInfluenceController : MonoBehaviour
                 AIObjective.Of(Districts.District6, 3),
                 AIObjective.Of(Districts.District3, 2),
                 AIObjective.Of(Districts.District5, 1)),
-            // Azul: pink, luego green, white y purple.
+            // Rosa: pink, luego green, white y purple.
             AIInfluenceProfile.CreateRuntime(
                 FactionId.Rival2,
-                "Azure Ledger",
+                "Rose Ledger",
                 15,
                 AIObjective.Of(Districts.District2, 4),
                 AIObjective.Of(Districts.District3, 3),
                 AIObjective.Of(Districts.District6, 2),
                 AIObjective.Of(Districts.District5, 1)),
-            // Verde: yellow, luego purple, y white junto con green.
+            // Mostaza: yellow, luego purple, y white junto con green.
             AIInfluenceProfile.CreateRuntime(
                 FactionId.Rival3,
-                "Verdant Flock",
+                "Ochre Flock",
                 15,
                 AIObjective.Of(Districts.District4, 4),
                 AIObjective.Of(Districts.District5, 3),

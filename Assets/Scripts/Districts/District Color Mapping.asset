@@ -14,16 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DistrictColorMapping
   entries:
   - partName: Red
+    displayName: Crucible
     district: 0
   - partName: Pink
+    displayName: Pink Quarter
     district: 1
   - partName: Green
+    displayName: Warrens
     district: 2
   - partName: Yellow
+    displayName: Agora
     district: 3
   - partName: Purple
+    displayName: Lacrimal Hill
     district: 4
   - partName: Violet
+    displayName: Lacrimal Hill
     district: 4
   - partName: White
+    displayName: Ocularium
     district: 5

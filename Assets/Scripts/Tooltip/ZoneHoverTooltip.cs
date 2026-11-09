@@ -138,7 +138,9 @@ namespace Zeke.Tooltips
                         state.TotalInfluence);
                 }
 
-                return amount + " " + entry.primaryResource;
+                List<DistrictProductionConfig.ScaledYield> yields = new List<DistrictProductionConfig.ScaledYield>();
+                DistrictProductionConfig.ScaleYields(entry, amount, yields);
+                return DistrictProductionConfig.FormatYields(yields);
             }
 
             int primary = entry.primaryAmountPerZone;

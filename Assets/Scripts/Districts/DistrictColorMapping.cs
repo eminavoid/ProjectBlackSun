@@ -9,6 +9,7 @@ public class DistrictColorMapping : ScriptableObject
     public struct DistrictColorEntry
     {
         public string partName;
+        public string displayName;
         public Districts district;
     }
 
@@ -63,6 +64,12 @@ public class DistrictColorMapping : ScriptableObject
     /// <summary>Nombre de mapa (Red, Blue, …). Usa el mapping del asset, o el default del Vertical Slice.</summary>
     public string GetDisplayName(Districts district)
     {
+        for (int i = 0; i < entries.Count; i++)
+        {
+            if (entries[i].district != district) continue;
+            if (!string.IsNullOrWhiteSpace(entries[i].displayName)) return entries[i].displayName;
+        }
+
         if (TryGetPartNamesForDistrict(district, out List<string> partNames) && partNames.Count > 0)
         {
             return partNames[0];
@@ -75,12 +82,12 @@ public class DistrictColorMapping : ScriptableObject
     {
         switch (district)
         {
-            case Districts.District1: return "Red";
-            case Districts.District2: return "Blue";
-            case Districts.District3: return "Green";
-            case Districts.District4: return "Yellow";
-            case Districts.District5: return "Violet";
-            case Districts.District6: return "White";
+            case Districts.District1: return "Crucible";
+            case Districts.District2: return "Pink Quarter";
+            case Districts.District3: return "Warrens";
+            case Districts.District4: return "Agora";
+            case Districts.District5: return "Lacrimal Hill";
+            case Districts.District6: return "Ocularium";
             default: return district.ToString();
         }
     }

@@ -493,7 +493,13 @@ public class InfluenceManager : Singleton<InfluenceManager>
 
             if (entry.usesPerZoneAmount)
             {
-                DistributeProductionByShare(zone, entry.primaryResource, zone.ProductionAmount);
+                List<DistrictProductionConfig.ScaledYield> yields = new List<DistrictProductionConfig.ScaledYield>();
+                DistrictProductionConfig.ScaleYields(entry, zone.ProductionAmount, yields);
+                for (int y = 0; y < yields.Count; y++)
+                {
+                    DistributeProductionByShare(zone, yields[y].resource, yields[y].amount);
+                }
+
                 continue;
             }
 

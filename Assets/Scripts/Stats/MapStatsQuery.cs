@@ -454,8 +454,10 @@ public static class MapStatsQuery
 
         if (entry.usesPerZoneAmount)
         {
-            return "Production: " + FormatZoneAmountSpan(district, entry.primaryAmountPerZone)
-                + " " + entry.primaryResource + " per block, by influence share";
+            int sample = SampleZoneProduction(district);
+            List<DistrictProductionConfig.ScaledYield> yields = new List<DistrictProductionConfig.ScaledYield>();
+            DistrictProductionConfig.ScaleYields(entry, sample, yields);
+            return "Production: " + DistrictProductionConfig.FormatYields(yields) + " per block, by influence share";
         }
 
         string resources = FormatResourceAmounts(entry);
@@ -474,29 +476,47 @@ public static class MapStatsQuery
         DistrictProductionConfig.ProductionEntry entry)
     {
         int production = zone.ProductionAmount;
-        string resource = entry.primaryResource.ToString();
+        List<DistrictProductionConfig.ScaledYield> full = new List<DistrictProductionConfig.ScaledYield>();
+        DistrictProductionConfig.ScaleYields(entry, production, full);
+        string resources = DistrictProductionConfig.FormatYields(full);
         if (state == null || state.TotalInfluence <= 0)
         {
-            return "Tithe: " + production + " " + resource + " (no influence, lost)";
+            return "Tithe: " + resources + " (no influence, lost)";
         }
 
         List<string> parts = new List<string>();
         foreach (FactionId faction in state.FactionsWithShare())
         {
-            int amount = DistrictProductionConfig.FloorShare(
+            int slice = DistrictProductionConfig.FloorShare(
                 production,
                 state.GetShare(faction),
                 state.TotalInfluence);
-            if (amount <= 0) continue;
-            parts.Add(FactionIdUtil.DisplayName(faction) + " " + amount);
+            if (slice <= 0) continue;
+
+            List<DistrictProductionConfig.ScaledYield> share = new List<DistrictProductionConfig.ScaledYield>();
+            DistrictProductionConfig.ScaleYields(entry, slice, share);
+            if (share.Count == 0) continue;
+            parts.Add(FactionIdUtil.DisplayName(faction) + " " + DistrictProductionConfig.FormatYields(share));
         }
 
         if (parts.Count == 0)
         {
-            return "Tithe: " + production + " " + resource + " (under 1, lost)";
+            return "Tithe: " + resources + " (under 1, lost)";
         }
 
-        return "Tithe: " + production + " " + resource + " → " + string.Join(", ", parts);
+        return "Tithe: " + resources + " → " + string.Join(", ", parts);
+    }
+
+    private static int SampleZoneProduction(Districts district)
+    {
+        List<DistrictZone> zones = GetDistrictZones(district, GetPlayableZones());
+        for (int i = 0; i < zones.Count; i++)
+        {
+            DistrictZone zone = zones[i];
+            if (zone != null && zone.IsPlayable) return zone.ProductionAmount;
+        }
+
+        return DistrictZone.DefaultProductionAmount;
     }
 
     private static string FormatZoneAmountSpan(Districts district, int fallback)

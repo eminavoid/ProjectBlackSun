@@ -7,11 +7,13 @@ public static class FactionPalette
 {
     private const float GlowValue = 1.55f;
 
-    private static readonly Color PlayerRgb = Hex("#d000ff");
+    // Azul oscuro, poco saturado: se lee azul sin tapar el mapa.
+    private static readonly Color PlayerRgb = Hex("#3A5F8C");
     // No es rojo de un solo canal: ese se quema a blanco con el brillo del overlay.
     private static readonly Color Rival1Rgb = Hex("#ff2a2a");
-    private static readonly Color Rival2Rgb = Hex("#00f2ff");
-    private static readonly Color Rival3Rgb = Hex("#00ff00");
+    // Bases oscuras: Neon las sube a rosa pastel y mostaza, sin quemarlas a blanco en el mapa.
+    private static readonly Color Rival2Rgb = Hex("#8D4A5A");
+    private static readonly Color Rival3Rgb = Hex("#715928");
     private static readonly Color Rival4Rgb = Hex("#eeff00");
 
     public static Color For(FactionId faction)

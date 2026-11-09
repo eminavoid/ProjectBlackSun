@@ -107,12 +107,12 @@ public class ZoneTravelGraphEditor : Editor
 
     private static void DrawLegend()
     {
-        Swatch("Red", ZoneTravelGraph.ColorFor(Districts.District1));
-        Swatch("Pink", ZoneTravelGraph.ColorFor(Districts.District2));
-        Swatch("Green", ZoneTravelGraph.ColorFor(Districts.District3));
-        Swatch("Yellow", ZoneTravelGraph.ColorFor(Districts.District4));
-        Swatch("Purple", ZoneTravelGraph.ColorFor(Districts.District5));
-        Swatch("White", ZoneTravelGraph.ColorFor(Districts.District6));
+        Swatch("Crucible", ZoneTravelGraph.ColorFor(Districts.District1));
+        Swatch("Pink Quarter", ZoneTravelGraph.ColorFor(Districts.District2));
+        Swatch("Warrens", ZoneTravelGraph.ColorFor(Districts.District3));
+        Swatch("Agora", ZoneTravelGraph.ColorFor(Districts.District4));
+        Swatch("Lacrimal Hill", ZoneTravelGraph.ColorFor(Districts.District5));
+        Swatch("Ocularium", ZoneTravelGraph.ColorFor(Districts.District6));
         Swatch("Crosses districts", new Color(1f, 0.42f, 0.08f));
     }
 
