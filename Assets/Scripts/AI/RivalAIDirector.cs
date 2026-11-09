@@ -38,9 +38,9 @@ public class RivalAIDirector : MonoBehaviour
 
     [SerializeField] private List<Agent> agents = new List<Agent>
     {
-        new Agent { faction = FactionId.Rival1, personality = AIPersonality.Seeds },
-        new Agent { faction = FactionId.Rival2, personality = AIPersonality.Balanced },
-        new Agent { faction = FactionId.Rival3, personality = AIPersonality.Clerics }
+        new Agent { faction = FactionId.Rival1, personality = DefaultPersonality(FactionId.Rival1) },
+        new Agent { faction = FactionId.Rival2, personality = DefaultPersonality(FactionId.Rival2) },
+        new Agent { faction = FactionId.Rival3, personality = DefaultPersonality(FactionId.Rival3) }
     };
 
     [Tooltip("Presupuesto normal. Easy resta 2 (mínimo 1). Hard suma 2.")]
@@ -62,10 +62,19 @@ public class RivalAIDirector : MonoBehaviour
 
     [SerializeField] private bool logPlans;
 
+    private struct Tuning
+    {
+        public int actions;
+        public float aggression;
+        public float mistakes;
+    }
+
     private int actionPoints = 4;
     private float aggressiveness = 0.35f;
     private float mistakeChance = 0.1f;
     private bool difficultyApplied;
+    private bool usePerRival;
+    private readonly Dictionary<FactionId, Tuning> perRival = new Dictionary<FactionId, Tuning>();
 
     private readonly List<DistrictZone> plannedSeedZones = new List<DistrictZone>();
     private readonly List<Choice> plannedSeeds = new List<Choice>();
@@ -78,7 +87,21 @@ public class RivalAIDirector : MonoBehaviour
 
     private void Awake()
     {
-        if (!difficultyApplied) ApplyDifficulty(RivalDifficulty.Normal);
+        if (difficultyApplied) return;
+        if (MatchSettings.UseCustom) ApplyCustomFromMatch();
+        else ApplyDifficulty(MatchSettings.Shared);
+    }
+
+    /// <summary>Personalidad de cada rival cuando el director se crea en la escena de juego.</summary>
+    public static AIPersonality DefaultPersonality(FactionId faction)
+    {
+        switch (faction)
+        {
+            case FactionId.Rival1: return AIPersonality.Seeds;
+            case FactionId.Rival2: return AIPersonality.Balanced;
+            case FactionId.Rival3: return AIPersonality.Clerics;
+            default: return AIPersonality.Balanced;
+        }
     }
 
     public bool TryGetPersonality(FactionId faction, out AIPersonality personality)
@@ -150,23 +173,17 @@ public class RivalAIDirector : MonoBehaviour
     /// <summary>Easy baja puntos y agresividad. Hard hace lo contrario. El plan de objetivos no cambia.</summary>
     public void ApplyDifficulty(RivalDifficulty difficulty)
     {
-        switch (difficulty)
-        {
-            case RivalDifficulty.Easy:
-                SetDifficulty(Mathf.Max(1, normalActionPoints - 2), 0.1f, easyMistakeChance);
-                break;
-            case RivalDifficulty.Hard:
-                SetDifficulty(normalActionPoints + 2, 0.85f, hardMistakeChance);
-                break;
-            default:
-                SetDifficulty(normalActionPoints, normalAggressiveness, normalMistakeChance);
-                break;
-        }
+        usePerRival = false;
+        perRival.Clear();
+        Tuning tuning = Resolve(difficulty);
+        SetDifficulty(tuning.actions, tuning.aggression, tuning.mistakes);
     }
 
     /// <summary>Ata la dificultad: pocas acciones y poca agresividad, o al revés.</summary>
     public void ApplyDifficulty(int actions, float aggression)
     {
+        usePerRival = false;
+        perRival.Clear();
         float mistakes = normalMistakeChance;
         if (aggression <= 0.2f) mistakes = easyMistakeChance;
         else if (aggression >= 0.7f) mistakes = hardMistakeChance;
@@ -193,10 +210,60 @@ public class RivalAIDirector : MonoBehaviour
         mistakeChance = Mathf.Clamp01(mistakes);
     }
 
+    private void ApplyCustomFromMatch()
+    {
+        perRival.Clear();
+        FactionId[] rivals = MatchSettings.Rivals;
+        for (int i = 0; i < rivals.Length; i++)
+            perRival[rivals[i]] = Resolve(MatchSettings.DifficultyFor(rivals[i]));
+
+        usePerRival = true;
+        Tuning baseline = Resolve(RivalDifficulty.Normal);
+        actionPoints = baseline.actions;
+        aggressiveness = baseline.aggression;
+        mistakeChance = baseline.mistakes;
+        difficultyApplied = true;
+    }
+
+    private Tuning Resolve(RivalDifficulty difficulty)
+    {
+        switch (difficulty)
+        {
+            case RivalDifficulty.Easy:
+                return new Tuning
+                {
+                    actions = Mathf.Max(1, normalActionPoints - 2),
+                    aggression = 0.1f,
+                    mistakes = easyMistakeChance
+                };
+            case RivalDifficulty.Hard:
+                return new Tuning
+                {
+                    actions = normalActionPoints + 2,
+                    aggression = 0.85f,
+                    mistakes = hardMistakeChance
+                };
+            default:
+                return new Tuning
+                {
+                    actions = normalActionPoints,
+                    aggression = normalAggressiveness,
+                    mistakes = normalMistakeChance
+                };
+        }
+    }
+
+    private Tuning TuningFor(FactionId faction)
+    {
+        if (usePerRival && perRival.TryGetValue(faction, out Tuning tuning)) return tuning;
+        return new Tuning { actions = actionPoints, aggression = aggressiveness, mistakes = mistakeChance };
+    }
+
     private void PlanAgent(Agent agent, List<AIIntent> intents)
     {
         HashSet<DistrictZone> slipping = SlippingZones(agent.faction);
-        if (actionPoints <= 0) return;
+        Tuning tuning = TuningFor(agent.faction);
+        if (tuning.actions <= 0) return;
 
         ZoneTravelGraph travel = Travel();
         Dictionary<DistrictZone, int> costs = new Dictionary<DistrictZone, int>();
@@ -211,11 +278,11 @@ public class RivalAIDirector : MonoBehaviour
         plannedSeedZones.Clear();
         plannedSeeds.Clear();
 
-        int points = actionPoints;
+        int points = tuning.actions;
         string name = FactionIdUtil.DisplayName(agent.faction);
         while (points > 0)
         {
-            if (!TryPick(agent, influence, seeds, costs, slipping, points, clericsLeft, out Choice choice, out bool misplayed))
+            if (!TryPick(agent, influence, seeds, costs, slipping, points, clericsLeft, tuning, out Choice choice, out bool misplayed))
             {
                 break;
             }
@@ -279,6 +346,7 @@ public class RivalAIDirector : MonoBehaviour
         HashSet<DistrictZone> slipping,
         int points,
         int clericsLeft,
+        Tuning tuning,
         out Choice picked,
         out bool misplayed)
     {
@@ -297,7 +365,7 @@ public class RivalAIDirector : MonoBehaviour
             int weight = influence != null ? influence.ObjectiveWeight(agent.faction, zone.District) : 0;
             if (!lost && weight <= 0) continue;
 
-            float pressure = PressureOn(zone, agent.faction);
+            float pressure = PressureOn(zone, agent.faction, tuning.aggression);
             bool secured = zone.Influence.Status == ZoneControlStatus.Controlled
                 && zone.Influence.Controller == agent.faction
                 && !EnemyShare(zone, agent.faction);
@@ -338,7 +406,7 @@ public class RivalAIDirector : MonoBehaviour
         if (bestIndex < 0) return false;
 
         int index = bestIndex;
-        if (mistakeChance > 0f && cheap.Count > 0 && UnityEngine.Random.value < mistakeChance)
+        if (tuning.mistakes > 0f && cheap.Count > 0 && UnityEngine.Random.value < tuning.mistakes)
         {
             index = cheap[UnityEngine.Random.Range(0, cheap.Count)];
         }
@@ -458,7 +526,7 @@ public class RivalAIDirector : MonoBehaviour
         return graph;
     }
 
-    private float PressureOn(DistrictZone zone, FactionId self)
+    private float PressureOn(DistrictZone zone, FactionId self, float aggression)
     {
         float againstPlayer = Pressure(zone, FactionId.Player);
         float againstRivals = 0f;
@@ -474,7 +542,7 @@ public class RivalAIDirector : MonoBehaviour
         float focused = againstPlayer;
         if (balanced < 0.05f) balanced = 0.3f;
         if (focused < 0.05f) focused = 0.12f;
-        return Mathf.Lerp(balanced, focused, aggressiveness);
+        return Mathf.Lerp(balanced, focused, aggression);
     }
 
     private static float Pressure(DistrictZone zone, FactionId faction)

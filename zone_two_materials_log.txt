@@ -1,0 +1,44 @@
+ZONE_RED_1 pisoTris=34049 casaTris=375 src=casa roja.001:34049, 5.001:375 mats=Piso Roja | Casa Roja
+ZONE_RED_2 pisoTris=91372 casaTris=1081 src=casa roja.001:91372, 5.001:1081 mats=Piso Roja | Casa Roja
+ZONE_RED_3 pisoTris=40083 casaTris=570 src=casa roja.001:40083, 5.001:570 mats=Piso Roja | Casa Roja
+ZONE_RED_4 pisoTris=40083 casaTris=485 src=casa roja.001:40083, 5.001:485 mats=Piso Roja | Casa Roja
+ZONE_RED_5 pisoTris=53444 casaTris=416 src=casa roja.001:53444, 5.001:416 mats=Piso Roja | Casa Roja
+ZONE_RED_6 pisoTris=53013 casaTris=414 src=casa roja.001:53013, 5.001:414 mats=Piso Roja | Casa Roja
+ZONE_RED_7 pisoTris=90941 casaTris=990 src=casa roja.001:90941, 5.001:990 mats=Piso Roja | Casa Roja
+ZONE_GREEN_1 pisoTris=39652 casaTris=538 src=CASA verde.001:39652, 3.001:538 mats=Piso Verde | Casa Verde
+ZONE_GREEN_2 pisoTris=46117 casaTris=539 src=CASA verde.001:46117, 3.001:539 mats=Piso Verde | Casa Verde
+ZONE_GREEN_3 pisoTris=32325 casaTris=410 src=CASA verde.001:32325, 3.001:410 mats=Piso Verde | Casa Verde
+ZONE_GREEN_4 pisoTris=45255 casaTris=558 src=CASA verde.001:45255, 3.001:558 mats=Piso Verde | Casa Verde
+ZONE_GREEN_5 pisoTris=39221 casaTris=560 src=CASA verde.001:39221, 3.001:560 mats=Piso Verde | Casa Verde
+ZONE_GREEN_6 pisoTris=31481 casaTris=308 src=CASA verde.001:31481, 3.001:308 mats=Piso Verde | Casa Verde
+ZONE_GREEN_7 pisoTris=38790 casaTris=312 src=CASA verde.001:38790, 3.001:312 mats=Piso Verde | Casa Verde
+ZONE_GREEN_8 pisoTris=52582 casaTris=441 src=CASA verde.001:52582, 3.001:441 mats=Piso Verde | Casa Verde
+ZONE_GREEN_9 pisoTris=37928 casaTris=366 src=CASA verde.001:37928, 3.001:366 mats=Piso Verde | Casa Verde
+ZONE_GREEN_10 pisoTris=34911 casaTris=289 src=CASA verde.001:34911, 3.001:289 mats=Piso Verde | Casa Verde
+ZONE_PINK_1 pisoTris=68098 casaTris=599 src=casa rosa.001:68098, 2.001:599 mats=Piso Rosa | Casa Rosa
+ZONE_PINK_2 pisoTris=30601 casaTris=230 src=casa rosa.001:30601, 2.001:230 mats=Piso Rosa | Casa Rosa
+ZONE_PINK_3 pisoTris=52151 casaTris=416 src=casa rosa.001:52151, 2.001:416 mats=Piso Rosa | Casa Rosa
+ZONE_PINK_4 pisoTris=68098 casaTris=1080 src=casa rosa.001:68098, 2.001:1080 mats=Piso Rosa | Casa Rosa
+ZONE_PINK_5 pisoTris=60340 casaTris=798 src=casa rosa.001:60340, 2.001:798 mats=Piso Rosa | Casa Rosa
+ZONE_PINK_6 pisoTris=25429 casaTris=296 src=casa rosa.001:25429, 2.001:296 mats=Piso Rosa | Casa Rosa
+ZONE_YELLOW_1 pisoTris=64650 casaTris=995 src=AMARILLO.001:64650, 4.001:995 mats=Piso Amarilla | Casa Amarilla
+ZONE_YELLOW_2 pisoTris=65099 casaTris=827 src=AMARILLO.001:65099, 4.001:827 mats=Piso Amarilla | Casa Amarilla
+ZONE_YELLOW_3 pisoTris=14065 casaTris=221 src=AMARILLO.001:14065, 4.001:221 mats=Piso Amarilla | Casa Amarilla
+ZONE_YELLOW_4 pisoTris=25878 casaTris=238 src=AMARILLO.001:25878, 4.001:238 mats=Piso Amarilla | Casa Amarilla
+ZONE_YELLOW_5 pisoTris=41807 casaTris=378 src=AMARILLO.001:41807, 4.001:378 mats=Piso Amarilla | Casa Amarilla
+ZONE_YELLOW_6 pisoTris=25429 casaTris=247 src=AMARILLO.001:25429, 4.001:247 mats=Piso Amarilla | Casa Amarilla
+ZONE_YELLOW_7 pisoTris=50876 casaTris=388 src=AMARILLO.001:50876, 4.001:388 mats=Piso Amarilla | Casa Amarilla
+ZONE_WHITE_1 pisoTris=30170 casaTris=311 src=casa blanca.001:30170, 1.001:311 mats=Piso Blanca | Casa Blanca
+ZONE_WHITE_2 pisoTris=30170 casaTris=283 src=casa blanca.001:30170, 1.001:283 mats=Piso Blanca | Casa Blanca
+ZONE_WHITE_3 pisoTris=38790 casaTris=436 src=casa blanca.001:38790, 1.001:436 mats=Piso Blanca | Casa Blanca
+ZONE_WHITE_4 pisoTris=38790 casaTris=391 src=casa blanca.001:38790, 1.001:391 mats=Piso Blanca | Casa Blanca
+ZONE_WHITE_5 pisoTris=38790 casaTris=418 src=casa blanca.001:38790, 1.001:418 mats=Piso Blanca | Casa Blanca
+ZONE_WHITE_6 pisoTris=38790 casaTris=436 src=casa blanca.001:38790, 1.001:436 mats=Piso Blanca | Casa Blanca
+ZONE_WHITE_7 pisoTris=43100 casaTris=435 src=casa blanca.001:43100, 1.001:435 mats=Piso Blanca | Casa Blanca
+ZONE_WHITE_8 pisoTris=42238 casaTris=542 src=casa blanca.001:42238, 1.001:542 mats=Piso Blanca | Casa Blanca
+ZONE_WHITE_9 pisoTris=43100 casaTris=459 src=casa blanca.001:43100, 1.001:459 mats=Piso Blanca | Casa Blanca
+ZONE_WHITE_10 pisoTris=43100 casaTris=479 src=casa blanca.001:43100, 1.001:479 mats=Piso Blanca | Casa Blanca
+ZONE_VIOLET_1 pisoTris=16827 casaTris=306 src=casa violeta.001:16827, Material:306 mats=Piso Violeta | Casa Violeta
+ZONE_VIOLET_2 pisoTris=10344 casaTris=273 src=casa violeta.001:10344, Material:273 mats=Piso Violeta | Casa Violeta
+ZONE_VIOLET_3 pisoTris=12411 casaTris=366 src=casa violeta.001:12411, Material:366 mats=Piso Violeta | Casa Violeta
+ZONE_TWO_MATERIALS_OK zones=43

@@ -11,6 +11,20 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private Graphic eclipseGlow;
     [SerializeField] private CanvasGroup[] buttons;
 
+    private Vector2[] buttonHome;
+    private DifficultySelectMenu difficulty;
+    private bool leaving;
+
+    private void Awake()
+    {
+        buttonHome = new Vector2[buttons.Length];
+        for (int i = 0; i < buttons.Length; i++)
+            buttonHome[i] = ((RectTransform)buttons[i].transform).anchoredPosition;
+
+        difficulty = gameObject.AddComponent<DifficultySelectMenu>();
+        difficulty.Initialize(this, buttons[0].gameObject, curtain.transform);
+    }
+
     private void Start()
     {
         curtain.alpha = 1f;
@@ -39,8 +53,51 @@ public class MainMenu : MonoBehaviour
 
     public void NewGame()
     {
+        if (leaving) return;
+        difficulty.OpenFromTitle();
+    }
+
+    public void BeginGame()
+    {
+        if (leaving) return;
+        leaving = true;
+        difficulty.Dismiss();
         if (AudioManager.Instance != null) AudioManager.Instance.StopBackgroundMusic(1000);
         FadeOut(1f, () => SceneManager.LoadScene(gameScene));
+    }
+
+    public void HideTitleButtons()
+    {
+        for (int i = 0; i < buttons.Length; i++)
+        {
+            CanvasGroup group = buttons[i];
+            group.DOKill();
+            group.transform.DOKill();
+            RectTransform rect = (RectTransform)group.transform;
+            rect.DOKill();
+            rect.anchoredPosition = buttonHome[i];
+            group.blocksRaycasts = false;
+            group.interactable = false;
+            group.DOFade(0f, 0.3f).SetLink(group.gameObject);
+        }
+    }
+
+    public void ShowTitleButtons()
+    {
+        for (int i = 0; i < buttons.Length; i++)
+        {
+            CanvasGroup group = buttons[i];
+            group.DOKill();
+            RectTransform rect = (RectTransform)group.transform;
+            rect.DOKill();
+            rect.anchoredPosition = buttonHome[i];
+            group.interactable = true;
+            group.alpha = 0f;
+            group.DOFade(1f, 0.35f).SetLink(group.gameObject).OnComplete(() =>
+            {
+                if (group.interactable) group.blocksRaycasts = true;
+            });
+        }
     }
 
     public void Quit() => FadeOut(0.6f, Application.Quit);
