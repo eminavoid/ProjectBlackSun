@@ -200,6 +200,7 @@ public class RivalAIDirector : MonoBehaviour
 
         ZoneTravelGraph travel = Travel();
         Dictionary<DistrictZone, int> costs = new Dictionary<DistrictZone, int>();
+        // Cost comes only from the saved touch paths: 1 hop = 1, 2 = 4, 3 = 9, plus the unclaimed border.
         travel.FillActionCosts(agent.faction, costs);
 
         AIInfluenceController influence = FindAnyObjectByType<AIInfluenceController>();

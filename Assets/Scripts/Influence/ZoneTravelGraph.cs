@@ -115,15 +115,23 @@ public class ZoneTravelGraph : MonoBehaviour
     {
         if (cacheReady && builtVersion == linkVersion) return;
 
-        if (TryBuildCacheFromNodes())
+        ZoneTravelCatalog catalog = Resources.Load<ZoneTravelCatalog>("ZoneTravelCatalog");
+        if (catalog != null && catalog.Links != null && catalog.Links.Count > 0)
         {
+            if (!HasPlayableZones())
+            {
+                cacheReady = false;
+                return;
+            }
+
+            BuildCacheFromCatalog(catalog);
             usingFallback = false;
             builtVersion = linkVersion;
             cacheReady = true;
             return;
         }
 
-        if (TryBuildCacheFromCatalog())
+        if (TryBuildCacheFromNodes())
         {
             usingFallback = false;
             builtVersion = linkVersion;
@@ -140,6 +148,12 @@ public class ZoneTravelGraph : MonoBehaviour
             return;
         }
 
+        if (!HasPlayableZones())
+        {
+            cacheReady = false;
+            return;
+        }
+
         BuildFallback();
         usingFallback = true;
         builtVersion = linkVersion;
@@ -147,9 +161,9 @@ public class ZoneTravelGraph : MonoBehaviour
     }
 
     /// <summary>
-    /// Action points to affect each reachable zone from territory this faction already has.
-    /// Owned zones cost 1. A path of N contact hops costs N², plus the border surcharge
-    /// when that path enters the target district without an owned neighbor there.
+    /// Action points from every zone this faction controls, not only its starting zone.
+    /// A controlled zone costs 1. A path of N painted hops costs N², plus the border surcharge
+    /// when that path enters the target district without a controlled neighbor there.
     /// </summary>
     public void FillActionCosts(FactionId faction, Dictionary<DistrictZone, int> costs)
     {
@@ -162,14 +176,14 @@ public class ZoneTravelGraph : MonoBehaviour
             IReadOnlyList<DistrictZone> zones = InfluenceManager.Get.GetPlayableZones();
             for (int i = 0; i < zones.Count; i++)
             {
-                if (HasPresence(zones[i], faction)) sources.Add(zones[i]);
+                if (HasControl(zones[i], faction)) sources.Add(zones[i]);
             }
         }
         else
         {
             foreach (KeyValuePair<DistrictZone, List<ZoneTravelEdge>> pair in neighbors)
             {
-                if (pair.Key != null && HasPresence(pair.Key, faction)) sources.Add(pair.Key);
+                if (pair.Key != null && HasControl(pair.Key, faction)) sources.Add(pair.Key);
             }
         }
 
@@ -297,11 +311,20 @@ public class ZoneTravelGraph : MonoBehaviour
         return any;
     }
 
-    private bool TryBuildCacheFromCatalog()
+    private bool HasPlayableZones()
     {
-        ZoneTravelCatalog catalog = Resources.Load<ZoneTravelCatalog>("ZoneTravelCatalog");
-        if (catalog == null || catalog.Links == null || catalog.Links.Count == 0) return false;
+        DistrictZone[] zones = FindObjectsByType<DistrictZone>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+        for (int i = 0; i < zones.Length; i++)
+        {
+            if (zones[i] != null && zones[i].IsPlayable) return true;
+        }
 
+        return false;
+    }
+
+    private void BuildCacheFromCatalog(ZoneTravelCatalog catalog)
+    {
+        neighbors.Clear();
         DistrictZone[] zones = FindObjectsByType<DistrictZone>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
         Dictionary<string, DistrictZone> byName = new Dictionary<string, DistrictZone>();
         for (int i = 0; i < zones.Length; i++)
@@ -321,18 +344,25 @@ public class ZoneTravelGraph : MonoBehaviour
             if (!byName.TryGetValue(record.toZone, out DistrictZone to)) continue;
             if (from == to) continue;
 
+            ZoneTravelEdge edge = new ZoneTravelEdge
+            {
+                a = from,
+                b = to,
+                gap = record.gap,
+                kind = record.kind,
+                contactA = from.GetWorldBounds().center,
+                contactB = to.GetWorldBounds().center
+            };
+            AddNeighbor(from, edge);
+            AddNeighbor(to, edge);
             AddCatalogLink(buckets, from, to, record.gap, record.kind);
             AddCatalogLink(buckets, to, from, record.gap, record.kind);
         }
-
-        if (buckets.Count == 0) return false;
 
         foreach (KeyValuePair<DistrictZone, List<ZoneTravelLink>> pair in buckets)
         {
             pair.Key.SetTravelLinks(pair.Value);
         }
-
-        return TryBuildCacheFromNodes();
     }
 
     private static void AddCatalogLink(
@@ -464,17 +494,17 @@ public class ZoneTravelGraph : MonoBehaviour
         {
             DistrictZone other = links[i] != null ? links[i].Other(target) : null;
             if (other == null || other.District != target.District) continue;
-            if (HasPresence(other, faction)) return true;
+            if (HasControl(other, faction)) return true;
         }
 
         return false;
     }
 
-    private static bool HasPresence(DistrictZone zone, FactionId faction)
+    private static bool HasControl(DistrictZone zone, FactionId faction)
     {
         ZoneInfluenceState state = zone != null ? zone.Influence : null;
         if (state == null) return false;
-        return state.GetShare(faction) > 0 || state.GetClerics(faction) > 0;
+        return state.Status == ZoneControlStatus.Controlled && state.Controller == faction;
     }
 
     public static Color ColorFor(Districts district)
