@@ -17,8 +17,8 @@ public class TopScreenNotification : MonoBehaviour
 
     [SerializeField] private float durationSeconds = DefaultDurationSeconds;
 
-    private static readonly Vector2 RestSize = new Vector2(860f, 72f);
-    private static readonly Vector2 HeldSize = new Vector2(980f, 118f);
+    private static readonly Vector2 RestSize = new Vector2(760f, 96f);
+    private static readonly Vector2 HeldSize = new Vector2(840f, 136f);
 
     private RectTransform root;
     private RectTransform textRect;
@@ -28,6 +28,7 @@ public class TopScreenNotification : MonoBehaviour
     private Button continueButton;
     private Coroutine hideRoutine;
     private bool holding;
+    private float bottomLift;
     private string heldMessage = string.Empty;
     private bool heldShowsContinue;
     private Action heldContinue;
@@ -54,6 +55,15 @@ public class TopScreenNotification : MonoBehaviour
         }
 
         notifier.HoldInternal(message, showContinue, onContinue);
+    }
+
+    public static void Lift(float extra)
+    {
+        TopScreenNotification notifier = ResolveInstance();
+        if (notifier == null) return;
+        notifier.bottomLift = Mathf.Max(0f, extra);
+        if (notifier.root != null)
+            notifier.root.anchoredPosition = new Vector2(-210f, 360f);
     }
 
     public static void Release()
@@ -109,21 +119,21 @@ public class TopScreenNotification : MonoBehaviour
         root = GetComponent<RectTransform>();
         if (root == null) root = gameObject.AddComponent<RectTransform>();
 
-        root.anchorMin = new Vector2(0.5f, 1f);
-        root.anchorMax = new Vector2(0.5f, 1f);
-        root.pivot = new Vector2(0.5f, 1f);
-        root.anchoredPosition = new Vector2(0f, -100f);
+        root.anchorMin = new Vector2(1f, 0.5f);
+        root.anchorMax = new Vector2(1f, 0.5f);
+        root.pivot = new Vector2(1f, 0.5f);
+        root.anchoredPosition = new Vector2(-210f, 360f);
         root.sizeDelta = RestSize;
 
         background = GetComponent<Image>();
         if (background == null) background = gameObject.AddComponent<Image>();
-        background.color = new Color(0.09f, 0.06f, 0.04f, 0.94f);
+        background.sprite = Art("Papel_Con_Borde");
+        background.type = Image.Type.Simple;
+        background.color = new Color(1f, 1f, 1f, 0.72f);
         background.raycastTarget = false;
 
         Outline outline = gameObject.GetComponent<Outline>();
-        if (outline == null) outline = gameObject.AddComponent<Outline>();
-        outline.effectColor = new Color(0.88f, 0.71f, 0.38f, 0.55f);
-        outline.effectDistance = new Vector2(2f, -2f);
+        if (outline != null) outline.enabled = false;
 
         group = GetComponent<CanvasGroup>();
         if (group == null) group = gameObject.AddComponent<CanvasGroup>();
@@ -136,13 +146,22 @@ public class TopScreenNotification : MonoBehaviour
         textRect = textObject.GetComponent<RectTransform>();
         textRect.anchorMin = Vector2.zero;
         textRect.anchorMax = Vector2.one;
-        textRect.offsetMin = new Vector2(24f, 10f);
-        textRect.offsetMax = new Vector2(-24f, -10f);
+        textRect.offsetMin = new Vector2(36f, 16f);
+        textRect.offsetMax = new Vector2(-36f, -16f);
 
         label = textObject.AddComponent<TextMeshProUGUI>();
+        TextMeshProUGUI sample = GetComponentInParent<Canvas>() != null
+            ? GetComponentInParent<Canvas>().GetComponentInChildren<TextMeshProUGUI>(true)
+            : null;
+        if (sample != null)
+        {
+            label.font = sample.font;
+            label.fontSharedMaterial = sample.fontSharedMaterial;
+        }
+
         label.alignment = TextAlignmentOptions.Center;
-        label.fontSize = 28f;
-        label.color = new Color(0.94f, 0.86f, 0.66f);
+        label.fontSize = 24f;
+        label.color = new Color(0.27f, 0.16f, 0.11f, 1f);
         label.textWrappingMode = TextWrappingModes.Normal;
         label.raycastTarget = false;
         label.text = string.Empty;
@@ -153,10 +172,12 @@ public class TopScreenNotification : MonoBehaviour
         buttonRect.anchorMin = new Vector2(1f, 0.5f);
         buttonRect.anchorMax = new Vector2(1f, 0.5f);
         buttonRect.pivot = new Vector2(1f, 0.5f);
-        buttonRect.anchoredPosition = new Vector2(-14f, 0f);
-        buttonRect.sizeDelta = new Vector2(52f, 52f);
+        buttonRect.anchoredPosition = new Vector2(-22f, 0f);
+        buttonRect.sizeDelta = new Vector2(148f, 46f);
         Image buttonImage = buttonObject.GetComponent<Image>();
-        buttonImage.color = new Color(0.88f, 0.71f, 0.38f, 0.18f);
+        buttonImage.sprite = Art("Ladrillo_Gris_Largo_1");
+        buttonImage.type = Image.Type.Simple;
+        buttonImage.color = new Color(1f, 1f, 1f, 0.92f);
         continueButton = buttonObject.GetComponent<Button>();
         continueButton.targetGraphic = buttonImage;
         continueButton.onClick.AddListener(OnContinue);
@@ -171,8 +192,8 @@ public class TopScreenNotification : MonoBehaviour
         TextMeshProUGUI mark = markObject.AddComponent<TextMeshProUGUI>();
         mark.font = label.font;
         mark.fontSharedMaterial = label.fontSharedMaterial;
-        mark.text = "›";
-        mark.fontSize = 36f;
+        mark.text = "NEXT";
+        mark.fontSize = 18f;
         mark.alignment = TextAlignmentOptions.Center;
         mark.color = label.color;
         mark.raycastTarget = false;
@@ -198,6 +219,7 @@ public class TopScreenNotification : MonoBehaviour
     private void ReleaseInternal()
     {
         holding = false;
+        bottomLift = 0f;
         heldContinue = null;
         heldShowsContinue = false;
         if (hideRoutine != null)
@@ -218,8 +240,8 @@ public class TopScreenNotification : MonoBehaviour
     {
         if (label == null) BuildUi();
         label.text = heldMessage;
-        root.sizeDelta = HeldSize;
-        if (textRect != null) textRect.offsetMax = new Vector2(heldShowsContinue ? -72f : -24f, -10f);
+        Place(true);
+        FitToText(heldShowsContinue);
         SetContinueVisible(heldShowsContinue);
         group.blocksRaycasts = heldShowsContinue;
         group.interactable = heldShowsContinue;
@@ -245,8 +267,8 @@ public class TopScreenNotification : MonoBehaviour
         if (label == null) BuildUi();
 
         label.text = message ?? string.Empty;
-        if (root != null) root.sizeDelta = RestSize;
-        if (textRect != null) textRect.offsetMax = new Vector2(-24f, -10f);
+        Place(false);
+        FitToText(false);
         SetContinueVisible(false);
         group.blocksRaycasts = false;
         group.interactable = false;
@@ -254,9 +276,6 @@ public class TopScreenNotification : MonoBehaviour
         SetVisible(true);
         group.DOKill();
         group.DOFade(1f, 0.25f).SetUpdate(true).SetLink(gameObject);
-        root.DOKill();
-        root.anchoredPosition = new Vector2(0f, -84f);
-        root.DOAnchorPosY(-100f, 0.35f).SetEase(Ease.OutCubic).SetUpdate(true).SetLink(gameObject);
 
         if (hideRoutine != null) StopCoroutine(hideRoutine);
         hideRoutine = StartCoroutine(HideAfterSeconds(duration));
@@ -274,6 +293,51 @@ public class TopScreenNotification : MonoBehaviour
 
         group.DOKill();
         group.DOFade(0f, 0.35f).SetUpdate(true).SetLink(gameObject).OnComplete(() => SetVisible(false));
+    }
+
+    private void Place(bool held)
+    {
+        if (root == null) return;
+        root.anchorMin = new Vector2(1f, 0.5f);
+        root.anchorMax = new Vector2(1f, 0.5f);
+        root.pivot = new Vector2(1f, 0.5f);
+        root.anchoredPosition = new Vector2(-210f, 360f);
+        root.sizeDelta = held ? HeldSize : RestSize;
+    }
+
+    private void FitToText(bool showContinue)
+    {
+        if (root == null || label == null) return;
+
+        const float padX = 64f;
+        const float padY = 46f;
+        const float buttonSpace = 176f;
+        const float maxWidth = 560f;
+        const float minWidth = 420f;
+
+        float side = showContinue ? buttonSpace : 0f;
+        float textWidth = maxWidth - padX * 2f - side;
+        Vector2 preferred = label.GetPreferredValues(label.text, textWidth, 0f);
+        float width = Mathf.Clamp(preferred.x + padX * 2f + side, minWidth, maxWidth);
+        textWidth = width - padX * 2f - side;
+        preferred = label.GetPreferredValues(label.text, textWidth, 0f);
+        float height = Mathf.Clamp(preferred.y + padY * 2f, 112f, 320f);
+
+        root.sizeDelta = new Vector2(width, height);
+        if (textRect == null) return;
+        textRect.offsetMin = new Vector2(padX, padY);
+        textRect.offsetMax = new Vector2(-(padX + side), -padY);
+    }
+
+    private static Sprite Art(string spriteName)
+    {
+        Sprite[] sprites = Resources.FindObjectsOfTypeAll<Sprite>();
+        for (int i = 0; i < sprites.Length; i++)
+        {
+            if (sprites[i] != null && sprites[i].name == spriteName) return sprites[i];
+        }
+
+        return null;
     }
 
     private void SetVisible(bool visible)

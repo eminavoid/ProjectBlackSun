@@ -13,6 +13,8 @@ public class TutorialHighlight : MonoBehaviour
 
     private RectTransform frame;
     private CanvasGroup frameGroup;
+    private Material markMaterial;
+    private Sprite markSprite;
     private RectTransform skipRoot;
     private RectTransform uiTarget;
     private DistrictZone zoneTarget;
@@ -85,13 +87,29 @@ public class TutorialHighlight : MonoBehaviour
         frameGroup.blocksRaycasts = false;
         frameGroup.interactable = false;
         frameGroup.alpha = 1f;
-        frameGroup.DOFade(0.35f, 0.7f).SetLoops(-1, LoopType.Yoyo).SetUpdate(true).SetLink(frameObject);
 
-        Color ink = new Color(0.95f, 0.78f, 0.42f, 1f);
-        AddEdge("Top", new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(0.5f, 1f), new Vector2(0f, 4f), ink);
-        AddEdge("Bottom", new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(0.5f, 0f), new Vector2(0f, 4f), ink);
-        AddEdge("Left", new Vector2(0f, 0f), new Vector2(0f, 1f), new Vector2(0f, 0.5f), new Vector2(4f, 0f), ink);
-        AddEdge("Right", new Vector2(1f, 0f), new Vector2(1f, 1f), new Vector2(1f, 0.5f), new Vector2(4f, 0f), ink);
+        Shader shader = Shader.Find("Custom/TutorialMark");
+        if (shader != null)
+        {
+            markMaterial = new Material(shader) { name = "TutorialMark" };
+            Image plate = frameObject.AddComponent<Image>();
+            Texture2D white = Texture2D.whiteTexture;
+            markSprite = Sprite.Create(white, new Rect(0f, 0f, white.width, white.height), new Vector2(0.5f, 0.5f), 100f);
+            plate.sprite = markSprite;
+            plate.material = markMaterial;
+            plate.color = new Color(1f, 0.84f, 0.38f, 1f);
+            plate.raycastTarget = false;
+        }
+        else
+        {
+            Color ink = new Color(1f, 0.86f, 0.42f, 1f);
+            AddEdge("Top", new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(0.5f, 1f), new Vector2(0f, 8f), ink);
+            AddEdge("Bottom", new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(0.5f, 0f), new Vector2(0f, 8f), ink);
+            AddEdge("Left", new Vector2(0f, 0f), new Vector2(0f, 1f), new Vector2(0f, 0.5f), new Vector2(8f, 0f), ink);
+            AddEdge("Right", new Vector2(1f, 0f), new Vector2(1f, 1f), new Vector2(1f, 0.5f), new Vector2(8f, 0f), ink);
+            frameGroup.DOFade(0.72f, 0.55f).SetLoops(-1, LoopType.Yoyo).SetUpdate(true).SetLink(frameObject);
+        }
+
         frameObject.SetActive(false);
 
         GameObject skip = new GameObject("Skip", typeof(RectTransform), typeof(Image), typeof(Button));
@@ -148,6 +166,8 @@ public class TutorialHighlight : MonoBehaviour
     private void OnDestroy()
     {
         if (frameGroup != null) frameGroup.DOKill();
+        if (markMaterial != null) Destroy(markMaterial);
+        if (markSprite != null) Destroy(markSprite);
     }
 
     private void LateUpdate()
@@ -178,7 +198,8 @@ public class TutorialHighlight : MonoBehaviour
         Vector3 size = corners[2] - corners[0];
         float sx = Mathf.Abs(frame.lossyScale.x) < 0.001f ? 1f : Mathf.Abs(frame.lossyScale.x);
         float sy = Mathf.Abs(frame.lossyScale.y) < 0.001f ? 1f : Mathf.Abs(frame.lossyScale.y);
-        frame.sizeDelta = new Vector2(Mathf.Abs(size.x) / sx + 18f, Mathf.Abs(size.y) / sy + 18f);
+        frame.sizeDelta = new Vector2(Mathf.Abs(size.x) / sx + 36f, Mathf.Abs(size.y) / sy + 36f);
+        PushSize();
     }
 
     private void PlaceOnZone(DistrictZone zone)
@@ -228,7 +249,14 @@ public class TutorialHighlight : MonoBehaviour
         RectTransformUtility.ScreenPointToLocalPointInRectangle(parent, new Vector2(maxX, maxY), uiCamera, out Vector2 localMax);
         frame.gameObject.SetActive(true);
         frame.anchoredPosition = (localMin + localMax) * 0.5f - parent.rect.center;
-        frame.sizeDelta = new Vector2(Mathf.Abs(localMax.x - localMin.x) + 18f, Mathf.Abs(localMax.y - localMin.y) + 18f);
+        frame.sizeDelta = new Vector2(Mathf.Abs(localMax.x - localMin.x) + 36f, Mathf.Abs(localMax.y - localMin.y) + 36f);
+        PushSize();
+    }
+
+    private void PushSize()
+    {
+        if (markMaterial == null || frame == null) return;
+        markMaterial.SetVector("_Size", new Vector4(frame.sizeDelta.x, frame.sizeDelta.y, 0f, 0f));
     }
 
     private static Bounds BoundsOf(DistrictZone zone)

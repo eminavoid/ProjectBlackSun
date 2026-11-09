@@ -122,8 +122,7 @@ public class TutorialDirector : MonoBehaviour
 
     private IEnumerator CultStep()
     {
-        if (cult != null) highlight.Track(cult.Card);
-        Hold("Name your cult, then choose the attribute it starts with.", false);
+        if (highlight != null) highlight.Clear();
         while ((cult == null || !cult.Confirmed) && !TutorialSession.CultChosen && !Stopped) yield return null;
     }
 
@@ -236,6 +235,7 @@ public class TutorialDirector : MonoBehaviour
     private IEnumerator ClericStep()
     {
         assigned = false;
+        TopScreenNotification.Lift(176f);
         DistrictZone zone = HomeZone();
         if (zone != null)
         {
@@ -247,12 +247,14 @@ public class TutorialDirector : MonoBehaviour
         if (panel == null || panel.AssignButton == null)
         {
             yield return WaitContinue("Clerics are your people on a street. Select a zone and assign one. The panel shows how many stand here and how many wait in reserve.");
+            TopScreenNotification.Lift(0f);
             yield break;
         }
 
         highlight.Track(panel.AssignButton);
         Hold("Clerics are your people on a street. Assign one. The panel shows how many stand here and how many wait in reserve.", false);
         while (!assigned && !Stopped) yield return null;
+        TopScreenNotification.Lift(0f);
     }
 
     private IEnumerator JournalStep()
