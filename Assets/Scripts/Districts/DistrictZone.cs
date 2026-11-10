@@ -337,11 +337,24 @@ public class DistrictZone : MonoBehaviour
             };
             CopyMaterialAppearance(source, instance);
             if (showPlanted) ApplySeedLook(instance);
+            else ApplySelectionFrame(instance);
             runtimeVisualMaterials[i] = instance;
         }
 
         targetRenderer.sharedMaterials = runtimeVisualMaterials;
         if (showPlanted) EnsureBeacon();
+    }
+
+    private void ApplySelectionFrame(Material destination)
+    {
+        if (destination == null) return;
+
+        Bounds bounds = GetWorldBounds();
+        if (destination.HasProperty("_ZoneCenter")) destination.SetVector("_ZoneCenter", bounds.center);
+        if (destination.HasProperty("_ZoneExtents"))
+        {
+            destination.SetVector("_ZoneExtents", new Vector4(bounds.extents.x, bounds.extents.z, 0f, 0f));
+        }
     }
 
     private void ApplySeedLook(Material destination)

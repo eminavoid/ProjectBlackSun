@@ -9,8 +9,8 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public class IntentArrowView : MonoBehaviour
 {
-    private const int ArcSamples = 22;
-    private const int RingSegments = 28;
+    private const int ArcSamples = 72;
+    private const int RingSegments = 96;
 
     private static readonly List<Vector3> Vertices = new List<Vector3>();
     private static readonly List<Vector2> Uvs = new List<Vector2>();
@@ -171,36 +171,62 @@ public class IntentArrowView : MonoBehaviour
             Triangles.Add(b + 2);
         }
 
-        AppendHead(
+        AppendFinnedHead(
             Bezier(p0, p1, p2, shaftEnd),
-            BezierTangent(p0, p1, p2, shaftEnd),
             p2,
-            previousBinormal,
+            Vector3.up,
             color,
-            style);
+            style.Width * style.HeadWidthScale * 0.5f);
     }
 
-    private static void AppendHead(
-        Vector3 baseCenter,
-        Vector3 tangent,
-        Vector3 tip,
-        Vector3 binormal,
-        Color color,
-        ArrowStyle style)
+    /// <summary>
+    /// Four swept blades around the tip. Each blade is a wedge, not a flat triangle,
+    /// so the head keeps a silhouette when the camera looks along a fin.
+    /// </summary>
+    private static void AppendFinnedHead(Vector3 baseCenter, Vector3 tip, Vector3 upHint, Color color, float halfWidth)
     {
-        Vector3 axis = Vector3.Cross(tangent, Vector3.up);
-        if (axis.sqrMagnitude > 1e-5f) binormal = axis.normalized;
+        Vector3 axis = tip - baseCenter;
+        if (axis.sqrMagnitude < 1e-8f || halfWidth <= 0f) return;
 
-        float halfWidth = style.Width * style.HeadWidthScale * 0.5f;
+        Vector3 forward = axis.normalized;
+        Vector3 up = upHint - forward * Vector3.Dot(upHint, forward);
+        if (up.sqrMagnitude < 1e-6f) up = Vector3.Cross(forward, Vector3.right);
+        if (up.sqrMagnitude < 1e-6f) up = Vector3.Cross(forward, Vector3.forward);
+        up.Normalize();
+        Vector3 right = Vector3.Cross(forward, up).normalized;
 
-        int index = Vertices.Count;
-        AddVertex(baseCenter - binormal * halfWidth, new Vector2(0.82f, 0f), color);
-        AddVertex(baseCenter + binormal * halfWidth, new Vector2(0.82f, 1f), color);
-        AddVertex(tip, new Vector2(1f, 0.5f), color);
+        float thick = halfWidth * 0.36f;
+        Color point = ScaleColor(color, 1.75f);
+        Color ridge = ScaleColor(color, 1.35f);
+        Color flank = ScaleColor(color, 0.55f);
 
-        Triangles.Add(index);
-        Triangles.Add(index + 1);
-        Triangles.Add(index + 2);
+        for (int i = 0; i < 4; i++)
+        {
+            float angle = i * Mathf.PI * 0.5f;
+            Vector3 radial = right * Mathf.Cos(angle) + up * Mathf.Sin(angle);
+            Vector3 side = Vector3.Cross(forward, radial);
+
+            int v = Vertices.Count;
+            AddVertex(tip, new Vector2(1f, 0.5f), point);
+            AddVertex(baseCenter + side * thick, new Vector2(0.72f, 0.05f), flank);
+            AddVertex(baseCenter + radial * halfWidth, new Vector2(0.72f, 0.5f), ridge);
+            AddVertex(baseCenter - side * thick, new Vector2(0.72f, 0.95f), flank);
+
+            Triangles.Add(v);
+            Triangles.Add(v + 1);
+            Triangles.Add(v + 2);
+            Triangles.Add(v);
+            Triangles.Add(v + 2);
+            Triangles.Add(v + 3);
+            Triangles.Add(v + 1);
+            Triangles.Add(v + 3);
+            Triangles.Add(v + 2);
+        }
+    }
+
+    private static Color ScaleColor(Color color, float gain)
+    {
+        return new Color(color.r * gain, color.g * gain, color.b * gain, color.a);
     }
 
     /// <summary>Dos cintas verticales cruzadas: legible desde cualquier ángulo de cámara.</summary>
@@ -208,6 +234,10 @@ public class IntentArrowView : MonoBehaviour
     {
         AppendStraightRibbon(from, to, Vector3.right, color, style);
         AppendStraightRibbon(from, to, Vector3.forward, color, style);
+
+        float shaftEnd = Mathf.Clamp01(1f - style.HeadRatio);
+        Vector3 shaftTarget = Vector3.Lerp(from, to, shaftEnd);
+        AppendFinnedHead(shaftTarget, to, Vector3.right, color, style.Width * style.HeadWidthScale * 0.5f);
     }
 
     private static void AppendStraightRibbon(
@@ -233,16 +263,6 @@ public class IntentArrowView : MonoBehaviour
         Triangles.Add(index + 1);
         Triangles.Add(index + 3);
         Triangles.Add(index + 2);
-
-        float headHalfWidth = halfWidth * style.HeadWidthScale;
-        int headIndex = Vertices.Count;
-        AddVertex(shaftTarget - binormal * headHalfWidth, new Vector2(0.82f, 0f), color);
-        AddVertex(shaftTarget + binormal * headHalfWidth, new Vector2(0.82f, 1f), color);
-        AddVertex(to, new Vector2(1f, 0.5f), color);
-
-        Triangles.Add(headIndex);
-        Triangles.Add(headIndex + 1);
-        Triangles.Add(headIndex + 2);
     }
 
     private static void AppendRing(Vector3 center, float radius, float bandWidth, Color color)

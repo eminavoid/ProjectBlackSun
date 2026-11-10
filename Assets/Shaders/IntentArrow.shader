@@ -5,8 +5,8 @@ Shader "Custom/IntentArrow"
         [HDR] _Tint("Tint", Color) = (1, 1, 1, 1)
         _Alpha("Alpha", Range(0, 1)) = 1
         _Intensity("Intensity", Range(0, 4)) = 2.2
-        _ChevronScale("Chevron Scale", Range(1, 60)) = 9
-        _ChevronSharp("Chevron Sharpness", Range(1, 16)) = 6
+        _ChevronScale("Chevron Scale", Range(0.5, 12)) = 2.4
+        _ChevronSharp("Chevron Sharpness", Range(0.4, 6)) = 1.35
         _ChevronSkew("Chevron Skew", Range(0, 2)) = 0.85
         _ScrollSpeed("Scroll Speed", Range(0, 6)) = 1.7
         _EdgeFade("Edge Fade", Range(0, 1)) = 0.42
@@ -83,26 +83,41 @@ Shader "Custom/IntentArrow"
                 return output;
             }
 
-            half Arrowheads(float2 uv)
+            // Soft repeating cue. Fades out when a repeat is smaller than a few pixels,
+            // so zoom never turns it into a stack of aliased strokes.
+            half FlowMarks(float2 uv, half across)
             {
-                half across = abs(uv.y - 0.5h) * 2.0h;
-                float x = frac(uv.x * _ChevronScale - _Time.y * _ScrollSpeed);
-                float skew = saturate(_ChevronSkew * 0.5h);
-                float reach = lerp(0.48, 0.7, skew);
-                float halfWidth = lerp(0.98, 0.03, saturate(pow(saturate(x / reach), lerp(0.7, 1.45, skew))));
-                half glyph = saturate(((half)halfWidth - across) * max(_ChevronSharp, 1.0h));
-                half tip = saturate(1.0h - abs(x - reach * 0.92) * 8.0h) * step(across, 0.4h);
-                return saturate(glyph + tip * 0.7h);
+                float cell = uv.x * _ChevronScale - _Time.y * _ScrollSpeed;
+                float fwCell = max(fwidth(cell), 1e-4);
+                half lod = (half)(1.0 - smoothstep(0.22, 0.55, fwCell));
+
+                float local = frac(cell);
+                float skew = saturate(_ChevronSkew * 0.5);
+                float ramp = saturate(local / lerp(0.72, 0.5, skew));
+                float halfWidth = lerp(0.28, 0.92, pow(ramp, lerp(1.1, 0.75, skew)));
+                float sdf = halfWidth - (float)across;
+                float aa = max(fwidth(across) * max(_ChevronSharp, 0.4), 1e-3);
+                half glyph = (half)smoothstep(-aa, aa, sdf);
+                half seam = (half)(smoothstep(0.0, 0.16, local) * smoothstep(0.0, 0.2, 1.0 - local));
+                return glyph * seam * lod;
+            }
+
+            half Body(half across)
+            {
+                float aa = max(fwidth(across), 1e-3);
+                half edge = (half)(1.0 - smoothstep(1.0 - aa * 2.2, 1.0, (float)across));
+                half falloff = (half)(1.0 - smoothstep(_EdgeFade, 1.0, (float)across));
+                return edge * falloff;
             }
 
             half4 frag(Varyings input) : SV_Target
             {
                 half across = abs(input.uv.y - 0.5h) * 2.0h;
-                half body = 1.0h - smoothstep(_EdgeFade, 1.0h, across);
-                half tail = smoothstep(0.0h, _TailFade, input.uv.x);
-                half head = smoothstep(0.78h, 0.92h, input.uv.x);
-                half spine = pow(saturate(1.0h - across), 2.0h) * _CoreGlow;
-                half pulse = 0.82h + 0.18h * sin(_Time.y * _PulseSpeed);
+                half body = Body(across);
+                half tail = smoothstep(0.0h, max(_TailFade, 0.02h), input.uv.x);
+                half head = smoothstep(0.62h, 0.98h, input.uv.x);
+                half spine = pow(saturate(1.0h - across), 1.6h) * _CoreGlow;
+                half pulse = 0.84h + 0.16h * sin(_Time.y * _PulseSpeed);
 
                 half mask;
                 bool seedBeacon = input.uv2.x > 0.5;
@@ -110,25 +125,27 @@ Shader "Custom/IntentArrow"
 
                 if (seedBeacon && ring)
                 {
-                    float ticks = frac(input.uv.x * 14.0 - _Time.y * _ScrollSpeed);
-                    half marks = smoothstep(0.0h, 0.04h, (half)ticks) * smoothstep(0.22h, 0.06h, (half)ticks);
-                    half band = 1.0h - smoothstep(0.15h, 0.95h, across);
-                    half flash = 0.55h + 0.45h * sin(_Time.y * _PulseSpeed);
-                    mask = band * saturate(0.35h + marks) * flash;
+                    float travel = frac(input.uv.x - _Time.y * _ScrollSpeed * 0.18);
+                    float dist = min(travel, 1.0 - travel);
+                    float aa = max(fwidth(input.uv.x), 1e-4);
+                    half orbit = (half)(1.0 - smoothstep(0.06, 0.06 + aa * 8.0, dist));
+                    half flash = 0.7h + 0.3h * sin(_Time.y * _PulseSpeed);
+                    mask = body * (0.55h + orbit * 0.9h) * flash;
                 }
                 else if (seedBeacon)
                 {
-                    float dash = frac(input.uv.x * 6.0 - _Time.y * _ScrollSpeed * 1.35);
-                    half packets = pow(saturate(1.0h - abs((half)dash - 0.22h) * 4.5h), 1.6h);
-                    half column = pow(saturate(1.0h - across), 1.4h);
-                    half tip = smoothstep(0.8h, 1.0h, input.uv.x);
-                    mask = body * saturate(packets * 1.15h + column * 0.4h + tip) * pulse;
+                    float travel = frac(input.uv.x * 2.0 - _Time.y * _ScrollSpeed * 0.85);
+                    float dist = abs(travel - 0.5);
+                    half packet = pow(saturate(1.0h - (half)dist * 2.4h), 2.0h);
+                    half column = pow(saturate(1.0h - across), 1.35h);
+                    half tip = smoothstep(0.72h, 1.0h, input.uv.x);
+                    mask = body * saturate(packet * 0.85h + column * 0.5h + tip * 0.65h) * pulse;
                 }
                 else
                 {
-                    half chevron = Arrowheads(input.uv);
-                    half shaft = step(input.uv.x, 0.8h);
-                    mask = body * tail * saturate(chevron * shaft * 1.25h + spine * shaft + head) * pulse;
+                    half marks = FlowMarks(input.uv, across);
+                    half shaft = 1.0h - smoothstep(0.68h, 0.9h, input.uv.x);
+                    mask = body * tail * saturate(marks * shaft + spine + head) * pulse;
                 }
 
                 half3 rgb = _Tint.rgb * input.color.rgb * _Intensity;

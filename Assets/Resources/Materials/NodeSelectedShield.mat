@@ -29,20 +29,17 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BaseDim: 0.2
-    - _FlickerSpeed: 18
-    - _FluorBoost: 0.85
-    - _GridScale: 22
-    - _GridStrength: 0.7
-    - _PulseSpeed: 5.5
-    - _RimPower: 1.35
-    - _ScanSpeed: 3.2
-    - _ScanWidth: 0.08
-    - _ShellDistance: 0.012
-    - _ShieldIntensity: 2.2
+    - _EdgeStrength: 1.45
+    - _PulseSpeed: 2.1
+    - _RimPower: 1.15
+    - _ScanPixels: 9
+    - _ScanSpeed: 0.28
+    - _ShieldIntensity: 2.6
+    - _TintStrength: 0.68
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _RimColor: {r: 1.8, g: 1.2, b: 0.2, a: 1}
-    - _ScanColor: {r: 0.4, g: 2.2, b: 0.55, a: 1}
-    - _ShieldColor: {r: 1.4, g: 0.15, b: 1.55, a: 1}
+    - _RimColor: {r: 2.8, g: 1.85, b: 0.4, a: 1}
+    - _ShieldColor: {r: 2.4, g: 0.28, b: 2.8, a: 1}
+    - _ZoneCenter: {r: 0, g: 0, b: 0, a: 0}
+    - _ZoneExtents: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

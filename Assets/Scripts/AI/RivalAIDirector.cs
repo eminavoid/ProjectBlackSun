@@ -82,7 +82,7 @@ public class RivalAIDirector : MonoBehaviour
     private readonly Dictionary<FactionId, HashSet<DistrictZone>> controlledMemory =
         new Dictionary<FactionId, HashSet<DistrictZone>>();
 
-    public int ActionsPerTurn => actionPoints;
+    public int ActionsPerTurn => TutorialActionBudget(actionPoints);
     public float Aggressiveness => aggressiveness;
 
     private void Awake()
@@ -255,8 +255,19 @@ public class RivalAIDirector : MonoBehaviour
 
     private Tuning TuningFor(FactionId faction)
     {
-        if (usePerRival && perRival.TryGetValue(faction, out Tuning tuning)) return tuning;
-        return new Tuning { actions = actionPoints, aggression = aggressiveness, mistakes = mistakeChance };
+        Tuning tuning = usePerRival && perRival.TryGetValue(faction, out Tuning stored)
+            ? stored
+            : new Tuning { actions = actionPoints, aggression = aggressiveness, mistakes = mistakeChance };
+
+        tuning.actions = TutorialActionBudget(tuning.actions);
+        return tuning;
+    }
+
+    /// <summary>Mientras la guía está en juego, cada rival gasta la mitad de sus acciones por turno.</summary>
+    private static int TutorialActionBudget(int actions)
+    {
+        if (!TutorialSession.SuppressAmbientEvents || actions <= 0) return actions;
+        return Mathf.Max(1, actions / 2);
     }
 
     private void PlanAgent(Agent agent, List<AIIntent> intents)

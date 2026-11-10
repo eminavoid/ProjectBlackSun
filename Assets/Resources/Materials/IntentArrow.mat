@@ -27,8 +27,8 @@ Material:
     m_Ints: []
     m_Floats:
     - _Alpha: 1
-    - _ChevronScale: 9
-    - _ChevronSharp: 6
+    - _ChevronScale: 2.4
+    - _ChevronSharp: 1.35
     - _ChevronSkew: 0.85
     - _CoreGlow: 0.55
     - _EdgeFade: 0.42
