@@ -2893,6 +2893,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3207784972399085606, guid: a7afed5e78cd44947a637251968f85f6, type: 3}
+      propertyPath: onSacrificed.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3207784972399085606, guid: a7afed5e78cd44947a637251968f85f6, type: 3}
       propertyPath: onSacrificed.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
@@ -2902,30 +2906,62 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4208000023873719007, guid: a7afed5e78cd44947a637251968f85f6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4208000023873719007, guid: a7afed5e78cd44947a637251968f85f6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4208000023873719007, guid: a7afed5e78cd44947a637251968f85f6, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4208000023873719007, guid: a7afed5e78cd44947a637251968f85f6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1548703497}
+      objectReference: {fileID: 2003735028}
+    - target: {fileID: 4208000023873719007, guid: a7afed5e78cd44947a637251968f85f6, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1459440756}
     - target: {fileID: 4208000023873719007, guid: a7afed5e78cd44947a637251968f85f6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4208000023873719007, guid: a7afed5e78cd44947a637251968f85f6, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4208000023873719007, guid: a7afed5e78cd44947a637251968f85f6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Commune
+      value: SetActive
+      objectReference: {fileID: 0}
+    - target: {fileID: 4208000023873719007, guid: a7afed5e78cd44947a637251968f85f6, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: GenerateUnlocks
       objectReference: {fileID: 0}
     - target: {fileID: 4208000023873719007, guid: a7afed5e78cd44947a637251968f85f6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: TheologyMenu, Assembly-CSharp
+      value: UnityEngine.GameObject, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 4208000023873719007, guid: a7afed5e78cd44947a637251968f85f6, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: UnlockerMenuTest, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4208000023873719007, guid: a7afed5e78cd44947a637251968f85f6, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4208000023873719007, guid: a7afed5e78cd44947a637251968f85f6, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4208000023873719007, guid: a7afed5e78cd44947a637251968f85f6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 4208000023873719007, guid: a7afed5e78cd44947a637251968f85f6, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 6787542990018146145, guid: a7afed5e78cd44947a637251968f85f6, type: 3}
@@ -9255,6 +9291,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 359442743}
+        m_TargetAssemblyTypeName: MenuTransition, Assembly-CSharp
+        m_MethodName: Close
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1461046015
 GameObject:
   m_ObjectHideFlags: 0
@@ -10003,17 +10051,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8852294127121999559, guid: a7afed5e78cd44947a637251968f85f6, type: 3}
   m_PrefabInstance: {fileID: 359442742}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1548703497 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3207784972399085606, guid: a7afed5e78cd44947a637251968f85f6, type: 3}
-  m_PrefabInstance: {fileID: 359442742}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 673e6d6b7e4a025478add7f439338e9c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TheologyMenu
 --- !u!1 &1575005576
 GameObject:
   m_ObjectHideFlags: 0

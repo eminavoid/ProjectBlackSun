@@ -44,11 +44,6 @@ public class UnlockerMenuTest : MonoBehaviour
         CreateWindows(options);
     }
 
-    private void Start()
-    {
-        window.gameObject.SetActive(false);
-    }
-
     private void OnOptionSelected(Unlockeable unlockeable)
     {
         if (!TutorialSession.ClaimFixedUnlock(unlockeable))
