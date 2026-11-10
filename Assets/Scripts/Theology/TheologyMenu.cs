@@ -46,6 +46,7 @@ public class TheologyMenu : MonoBehaviour
 
     private Button offeringButton;
     private Button sacrificeButton;
+    private Button dismissButton;
     private TMP_Text blessingsCount;
     private int cost;
     private int phase;
@@ -58,6 +59,7 @@ public class TheologyMenu : MonoBehaviour
     private bool stakesLocked;
     private bool rewarding;
     private bool paying;
+    private bool dismissLocked;
     private bool communeLabelStored;
     private bool communeWasAffordable = true;
     private Color communeLabelColor;
@@ -82,6 +84,12 @@ public class TheologyMenu : MonoBehaviour
         blessingsCount = FindCount("Blessings Count");
         if (offeringButton != null) offeringButton.onClick.AddListener(() => StartCoroutine(PayStake(false)));
         if (sacrificeButton != null) sacrificeButton.onClick.AddListener(() => StartCoroutine(PayStake(true)));
+        Transform dismiss = transform.Find("Dismiss");
+        if (dismiss == null) return;
+        dismissButton = dismiss.GetComponent<Button>();
+        if (dismissButton == null) return;
+        dismissButton.onClick = new Button.ButtonClickedEvent();
+        dismissButton.onClick.AddListener(Dismiss);
     }
 
     private void OnEnable()
@@ -99,6 +107,7 @@ public class TheologyMenu : MonoBehaviour
         sacrificeTier = 0;
         rewarding = false;
         paying = false;
+        dismissLocked = false;
         if (eyePhases != null && eyePhases.Length > 0) eye.sprite = eyePhases[0];
         eyeNext.color = new Color(1f, 1f, 1f, 0f);
         SetPlates(false);
@@ -111,6 +120,7 @@ public class TheologyMenu : MonoBehaviour
     {
         if (!ResourceManager.IsNull && ResourceManager.Resources != null)
             ResourceManager.Resources.onResourceGained -= OnWalletChanged;
+        dismissLocked = false;
         StopAllCoroutines();
         DOTween.Kill(this);
         if (!ResourceManager.IsNull && ResourceManager.Sidebar != null) ResourceManager.Sidebar.Release(this);
@@ -119,6 +129,14 @@ public class TheologyMenu : MonoBehaviour
     private void LateUpdate()
     {
         ApplyCommuneGate();
+    }
+
+    private void Dismiss()
+    {
+        if (dismissLocked) return;
+        MenuTransition transition = GetComponent<MenuTransition>();
+        if (transition != null) transition.Close();
+        else gameObject.SetActive(false);
     }
 
     public void Commune()
@@ -131,6 +149,7 @@ public class TheologyMenu : MonoBehaviour
         }
 
         opening = true;
+        dismissLocked = true;
         if (communeButton != null) communeButton.interactable = false;
         Communed?.Invoke();
         StartCoroutine(PayAndOpen());
@@ -163,6 +182,7 @@ public class TheologyMenu : MonoBehaviour
             if (!CanAfford(costResource, cost))
             {
                 opening = false;
+                dismissLocked = false;
                 Refresh();
                 TopScreenNotification.Show("Not enough Zeal.", 3f);
                 yield break;
@@ -176,6 +196,7 @@ public class TheologyMenu : MonoBehaviour
             {
                 if (ResourceManager.Sidebar != null) ResourceManager.Sidebar.Release(this);
                 opening = false;
+                dismissLocked = false;
                 Refresh();
                 TopScreenNotification.Show("Not enough Zeal.", 3f);
                 yield break;
@@ -290,8 +311,6 @@ public class TheologyMenu : MonoBehaviour
             TutorialSession.ClaimFixedUnlock(unlock);
             GiveDoctrine(fixedDoctrine);
             Reveal("Doctrine", fixedDoctrine.Name, fixedDoctrine.Description);
-            RewardGranted?.Invoke();
-            CloseAfterReward();
             return;
         }
 
@@ -313,13 +332,11 @@ public class TheologyMenu : MonoBehaviour
                 Reveal("Curse", Pick(DefaultCurses), "The eye turns against you.");
                 break;
         }
-
-        RewardGranted?.Invoke();
-        CloseAfterReward();
     }
 
     private void CloseAfterReward()
     {
+        RewardGranted?.Invoke();
         MenuTransition transition = GetComponent<MenuTransition>();
         if (transition != null) transition.Close();
         else gameObject.SetActive(false);
@@ -364,11 +381,11 @@ public class TheologyMenu : MonoBehaviour
             doctrines.Stats.RememberDoctrine(doctrine);
     }
 
-    private static void Reveal(string kind, string title, string body)
+    private void Reveal(string kind, string title, string body)
     {
         string heading = string.IsNullOrWhiteSpace(title) ? kind : title;
         string detail = string.IsNullOrWhiteSpace(body) ? kind : body;
-        SeedEventManager.CreateEventOutputWindow(heading, detail, null, false);
+        SeedEventManager.CreateEventOutputWindow(heading, detail, null, false, CloseAfterReward);
     }
 
     private Seed PickSeed()

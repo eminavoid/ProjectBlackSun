@@ -247,11 +247,12 @@ public class SeedEventManager : Singleton<SeedEventManager>
         }
     }
 
-    public static void CreateEventOutputWindow(string title, string description, IReadOnlyList<ResourceDelta> resourceChanges = null, bool dimBackground = true)
+    public static void CreateEventOutputWindow(string title, string description, IReadOnlyList<ResourceDelta> resourceChanges = null, bool dimBackground = true, Action onClosed = null)
     {
         if (Instance.capturedOutcomes != null)
         {
             Instance.capturedOutcomes.Add(description);
+            onClosed?.Invoke();
             return;
         }
 
@@ -275,7 +276,7 @@ public class SeedEventManager : Singleton<SeedEventManager>
             if (blur != null) blur.gameObject.SetActive(false);
         }
 
-        Instance.StartCoroutine(Instance.ShowOutputWindowAfterBlur(windowInstance, Instance.choiceOrigin));
+        Instance.StartCoroutine(Instance.ShowOutputWindowAfterBlur(windowInstance, Instance.choiceOrigin, onClosed));
     }
 
     public void UnloadOptionsWindow()
@@ -602,7 +603,7 @@ public class SeedEventManager : Singleton<SeedEventManager>
         optionsVisibilityRoutine = null;
     }
 
-    private IEnumerator ShowOutputWindowAfterBlur(UIWindow window, (Vector3 center, Vector2 size)? origin)
+    private IEnumerator ShowOutputWindowAfterBlur(UIWindow window, (Vector3 center, Vector2 size)? origin, Action onClosed)
     {
         openOutputWindows++;
         RefreshNodeTooltipBlock();
@@ -623,6 +624,7 @@ public class SeedEventManager : Singleton<SeedEventManager>
         {
             openOutputWindows--;
             RefreshNodeTooltipBlock();
+            onClosed?.Invoke();
             yield break;
         }
 
@@ -633,6 +635,7 @@ public class SeedEventManager : Singleton<SeedEventManager>
         else group.DOFade(1f, blur != null ? blur.FadeDuration : 0.22f).SetLink(window.gameObject).SetUpdate(true);
 
         while (window != null) yield return null;
+        onClosed?.Invoke();
 
         while (ResourceManager.Sidebar != null && ResourceManager.Sidebar.IsBusy) yield return null;
 
