@@ -32,6 +32,11 @@ public class ResourceManager : Singleton<ResourceManager>
         tithe = value;
     }
 
+    public static void AddResource(Resource resource, int amount)
+    {
+        Instance.playerResources.AddResource(resource, amount);
+    }
+
     protected override void OnInitialization()
     {
         playerResources.Clear();

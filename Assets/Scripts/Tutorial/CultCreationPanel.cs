@@ -182,9 +182,49 @@ public class CultCreationPanel : MonoBehaviour
         Apply(Choices[selected].Stat);
         TutorialSession.SetCult(cultName, Choices[selected].Stat);
         FaithEclipseBar bar = FindAnyObjectByType<FaithEclipseBar>();
+
+        GiveResourcesForCultChoice(Choices[selected].Label);
+
         if (bar != null) bar.RefreshNames();
         Confirmed = true;
         Dismiss();
+    }
+
+    private void GiveResourcesForCultChoice(string label)
+    {
+        switch (label)
+        {
+            case "DIPLOMACY":
+                ResourceManager.AddResource(Resource.Authority, 1);
+                ResourceManager.AddResource(Resource.Materials, 20);
+                ResourceManager.AddResource(Resource.Flock, 50);
+                break;
+
+            case "AGGRESION":
+                ResourceManager.AddResource(Resource.Happiness, -25);
+                ResourceManager.AddResource(Resource.Zeal, 10);
+                ResourceManager.AddResource(Resource.Materials, -10);
+                ResourceManager.AddResource(Resource.Authority, 3);
+                ResourceManager.AddResource(Resource.Flock, 25);
+                break;
+
+            case "STEWARDSHIP":
+                ResourceManager.AddResource(Resource.Materials, 50);
+                ResourceManager.AddResource(Resource.Flock, 30);
+                break;
+
+            case "INTRIGUE":
+                ResourceManager.AddResource(Resource.Zeal, 25);
+                ResourceManager.AddResource(Resource.Secrets, 30);
+                ResourceManager.AddResource(Resource.Materials, 10);
+                break;
+
+            case "LEARNING":
+                ResourceManager.AddResource(Resource.Wealth, 30);
+                ResourceManager.AddResource(Resource.Secrets, 30);
+                ResourceManager.AddResource(Resource.Materials, 30);
+                break;
+        }
     }
 
     private static void Apply(PlayerStats.PlayerStat stat)
