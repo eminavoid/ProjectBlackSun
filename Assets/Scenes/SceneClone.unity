@@ -6822,8 +6822,9 @@ MonoBehaviour:
   eventOutputWindowPrefab: {fileID: 6986076241118867485, guid: 26ede2eefc574e0458ee06d975b56568, type: 3}
   optionDisplayPrefab: {fileID: 8361523740710303735, guid: 91a741170ced58643a73efea27a88975, type: 3}
   target: {fileID: 2134387220}
-  direction: 1
-  distance: 20
+  direction: 5
+  distance: -20
+  attachToTarget: 1
   othersFadeDuration: 0.32
   othersFadeStagger: 0.06
   costFlightDelay: 0.15

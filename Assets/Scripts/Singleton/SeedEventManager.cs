@@ -60,6 +60,7 @@ public class SeedEventManager : Singleton<SeedEventManager>
     [SerializeField] private RectTransform target;
     [SerializeField] private PopUpManager.Direction direction;
     [SerializeField] private float distance = 30f;
+    [SerializeField] private bool attachToTarget = true;
 
     [Header("Choosing an Option")]
     [Tooltip("The other options fade out, one after another outwards from the chosen one.")]
@@ -131,23 +132,37 @@ public class SeedEventManager : Singleton<SeedEventManager>
     }
 
     private UIWindow unresolvedPopUpInstance;
-    public static RectTransform UnresolvedBadge => Instance.unresolvedPopUpInstance.GetComponent<RectTransform>();
+
+    public static RectTransform UnresolvedBadge =>
+        !IsNull && Instance.unresolvedPopUpInstance != null
+            ? Instance.unresolvedPopUpInstance.transform as RectTransform
+            : null;
 
     private void UpdateSeedEventsCount()
     {
-        if (unresolvedPopUpInstance != null && seedEvents.Count == 0)
+        if (seedEvents.Count == 0)
         {
-            unresolvedPopUpInstance = null;
             PopUpManager.RemovePopUp(unresolvedPopUpInstance);
+            unresolvedPopUpInstance = null;
             return;
         }
 
-        if (unresolvedPopUpInstance == null)
+        bool spawned = unresolvedPopUpInstance == null;
+        if (spawned)
         {
-            unresolvedPopUpInstance = PopUpManager.SpawnPopUp(target, direction, distance);
+            unresolvedPopUpInstance = PopUpManager.SpawnPopUp(target, direction, distance, attachToTarget);
+            if (unresolvedPopUpInstance == null) return;
+            OpenEventsOnClick(unresolvedPopUpInstance);
         }
 
         unresolvedPopUpInstance.TryGetElement<TextMeshProUGUI>("Amount").SetText(seedEvents.Count.ToString());
+        if (!spawned) PopUpManager.BumpPopUp(unresolvedPopUpInstance);
+    }
+
+    private void OpenEventsOnClick(UIWindow badge)
+    {
+        if (!badge.TryGetComponent(out Button badgeButton) || !target.TryGetComponent(out Button opener)) return;
+        badgeButton.onClick.AddListener(opener.onClick.Invoke);
     }
 
     private void Start()
