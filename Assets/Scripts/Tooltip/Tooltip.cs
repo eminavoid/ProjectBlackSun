@@ -4,6 +4,7 @@ using UnityEngine;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
+using System;
 
 namespace Zeke.Tooltips
 {
@@ -19,6 +20,9 @@ namespace Zeke.Tooltips
         [SerializeField] private float showDelay = 1f;
         [SerializeField, Min(0.01f)] private float appearDuration = 0.14f;
         [SerializeField, Min(0.01f)] private float hideDuration = 0.08f;
+
+        public static Action onTooltipShow;
+        public static Action onTooltipHide;
 
         private const float CursorHeight = 28f;
 
@@ -144,6 +148,7 @@ namespace Zeke.Tooltips
             group.DOFade(0f, hideDuration).SetUpdate(true).SetLink(tooltipObject).OnComplete(() =>
             {
                 hiding = false;
+                onTooltipHide?.Invoke();
                 tooltipObject.SetActive(false);
             });
         }
@@ -157,6 +162,7 @@ namespace Zeke.Tooltips
                 if (timer > showDelay)
                 {
                     tooltipObject.SetActive(true);
+                    onTooltipShow?.Invoke();
                     Appear(true);
                 }
             }
