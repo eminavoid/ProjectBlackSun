@@ -55,8 +55,11 @@ public class SeedEventManager : Singleton<SeedEventManager>
     [SerializeField] private UIWindow spawnOptionsWindow;
     [SerializeField] private UIWindow eventOutputWindowPrefab;
     [SerializeField] private OptionDisplay optionDisplayPrefab;
-    [Space]
-    [SerializeField] private UIWindow seedsUnresolvedPopUp;
+
+    [Header("Unresolved Pop-up")]
+    [SerializeField] private RectTransform target;
+    [SerializeField] private PopUpManager.Direction direction;
+    [SerializeField] private float distance = 30f;
 
     [Header("Choosing an Option")]
     [Tooltip("The other options fade out, one after another outwards from the chosen one.")]
@@ -81,11 +84,6 @@ public class SeedEventManager : Singleton<SeedEventManager>
     [SerializeField, HideInInspector] private int wealthSeedChance = 100;
 
     public static bool HasUnresolvedEvents => Instance.seedEvents.Count > 0;
-
-    public static RectTransform UnresolvedBadge =>
-        !IsNull && Instance.seedsUnresolvedPopUp != null
-            ? Instance.seedsUnresolvedPopUp.transform as RectTransform
-            : null;
 
     private readonly List<Seed> seedEvents = new List<Seed>();
 
@@ -132,18 +130,24 @@ public class SeedEventManager : Singleton<SeedEventManager>
         return seed;
     }
 
+    private UIWindow unresolvedPopUpInstance;
+    public static RectTransform UnresolvedBadge => Instance.unresolvedPopUpInstance.GetComponent<RectTransform>();
+
     private void UpdateSeedEventsCount()
     {
-        seedsUnresolvedPopUp.TryGetElement<TextMeshProUGUI>("Text").text = seedEvents.Count.ToString();
+        if (unresolvedPopUpInstance != null && seedEvents.Count == 0)
+        {
+            unresolvedPopUpInstance = null;
+            PopUpManager.RemovePopUp(unresolvedPopUpInstance);
+            return;
+        }
 
-        if (seedEvents.Count == 1)
+        if (unresolvedPopUpInstance == null)
         {
-            seedsUnresolvedPopUp.gameObject.SetActive(true);
+            unresolvedPopUpInstance = PopUpManager.SpawnPopUp(target, direction, distance);
         }
-        else if (seedEvents.Count == 0)
-        {
-            seedsUnresolvedPopUp.gameObject.SetActive(false);
-        }
+
+        unresolvedPopUpInstance.TryGetElement<TextMeshProUGUI>("Amount").SetText(seedEvents.Count.ToString());
     }
 
     private void Start()
