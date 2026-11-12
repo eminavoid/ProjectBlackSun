@@ -2387,6 +2387,7 @@ GameObject:
   - component: {fileID: 330585548}
   - component: {fileID: 330585550}
   - component: {fileID: 330585551}
+  - component: {fileID: 330585552}
   m_Layer: 6
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2588,6 +2589,21 @@ MonoBehaviour:
   offset: {x: 0, y: 2.6, z: -1.8}
   delay: 0.25
   duration: 2.8
+--- !u!114 &330585552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330585543}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f7d0ce0eb8deeb41aecec2727a24478, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraLOD
+  maxBuldingY: 10
+  minBuildingY: 1
+  buildings: {fileID: 1462870251}
 --- !u!1 &350326569
 GameObject:
   m_ObjectHideFlags: 0
@@ -9395,6 +9411,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2696494310649225504, guid: 5e5d05d4b417a0044b6400db0805dbff, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3042807276272902093, guid: 5e5d05d4b417a0044b6400db0805dbff, type: 3}
       propertyPath: m_Name
       value: Mapa Ciudad
@@ -9448,6 +9468,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e5d05d4b417a0044b6400db0805dbff, type: 3}
+--- !u!1 &1462870251 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2275968834672455781, guid: 5e5d05d4b417a0044b6400db0805dbff, type: 3}
+  m_PrefabInstance: {fileID: 1462870250}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1485793476
 GameObject:
   m_ObjectHideFlags: 0
