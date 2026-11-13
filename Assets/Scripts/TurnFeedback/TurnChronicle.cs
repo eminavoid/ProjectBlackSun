@@ -24,6 +24,13 @@ public class TurnChronicle : MonoBehaviour
     private FactionId? leaderBefore;
     private int flockBefore;
     private readonly List<SettledEvent> settled = new List<SettledEvent>();
+    private readonly HashSet<Resource> debts = new HashSet<Resource>();
+    private readonly List<(Resource resource, DistrictZone zone)> crises = new List<(Resource, DistrictZone)>();
+    private int ordained;
+    private int upkeepClerics;
+    private int upkeepCost;
+    private int defected;
+    private bool explainedUpkeep;
     private int ripenedEvents;
     private bool explainedEvents;
     private bool explainedSettling;
@@ -38,6 +45,10 @@ public class TurnChronicle : MonoBehaviour
         GameTime.OnTurnResolved += Publish;
         SeedEventManager.onEventSettled += CollectSettled;
         SeedEventManager.onSeedStored += CountRipened;
+        SeedEventManager.onDebtCrisisPlanted += CollectCrisis;
+        PlayerClergy.onOrdained += CollectOrdained;
+        PlayerClergy.onUpkeepPaid += CollectUpkeep;
+        DebtDefection.onFaithfulLeft += CollectDefected;
     }
 
     private void OnDisable()
@@ -47,12 +58,22 @@ public class TurnChronicle : MonoBehaviour
         GameTime.OnTurnResolved -= Publish;
         SeedEventManager.onEventSettled -= CollectSettled;
         SeedEventManager.onSeedStored -= CountRipened;
+        SeedEventManager.onDebtCrisisPlanted -= CollectCrisis;
+        PlayerClergy.onOrdained -= CollectOrdained;
+        PlayerClergy.onUpkeepPaid -= CollectUpkeep;
+        DebtDefection.onFaithfulLeft -= CollectDefected;
+        ResumeSidebar();
     }
 
     private void BeginTurn()
     {
         phase = Phase.SettlingEvents;
         settled.Clear();
+        crises.Clear();
+        ordained = 0;
+        upkeepClerics = 0;
+        upkeepCost = 0;
+        defected = 0;
         ripenedEvents = 0;
 
         controllersBefore.Clear();
@@ -67,6 +88,7 @@ public class TurnChronicle : MonoBehaviour
         if (phase != Phase.SettlingEvents) return;
         phase = Phase.Resolving;
         resourcesBefore = Wallet.Snapshot();
+        if (ResourceManager.Sidebar != null) ResourceManager.Sidebar.Pause(this);
     }
 
     private void CollectSettled(SettledEvent settledEvent)
@@ -79,6 +101,28 @@ public class TurnChronicle : MonoBehaviour
         if (phase == Phase.Resolving) ripenedEvents++;
     }
 
+    private void CollectCrisis(Resource resource, DistrictZone zone)
+    {
+        if (phase == Phase.Resolving) crises.Add((resource, zone));
+    }
+
+    private void CollectOrdained(int clerics)
+    {
+        if (phase == Phase.Resolving) ordained += clerics;
+    }
+
+    private void CollectUpkeep(int clerics, int cost)
+    {
+        if (phase != Phase.Resolving) return;
+        upkeepClerics = clerics;
+        upkeepCost = cost;
+    }
+
+    private void CollectDefected(int faithful)
+    {
+        if (phase == Phase.Resolving) defected += faithful;
+    }
+
     private void Publish()
     {
         if (phase == Phase.Idle) return;
@@ -89,6 +133,8 @@ public class TurnChronicle : MonoBehaviour
         AddTerritoryNews(news, rivalNews);
         AddLeaderNews(news);
         AddEventNews(news);
+        AddClergyNews(news);
+        AddDebtNews(news);
         AddFlockWarning(news);
 
         var yield = new List<ResourceDelta>();
@@ -100,13 +146,21 @@ public class TurnChronicle : MonoBehaviour
             news.AddRange(rivalNews);
             ChronicleWindow window = Instantiate(windowPrefab, GlobalReferences.ScreenCanvas.transform);
             window.Show(endedTurn, news, yield, new List<SettledEvent>(settled));
+            ResumeSidebar();
             return;
         }
+
+        ResumeSidebar();
 
         var notice = new List<string>();
         if (yield.Count > 0) notice.Add(FormatYield(yield) + ".");
         if (rivalNews.Count > 0) notice.Add(StripColor(rivalNews[0]));
         if (notice.Count > 0) TopScreenNotification.Show($"Turn {endedTurn} ended: {string.Join(" ", notice)}", quietNoticeSeconds);
+    }
+
+    private void ResumeSidebar()
+    {
+        if (!ResourceManager.IsNull && ResourceManager.Sidebar != null) ResourceManager.Sidebar.Resume(this);
     }
 
     private void AddTerritoryNews(List<string> news, List<string> rivalNews)
@@ -198,6 +252,45 @@ public class TurnChronicle : MonoBehaviour
             news.Add($"You ended the turn with {events} pending, so your advisors settled {(settled.Count == 1 ? "it" : "them")} with the default choice. Read what happened below.");
             explainedSettling = true;
         }
+    }
+
+    private void AddClergyNews(List<string> news)
+    {
+        if (ordained > 0)
+        {
+            news.Add(ordained == 1
+                ? "A new cleric was ordained and joins your reserve."
+                : $"{ordained} new clerics were ordained and join your reserve.");
+        }
+
+        if (upkeepCost > 0 && !explainedUpkeep)
+        {
+            news.Add($"Your {upkeepClerics} {(upkeepClerics == 1 ? "cleric" : "clerics")} on the map cost {upkeepCost} Wealth in upkeep. Recall the ones you don't need to spend less.");
+            explainedUpkeep = true;
+        }
+    }
+
+    private void AddDebtNews(List<string> news)
+    {
+        foreach (Resource resource in System.Enum.GetValues(typeof(Resource)))
+        {
+            if (SeedEventManager.IsInDebt(resource))
+            {
+                if (debts.Add(resource)) news.Add($"Your {resource} fell below 0. Each turn it stays in debt, some of your faithful leave and a crisis grows more likely.");
+            }
+            else if (debts.Remove(resource))
+            {
+                news.Add($"Your {resource} is out of debt.");
+            }
+        }
+
+        for (int i = 0; i < crises.Count; i++)
+        {
+            string where = crises[i].zone != null ? $" in {DistrictsOf(new List<DistrictZone> { crises[i].zone })}" : string.Empty;
+            news.Add($"Your {crises[i].resource} debt has come due: a crisis is brewing{where}. Ignoring it will cost you flock.");
+        }
+
+        if (defected > 0) news.Add($"{defected} of your faithful left over your debts.");
     }
 
     private void AddFlockWarning(List<string> news)

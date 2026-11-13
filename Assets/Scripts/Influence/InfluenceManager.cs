@@ -10,7 +10,7 @@ public class InfluenceManager : Singleton<InfluenceManager>
 {
     [Header("Config")]
     [SerializeField] private int defaultZoneCap = ZoneInfluenceState.DefaultCap;
-    [SerializeField] private int playerStartingClerics = 15;
+    [SerializeField] private int playerStartingClerics = 6;
     [SerializeField] private DistrictProductionConfig productionConfig;
     [SerializeField] private PlayerStats playerStats;
     [SerializeField] private float adjacencyPadding = 0.35f;
@@ -91,6 +91,18 @@ public class InfluenceManager : Singleton<InfluenceManager>
     }
 
     public int GetClericPool(FactionId faction) => GetStock(faction).Clerics;
+
+    public int CountDeployedClerics(FactionId faction)
+    {
+        int clerics = 0;
+        IReadOnlyList<DistrictZone> zones = GetPlayableZones();
+        for (int i = 0; i < zones.Count; i++)
+        {
+            if (zones[i].Influence != null) clerics += zones[i].Influence.GetClerics(faction);
+        }
+
+        return clerics;
+    }
 
     public void SetRivalStats(FactionId faction, PlayerStats stats)
     {
@@ -273,7 +285,7 @@ public class InfluenceManager : Singleton<InfluenceManager>
             generationsByZone.TryGetValue(zone, out Dictionary<FactionId, int> generation);
             if (generation == null) generation = new Dictionary<FactionId, int>();
 
-            if (state.IsAtCap && state.CountFactionsWithShare() > 1)
+            if (state.IsAtCap)
             {
                 ApplyIdeologicalStruggle(state, generation);
             }
@@ -353,6 +365,13 @@ public class InfluenceManager : Singleton<InfluenceManager>
         {
             present.Add(faction);
         }
+
+        foreach (FactionId faction in generation.Keys)
+        {
+            if (!present.Contains(faction)) present.Add(faction);
+        }
+
+        if (present.Count < 2) return;
 
         int peak = 0;
         for (int i = 0; i < present.Count; i++)

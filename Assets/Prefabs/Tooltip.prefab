@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1585226082496365271}
   - component: {fileID: 9118737156854936752}
   - component: {fileID: 4433814714681326230}
+  - component: {fileID: 8639261618610460563}
   m_Layer: 5
   m_Name: TooltipRect
   m_TagString: Untagged
@@ -119,6 +120,20 @@ MonoBehaviour:
   m_EffectColor: {r: 0.88, g: 0.71, b: 0.38, a: 0.55}
   m_EffectDistance: {x: 2, y: -2}
   m_UseGraphicAlpha: 1
+--- !u!114 &8639261618610460563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 126456386159115111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!1 &1205270209709890203
 GameObject:
   m_ObjectHideFlags: 0

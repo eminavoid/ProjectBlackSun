@@ -3,6 +3,7 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Zeke.Tooltips;
 using Zeke.UI;
 
 [RequireComponent(typeof(UIWindow))]
@@ -13,6 +14,8 @@ public class ResourceSidebar : MonoBehaviour
     [SerializeField] private Color gainColor = new Color(0.55f, 0.95f, 0.45f);
     [SerializeField] private Color lossColor = new Color(1f, 0.42f, 0.36f);
     [SerializeField] private Color refundColor = new Color(0.8f, 0.8f, 0.8f);
+    [Tooltip("A resource below 0 keeps this color.")]
+    [SerializeField] private Color debtColor = new Color(1f, 0.42f, 0.36f);
 
     [Header("Ticking Number")]
     [SerializeField, Min(0.01f)] private float countDuration = 0.55f;
@@ -44,6 +47,8 @@ public class ResourceSidebar : MonoBehaviour
         public RectTransform icon;
         public TMP_Text text;
         public Color textColor;
+        public TooltipTrigger tooltip;
+        public string tooltipText;
         public float shown;
         public int target;
         public Sequence ticking;
@@ -59,6 +64,7 @@ public class ResourceSidebar : MonoBehaviour
     private readonly Dictionary<Resource, Slot> slots = new Dictionary<Resource, Slot>();
     private readonly List<Held> held = new List<Held>();
     private readonly HashSet<Resource> dirty = new HashSet<Resource>();
+    private readonly List<Object> pausers = new List<Object>();
     private PlayerResources resources;
     private Transform canvas;
 
@@ -76,17 +82,22 @@ public class ResourceSidebar : MonoBehaviour
             if (text == null) continue;
 
             int amount = resources.GetResourceAmount(resource);
+            TooltipTrigger tooltip = text.GetComponentInParent<TooltipTrigger>();
             Slot slot = new Slot
             {
                 icon = FindIcon(text),
                 text = text,
                 textColor = text.color,
+                tooltip = tooltip,
+                tooltipText = tooltip != null ? tooltip.Text : null,
                 shown = amount,
                 target = amount
             };
 
             text.text = Format(resource, amount);
+            text.color = RestColor(slot);
             slots[resource] = slot;
+            RefreshDebtTooltip(resource, slot);
         }
 
         resources.onResourceGained += OnResourceChanged;
@@ -186,10 +197,35 @@ public class ResourceSidebar : MonoBehaviour
     private void OnResourceChanged(Resource resource, int amount)
     {
         dirty.Add(resource);
+        if (slots.TryGetValue(resource, out Slot slot)) RefreshDebtTooltip(resource, slot);
+    }
+
+    private static void RefreshDebtTooltip(Resource resource, Slot slot)
+    {
+        if (slot.tooltip == null) return;
+
+        slot.tooltip.SetText(SeedEventManager.IsInDebt(resource)
+            ? $"{slot.tooltipText}\n\nIN DEBT\nEach turn your {resource} stays below 0, some of your faithful leave and a crisis grows more likely. Crises you ignore cost you flock."
+            : slot.tooltipText);
+    }
+
+    private Color RestColor(Slot slot) => slot.target < 0 ? debtColor : slot.textColor;
+
+    public void Pause(Object owner)
+    {
+        if (owner != null && !pausers.Contains(owner)) pausers.Add(owner);
+    }
+
+    public void Resume(Object owner)
+    {
+        pausers.Remove(owner);
     }
 
     private void LateUpdate()
     {
+        pausers.RemoveAll(owner => owner == null);
+        if (pausers.Count > 0) return;
+
         for (int i = held.Count - 1; i >= 0; i--)
         {
             if (held[i].owner != null) continue;
@@ -313,7 +349,7 @@ public class ResourceSidebar : MonoBehaviour
                 slot.shown = value;
                 slot.text.text = Format(resource, Mathf.RoundToInt(value));
             }).SetEase(Ease.OutCubic))
-            .Join(slot.text.DOColor(slot.textColor, Mathf.Max(countDuration, punchDuration)))
+            .Join(slot.text.DOColor(RestColor(slot), Mathf.Max(countDuration, punchDuration)))
             .Join(slot.icon.DOScale(punchScale, punchDuration * 0.5f).SetLoops(2, LoopType.Yoyo).SetEase(Ease.OutQuad))
             .OnComplete(() => slot.text.text = Format(resource, slot.target))
             .OnKill(() => { if (slot.ticking == tick) slot.ticking = null; })

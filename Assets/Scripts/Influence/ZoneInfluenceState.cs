@@ -149,9 +149,7 @@ public class ZoneInfluenceState
     {
         if (GetShare(faction) > 0 || GetClerics(faction) > 0) return true;
         if (!IsAtCap) return true;
-        if (expelledWhileAtCap.Contains(faction)) return false;
-        // Cap full and no presence: cannot enter by normal means.
-        return false;
+        return !expelledWhileAtCap.Contains(faction);
     }
 
     public void SetClerics(FactionId faction, int amount)

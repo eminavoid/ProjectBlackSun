@@ -20,6 +20,7 @@ public class DistrictClericAssignPanel : MonoBehaviour
     public static event System.Action Assigned;
 
     private DistrictZone shown;
+    private PlayerClergy clergy;
     private bool visible = true;
     private float restY;
 
@@ -27,6 +28,7 @@ public class DistrictClericAssignPanel : MonoBehaviour
 
     private void Awake()
     {
+        clergy = FindAnyObjectByType<PlayerClergy>();
         restY = panel.anchoredPosition.y;
         panel.anchoredPosition = new Vector2(panel.anchoredPosition.x, restY - hiddenDrop);
         group.alpha = 0f;
@@ -86,7 +88,12 @@ public class DistrictClericAssignPanel : MonoBehaviour
         shown.EnsureInfluenceState();
         InfluenceManager manager = InfluenceManager.Get;
         title.text = $"{MapStatsQuery.ZoneLabel(shown)}  ·  {MapStatsQuery.DistrictLabel(shown.District)} district";
-        counts.text = $"Your clerics here: {shown.Influence.GetClerics(FactionId.Player)}     In reserve: {manager.GetClericPool(FactionId.Player)}";
+        counts.text = $"Clerics here: {shown.Influence.GetClerics(FactionId.Player)}   Reserve: {manager.GetClericPool(FactionId.Player)}";
+        if (clergy != null && clergy.UpkeepPerCleric > 0)
+        {
+            int upkeep = manager.CountDeployedClerics(FactionId.Player) * clergy.UpkeepPerCleric;
+            counts.text += $"   Upkeep: {upkeep} Wealth";
+        }
     }
 
     private void Change(int amount)

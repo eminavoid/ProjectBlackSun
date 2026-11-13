@@ -2,19 +2,31 @@ using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using Zeke.Tooltips;
 
 public class FaithEclipseBar : MonoBehaviour
 {
     [SerializeField] private TMP_Text turnText;
+    [SerializeField] private TooltipTrigger turnTooltip;
     [Tooltip("Inactive template, cloned once per faith in play.")]
     [SerializeField] private FaithEclipseChip chipTemplate;
 
+    [Header("Eclipse Countdown")]
+    [Tooltip("From this many turns left, the turn counter warns that the eclipse is near.")]
+    [SerializeField, Min(0)] private int warnTurns = 5;
+    [SerializeField] private Color warnColor = new Color(0.62f, 0.12f, 0.08f, 1f);
+
     private readonly List<FaithEclipseChip> chips = new List<FaithEclipseChip>();
     private InfluenceManager influence;
+    private GameLoopEvents gameLoop;
+    private Color turnColor;
     private int shownTurn;
 
     private void Start()
     {
+        gameLoop = FindAnyObjectByType<GameLoopEvents>();
+        turnColor = turnText.color;
+
         chipTemplate.gameObject.SetActive(false);
         foreach (FactionId faction in FactionIdUtil.All)
         {
@@ -46,7 +58,7 @@ public class FaithEclipseBar : MonoBehaviour
     private void Refresh()
     {
         int turn = GameTime.CurrentTurn;
-        turnText.text = $"TURN {turn}";
+        RefreshTurn(turn);
         if (shownTurn != 0 && shownTurn != turn)
         {
             turnText.transform.DOKill(true);
@@ -62,6 +74,26 @@ public class FaithEclipseBar : MonoBehaviour
             FactionId faction = chips[i].Faction;
             chips[i].Show(influence.CountControlledZones(faction), leader == faction);
         }
+    }
+
+    private void RefreshTurn(int turn)
+    {
+        if (gameLoop == null)
+        {
+            turnText.text = $"TURN {turn}";
+            return;
+        }
+
+        int eclipse = gameLoop.EclipseTurn;
+        int left = gameLoop.TurnsUntilEclipse;
+        turnText.text = $"TURN {Mathf.Min(turn, eclipse)}/{eclipse}";
+        turnText.color = left <= warnTurns ? warnColor : turnColor;
+
+        if (turnTooltip == null) return;
+        string countdown = left <= 1
+            ? "The Faith Eclipse comes when this turn ends."
+            : $"The Faith Eclipse comes in {left} turns.";
+        turnTooltip.SetText($"TURN\n{countdown} The faith controlling the most zones then rules Beheld.\n\nEach time you end the turn, your districts pay their tithes, planted seeds ripen into events and rival faiths make their moves.");
     }
 
     public void RefreshNames()

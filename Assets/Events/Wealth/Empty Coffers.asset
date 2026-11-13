@@ -19,10 +19,14 @@ MonoBehaviour:
     we must resolve this crisis before it is too late.'
   icon: {fileID: 0}
   ticks: 1
+  region: 0
   eventType: 0
   difficulty: 1
+  guideSeed: 0
   <Options>k__BackingField:
   - {fileID: 11400000, guid: 39d723c3e43f4c046aba53299d2ef0d4, type: 2}
   - {fileID: 11400000, guid: db36f10f00e06cd4b92839e8705a691b, type: 2}
   - {fileID: 11400000, guid: 773e95d6b355a9d448a05d65ed99bfcf, type: 2}
   - {fileID: 11400000, guid: 3b7e8a53db6233943bb1ed8cceea01d2, type: 2}
+  - {fileID: 11400000, guid: 327e57ae94c172b4885e1c6fe0725cd9, type: 2}
+  <DefaultOption>k__BackingField: 4

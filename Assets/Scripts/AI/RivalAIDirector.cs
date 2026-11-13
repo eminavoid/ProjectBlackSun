@@ -32,6 +32,8 @@ public class RivalAIDirector : MonoBehaviour
         public int cost;
         public bool slipping;
         public bool secured;
+        public bool hunt;
+        public int defenders;
         public float pressure;
         public float personality;
     }
@@ -365,6 +367,8 @@ public class RivalAIDirector : MonoBehaviour
         misplayed = false;
 
         IReadOnlyList<DistrictZone> zones = InfluenceManager.Get.GetPlayableZones();
+        FactionId? leader = FaithEclipseTracker.GetLeader(out _);
+        if (leader == agent.faction) leader = null;
         List<Choice> choices = new List<Choice>();
         for (int i = 0; i < zones.Count; i++)
         {
@@ -373,8 +377,11 @@ public class RivalAIDirector : MonoBehaviour
             if (!costs.TryGetValue(zone, out int cost)) continue;
 
             bool lost = slipping != null && slipping.Contains(zone);
+            bool hunt = leader.HasValue
+                && zone.Influence.Status == ZoneControlStatus.Controlled
+                && zone.Influence.Controller == leader;
             int weight = influence != null ? influence.ObjectiveWeight(agent.faction, zone.District) : 0;
-            if (!lost && weight <= 0) continue;
+            if (!lost && !hunt && weight <= 0) continue;
 
             float pressure = PressureOn(zone, agent.faction, tuning.aggression);
             bool secured = zone.Influence.Status == ZoneControlStatus.Controlled
@@ -382,7 +389,10 @@ public class RivalAIDirector : MonoBehaviour
                 && !EnemyShare(zone, agent.faction);
             if (clericsLeft > 0 && zone.Influence.CanEnterByNormalMeans(agent.faction))
             {
-                choices.Add(MakeChoice(zone, AIIntentKind.AssignClerics, null, weight, cost, lost, secured, pressure, agent.personality));
+                Choice clerics = MakeChoice(zone, AIIntentKind.AssignClerics, null, weight, cost, lost, secured, pressure, agent.personality);
+                clerics.hunt = hunt;
+                clerics.defenders = hunt ? zone.Influence.GetClerics(leader.Value) : 0;
+                choices.Add(clerics);
             }
 
             if (seeds != null && !zone.IsOccupied && !plannedSeedZones.Contains(zone) &&
@@ -455,6 +465,8 @@ public class RivalAIDirector : MonoBehaviour
     /// <summary>Mayor peso, luego reconquista, luego menor coste. Un nodo ya seguro cede ante uno que todavía no lo está.</summary>
     private static int CompareChoice(Choice a, Choice b)
     {
+        if (a.hunt != b.hunt) return a.hunt ? -1 : 1;
+        if (a.hunt && a.defenders != b.defenders) return a.defenders.CompareTo(b.defenders);
         if (a.weight != b.weight) return b.weight.CompareTo(a.weight);
         if (a.slipping != b.slipping) return a.slipping ? -1 : 1;
         if (a.cost != b.cost) return a.cost.CompareTo(b.cost);

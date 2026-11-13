@@ -3561,6 +3561,7 @@ GameObject:
   - component: {fileID: 410087041}
   - component: {fileID: 410087040}
   - component: {fileID: 410087042}
+  - component: {fileID: 410087043}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -3677,6 +3678,50 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!114 &410087043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 410087039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7ffa0104e09a564eaa55510ba04e2a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DayPassage
+  nightLight: 0.2
+  nightAmbient: 0.45
+  tint:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 0.62, b: 0.42, a: 1}
+    key2: {r: 0.45, g: 0.55, b: 1, a: 0}
+    key3: {r: 1, g: 0.78, b: 0.78, a: 0}
+    key4: {r: 1, g: 1, b: 1, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 16384
+    ctime2: 32768
+    ctime3: 49151
+    ctime4: 65535
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 5
+    m_NumAlphaKeys: 2
 --- !u!1 &411320454
 GameObject:
   m_ObjectHideFlags: 0
@@ -4599,15 +4644,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6901168688039356111, guid: 7119e93fe95d6914089eae023c68c1a8, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6901168688039356111, guid: 7119e93fe95d6914089eae023c68c1a8, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6901168688039356111, guid: 7119e93fe95d6914089eae023c68c1a8, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 140.75
       objectReference: {fileID: 0}
     - target: {fileID: 6901168688039356111, guid: 7119e93fe95d6914089eae023c68c1a8, type: 3}
       propertyPath: m_SizeDelta.y
@@ -4615,11 +4660,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6901168688039356111, guid: 7119e93fe95d6914089eae023c68c1a8, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 129.625
       objectReference: {fileID: 0}
     - target: {fileID: 6901168688039356111, guid: 7119e93fe95d6914089eae023c68c1a8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -59.54
       objectReference: {fileID: 0}
     - target: {fileID: 7439400580252384464, guid: 7119e93fe95d6914089eae023c68c1a8, type: 3}
       propertyPath: maxSize.y
@@ -5571,6 +5616,8 @@ GameObject:
   m_Component:
   - component: {fileID: 828777555}
   - component: {fileID: 828777556}
+  - component: {fileID: 828777558}
+  - component: {fileID: 828777557}
   m_Layer: 0
   m_Name: GameLoopEvents
   m_TagString: Untagged
@@ -5607,9 +5654,45 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameLoopEvents
   playerResources: {fileID: 11400000, guid: b6189538476b6ff4eba1374d56e45c58, type: 2}
   defeatMessage: With no faithful left to follow you, your cult falls apart.
+  eclipseTurn: 30
+  victoryTitle: YOUR CULT ASCENDS
+  victoryMessage: The Beholder opens its eye and finds your faith ruling Beheld.
+    Your pontiff ascends to sainthood.
+  eclipseDefeatTitle: THE ECLIPSE HAS PASSED
+  eclipseDefeatMessage: When the Beholder opened its eye, {0} ruled Beheld. Your
+    cult will wait five more centuries.
+  eclipseTieMessage: When the Beholder opened its eye, no faith ruled Beheld alone.
+    Your cult will wait five more centuries.
   onLose:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &828777557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 828777554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c1af8f49d0d3674ea42e3674887ed3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DebtDefection
+  flockLostPerDebt: 0.1
+--- !u!114 &828777558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 828777554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 549f4eb8871e51843b752db00c394067, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerClergy
+  ordinationCost: 50
+  upkeepPerCleric: 2
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -5712,11 +5795,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LoseScreen
   window: {fileID: 106850315}
   group: {fileID: 106850317}
+  titleText: {fileID: 2086709165}
   messageText: {fileID: 683820738}
   turnsText: {fileID: 1834444649}
+  againLabel: {fileID: 359496493}
   mainMenuScene: MainMenu
   revealEvent: Play_UI_Outcome
   fade: {fileID: 552770790}
+  victoryTitleColor: {r: 0.62, g: 0.42, b: 0.06, a: 1}
+  victoryAgainText: PLAY AGAIN
 --- !u!114 &848656296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9351,7 +9438,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2161a575536763a45b8a82ebea88c9f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameTime
-  turnStartDelay: 0
+  turnStartDelay: 1.6
   seedConfirmationPopUp: {fileID: 918410690522082461, guid: 5a9d5911038efb9408a65fbfc5363cb5, type: 3}
 --- !u!4 &1450177740
 Transform:
@@ -14075,7 +14162,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FaithEclipseBar
   turnText: {fileID: 3839450626133561560}
+  turnTooltip: {fileID: 8291269669994433720}
   chipTemplate: {fileID: 6119710121055919603}
+  warnTurns: 5
+  warnColor: {r: 0.62, g: 0.12, b: 0.08, a: 1}
 --- !u!114 &5454295020660963160
 MonoBehaviour:
   m_ObjectHideFlags: 0

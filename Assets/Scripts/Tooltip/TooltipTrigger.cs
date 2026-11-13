@@ -8,6 +8,10 @@ namespace Zeke.Tooltips
         [TextArea]
         [SerializeField] private string tooltipText;
 
+        public string Text => tooltipText;
+
+        public void SetText(string text) => tooltipText = text;
+
         public void OnPointerEnter(PointerEventData eventData)
         {
             Tooltip.Show(tooltipText);

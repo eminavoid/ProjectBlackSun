@@ -91,8 +91,25 @@ public class SeedEventManager : Singleton<SeedEventManager>
     public static Action<Seed> onSeedStored;
     public static Action<Seed> onSeedRemoved;
     public static Action<SettledEvent> onEventSettled;
+    public static Action<Resource, DistrictZone> onDebtCrisisPlanted;
 
+    private readonly List<(Seed seed, Resource resource)> debtCrises = new List<(Seed, Resource)>();
     private List<string> capturedOutcomes;
+
+    public static bool IsInDebt(Resource resource)
+    {
+        if (IsNull) return false;
+
+        ResourceSeedPool pool = Instance.DebtPool(resource);
+        return pool != null && Instance.resources.GetResourceAmount(resource) < pool.TriggerBelowAmount;
+    }
+
+    private static bool IsDebtCrisis(Seed seed, out Resource resource)
+    {
+        int index = Instance.debtCrises.FindIndex(crisis => crisis.seed == seed);
+        resource = index >= 0 ? Instance.debtCrises[index].resource : default;
+        return index >= 0;
+    }
 
     public static void CreateSeedEventMenu(Seed seed)
     {
@@ -122,6 +139,8 @@ public class SeedEventManager : Singleton<SeedEventManager>
     private static Seed RemoveSeed(Seed seed)
     {
         Instance.seedEvents.Remove(seed);
+        int crisis = Instance.debtCrises.FindIndex(entry => entry.seed == seed);
+        if (crisis >= 0) Instance.debtCrises.RemoveAt(crisis);
         onSeedRemoved?.Invoke(seed);
 
         Instance.UpdateSeedEventsCount();
@@ -412,10 +431,12 @@ public class SeedEventManager : Singleton<SeedEventManager>
 
             Seed seed = filteredEvents[UnityEngine.Random.Range(0, filteredEvents.Count)];
 
-            if (TryPlantSeed(seed))
+            if (TryPlantSeed(seed, out DistrictZone zone))
             {
                 Debug.Log($"Played seed due to low {resourceSeedPool.Resource}");
                 resourceSeedPool.cooldownSeeds.Add(new ResourceSeedPool.CooldownSeedsElement(seed, -1));
+                debtCrises.Add((zone.PlantedSeed, resourceSeedPool.Resource));
+                onDebtCrisisPlanted?.Invoke(resourceSeedPool.Resource, zone);
             }
 
             resourceSeedPool.ticksSinceTriggered = -1;
@@ -483,11 +504,12 @@ public class SeedEventManager : Singleton<SeedEventManager>
         }
     }
 
-    private bool TryPlantSeed(Seed seed)
+    private bool TryPlantSeed(Seed seed, out DistrictZone zone)
     {
+        zone = null;
         if (seed == null) return false;
 
-        if (!DistrictsManager.TryGetRandomFreeZoneAnyDistrict(out DistrictZone zone) || zone == null)
+        if (!DistrictsManager.TryGetRandomFreeZoneAnyDistrict(out zone) || zone == null)
         {
             Debug.LogWarning("No hay sectores libres para plantar resource seed.", this);
             return false;
@@ -521,6 +543,21 @@ public class SeedEventManager : Singleton<SeedEventManager>
         });
     }
 
+    private ResourceSeedPool DebtPool(Resource resource)
+    {
+        if (resourceSeedPools == null) return null;
+
+        for (int i = 0; i < resourceSeedPools.Count; i++)
+        {
+            ResourceSeedPool pool = resourceSeedPools[i];
+            if (pool == null || pool.Resource != resource || pool.SeedPool == null) continue;
+            if (pool.SeedPool.EvilSeeds == null || pool.SeedPool.EvilSeeds.Count <= 0) continue;
+            return pool;
+        }
+
+        return null;
+    }
+
     private bool HasResourceSeedPool(Resource resource)
     {
         if (resourceSeedPools == null)
@@ -544,7 +581,9 @@ public class SeedEventManager : Singleton<SeedEventManager>
         LayoutGroup layout = spawnOptionsWindow.TryGetElement<LayoutGroup>("Layout Group");
         DestroyOptions(layout);
         spawnOptionsWindow.TryGetElement<TextMeshProUGUI>("Title").text = seed.Title;
-        spawnOptionsWindow.TryGetElement<TextMeshProUGUI>("Description").text = seed.Description;
+        spawnOptionsWindow.TryGetElement<TextMeshProUGUI>("Description").text = IsDebtCrisis(seed, out Resource debt)
+            ? $"<b>DEBT CRISIS:</b> this came from your {debt} falling below 0.\n\n{seed.Description}"
+            : seed.Description;
 
         RegionSeal seal = spawnOptionsWindow.GetComponentInChildren<RegionSeal>(true);
         if (seal != null) seal.Show(seed.Region);

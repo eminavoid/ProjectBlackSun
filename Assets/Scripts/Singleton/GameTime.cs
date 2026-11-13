@@ -29,6 +29,8 @@ public class GameTime : Singleton<GameTime>
 
     public static int CurrentTurn { get; private set; } = 1;
 
+    public static float TurnStartDelay => IsNull ? 0f : Instance.turnStartDelay;
+
     private static bool processingTurn = false;
     private static bool confirmationPopUpOpen = false;
 

@@ -22,8 +22,11 @@ MonoBehaviour:
   region: 4
   eventType: 0
   difficulty: 1
+  guideSeed: 0
   <Options>k__BackingField:
   - {fileID: 11400000, guid: 8476a36af2e1a5942bfe5b96ca6fc940, type: 2}
   - {fileID: 11400000, guid: 16e7c435f3c4244439d7cf2a3db607dd, type: 2}
   - {fileID: 11400000, guid: 210cc387ba2c816468e971225f174efb, type: 2}
   - {fileID: 11400000, guid: 9a53959393df97247a9177b2a7691156, type: 2}
+  - {fileID: 11400000, guid: b1681f79010be9543a335669b8a71100, type: 2}
+  <DefaultOption>k__BackingField: 4

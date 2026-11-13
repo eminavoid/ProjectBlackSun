@@ -60,6 +60,7 @@ public class ChronicleWindow : MonoBehaviour
         tithesSection.SetActive(yield.Count > 0);
         tithesHeader.text = HasLoss(yield) ? mixedTithesTitle : tithesTitle;
         tithes.Show(yield);
+        if (!ResourceManager.IsNull && ResourceManager.Sidebar != null) ResourceManager.Sidebar.Hold(this, yield);
 
         eventsSection.SetActive(settled.Count > 0);
         eventsHeader.text = $"SETTLED BY YOUR ADVISORS ({settled.Count})";
@@ -133,6 +134,7 @@ public class ChronicleWindow : MonoBehaviour
         if (closing) return;
         closing = true;
         group.blocksRaycasts = false;
+        if (!ResourceManager.IsNull && ResourceManager.Sidebar != null) ResourceManager.Sidebar.Receive(this, tithes.TakeChips());
 
         float duration = openDuration * 0.6f;
         DOTween.Sequence()
