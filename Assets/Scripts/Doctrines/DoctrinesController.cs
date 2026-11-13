@@ -101,6 +101,15 @@ public class DoctrinesController : MonoBehaviour
                 if (AudioManager.Instance != null) AudioManager.Instance.PlayCardClick();
             });
         }
+
+        if (layout.transform.childCount == 0)
+        {
+            selectorMenu.TryGetElement<TextMeshProUGUI>("Unlock Text").SetText("Unlock more doctrines in the theology menu!");
+        }
+        else
+        {
+            selectorMenu.TryGetElement<TextMeshProUGUI>("Unlock Text").SetText("");
+        }
     }
 
     public void AddDoctrine(Doctrine doctrine)
