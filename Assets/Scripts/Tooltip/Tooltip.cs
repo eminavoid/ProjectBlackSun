@@ -1,6 +1,7 @@
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
@@ -40,6 +41,7 @@ namespace Zeke.Tooltips
         public static void SetText(string text)
         {
             Instance.tooltipText.text = text;
+            if (Instance.tooltipObject.activeSelf) Instance.Refit();
         }
 
         public static void Show(string text)
@@ -102,6 +104,13 @@ namespace Zeke.Tooltips
             ClampToScreen(tooltipRect);
         }
 
+        private void Refit()
+        {
+            tooltipText.ForceMeshUpdate();
+            LayoutRebuilder.ForceRebuildLayoutImmediate(tooltipRect);
+            UpdatePosition();
+        }
+
         private static Vector2 ReadPointer()
         {
 #if ENABLE_INPUT_SYSTEM
@@ -162,6 +171,7 @@ namespace Zeke.Tooltips
                 if (timer > showDelay)
                 {
                     tooltipObject.SetActive(true);
+                    Refit();
                     onTooltipShow?.Invoke();
                     Appear(true);
                 }

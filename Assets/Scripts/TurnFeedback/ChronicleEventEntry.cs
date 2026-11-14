@@ -33,14 +33,15 @@ public class ChronicleEventEntry : MonoBehaviour, IPointerEnterHandler, IPointer
         button.onClick.AddListener(() => Clicked?.Invoke(this));
     }
 
-    public void Bind(SettledEvent settled, Sprite districtMarker)
+    public void Bind(SettledEvent settled, Sprite districtMarker, Zeke.Tooltips.TooltipLinksDB glossary = null)
     {
         title.text = settled.Seed != null ? settled.Seed.Title : string.Empty;
         choice.text = settled.Option != null ? $"Your advisors chose: {settled.Option.Title}" : string.Empty;
         marker.sprite = districtMarker;
         marker.enabled = districtMarker != null;
         changes.Show(settled.Changes);
-        outcome.text = string.IsNullOrWhiteSpace(settled.Outcome) ? noOutcomeText : settled.Outcome;
+        string story = string.IsNullOrWhiteSpace(settled.Outcome) ? noOutcomeText : settled.Outcome;
+        outcome.text = glossary != null ? glossary.Highlight(story) : story;
         SetExpanded(false);
     }
 

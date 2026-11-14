@@ -1,0 +1,328 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bab291b83dfa7e14d91b0e93b000d517, type: 3}
+  m_Name: Glossary
+  m_EditorClassIdentifier: Assembly-CSharp::Zeke.Tooltips.TooltipLinksDB
+  linkColor: {r: 0.55, g: 0.16, b: 0.07, a: 1}
+  entries:
+  - key: wealth
+    title: Wealth
+    terms:
+    - Wealth
+    recolor: 1
+    description: Coin. Pays your clerics' upkeep, ordinations and costly choices.
+      Produced in the Agora, Pink Quarter, Crucible and Lacrimal Hill. Below 0 it
+      becomes debt.
+  - key: zeal
+    title: Zeal
+    terms:
+    - Zeal
+    recolor: 1
+    description: The fervour of your faithful, spent on rites and many event choices.
+      Produced in the Ocularium, Warrens, Crucible and Lacrimal Hill.
+  - key: flock
+    title: Flock
+    terms:
+    - Flock
+    - faithful
+    recolor: 1
+    description: Your faithful. If they all leave, your cult falls. Grows in the
+      Warrens, Crucible and Lacrimal Hill; crises and debts drive it away.
+  - key: authority
+    title: Authority
+    terms:
+    - Authority
+    recolor: 1
+    description: Standing among the powers of Beheld. Spent to call in favours during
+      events.
+  - key: materials
+    title: Materials
+    terms:
+    - Materials
+    recolor: 1
+    description: Stone and timber for your temples. Some events and crises ask for
+      them.
+  - key: secrets
+    title: Secrets
+    terms:
+    - Secrets
+    recolor: 1
+    description: Whispers and leverage. Produced in the Pink Quarter, Agora, Ocularium
+      and Lacrimal Hill.
+  - key: happiness
+    title: Happiness
+    terms:
+    - Happiness
+    recolor: 1
+    description: How content your faithful are, from 0 to 100%.
+  - key: influence
+    title: Influence
+    terms:
+    - influence
+    recolor: 1
+    description: A faith's hold on a zone, up to 100. A faith with more than half
+      of it rules the zone. Clerics raise it every turn.
+  - key: cleric
+    title: Clerics
+    terms:
+    - cleric
+    - clerics
+    - clergy
+    recolor: 1
+    description: Your preachers. On the map they raise your influence every turn
+      and cost Wealth in upkeep. In reserve they cost nothing.
+  - key: reserve
+    title: Reserve
+    terms:
+    - reserve
+    recolor: 1
+    description: Clerics waiting at home. Send them to a zone from the clerics panel;
+      they cost nothing until then.
+  - key: upkeep
+    title: Upkeep
+    terms:
+    - upkeep
+    recolor: 1
+    description: Wealth you pay every turn for each cleric posted on the map.
+  - key: ordination
+    title: Ordination
+    terms:
+    - ordination
+    - ordain
+    - ordained
+    recolor: 1
+    description: 'How new clerics join your cult: training points from Learning and
+      Stewardship every turn, or Wealth to ordain one at once.'
+  - key: zone
+    title: Zone
+    terms:
+    - zone
+    - zones
+    recolor: 1
+    description: A block of Beheld. Faiths fight over its influence; whoever rules
+      it collects its tithes and counts it for the Faith Eclipse.
+  - key: district
+    title: District
+    terms:
+    - district
+    - districts
+    recolor: 1
+    description: One of the six quarters of Beheld. Ruling more than half of its
+      zones raises their production.
+  - key: ruled
+    title: Ruled
+    terms:
+    - ruled
+    recolor: 1
+    description: A faith with more than half of a zone's influence rules it and takes
+      all of its tithes.
+  - key: contested
+    title: Contested
+    terms:
+    - contested
+    recolor: 1
+    description: No faith holds more than half of the influence. The zone's tithes
+      are split by share and the rest is lost.
+  - key: eclipse
+    title: Faith Eclipse
+    terms:
+    - Faith Eclipse
+    - eclipse
+    recolor: 1
+    description: When the last turn ends, the Beholder opens its eye. The faith ruling
+      the most zones wins; a tie or a rival in the lead means defeat.
+  - key: debtcrisis
+    title: Debt crisis
+    terms:
+    - debt crisis
+    - crisis
+    - crises
+    recolor: 1
+    description: An event born of debt. Ignoring it costs Flock; one of its choices
+      clears the whole debt in exchange for faithful.
+  - key: debt
+    title: Debt
+    terms:
+    - in debt
+    - debt
+    - debts
+    recolor: 1
+    description: A resource below 0. Each turn in debt, some of your faithful leave
+      and a debt crisis grows more likely.
+  - key: tithe
+    title: Tithes
+    terms:
+    - tithe
+    - tithes
+    recolor: 1
+    description: What your zones yield every turn, split by influence.
+  - key: seed
+    title: Seeds
+    terms:
+    - seed
+    - seeds
+    recolor: 1
+    description: Schemes planted in a zone. After a few turns they ripen into events.
+  - key: event
+    title: Events
+    terms:
+    - event
+    - events
+    recolor: 1
+    description: Matters that need your judgement. If you end the turn without answering,
+      your advisors take the default choice.
+  - key: advisors
+    title: Advisors
+    terms:
+    - advisors
+    recolor: 1
+    description: They settle any event you leave unanswered, always with its default
+      choice.
+  - key: doctrine
+    title: Doctrines
+    terms:
+    - doctrine
+    - doctrines
+    recolor: 1
+    description: Tenets of your creed. Each doctrine raises or lowers your virtues.
+  - key: theology
+    title: Theology
+    terms:
+    - Theology
+    recolor: 1
+    description: Commune with the Beholder to unlock new seeds and doctrines.
+  - key: virtues
+    title: Virtues
+    terms:
+    - virtues
+    recolor: 1
+    description: Your cult's five traits. Each point above 10 adds influence in its
+      districts; each point below takes some away.
+  - key: diplomacy
+    title: Diplomacy
+    terms:
+    - Diplomacy
+    recolor: 1
+    description: Virtue. Raises your influence in the Warrens.
+  - key: aggression
+    title: Aggression
+    terms:
+    - Aggression
+    recolor: 1
+    description: Virtue. Raises your influence in the Crucible.
+  - key: stewardship
+    title: Stewardship
+    terms:
+    - Stewardship
+    recolor: 1
+    description: Virtue. Raises your influence in the Agora and trains new clerics.
+  - key: intrigue
+    title: Intrigue
+    terms:
+    - Intrigue
+    recolor: 1
+    description: Virtue. Raises your influence in the Pink Quarter and Lacrimal Hill.
+  - key: learning
+    title: Learning
+    terms:
+    - Learning
+    recolor: 1
+    description: Virtue. Raises your influence in the Ocularium and trains new clerics
+      twice as fast as Stewardship.
+  - key: expelled
+    title: Expelled
+    terms:
+    - expelled
+    recolor: 1
+    description: A faith that lost all of its influence in a full zone. It cannot
+      come back while the zone stays full.
+  - key: beholder
+    title: The Beholder
+    terms:
+    - Beholder
+    recolor: 1
+    description: The god all of Beheld waits on. It opens its eye at the Faith Eclipse.
+  - key: beheld
+    title: Beheld
+    terms:
+    - Beheld
+    recolor: 1
+    description: The city every faith is fighting for.
+  - key: warrens
+    title: Warrens
+    terms:
+    - Warrens
+    recolor: 1
+    description: District. Produces Flock and Zeal. Diplomacy raises your influence
+      here.
+  - key: crucible
+    title: Crucible
+    terms:
+    - Crucible
+    recolor: 1
+    description: District. Produces Wealth, Flock and Zeal. Aggression raises your
+      influence here.
+  - key: agora
+    title: Agora
+    terms:
+    - Agora
+    recolor: 1
+    description: District. Produces Wealth and Secrets. Stewardship raises your influence
+      here.
+  - key: ocularium
+    title: Ocularium
+    terms:
+    - Ocularium
+    recolor: 1
+    description: District. Produces Zeal and Secrets. Learning raises your influence
+      here.
+  - key: pinkquarter
+    title: Pink Quarter
+    terms:
+    - Pink Quarter
+    recolor: 1
+    description: District. Produces Secrets and Wealth. Intrigue raises your influence
+      here.
+  - key: lacrimal
+    title: Lacrimal Hill
+    terms:
+    - Lacrimal Hill
+    recolor: 1
+    description: District. Produces a little of everything. Intrigue raises your
+      influence here.
+  - key: crimson
+    title: Crimson Choir
+    terms:
+    - Crimson Choir
+    recolor: 0
+    description: Rival faith. Works through seeds and schemes and covets the Crucible
+      and the Ocularium.
+  - key: rose
+    title: Rose Ledger
+    terms:
+    - Rose Ledger
+    recolor: 0
+    description: Rival faith. Mixes clerics and seeds and covets the Pink Quarter
+      and the Warrens.
+  - key: ochre
+    title: Ochre Flock
+    terms:
+    - Ochre Flock
+    recolor: 0
+    description: Rival faith. Floods the streets with clerics and covets the Agora
+      and Lacrimal Hill.
+  - key: violet
+    title: Violet Veil
+    terms:
+    - Violet Veil
+    recolor: 0
+    description: Rival faith.

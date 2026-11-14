@@ -39,6 +39,9 @@ public class ChronicleWindow : MonoBehaviour
 
     [Space]
     [SerializeField] private Button closeButton;
+    [Tooltip("The X in the page's corner. Closes like Continue.")]
+    [SerializeField] private Button cornerCloseButton;
+    [SerializeField] private Zeke.Tooltips.TooltipLinksDB glossary;
     [SerializeField, Min(0.01f)] private float openDuration = 0.35f;
 
     private readonly List<ChronicleEventEntry> entries = new List<ChronicleEventEntry>();
@@ -48,6 +51,7 @@ public class ChronicleWindow : MonoBehaviour
     {
         entryTemplate.gameObject.SetActive(false);
         closeButton.onClick.AddListener(Close);
+        if (cornerCloseButton != null) cornerCloseButton.onClick.AddListener(Close);
     }
 
     public void Show(int turn, IReadOnlyList<string> news, IReadOnlyList<ResourceDelta> yield, IReadOnlyList<SettledEvent> settled)
@@ -55,7 +59,9 @@ public class ChronicleWindow : MonoBehaviour
         turnLabel.text = $"TURN {turn}";
 
         newsSection.SetActive(news.Count > 0);
-        newsText.text = string.Join("\n", news);
+        var linked = new List<string>(news.Count);
+        foreach (string line in news) linked.Add(glossary != null ? glossary.Highlight(line) : line);
+        newsText.text = string.Join("\n", linked);
 
         tithesSection.SetActive(yield.Count > 0);
         tithesHeader.text = HasLoss(yield) ? mixedTithesTitle : tithesTitle;
@@ -68,7 +74,7 @@ public class ChronicleWindow : MonoBehaviour
         {
             ChronicleEventEntry entry = Instantiate(entryTemplate, entryTemplate.transform.parent);
             entry.gameObject.SetActive(true);
-            entry.Bind(settled[i], MarkerFor(settled[i].Seed));
+            entry.Bind(settled[i], MarkerFor(settled[i].Seed), glossary);
             entry.Clicked += Toggle;
             entries.Add(entry);
         }

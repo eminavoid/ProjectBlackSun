@@ -37,6 +37,10 @@ public class MapStatsBook : MonoBehaviour
     [SerializeField] private TMP_Text textTemplate;
     [SerializeField] private MapStatsEntry entryTemplate;
     [SerializeField] private Button actionTemplate;
+    [Tooltip("Game terms in the page's texts link to their entry here and show it on hover.")]
+    [SerializeField] private Zeke.Tooltips.TooltipLinksDB glossary;
+    [Tooltip("Room left on each side of an action's label.")]
+    [SerializeField, Min(0f)] private float actionPadding = 34f;
 
     [Header("Motion")]
     [SerializeField, Min(0.01f)] private float openDuration = 0.4f;
@@ -103,7 +107,7 @@ public class MapStatsBook : MonoBehaviour
 
         for (int i = 0; i < tabs.Length; i++)
         {
-            tabs[i].Rise(openDuration * 0.55f + i * 0.05f);
+            if (tabs[i].gameObject.activeInHierarchy) tabs[i].Rise(openDuration * 0.55f + i * 0.05f);
         }
 
         Play(openEvent);
@@ -180,18 +184,39 @@ public class MapStatsBook : MonoBehaviour
 
     public void AddSection(string text) => Spawn(sectionTemplate).text = text;
 
-    public void AddText(string text) => Spawn(textTemplate).text = text;
+    public void AddText(string text) => Spawn(textTemplate).text = Link(text);
 
     public void AddEntry(Sprite icon, Color swatch, string title, string detail, UnityAction onClick = null)
     {
-        Spawn(entryTemplate).Bind(icon, swatch, title, detail, onClick);
+        Spawn(entryTemplate).Bind(icon, swatch, Link(title), Link(detail), onClick);
     }
 
     public void AddAction(string label, UnityAction onClick)
     {
         Button button = Spawn(actionTemplate);
-        button.GetComponentInChildren<TMP_Text>().text = label;
+        TMP_Text text = button.GetComponentInChildren<TMP_Text>();
+        text.text = label;
+        FitAction(button, text);
         button.onClick.AddListener(onClick);
+    }
+
+    private string Link(string text) => glossary != null ? glossary.Highlight(text) : text;
+
+    private void FitAction(Button button, TMP_Text label)
+    {
+        RectTransform rect = (RectTransform)button.transform;
+        float template = ((RectTransform)actionTemplate.transform).rect.width;
+        float room = content.rect.width > 0f ? content.rect.width : float.MaxValue;
+        float needed = label.GetPreferredValues(label.text, Mathf.Infinity, Mathf.Infinity).x + actionPadding * 2f;
+        float width = Mathf.Min(Mathf.Max(template, needed), room);
+
+        rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, width);
+        if (button.TryGetComponent(out LayoutElement layout)) layout.preferredWidth = width;
+
+        if (needed <= width) return;
+        label.fontSizeMax = label.fontSize;
+        label.fontSizeMin = label.fontSize * 0.7f;
+        label.enableAutoSizing = true;
     }
 
     public void EndPage(bool animate)

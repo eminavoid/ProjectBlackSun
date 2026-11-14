@@ -49,6 +49,15 @@ public class TheologyMenu : MonoBehaviour
     [SerializeField] private Image eyeNext;
     [SerializeField] private Button[] plates;
 
+    [Header("Close Button")]
+    [SerializeField] private Button closeButton;
+    [Tooltip("From the visible art's top-right corner to the close button's, with the temple closed.")]
+    [SerializeField] private Vector2 closedCloseInset = new Vector2(70f, 150f);
+    [Tooltip("The same, once the rite has opened the wall.")]
+    [SerializeField] private Vector2 openCloseInset = new Vector2(70f, 150f);
+
+    private readonly Vector3[] artCorners = new Vector3[4];
+
     private Button offeringButton;
     private Button sacrificeButton;
     private Button dismissButton;
@@ -89,6 +98,12 @@ public class TheologyMenu : MonoBehaviour
         blessingsCount = FindCount("Blessings Count");
         if (offeringButton != null) offeringButton.onClick.AddListener(() => StartCoroutine(PayStake(false)));
         if (sacrificeButton != null) sacrificeButton.onClick.AddListener(() => StartCoroutine(PayStake(true)));
+        if (closeButton != null)
+        {
+            closeButton.onClick = new Button.ButtonClickedEvent();
+            closeButton.onClick.AddListener(Dismiss);
+        }
+
         Transform dismiss = transform.Find("Dismiss");
         if (dismiss == null) return;
         dismissButton = dismiss.GetComponent<Button>();
@@ -134,6 +149,19 @@ public class TheologyMenu : MonoBehaviour
     private void LateUpdate()
     {
         ApplyCommuneGate();
+        PlaceCloseButton();
+    }
+
+    private void PlaceCloseButton()
+    {
+        if (closeButton == null) return;
+
+        bool open = openMask.gameObject.activeSelf;
+        RectTransform art = open ? openArt : closedArt.rectTransform;
+        art.GetWorldCorners(artCorners);
+        Vector2 inset = open ? openCloseInset : closedCloseInset;
+        Vector3 scale = art.lossyScale;
+        closeButton.transform.position = artCorners[2] - new Vector3(inset.x * scale.x, inset.y * scale.y, 0f);
     }
 
     private void Dismiss()

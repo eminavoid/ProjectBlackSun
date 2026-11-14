@@ -3,12 +3,19 @@ using Zeke.Tooltips;
 
 namespace Zeke.Abilities
 {
-    [RequireComponent(typeof(ILinkHoverEvents))]
+    [RequireComponent(typeof(HoverLinkHandlerTMPro))]
     public class LinkTooltipTrigger : MonoBehaviour
     {
         [SerializeField] private TooltipLinksDB tooltipLinksDB;
 
         private ILinkHoverEvents linkHoverEvents;
+        private bool showing;
+
+        public TooltipLinksDB Database
+        {
+            get => tooltipLinksDB;
+            set => tooltipLinksDB = value;
+        }
 
         private void Awake()
         {
@@ -25,18 +32,23 @@ namespace Zeke.Abilities
         {
             linkHoverEvents.OnHoverEnterLink -= OnHoverEnterLink;
             linkHoverEvents.OnHoverExitLink -= OnHoverExitLink;
+            if (showing && !Tooltip.IsNull) Tooltip.Hide();
+            showing = false;
         }
 
         private void OnHoverEnterLink(LinkHoverEventInfo linkHoverEventInfo)
         {
-            if (tooltipLinksDB.TryGetValue(linkHoverEventInfo.id, out TooltipLinksDB.TooltipInfo toolTipInfo))
-            {
-                Tooltip.Show(toolTipInfo.description);
-            }
+            if (tooltipLinksDB == null || !tooltipLinksDB.TryGetValue(linkHoverEventInfo.id, out TooltipLinksDB.TooltipInfo toolTipInfo)) return;
+
+            Tooltip.Show(string.IsNullOrEmpty(toolTipInfo.title)
+                ? toolTipInfo.description
+                : $"{toolTipInfo.title}\n<size=80%>{toolTipInfo.description}</size>");
+            showing = true;
         }
 
         private void OnHoverExitLink(LinkHoverEventInfo linkHoverEventInfo)
         {
+            showing = false;
             Tooltip.Hide();
         }
     }

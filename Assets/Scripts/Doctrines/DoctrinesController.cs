@@ -214,6 +214,14 @@ public class DoctrinesController : MonoBehaviour
         return amount;
     }
 
+    public void GetEquippedDoctrines(List<Doctrine> doctrines)
+    {
+        for (int i = 0; i < doctrineSlots.Count; i++)
+        {
+            if (doctrineSlots[i].doctrine != null) doctrines.Add(doctrineSlots[i].doctrine);
+        }
+    }
+
     public bool HasEquippedDoctrine(string doctrineName)
     {
         if (string.IsNullOrWhiteSpace(doctrineName)) return false;

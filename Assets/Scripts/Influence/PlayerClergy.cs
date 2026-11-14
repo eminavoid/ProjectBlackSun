@@ -6,6 +6,8 @@ public class PlayerClergy : MonoBehaviour
     [Header("Ordination")]
     [Tooltip("Training points for a new cleric. Each turn the cult earns (2 x Learning + Stewardship) / 2, both stats counted from 10.")]
     [SerializeField, Min(1)] private int ordinationCost = 50;
+    [Tooltip("Wealth to ordain a cleric at once from the clerics menu.")]
+    [SerializeField, Min(0)] private int ordainPrice = 60;
 
     [Header("Upkeep")]
     [Tooltip("Wealth each cleric on the map costs per turn. Clerics in reserve cost nothing.")]
@@ -17,10 +19,24 @@ public class PlayerClergy : MonoBehaviour
     private int training;
 
     public int UpkeepPerCleric => upkeepPerCleric;
+    public int OrdinationCost => ordinationCost;
+    public int OrdainPrice => ordainPrice;
+    public int Training => training;
+    public int TrainingPerTurn => InfluenceManager.IsNull ? 0 : TrainingFrom(InfluenceManager.Get.Stats);
 
     private void OnEnable() => GameTime.OnTurnEnded += OnTurnEnded;
 
     private void OnDisable() => GameTime.OnTurnEnded -= OnTurnEnded;
+
+    public bool TryOrdain()
+    {
+        if (InfluenceManager.IsNull || ResourceManager.IsNull) return false;
+        if (ResourceManager.Resources.GetResourceAmount(Resource.Wealth) < ordainPrice) return false;
+
+        ResourceManager.AddResource(Resource.Wealth, -ordainPrice);
+        InfluenceManager.Get.GetStock(FactionId.Player).ReturnClerics(1);
+        return true;
+    }
 
     private void OnTurnEnded()
     {
@@ -43,7 +59,7 @@ public class PlayerClergy : MonoBehaviour
 
     private void Train(InfluenceManager influence)
     {
-        training += TrainingPerTurn(influence.Stats);
+        training += TrainingFrom(influence.Stats);
         int ordained = training / ordinationCost;
         if (ordained <= 0) return;
 
@@ -52,7 +68,7 @@ public class PlayerClergy : MonoBehaviour
         onOrdained?.Invoke(ordained);
     }
 
-    private static int TrainingPerTurn(PlayerStats stats)
+    private static int TrainingFrom(PlayerStats stats)
     {
         int learning = 10 + (stats != null ? stats.GetStat(PlayerStats.PlayerStat.Learning) : 0);
         int stewardship = 10 + (stats != null ? stats.GetStat(PlayerStats.PlayerStat.Stewardship) : 0);
