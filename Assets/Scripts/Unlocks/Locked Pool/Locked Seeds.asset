@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 147a71ea19008d346a554183fc1dac37, type: 3}
-  m_Name: Locked
+  m_Name: Locked Seeds
   m_EditorClassIdentifier: Assembly-CSharp::Locked
   locked:
   - {fileID: 11400000, guid: f331c7c5c9ae34444984c7239a3847dc, type: 2}

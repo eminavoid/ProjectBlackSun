@@ -23,6 +23,11 @@ public class TheologyMenu : MonoBehaviour
         "Whispers Turn Sour"
     };
 
+    [SerializeField] private Locked seedsPool;
+    [SerializeField] private Locked doctrinesPool;
+
+    [Space]
+
     [SerializeField] private Resource costResource = Resource.Zeal;
     [SerializeField, Min(0)] private int startCost = 0;
     [SerializeField, Min(0)] private int costIncrease = 15;
@@ -390,19 +395,9 @@ public class TheologyMenu : MonoBehaviour
 
     private Seed PickSeed()
     {
-        DistrictSeedPlantPanel panel = FindAnyObjectByType<DistrictSeedPlantPanel>();
-        IReadOnlyList<Seed> known = panel != null ? panel.KnownSeeds : null;
-        if (known == null || known.Count == 0) return null;
+        List<Seed> choices = seedsPool.Get<Seed>();
 
-        List<Seed> choices = new List<Seed>();
-        for (int i = 0; i < known.Count; i++)
-        {
-            Seed seed = known[i];
-            if (seed == null || !seed.HasDisplayTitle) continue;
-            choices.Add(seed);
-        }
-
-        if (choices.Count == 0) return null;
+        if (choices == null || choices.Count == 0) return null;
         return choices[Random.Range(0, choices.Count)];
     }
 

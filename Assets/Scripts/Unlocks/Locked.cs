@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Locked", menuName = "Unlocks/new Locked List", order = 1)]
@@ -17,6 +18,11 @@ public class Locked : ScriptableObject
     public List<Unlockeable> GetCopy() => new List<Unlockeable>(locked);
 
     public List<Unlockeable> GetRarity(Rarity rarity) => filtered[rarity];
+
+    public List<T> Get<T>() where T : ScriptableObject
+    {
+        return locked.OfType<T>().ToList();
+    }
 
     public void Add(Unlockeable scriptable, Rarity rarity)
     {
