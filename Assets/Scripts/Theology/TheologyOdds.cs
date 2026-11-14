@@ -21,7 +21,7 @@ public struct TheologyChances
 /// </summary>
 public static class TheologyOdds
 {
-    public static readonly int[] Costs = { 25, 50, 100, 200 };
+    public static readonly int[] Costs = { 10, 12, 15, 18, 20, 25, 30, 40, 45, 50, 60, 70, 80, 90, 120, 150 };
 
     private static readonly float[] OfferingPoints = { 2.5f, 5f, 10f, 20f };
     private static readonly float[] SacrificePoints = { 5f, 10f, 20f, 40f };
