@@ -13671,6 +13671,7 @@ GameObject:
   - component: {fileID: 2468930929873381140}
   - component: {fileID: 779955260628403374}
   - component: {fileID: 3105599517460237784}
+  - component: {fileID: 3105599517460237785}
   m_Layer: 0
   m_Name: House__Green_9
   m_TagString: Untagged
@@ -13753,6 +13754,7 @@ GameObject:
   - component: {fileID: 1617112384460026929}
   - component: {fileID: 8491552792740026265}
   - component: {fileID: 4544213714138058}
+  - component: {fileID: 8491552792740026266}
   m_Layer: 0
   m_Name: House__White_3
   m_TagString: Untagged
@@ -13853,6 +13855,7 @@ GameObject:
   - component: {fileID: 4779032199136558390}
   - component: {fileID: 7786525031715207051}
   - component: {fileID: 4997268584631362826}
+  - component: {fileID: 7786525031715207052}
   m_Layer: 0
   m_Name: House__Green_4
   m_TagString: Untagged
@@ -13871,6 +13874,7 @@ GameObject:
   - component: {fileID: 4052501769466932028}
   - component: {fileID: 4760851043374369543}
   - component: {fileID: 1814896460406602929}
+  - component: {fileID: 4760851043374369544}
   m_Layer: 0
   m_Name: House__White_9
   m_TagString: Untagged
@@ -13889,6 +13893,7 @@ GameObject:
   - component: {fileID: 1362723039576019576}
   - component: {fileID: 8331591526393114281}
   - component: {fileID: 5204622092874634238}
+  - component: {fileID: 8331591526393114282}
   m_Layer: 0
   m_Name: House__Red_2
   m_TagString: Untagged
@@ -13970,6 +13975,7 @@ GameObject:
   - component: {fileID: 1439266066373296432}
   - component: {fileID: 5004990678860836612}
   - component: {fileID: 5849691249179124994}
+  - component: {fileID: 5849691249179124995}
   m_Layer: 0
   m_Name: ZONE_GREEN_3.022
   m_TagString: Untagged
@@ -14120,6 +14126,7 @@ GameObject:
   - component: {fileID: 1506249519834073405}
   - component: {fileID: 8915593739719505892}
   - component: {fileID: 6210533199839838333}
+  - component: {fileID: 8915593739719505893}
   m_Layer: 0
   m_Name: House__Green_7
   m_TagString: Untagged
@@ -14883,6 +14890,7 @@ GameObject:
   - component: {fileID: 7002764200580504822}
   - component: {fileID: 5713942520660527567}
   - component: {fileID: 805238246647361576}
+  - component: {fileID: 7002764200580504823}
   m_Layer: 0
   m_Name: House__White_1
   m_TagString: Untagged
@@ -15045,6 +15053,7 @@ GameObject:
   - component: {fileID: 2393332849229479023}
   - component: {fileID: 6943434588677035583}
   - component: {fileID: 2616313459449041084}
+  - component: {fileID: 6943434588677035584}
   m_Layer: 0
   m_Name: House__Red_7
   m_TagString: Untagged
@@ -15078,6 +15087,7 @@ GameObject:
   - component: {fileID: 5302582694267405180}
   - component: {fileID: 7466432296923906538}
   - component: {fileID: 7733722069133386824}
+  - component: {fileID: 7733722069133386825}
   m_Layer: 0
   m_Name: House__Red_4
   m_TagString: Untagged
@@ -15202,6 +15212,7 @@ GameObject:
   - component: {fileID: 2488017773928018341}
   - component: {fileID: 6697246343570087406}
   - component: {fileID: 3508342854970120317}
+  - component: {fileID: 6697246343570087407}
   m_Layer: 0
   m_Name: House__White_8
   m_TagString: Untagged
@@ -15954,6 +15965,7 @@ GameObject:
   - component: {fileID: 124855330683718456}
   - component: {fileID: 6553196205611558826}
   - component: {fileID: 3731220053759051723}
+  - component: {fileID: 6553196205611558827}
   m_Layer: 0
   m_Name: ZONE_GREEN_3.018
   m_TagString: Untagged
@@ -16302,6 +16314,7 @@ GameObject:
   - component: {fileID: 8874734719444255230}
   - component: {fileID: 718902078745814937}
   - component: {fileID: 1177668279698250088}
+  - component: {fileID: 8874734719444255231}
   m_Layer: 0
   m_Name: House__White_5
   m_TagString: Untagged
@@ -16551,6 +16564,18 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &3105599517460237785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 107727306367007879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!114 &3110878661513637557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16603,6 +16628,7 @@ GameObject:
   - component: {fileID: 5998772844188945315}
   - component: {fileID: 1439344470680063549}
   - component: {fileID: 8938750436145241987}
+  - component: {fileID: 8938750436145241988}
   m_Layer: 0
   m_Name: House__White_6
   m_TagString: Untagged
@@ -16769,6 +16795,7 @@ GameObject:
   - component: {fileID: 2722265007984705828}
   - component: {fileID: 3596313057736865655}
   - component: {fileID: 8453000661158502746}
+  - component: {fileID: 8453000661158502747}
   m_Layer: 0
   m_Name: House__Green_1
   m_TagString: Untagged
@@ -16787,6 +16814,7 @@ GameObject:
   - component: {fileID: 2230469048176371337}
   - component: {fileID: 2850905477789331020}
   - component: {fileID: 2254349100445369961}
+  - component: {fileID: 3293873348834368843}
   m_Layer: 0
   m_Name: House__Green_3
   m_TagString: Untagged
@@ -16794,6 +16822,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &3293873348834368843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3293873348834368842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!1 &3295169371318366414
 GameObject:
   m_ObjectHideFlags: 0
@@ -16805,6 +16845,7 @@ GameObject:
   - component: {fileID: 2678902911558800842}
   - component: {fileID: 4909745997242095059}
   - component: {fileID: 100657762959460784}
+  - component: {fileID: 4909745997242095060}
   m_Layer: 0
   m_Name: House__Red_3
   m_TagString: Untagged
@@ -16898,6 +16939,7 @@ GameObject:
   - component: {fileID: 445857550145547133}
   - component: {fileID: 8662638747341763248}
   - component: {fileID: 3813887963795847708}
+  - component: {fileID: 8662638747341763249}
   m_Layer: 0
   m_Name: House__Pink_3
   m_TagString: Untagged
@@ -17347,6 +17389,7 @@ GameObject:
   - component: {fileID: 4445726985265727764}
   - component: {fileID: 1184808614047102400}
   - component: {fileID: 7511805342407117624}
+  - component: {fileID: 7511805342407117625}
   m_Layer: 0
   m_Name: House__Red_5
   m_TagString: Untagged
@@ -17383,6 +17426,7 @@ GameObject:
   - component: {fileID: 2110833817947745722}
   - component: {fileID: 2302860813704896264}
   - component: {fileID: 7819207955219736333}
+  - component: {fileID: 7819207955219736334}
   m_Layer: 0
   m_Name: House__Blue_1
   m_TagString: Untagged
@@ -17468,6 +17512,7 @@ GameObject:
   - component: {fileID: 7099485675383744523}
   - component: {fileID: 8453739116999885485}
   - component: {fileID: 6761777451974127395}
+  - component: {fileID: 8453739116999885486}
   m_Layer: 0
   m_Name: House__White_4
   m_TagString: Untagged
@@ -17566,6 +17611,7 @@ GameObject:
   - component: {fileID: 6084437701911915232}
   - component: {fileID: 6645053538023880869}
   - component: {fileID: 6027700234391394298}
+  - component: {fileID: 6645053538023880870}
   m_Layer: 0
   m_Name: House__White_2
   m_TagString: Untagged
@@ -17619,6 +17665,7 @@ GameObject:
   - component: {fileID: 2200829732669894672}
   - component: {fileID: 8140315058501767574}
   - component: {fileID: 2887048417889219894}
+  - component: {fileID: 8140315058501767575}
   m_Layer: 0
   m_Name: House__Green_8
   m_TagString: Untagged
@@ -18029,6 +18076,7 @@ GameObject:
   - component: {fileID: 751956371077309229}
   - component: {fileID: 8416477433399846730}
   - component: {fileID: 8843304513911146072}
+  - component: {fileID: 8843304513911146073}
   m_Layer: 0
   m_Name: House__Pink_4
   m_TagString: Untagged
@@ -18075,6 +18123,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 374998433347829597}
   m_Mesh: {fileID: 1934084372131006044, guid: db9d889ab7a037545b6ebcfd3f3fff74, type: 3}
+--- !u!114 &4760851043374369544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 374998433347829597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!33 &4762651462212541656
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -18275,6 +18335,7 @@ GameObject:
   - component: {fileID: 6395405209784167373}
   - component: {fileID: 6953526393479339498}
   - component: {fileID: 4595210783197638544}
+  - component: {fileID: 6953526393479339499}
   m_Layer: 0
   m_Name: House__Pink_5
   m_TagString: Untagged
@@ -18323,6 +18384,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3295169371318366414}
   m_Mesh: {fileID: -6382254051271882550, guid: db9d889ab7a037545b6ebcfd3f3fff74, type: 3}
+--- !u!114 &4909745997242095060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3295169371318366414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!4 &4917543972679937041
 Transform:
   m_ObjectHideFlags: 0
@@ -18654,6 +18727,7 @@ GameObject:
   - component: {fileID: 3144215730442692092}
   - component: {fileID: 7757025668145767470}
   - component: {fileID: 912124781739653908}
+  - component: {fileID: 7757025668145767471}
   m_Layer: 0
   m_Name: House__Red_6
   m_TagString: Untagged
@@ -18961,6 +19035,7 @@ GameObject:
   - component: {fileID: 6018703409142839198}
   - component: {fileID: 1647069730738559073}
   - component: {fileID: 4032184852839556698}
+  - component: {fileID: 6018703409142839199}
   m_Layer: 0
   m_Name: House__Pink_1
   m_TagString: Untagged
@@ -19028,6 +19103,7 @@ GameObject:
   - component: {fileID: 8858679218524054978}
   - component: {fileID: 3155731826357071112}
   - component: {fileID: 8929770336039440746}
+  - component: {fileID: 8929770336039440747}
   m_Layer: 0
   m_Name: House__Red_1
   m_TagString: Untagged
@@ -19112,6 +19188,7 @@ GameObject:
   - component: {fileID: 6923556199984922787}
   - component: {fileID: 1772913867823952444}
   - component: {fileID: 1333722263003590773}
+  - component: {fileID: 6923556199984922788}
   m_Layer: 0
   m_Name: House__Green_5
   m_TagString: Untagged
@@ -19138,6 +19215,7 @@ GameObject:
   - component: {fileID: 2489084296483756181}
   - component: {fileID: 1555532436726569380}
   - component: {fileID: 4862687629824591005}
+  - component: {fileID: 5731732992220178951}
   m_Layer: 0
   m_Name: House__White_7
   m_TagString: Untagged
@@ -19145,6 +19223,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &5731732992220178951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5731732992220178950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!114 &5755170469125693165
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19208,6 +19298,7 @@ GameObject:
   - component: {fileID: 3346437478619934424}
   - component: {fileID: 8268952987475725173}
   - component: {fileID: 831619168593783421}
+  - component: {fileID: 8268952987475725174}
   m_Layer: 0
   m_Name: House__White_10
   m_TagString: Untagged
@@ -19388,6 +19479,18 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &5849691249179124995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 453605285074348959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!114 &5854655035834940763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19520,6 +19623,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1232448103}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6018703409142839199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5565617228532882909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!23 &6027700234391394298
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -19834,6 +19949,7 @@ GameObject:
   - component: {fileID: 6127348008480675584}
   - component: {fileID: 8810520584036455561}
   - component: {fileID: 5127313841923660154}
+  - component: {fileID: 8810520584036455562}
   m_Layer: 0
   m_Name: House__Blue_3
   m_TagString: Untagged
@@ -19951,6 +20067,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2434304460343934983}
   m_Mesh: {fileID: 5471523987396496610, guid: db9d889ab7a037545b6ebcfd3f3fff74, type: 3}
+--- !u!114 &6553196205611558827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2434304460343934983}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!1 &6585651510015708416
 GameObject:
   m_ObjectHideFlags: 0
@@ -19962,6 +20090,7 @@ GameObject:
   - component: {fileID: 6378638806622196063}
   - component: {fileID: 5066655630403159574}
   - component: {fileID: 3550808055877429385}
+  - component: {fileID: 6585651510015708417}
   m_Layer: 0
   m_Name: House__Green_10
   m_TagString: Untagged
@@ -19969,6 +20098,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &6585651510015708417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6585651510015708416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!222 &6612708190841586828
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -19985,6 +20126,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4135508627406651047}
   m_Mesh: {fileID: -5718697847393449123, guid: db9d889ab7a037545b6ebcfd3f3fff74, type: 3}
+--- !u!114 &6645053538023880870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4135508627406651047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!23 &6684987757813299759
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -20042,6 +20195,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1799498729594748241}
   m_Mesh: {fileID: 1214339206555588669, guid: db9d889ab7a037545b6ebcfd3f3fff74, type: 3}
+--- !u!114 &6697246343570087407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1799498729594748241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!1 &6701709682088338238
 GameObject:
   m_ObjectHideFlags: 0
@@ -20180,6 +20345,7 @@ GameObject:
   - component: {fileID: 6390468615793291161}
   - component: {fileID: 5307587814284162492}
   - component: {fileID: 2083243465906110527}
+  - component: {fileID: 6774123595907871972}
   m_Layer: 0
   m_Name: ZONE_GREEN_3.021
   m_TagString: Untagged
@@ -20187,6 +20353,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &6774123595907871972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6774123595907871971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!1 &6868735294524260242
 GameObject:
   m_ObjectHideFlags: 0
@@ -20198,6 +20376,7 @@ GameObject:
   - component: {fileID: 7831327338183441253}
   - component: {fileID: 6732301134371408081}
   - component: {fileID: 4300404874085503739}
+  - component: {fileID: 7831327338183441254}
   m_Layer: 0
   m_Name: House__Green_2
   m_TagString: Untagged
@@ -20284,6 +20463,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1528239020}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6923556199984922788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5710361988303703446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!1 &6925853302743539393
 GameObject:
   m_ObjectHideFlags: 0
@@ -20328,6 +20519,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1555877761260166062}
   m_Mesh: {fileID: 1928773939873826775, guid: db9d889ab7a037545b6ebcfd3f3fff74, type: 3}
+--- !u!114 &6943434588677035584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1555877761260166062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!33 &6953526393479339498
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -20336,6 +20539,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4884760752398500635}
   m_Mesh: {fileID: 9004331637050306333, guid: db9d889ab7a037545b6ebcfd3f3fff74, type: 3}
+--- !u!114 &6953526393479339499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4884760752398500635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!4 &7002764200580504822
 Transform:
   m_ObjectHideFlags: 0
@@ -20351,6 +20566,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 503896549}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7002764200580504823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1457034482743761370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!1 &7009013518759715551
 GameObject:
   m_ObjectHideFlags: 0
@@ -20362,6 +20589,7 @@ GameObject:
   - component: {fileID: 6878008931771464954}
   - component: {fileID: 1754080792101568375}
   - component: {fileID: 3080113801661697494}
+  - component: {fileID: 7009013518759715552}
   m_Layer: 0
   m_Name: House__Blue_2
   m_TagString: Untagged
@@ -20369,6 +20597,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &7009013518759715552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7009013518759715551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!23 &7027632056493210418
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -20429,6 +20669,7 @@ GameObject:
   - component: {fileID: 2881170676070251929}
   - component: {fileID: 569975143734055089}
   - component: {fileID: 8880690344932455470}
+  - component: {fileID: 8880690344932455471}
   m_Layer: 0
   m_Name: ZONE_GREEN_3.008
   m_TagString: Untagged
@@ -20957,6 +21198,7 @@ GameObject:
   - component: {fileID: 1538801934015817240}
   - component: {fileID: 8290695716934335444}
   - component: {fileID: 352151419469127359}
+  - component: {fileID: 8290695716934335445}
   m_Layer: 0
   m_Name: House__Green_6
   m_TagString: Untagged
@@ -21077,6 +21319,18 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &7511805342407117625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3949205884470746941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!224 &7585241462336096181
 RectTransform:
   m_ObjectHideFlags: 0
@@ -21107,6 +21361,7 @@ GameObject:
   - component: {fileID: 7169348462293274132}
   - component: {fileID: 8046628320672669300}
   - component: {fileID: 5152322646694755783}
+  - component: {fileID: 8046628320672669301}
   m_Layer: 0
   m_Name: House__Pink_6
   m_TagString: Untagged
@@ -21328,6 +21583,18 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &7733722069133386825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1631691282433303726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!33 &7757025668145767470
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -21336,6 +21603,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5132582681943250188}
   m_Mesh: {fileID: -3178015958772046504, guid: db9d889ab7a037545b6ebcfd3f3fff74, type: 3}
+--- !u!114 &7757025668145767471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5132582681943250188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!33 &7786525031715207051
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -21344,6 +21623,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 373221753098096360}
   m_Mesh: {fileID: 1682191900779315676, guid: db9d889ab7a037545b6ebcfd3f3fff74, type: 3}
+--- !u!114 &7786525031715207052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 373221753098096360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!222 &7793119641752817204
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -21401,6 +21692,18 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &7819207955219736334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3978006099002311581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!4 &7831327338183441253
 Transform:
   m_ObjectHideFlags: 0
@@ -21416,6 +21719,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1528239020}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7831327338183441254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6868735294524260242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!4 &7862622764013455980
 Transform:
   m_ObjectHideFlags: 0
@@ -21565,6 +21880,7 @@ GameObject:
   - component: {fileID: 4335895241835573663}
   - component: {fileID: 1826976904384651396}
   - component: {fileID: 8418363437222080971}
+  - component: {fileID: 8418363437222080972}
   m_Layer: 0
   m_Name: House__Pink_2
   m_TagString: Untagged
@@ -21735,6 +22051,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7605882625850576861}
   m_Mesh: {fileID: -5535264741050179163, guid: db9d889ab7a037545b6ebcfd3f3fff74, type: 3}
+--- !u!114 &8046628320672669301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7605882625850576861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!23 &8072502104064419031
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -21923,6 +22251,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4226034352281087735}
   m_Mesh: {fileID: 3448023511753903558, guid: db9d889ab7a037545b6ebcfd3f3fff74, type: 3}
+--- !u!114 &8140315058501767575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4226034352281087735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!1 &8179434690042214094
 GameObject:
   m_ObjectHideFlags: 0
@@ -22037,6 +22377,7 @@ GameObject:
   - component: {fileID: 3627492081675050539}
   - component: {fileID: 2710954231943089997}
   - component: {fileID: 9062323124034834434}
+  - component: {fileID: 9062323124034834435}
   m_Layer: 0
   m_Name: ZONE_GREEN_3.009
   m_TagString: Untagged
@@ -22052,6 +22393,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5775514801986726427}
   m_Mesh: {fileID: 1425682894552022423, guid: db9d889ab7a037545b6ebcfd3f3fff74, type: 3}
+--- !u!114 &8268952987475725174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5775514801986726427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!33 &8290695716934335444
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -22060,6 +22413,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7496941970388745495}
   m_Mesh: {fileID: -1406445498549522967, guid: db9d889ab7a037545b6ebcfd3f3fff74, type: 3}
+--- !u!114 &8290695716934335445
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7496941970388745495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!114 &8291269669994433720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22105,6 +22470,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 426505990406030928}
   m_Mesh: {fileID: -3194300826943453709, guid: db9d889ab7a037545b6ebcfd3f3fff74, type: 3}
+--- !u!114 &8331591526393114282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 426505990406030928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!4 &8359717841345049685
 Transform:
   m_ObjectHideFlags: 0
@@ -22207,6 +22584,18 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &8418363437222080972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7971760121670443588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!23 &8453000661158502746
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -22256,6 +22645,18 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &8453000661158502747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3292924836013714489}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!33 &8453739116999885485
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -22264,6 +22665,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4041348386516747010}
   m_Mesh: {fileID: 1859888415595864549, guid: db9d889ab7a037545b6ebcfd3f3fff74, type: 3}
+--- !u!114 &8453739116999885486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4041348386516747010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!1001 &8468459643118388293
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22394,6 +22807,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 126428320769616179}
   m_Mesh: {fileID: 7059693669529958549, guid: db9d889ab7a037545b6ebcfd3f3fff74, type: 3}
+--- !u!114 &8491552792740026266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 126428320769616179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!4 &8559556923783940177
 Transform:
   m_ObjectHideFlags: 0
@@ -22417,6 +22842,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3451668359081004274}
   m_Mesh: {fileID: -7229750464251027575, guid: db9d889ab7a037545b6ebcfd3f3fff74, type: 3}
+--- !u!114 &8662638747341763249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3451668359081004274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!4 &8681673982765610781
 Transform:
   m_ObjectHideFlags: 0
@@ -22515,6 +22952,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6430477718028873826}
   m_Mesh: {fileID: -5315375743433136718, guid: db9d889ab7a037545b6ebcfd3f3fff74, type: 3}
+--- !u!114 &8810520584036455562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6430477718028873826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!1 &8821316294922314964
 GameObject:
   m_ObjectHideFlags: 0
@@ -22600,6 +23049,18 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &8843304513911146073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4693776134902663167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!4 &8858679218524054978
 Transform:
   m_ObjectHideFlags: 0
@@ -22630,6 +23091,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 503896549}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8874734719444255231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2806160617631141777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!23 &8880690344932455470
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -22679,6 +23152,18 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &8880690344932455471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7035240397598389727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!4 &8900532824205834877
 Transform:
   m_ObjectHideFlags: 0
@@ -22720,6 +23205,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 679150373836184051}
   m_Mesh: {fileID: -383131120990139996, guid: db9d889ab7a037545b6ebcfd3f3fff74, type: 3}
+--- !u!114 &8915593739719505893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 679150373836184051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!4 &8917161179151971802
 Transform:
   m_ObjectHideFlags: 0
@@ -22784,6 +23281,18 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &8929770336039440747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5585412463145240412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!23 &8938750436145241987
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -22833,6 +23342,18 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &8938750436145241988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3136770476844759330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!1 &9056991255269203478
 GameObject:
   m_ObjectHideFlags: 0
@@ -22844,6 +23365,7 @@ GameObject:
   - component: {fileID: 2315472973480595012}
   - component: {fileID: 645530956452720203}
   - component: {fileID: 109208088971526755}
+  - component: {fileID: 9056991255269203479}
   m_Layer: 0
   m_Name: ZONE_GREEN_3.001
   m_TagString: Untagged
@@ -22851,6 +23373,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &9056991255269203479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9056991255269203478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!23 &9062323124034834434
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -22900,6 +23434,18 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &9062323124034834435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8251974628959862868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!4 &9106251238014011572
 Transform:
   m_ObjectHideFlags: 0
@@ -22926,6 +23472,7 @@ GameObject:
   - component: {fileID: 920913389347518959}
   - component: {fileID: 2157583957963977205}
   - component: {fileID: 8035813885151343989}
+  - component: {fileID: 9124964707180586388}
   m_Layer: 0
   m_Name: ZONE_GREEN_3.043
   m_TagString: Untagged
@@ -22933,6 +23480,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &9124964707180586388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9124964707180586387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c82b6a6f2e98324d86ba8c71c13499b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IgnoreDistrictZone
 --- !u!224 &9159474774094790132
 RectTransform:
   m_ObjectHideFlags: 0

@@ -66,6 +66,7 @@ public class DistrictMapBootstrap : MonoBehaviour
             }
 
             DistrictZone zone = existingZone;
+            if (target.TryGetComponent(out IgnoreDistrictZone ignore)) continue;
             if (zone == null) zone = target.AddComponent<DistrictZone>();
 
             zone.ResolveDistrictFromHierarchy(colorMapping);
