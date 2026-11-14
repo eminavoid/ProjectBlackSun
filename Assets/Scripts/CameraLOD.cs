@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraLOD : MonoBehaviour
@@ -8,13 +9,13 @@ public class CameraLOD : MonoBehaviour
 
     [Space]
 
-    [SerializeField] private GameObject buildings;
+    [SerializeField] private List<MeshRenderer> buildings;
 
     private bool buildingsVisible = false;
 
     private void Awake()
     {
-        buildingsVisible = buildings.activeSelf;
+        buildingsVisible = true;
     }
 
     private void Update()
@@ -38,12 +39,12 @@ public class CameraLOD : MonoBehaviour
     private void DisableBuildings()
     {
         buildingsVisible = false;
-        buildings.SetActive(false);
+        new List<MeshRenderer>(buildings).ForEach(renderer => renderer.enabled = false);
     }
 
     private void EnableBuildings()
     {
         buildingsVisible = true;
-        buildings.SetActive(true);
+        new List<MeshRenderer>(buildings).ForEach(renderer => renderer.enabled = true);
     }
 }
