@@ -3,10 +3,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+[DefaultExecutionOrder(1)]
 public class DistrictSeedPlantPanel : MonoBehaviour
 {
     [Header("Data")]
-    [SerializeField] private SeedsPool loadSeeds;
+    [SerializeField] private Unlocked loadSeeds;
 
     [Header("UI")]
     [SerializeField] private bool showDebugLogs;
@@ -43,9 +44,11 @@ public class DistrictSeedPlantPanel : MonoBehaviour
 
     private void DebugLoadSeedsFromPool()
     {
-        for (int i = 0; i < loadSeeds.EvilSeeds.Count; i++)
+        List<Seed> seeds = loadSeeds.Get<Seed>();
+
+        for (int i = 0; i < seeds.Count; i++)
         {
-            Seed seed = loadSeeds.EvilSeeds[i];
+            Seed seed = seeds[i];
             if (seed == null || !seed.HasDisplayTitle) continue;
             if (!currentSeeds.ContainsKey(seed)) currentSeeds.Add(seed, 0);
             currentSeeds[seed] += 1;
@@ -115,7 +118,7 @@ public class DistrictSeedPlantPanel : MonoBehaviour
     public Button MenuButton => openMenuButton;
     public Button PlantButton => plantButton;
     public System.Collections.Generic.IReadOnlyList<Seed> KnownSeeds =>
-        loadSeeds != null && loadSeeds.EvilSeeds != null ? loadSeeds.EvilSeeds : System.Array.Empty<Seed>();
+        loadSeeds != null && loadSeeds.Get<Seed>() != null ? loadSeeds.Get<Seed>() : System.Array.Empty<Seed>();
 
     public static void ReleaseStandardSeeds()
     {

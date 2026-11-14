@@ -29,13 +29,16 @@ public class UnlockerManager : Singleton<UnlockerManager>
                 locked[category].Add(rarity, new List<Unlockeable>());
             }
         }
-    }
 
-    protected void Start()
-    {
+        for (int i = 0; i < unlocks.Count; i++)
+        {
+            unlocks[i].Clear();
+        }
+
         for (int i = 0; i < startUnlocks.Count; i++)
         {
             locked[UnlockCategory.Seed][Rarity.Common].Add(startUnlocks[i]);
+            startUnlocks[i].Unlock();
         }
     }
 }

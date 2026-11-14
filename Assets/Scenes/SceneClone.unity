@@ -7029,10 +7029,11 @@ Transform:
   m_GameObject: {fileID: 1000514343}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.04799, y: 0, z: 1.47558}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1340745865}
   - {fileID: 1450177740}
   - {fileID: 268629324}
   - {fileID: 1041916091}
@@ -9079,11 +9080,11 @@ Transform:
   m_GameObject: {fileID: 1340745863}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.74408, y: -0, z: 1.80977}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1000514344}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1351188046
 GameObject:
@@ -9603,7 +9604,7 @@ Transform:
   m_GameObject: {fileID: 1450177738}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.56150997, y: 0, z: -2.13883}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -11649,7 +11650,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d83d3327f1a06124f800563d6da85249, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DistrictSeedPlantPanel
-  loadSeeds: {fileID: 11400000, guid: 948e32aecc4880044bb13623f65d8a0e, type: 2}
+  loadSeeds: {fileID: 11400000, guid: 4614166d5d34a4b4e8a155aa5c87e740, type: 2}
   showDebugLogs: 1
   panelRoot: {fileID: 435581541}
   districtLabel: {fileID: 0}
@@ -14930,7 +14931,6 @@ SceneRoots:
   - {fileID: 443712482}
   - {fileID: 118157090}
   - {fileID: 1774865036}
-  - {fileID: 1340745865}
   - {fileID: 1462870250}
   - {fileID: 724433263}
   - {fileID: 1179639416}

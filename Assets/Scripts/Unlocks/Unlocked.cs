@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Unlocked", menuName = "Unlocks/new Unlocked List", order = 1)]
@@ -10,6 +11,11 @@ public class Unlocked : ScriptableObject
 
     public List<ScriptableObject> GetCopy() => new List<ScriptableObject>(unlocked);
     public List<ScriptableObject> GetRarity(Rarity rarity) => filtered[rarity];
+
+    public List<T> Get<T>() where T : ScriptableObject
+    {
+        return unlocked.OfType<T>().ToList();
+    }
 
     public bool Contains(ScriptableObject scriptable)
     {
@@ -32,7 +38,7 @@ public class Unlocked : ScriptableObject
 
     public void Clear()
     {
-        if (unlocked != null) unlocked.Clear();
+        unlocked.Clear();
         filtered.Clear();
     }
 }
