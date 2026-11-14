@@ -2841,7 +2841,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CameraLOD
   maxBuldingY: 10
   minBuildingY: 1
-  buildings: {fileID: 1462870251}
+  buildings: []
 --- !u!1 &350326569
 GameObject:
   m_ObjectHideFlags: 0
@@ -9761,7 +9761,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1461046015}
   m_CullTransparentMesh: 1
---- !u!1001 &1462870250
+--- !u!1001 &1470089202
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -9769,10 +9769,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2696494310649225504, guid: 5e5d05d4b417a0044b6400db0805dbff, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3042807276272902093, guid: 5e5d05d4b417a0044b6400db0805dbff, type: 3}
       propertyPath: m_Name
       value: Mapa Ciudad
@@ -9817,20 +9813,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8716370199793735885, guid: 5e5d05d4b417a0044b6400db0805dbff, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e5d05d4b417a0044b6400db0805dbff, type: 3}
---- !u!1 &1462870251 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2275968834672455781, guid: 5e5d05d4b417a0044b6400db0805dbff, type: 3}
-  m_PrefabInstance: {fileID: 1462870250}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1485793476
 GameObject:
   m_ObjectHideFlags: 0
@@ -14931,7 +14918,7 @@ SceneRoots:
   - {fileID: 443712482}
   - {fileID: 118157090}
   - {fileID: 1774865036}
-  - {fileID: 1462870250}
+  - {fileID: 1470089202}
   - {fileID: 724433263}
   - {fileID: 1179639416}
   - {fileID: 1535116675}
