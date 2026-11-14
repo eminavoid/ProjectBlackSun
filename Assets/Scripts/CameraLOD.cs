@@ -39,12 +39,12 @@ public class CameraLOD : MonoBehaviour
     private void DisableBuildings()
     {
         buildingsVisible = false;
-        new List<MeshRenderer>(buildings).ForEach(renderer => renderer.enabled = false);
+        buildings.ForEach(renderer => renderer.enabled = false);
     }
 
     private void EnableBuildings()
     {
         buildingsVisible = true;
-        new List<MeshRenderer>(buildings).ForEach(renderer => renderer.enabled = true);
+        buildings.ForEach(renderer => renderer.enabled = true);
     }
 }
