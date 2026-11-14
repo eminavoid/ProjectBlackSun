@@ -15,6 +15,8 @@ public class GrassInstancer : MonoBehaviour
 
     [Header("Ground Detection")]
     public Collider[] surfaces;
+    [Tooltip("Only grow on this sub-mesh of a Mesh Collider surface, e.g. the field's plots. -1 grows on all of it.")]
+    public int surfaceSubMesh = -1;
     public float raycastHeight = 500f;
     public float raycastDistance = 1000f;
     public LayerMask groundLayers = ~0;
@@ -115,6 +117,9 @@ public class GrassInstancer : MonoBehaviour
 
                 raycastHits++;
 
+                if (!OnSurfaceSubMesh(hit))
+                    continue;
+
                 if (!PassesMask(hit.point))
                     continue;
 
@@ -198,6 +203,19 @@ public class GrassInstancer : MonoBehaviour
         }
 
         return found;
+    }
+
+    private bool OnSurfaceSubMesh(RaycastHit hit)
+    {
+        if (surfaceSubMesh < 0) return true;
+        if (!(hit.collider is MeshCollider meshCollider) || meshCollider.sharedMesh == null) return true;
+
+        Mesh mesh = meshCollider.sharedMesh;
+        if (surfaceSubMesh >= mesh.subMeshCount) return false;
+
+        SubMeshDescriptor subMesh = mesh.GetSubMesh(surfaceSubMesh);
+        int index = hit.triangleIndex * 3;
+        return index >= subMesh.indexStart && index < subMesh.indexStart + subMesh.indexCount;
     }
 
     private bool PassesMask(Vector3 point)
