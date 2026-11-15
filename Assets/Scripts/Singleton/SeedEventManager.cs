@@ -6,6 +6,8 @@ using UnityEngine.UI;
 using Zeke.UI;
 using TMPro;
 using System;
+using Zeke.Abilities;
+using Zeke.Tooltips;
 
 public class SeedEventManager : Singleton<SeedEventManager>
 {
@@ -51,6 +53,7 @@ public class SeedEventManager : Singleton<SeedEventManager>
     }
 
     [SerializeField] private PlayerResources resources;
+    [SerializeField] private PlayerStats playerStats;
 
     [SerializeField] private UIWindow spawnOptionsWindow;
     [SerializeField] private UIWindow eventOutputWindowPrefab;
@@ -596,6 +599,20 @@ public class SeedEventManager : Singleton<SeedEventManager>
             {
                 uiWindow.TryGetElement<TextMeshProUGUI>("Title").text = seed.Options[i].Title;
                 uiWindow.TryGetElement<TextMeshProUGUI>("Description").text = seed.Options[i].Description;
+
+                bool hasStatRequiredAmount = seed.Options[i].ShineWith != PlayerStats.PlayerStat.None
+                    && playerStats.GetStat(seed.Options[i].ShineWith) > 0;
+
+                if (hasStatRequiredAmount)
+                {
+                    TooltipTrigger tooltipTrigger = uiWindow.gameObject.AddComponent<TooltipTrigger>();
+                    tooltipTrigger.SetText($"<color=#2b872d>Chances increased by your {seed.Options[i].ShineWith} stat.</color>");
+                    tooltipTrigger.ShowBesides = false;
+                }
+                else
+                {
+                    uiWindow.TryGetElement<Image>("Outline").color = new Color(0f, 0f, 0f, 0);
+                }
             }
 
             display.InitializeData(seed.Options[i], seed);

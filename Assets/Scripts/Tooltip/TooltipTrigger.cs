@@ -7,16 +7,30 @@ namespace Zeke.Tooltips
     {
         [TextArea]
         [SerializeField] private string tooltipText;
+        [SerializeField] private bool showBesides = true;
 
         private bool showing;
 
         public string Text => tooltipText;
 
+        public bool ShowBesides
+        {
+            get
+            {
+                return showBesides;
+            }
+            set
+            {
+                showBesides = value;
+            }
+        }
+
         public void SetText(string text) => tooltipText = text;
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            Tooltip.Show(tooltipText, (RectTransform)transform);
+            Tooltip.Show(tooltipText, showBesides ? (RectTransform)transform : null);
+
             showing = true;
         }
 
