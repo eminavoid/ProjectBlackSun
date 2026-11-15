@@ -1,12 +1,12 @@
+using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Zeke.UI;
-using TMPro;
-using System;
 using Zeke.Tooltips;
+using Zeke.UI;
 
 public class SeedEventManager : Singleton<SeedEventManager>
 {
@@ -622,8 +622,10 @@ public class SeedEventManager : Singleton<SeedEventManager>
                         shinePower += playerStats.GetStat(testedVirtues[x]);
                     }
 
-                    float alpha = 100 * (shinePower / maxStatForShine);
-                    uiWindow.TryGetElement<Image>("Outline").color = new Color(0f, 0f, 0f, alpha);
+                    float alpha = 1 * ((float)shinePower / maxStatForShine);
+
+                    Image outline = uiWindow.TryGetElement<Image>("Outline");
+                    outline.color = new Color(outline.color.r, outline.color.g, outline.color.b, alpha);
                 }
                 else
                 {
