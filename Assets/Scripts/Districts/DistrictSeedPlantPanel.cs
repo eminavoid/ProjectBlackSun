@@ -6,6 +6,9 @@ using TMPro;
 [DefaultExecutionOrder(1)]
 public class DistrictSeedPlantPanel : MonoBehaviour
 {
+    [Header("Cooldown")]
+    [SerializeField] private int repeatSeedCooldown;
+
     [Header("Data")]
     [SerializeField] private Unlocked loadSeeds;
 
@@ -28,6 +31,20 @@ public class DistrictSeedPlantPanel : MonoBehaviour
     private readonly List<Seed> cachedSeeds = new List<Seed>();
     private readonly List<Button> runtimeSeedButtons = new List<Button>();
 
+    private readonly List<SeedCooldownData> cooldownSeeds = new List<SeedCooldownData>();
+
+    private class SeedCooldownData
+    {
+        public Seed seed;
+        public int cooldown;
+
+        public SeedCooldownData(Seed seed, int cooldown)
+        {
+            this.seed = seed;
+            this.cooldown = cooldown;
+        }
+    }
+
     public static event System.Action Planted;
 
     private bool isOpen;
@@ -40,6 +57,38 @@ public class DistrictSeedPlantPanel : MonoBehaviour
     {
         SetPanelVisible(false);
         if (!TutorialSession.SuppressAmbientEvents) ReleaseStandardPool();
+    }
+
+    private void Tick()
+    {
+        for (int i = cooldownSeeds.Count - 1; i >= 0; i--)
+        {
+            cooldownSeeds[i].cooldown -= 1;
+
+            if (cooldownSeeds[i].cooldown <= 0)
+            {
+                cooldownSeeds.RemoveAt(i);
+            }
+        }
+    }
+
+    private void PlaceInCooldown(Seed seed)
+    {
+        if (seed.PlayerPlantCooldown == 0) return;
+        cooldownSeeds.Add(new SeedCooldownData(seed, seed.PlayerPlantCooldown));
+    }
+
+    private bool InCooldown(Seed seed)
+    {
+        for (int i = 0; i <  cooldownSeeds.Count; i++)
+        {
+            if (cooldownSeeds[i].seed == seed)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void DebugLoadSeedsFromPool()
@@ -62,6 +111,8 @@ public class DistrictSeedPlantPanel : MonoBehaviour
 
     private void Start()
     {
+        GameTime.OnTurnStarted += Tick;
+
         ResolveOpenMenuButton();
         ResolveSeedListScrollRect();
         EnsureScrollContentLayout();
@@ -260,7 +311,13 @@ public class DistrictSeedPlantPanel : MonoBehaviour
 
         ShowPlantPopup($"{selectedSeed.Title} planted in the {MapStatsQuery.DistrictLabel(targetZone.District)} district.");
 
-        UpdateSeedInventory(selectedSeed, -1);
+        PlaceInCooldown(selectedSeed);
+        
+        if (selectedSeed.name == "Tutorial Seed")
+        {
+            UpdateSeedInventory(selectedSeed, -1);
+        }
+        
         if (selectedSeed == TutorialContent.FirstSeed) ReleaseStandardPool();
         RefreshSeedList();
         Planted?.Invoke();
@@ -349,7 +406,8 @@ public class DistrictSeedPlantPanel : MonoBehaviour
         plantButton.interactable = isOpen
             && selectedZone != null
             && selectedSeedIndex >= 0
-            && selectedSeedIndex < cachedSeeds.Count;
+            && selectedSeedIndex < cachedSeeds.Count
+            && !InCooldown(cachedSeeds[selectedSeedIndex]);
     }
 
     private void UpdatePanelTexts()
@@ -357,6 +415,7 @@ public class DistrictSeedPlantPanel : MonoBehaviour
         if (districtLabel != null)
         {
             DistrictZone selectedZone = DistrictSelectionController.SelectedZone;
+
             if (selectedZone == null)
             {
                 districtLabel.text = "Zone: none";
@@ -392,6 +451,8 @@ public class DistrictSeedPlantPanel : MonoBehaviour
             ConfigureSeedButton(instance, cachedSeeds[i], false);
             instance.onClick.AddListener(() => SelectSeed(index));
             runtimeSeedButtons.Add(instance);
+
+            instance.interactable = !InCooldown(cachedSeeds[index]);
         }
 
         UpdateSelectionVisuals();

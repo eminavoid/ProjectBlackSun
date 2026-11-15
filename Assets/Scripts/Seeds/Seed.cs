@@ -34,6 +34,8 @@ public class Seed : ScriptableObject
     [field: SerializeField] public List<Option> Options { get; private set; }
     [field: Tooltip("Not index (1 == 0 index)")]
     [field: SerializeField] public int DefaultOption { get; private set; } = 4;
+    [Header("Player only")]
+    [SerializeField] private int playerPlantCooldown = 1;
     public Region Region => region;
     public int Ticks => ticks;
     public SeedEventType EventType => eventType;
@@ -48,6 +50,7 @@ public class Seed : ScriptableObject
     public int CurrentTicks => currentTicks;
     public int TurnsRemaining => Mathf.Max(0, ticks - currentTicks);
     public bool IsPlanted => currentZone != null;
+    public int PlayerPlantCooldown => playerPlantCooldown;
 
     public bool CanPlantInDistrict(Districts district) => true;
     public bool IsGuideSeed => guideSeed;
