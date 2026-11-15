@@ -78,7 +78,8 @@ public class SeedEventManager : Singleton<SeedEventManager>
 
     [Space]
 
-    [SerializeField] private int maxStatForShine = 5;
+    [SerializeField] private int maxStatForShine = 10;
+    [SerializeField] private float startAlpha = 0.25f;
 
     [Header("Result Transition")]
     [Tooltip("The result's parchment unrolls out of the chosen option.")]
@@ -622,7 +623,7 @@ public class SeedEventManager : Singleton<SeedEventManager>
                         shinePower += playerStats.GetStat(testedVirtues[x]);
                     }
 
-                    float alpha = 1 * ((float)shinePower / maxStatForShine);
+                    float alpha = startAlpha + ((1f - startAlpha) * ((float)shinePower / maxStatForShine));
 
                     Image outline = uiWindow.TryGetElement<Image>("Outline");
                     outline.color = new Color(outline.color.r, outline.color.g, outline.color.b, alpha);
