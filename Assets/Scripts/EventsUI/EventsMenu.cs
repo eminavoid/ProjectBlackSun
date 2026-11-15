@@ -78,6 +78,14 @@ public class EventsMenu : MonoBehaviour
             position.onClick.AddListener(() => MenuTransition.Hide(ui));
         }
 
+        Button position2 = window.TryGetElement<Button>("Icon");
+        if (position2 != null)
+        {
+            if (zone != null && mapCameraController != null)
+                position2.onClick.AddListener(() => mapCameraController.FocusOnZone(zone));
+            position2.onClick.AddListener(() => MenuTransition.Hide(ui));
+        }
+
         Button elementClickbox = window.TryGetElement<Button>("Event Clickbox");
 
         elementClickbox.onClick.AddListener(() => SeedEventManager.CreateSeedEventMenu(seed));
