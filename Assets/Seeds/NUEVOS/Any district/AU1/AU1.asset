@@ -16,11 +16,13 @@ MonoBehaviour:
   description: My Pontiff, the favor we quietly cultivated among the great houses
     has come due. A word from us in the right ear, and the city bends to our convenience.
     How shall we collect?
+  premise: Authority seed. The favor we cultivated has come due. Guaranteed yield,
+    lower return than risk-taking.
   icon: {fileID: 0}
   ticks: 3
   region: 0
   eventType: 0
-  difficulty: 1
+  difficulty: 3
   guideSeed: 0
   <Options>k__BackingField:
   - {fileID: 11400000, guid: 03bc879af64f2924db2c3353ed74e25a, type: 2}

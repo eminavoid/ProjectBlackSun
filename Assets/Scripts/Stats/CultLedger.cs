@@ -18,15 +18,6 @@ public class CultLedger : MonoBehaviour
     [Tooltip("The sidebar's Doctrines button, opened from the cult page.")]
     [SerializeField] private Button doctrinesButton;
 
-    private static readonly PlayerStats.PlayerStat[] Virtues =
-    {
-        PlayerStats.PlayerStat.Diplomacy,
-        PlayerStats.PlayerStat.Aggresion,
-        PlayerStats.PlayerStat.Stewardship,
-        PlayerStats.PlayerStat.Intrigue,
-        PlayerStats.PlayerStat.Learning
-    };
-
     private PlayerClergy clergy;
     private GameLoopEvents gameLoop;
     private MapCameraController mapCamera;
@@ -110,7 +101,7 @@ public class CultLedger : MonoBehaviour
 
         book.AddSection("VIRTUES");
         PlayerStats stats = InfluenceManager.Get.Stats;
-        foreach (PlayerStats.PlayerStat virtue in Virtues) AddVirtue(stats, virtue);
+        foreach (PlayerStats.PlayerStat virtue in Virtues.All) AddVirtue(stats, virtue);
 
         book.AddSection("DOCTRINES");
         var equipped = new List<Doctrine>();
@@ -227,23 +218,14 @@ public class CultLedger : MonoBehaviour
     private void AddVirtue(PlayerStats stats, PlayerStats.PlayerStat virtue)
     {
         int value = 10 + (stats != null ? stats.GetStat(virtue) : 0);
-        DistrictProductionConfig config = InfluenceManager.Get.ProductionConfig;
-        var districts = new List<Districts>();
-        foreach (Districts district in System.Enum.GetValues(typeof(Districts)))
-        {
-            if (config != null && config.TryGetEntry(district, out DistrictProductionConfig.ProductionEntry entry) && !entry.isImperial && entry.influenceStat == virtue)
-            {
-                districts.Add(district);
-            }
-        }
-
-        float bonus = config != null ? (value - 10) * config.InfluenceStatScalePerPoint * 100f : 0f;
+        List<Districts> districts = Virtues.DistrictsOf(virtue);
+        float bonus = (value - 10) * Virtues.InfluencePercentPerPoint;
         string effect = Mathf.Approximately(bonus, 0f) ? "Normal influence" : $"{(bonus > 0 ? "+" : "")}{Mathf.RoundToInt(bonus)}% influence";
-        string detail = districts.Count > 0 ? $"{effect} in {DistrictList(districts)}" : effect;
+        string detail = districts.Count > 0 ? $"{effect} in {Virtues.DistrictList(districts)}" : effect;
         if (virtue == PlayerStats.PlayerStat.Learning) detail += "  ·  trains clerics twice over";
         else if (virtue == PlayerStats.PlayerStat.Stewardship) detail += "  ·  trains clerics";
 
-        book.AddEntry(districts.Count > 0 ? book.MarkerFor(districts[0]) : null, Color.clear, $"{VirtueName(virtue)}  {value}", detail);
+        book.AddEntry(districts.Count > 0 ? book.MarkerFor(districts[0]) : null, Color.clear, $"{Virtues.Name(virtue)}  {value}", detail);
     }
 
     private void Ordain()
@@ -322,7 +304,7 @@ public class CultLedger : MonoBehaviour
 
         var districts = new List<Districts>();
         for (int i = 0; i < preferred.Count && i < 2; i++) districts.Add(preferred[i]);
-        return DistrictList(districts);
+        return Virtues.DistrictList(districts);
     }
 
     private static string CultName()
@@ -356,7 +338,7 @@ public class CultLedger : MonoBehaviour
         foreach (Doctrine.StatUpdate update in doctrine.StatUpdates)
         {
             if (update.playerStat == PlayerStats.PlayerStat.None || update.changeAmount == 0) continue;
-            parts.Add($"{(update.changeAmount > 0 ? "+" : "")}{update.changeAmount} {VirtueName(update.playerStat)}");
+            parts.Add($"{(update.changeAmount > 0 ? "+" : "")}{update.changeAmount} {Virtues.Name(update.playerStat)}");
         }
 
         return string.Join(", ", parts);
@@ -383,20 +365,6 @@ public class CultLedger : MonoBehaviour
         return null;
     }
 
-    private static string DistrictList(List<Districts> districts)
-    {
-        var names = new List<string>();
-        foreach (Districts district in districts) names.Add(MapStatsQuery.DistrictLabel(district));
-        if (names.Count == 1) return $"the {names[0]}";
-        string last = names[names.Count - 1];
-        names.RemoveAt(names.Count - 1);
-        return $"the {string.Join(", ", names)} and {last}";
-    }
-
-    private static string VirtueName(PlayerStats.PlayerStat virtue)
-    {
-        return virtue == PlayerStats.PlayerStat.Aggresion ? "Aggression" : virtue.ToString();
-    }
 
     private static string Ordinal(int rank)
     {

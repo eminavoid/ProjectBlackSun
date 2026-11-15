@@ -59,7 +59,7 @@ public class EventExcelImporterWindow : EditorWindow
             "Creates the events that don't exist yet and re-imports the ones that differ from the Excel. " +
             "Unchanged events are skipped. Fields the Excel doesn't have (ticks, type, difficulty, icons, follow-ups) are kept, " +
             "and so are options added in Unity past D (like the debt crises' settle option).\n" +
-            $"A sheet named \"{SeedSheet}\" holds plantable seeds: they go to {SeedRoot}, take district, turns to sprout and tier from \"{SeedOverviewSheet}\", " +
+            $"A sheet named \"{SeedSheet}\" holds plantable seeds: they go to {SeedRoot}, take district, turns to sprout, tier and premise from \"{SeedOverviewSheet}\", " +
             "and join the theology seed pool.",
             MessageType.Info);
 
@@ -215,6 +215,7 @@ public class EventExcelImporterWindow : EditorWindow
         public string district;
         public int ticks;
         public int tier;
+        public string premise;
     }
 
     private Dictionary<string, SeedOverviewRow> ReadSeedOverview(List<XlsxReader.Sheet> sheets)
@@ -227,6 +228,7 @@ public class EventExcelImporterWindow : EditorWindow
         int districtCol = HeaderColumn(sheet, "District");
         int ticksCol = HeaderColumn(sheet, "Turns to sprout");
         int tierCol = HeaderColumn(sheet, "Tier");
+        int premiseCol = HeaderColumn(sheet, "Premise");
         if (idCol < 0 || districtCol < 0)
         {
             log.Add($"WARNING: \"{SeedOverviewSheet}\" has no ID or District column; seeds get no district, turns or tier.");
@@ -243,7 +245,8 @@ public class EventExcelImporterWindow : EditorWindow
             {
                 district = district,
                 ticks = ticksCol > 0 && int.TryParse(sheet.Get(row, ticksCol), out int ticks) ? ticks : 0,
-                tier = tierCol > 0 && int.TryParse(sheet.Get(row, tierCol), out int tier) ? tier : 0
+                tier = tierCol > 0 && int.TryParse(sheet.Get(row, tierCol), out int tier) ? tier : 0,
+                premise = premiseCol > 0 ? (sheet.Get(row, premiseCol) ?? "").Trim() : ""
             };
         }
 
@@ -254,7 +257,7 @@ public class EventExcelImporterWindow : EditorWindow
     {
         for (int col = 1; col <= sheet.MaxCol; col++)
         {
-            if ((sheet.Get(1, col) ?? "").Trim().Equals(header, StringComparison.OrdinalIgnoreCase)) return col;
+            if ((sheet.Get(1, col) ?? "").Trim().StartsWith(header, StringComparison.OrdinalIgnoreCase)) return col;
         }
 
         return -1;
@@ -273,6 +276,8 @@ public class EventExcelImporterWindow : EditorWindow
         evt.folder = WithoutArticle(row.district);
         evt.region = ParseRegion(row.district);
         evt.ticks = row.ticks;
+        evt.tier = Mathf.Clamp(row.tier, 0, 3);
+        evt.premise = row.premise;
         evt.rarity = row.tier >= 3 ? Rarity.Legendary : row.tier == 2 ? Rarity.Rare : Rarity.Common;
         if (evt.region == Region.None && !row.district.StartsWith("Any", StringComparison.OrdinalIgnoreCase))
         {
@@ -342,6 +347,8 @@ public class EventExcelImporterWindow : EditorWindow
         public string description;
         public bool isSeed;
         public int ticks;
+        public int tier;
+        public string premise = "";
         public Rarity rarity;
         public List<ParsedOption> options = new List<ParsedOption>();
     }
@@ -584,6 +591,8 @@ public class EventExcelImporterWindow : EditorWindow
         if (evt.isSeed)
         {
             if (evt.ticks > 0) AddField(fields, "Event", "turns to sprout", evt.ticks.ToString());
+            if (evt.tier > 0) AddField(fields, "Event", "tier", evt.tier.ToString());
+            AddField(fields, "Event", "premise", evt.premise);
             AddField(fields, "Event", "theology pool", evt.rarity.ToString());
         }
 
@@ -629,6 +638,8 @@ public class EventExcelImporterWindow : EditorWindow
         if (evt.isSeed)
         {
             if (evt.ticks > 0) AddField(fields, "Event", "turns to sprout", seedObject.FindProperty("ticks").intValue.ToString());
+            if (evt.tier > 0) AddField(fields, "Event", "tier", seedObject.FindProperty("difficulty").intValue.ToString());
+            AddField(fields, "Event", "premise", seedObject.FindProperty("premise").stringValue);
             Unlockeable unlock = FindTheologyUnlock(seed);
             AddField(fields, "Event", "theology pool", unlock != null ? unlock.Rarity.ToString() : "not in it");
         }
@@ -821,6 +832,11 @@ public class EventExcelImporterWindow : EditorWindow
             seedObject.FindProperty("difficulty").enumValueIndex = 0;
         }
         if (evt.ticks > 0) seedObject.FindProperty("ticks").intValue = evt.ticks;
+        if (evt.isSeed)
+        {
+            seedObject.FindProperty("premise").stringValue = evt.premise;
+            if (evt.tier > 0) seedObject.FindProperty("difficulty").intValue = evt.tier;
+        }
 
         SerializedProperty optionsProp = seedObject.FindProperty("<Options>k__BackingField");
         optionsProp.arraySize = options.Count;

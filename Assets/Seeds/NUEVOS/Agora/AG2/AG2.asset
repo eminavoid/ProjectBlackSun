@@ -17,11 +17,13 @@ MonoBehaviour:
     our gates. The caravan master, superstitious as all travelers, begs a blessing
     for safe passage and is willing to pay handsomely, though he haggles even over
     holy words.
+  premise: A spice caravan seeks a blessing for its journey. Superstitious merchants
+    pay well for holy words.
   icon: {fileID: 0}
   ticks: 3
   region: 1
   eventType: 0
-  difficulty: 1
+  difficulty: 2
   guideSeed: 0
   <Options>k__BackingField:
   - {fileID: 11400000, guid: 88479610f318a0a4f9f83520bcca82d0, type: 2}

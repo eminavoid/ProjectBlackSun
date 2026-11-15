@@ -16,6 +16,8 @@ MonoBehaviour:
   description: My Pontiff, the kitchen we opened in the Warrens serves its first
     meal this evening. A line of hungry families wraps around the block, and our
     cooks ask how to serve them.
+  premise: A kitchen in the Warrens serves its first meal. Hungry families are already
+    lining up.
   icon: {fileID: 0}
   ticks: 2
   region: 5

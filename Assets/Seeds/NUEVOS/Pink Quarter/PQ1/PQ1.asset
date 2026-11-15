@@ -16,6 +16,8 @@ MonoBehaviour:
   description: My Pontiff, our agents report a masquerade in the Pink Quarter tonight,
     where aristocrats drop their guard along with their discretion. Our eyes in the
     crowd await instructions.
+  premise: A masked ball loosens the tongues of aristocrats. Our agents are already
+    inside.
   icon: {fileID: 0}
   ticks: 2
   region: 4

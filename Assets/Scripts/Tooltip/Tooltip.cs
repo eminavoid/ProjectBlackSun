@@ -15,6 +15,8 @@ namespace Zeke.Tooltips
         [SerializeField] private GameObject tooltipObject;
         [SerializeField] private RectTransform tooltipRect;
         [SerializeField] private TMP_Text tooltipText;
+        [Tooltip("Game terms that menus built at runtime can link to.")]
+        [SerializeField] private TooltipLinksDB glossary;
 
         [Space]
 
@@ -29,6 +31,8 @@ namespace Zeke.Tooltips
         [SerializeField, Min(0f)] private float anchorGap = 10f;
         [Tooltip("Shift from the cursor for tooltips that follow it, so the arrow doesn't cover the box.")]
         [SerializeField] private Vector2 cursorOffset = new Vector2(14f, 10f);
+
+        public static TooltipLinksDB Glossary => IsNull ? null : Instance.glossary;
 
         public static Action onTooltipShow;
         public static Action onTooltipHide;

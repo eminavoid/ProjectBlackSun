@@ -1,40 +1,84 @@
-using System;
 using System.Collections.Generic;
+using System.Globalization;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Zeke.Abilities;
+using Zeke.Tooltips;
 
-/// <summary>
-/// Pantalla completa para nombrar el culto. Usa el frontón, las columnas y el papel de los otros menús.
-/// </summary>
 public class CultCreationPanel : MonoBehaviour
 {
     private struct AttributeChoice
     {
-        public string Label;
         public PlayerStats.PlayerStat Stat;
-        public string Blurb;
+        public string Tagline;
+        public (Resource resource, int amount)[] StartingBonus;
     }
+
+    private const int StartingPoints = 1;
 
     private static readonly AttributeChoice[] Choices =
     {
-        new AttributeChoice { Label = "DIPLOMACY", Stat = PlayerStats.PlayerStat.Diplomacy, Blurb = "Green streets yield more Flock." },
-        new AttributeChoice { Label = "AGGRESSION", Stat = PlayerStats.PlayerStat.Aggresion, Blurb = "Red streets yield more." },
-        new AttributeChoice { Label = "STEWARDSHIP", Stat = PlayerStats.PlayerStat.Stewardship, Blurb = "Yellow streets yield more Wealth." },
-        new AttributeChoice { Label = "INTRIGUE", Stat = PlayerStats.PlayerStat.Intrigue, Blurb = "Violet and pink streets yield more Secrets." },
-        new AttributeChoice { Label = "LEARNING", Stat = PlayerStats.PlayerStat.Learning, Blurb = "White streets yield more Zeal." }
+        new AttributeChoice
+        {
+            Stat = PlayerStats.PlayerStat.Diplomacy,
+            Tagline = "Win over the poor with kind words and bread.",
+            StartingBonus = new[] { (Resource.Flock, 50), (Resource.Materials, 20), (Resource.Authority, 1) }
+        },
+        new AttributeChoice
+        {
+            Stat = PlayerStats.PlayerStat.Aggresion,
+            Tagline = "Rule the forges through fear and fire.",
+            StartingBonus = new[] { (Resource.Flock, 25), (Resource.Zeal, 10), (Resource.Authority, 3), (Resource.Materials, -10), (Resource.Happiness, -25) }
+        },
+        new AttributeChoice
+        {
+            Stat = PlayerStats.PlayerStat.Stewardship,
+            Tagline = "Make the faith pay its way in the markets.",
+            StartingBonus = new[] { (Resource.Materials, 50), (Resource.Flock, 30) }
+        },
+        new AttributeChoice
+        {
+            Stat = PlayerStats.PlayerStat.Intrigue,
+            Tagline = "Trade in whispers among revelers and nobles.",
+            StartingBonus = new[] { (Resource.Zeal, 25), (Resource.Secrets, 30), (Resource.Materials, 10) }
+        },
+        new AttributeChoice
+        {
+            Stat = PlayerStats.PlayerStat.Learning,
+            Tagline = "Win the scholars who read the heavens.",
+            StartingBonus = new[] { (Resource.Wealth, 30), (Resource.Secrets, 30), (Resource.Materials, 30) }
+        }
     };
 
+    private const string Intro = "A new faith rises in Beheld. Give it a name, then choose the virtue it is known for. "
+        + "Your virtue decides where your faith spreads fastest and what you start with.";
+
     private static readonly Color Ink = new Color(0.27f, 0.16f, 0.11f, 1f);
+    private static readonly Color InkSoft = new Color(0.27f, 0.16f, 0.11f, 0.75f);
     private static readonly Color InkFaint = new Color(0.27f, 0.16f, 0.11f, 0.4f);
     private static readonly Color TitleInk = new Color(0.45f, 0.16f, 0.1f, 1f);
+    private static readonly Color Selected = new Color(1f, 0.84f, 0.48f, 1f);
+    private const string GainHex = "2E6B24";
+    private const string LossHex = "8C1C12";
     private static readonly Dictionary<string, Sprite> ArtCache = new Dictionary<string, Sprite>();
 
+    private TooltipLinksDB glossary;
+    private TMP_FontAsset font;
+    private Material material;
     private TMP_InputField input;
-    private TMP_Text blurb;
+    private TMP_Text detailTitle;
+    private TMP_Text detailTagline;
+    private TMP_Text detailEffects;
+    private TMP_Text detailBonus;
+    private TMP_Text detailNote;
+    private TMP_Text hint;
     private Button confirm;
     private readonly Image[] choiceImages = new Image[Choices.Length];
     private int selected = -1;
+    private int recommended = -1;
+    private Districts? home;
 
     public RectTransform Card { get; private set; }
     public bool Confirmed { get; private set; }
@@ -44,8 +88,6 @@ public class CultCreationPanel : MonoBehaviour
         ResetOpeningStats();
 
         TextMeshProUGUI sample = canvas.GetComponentInChildren<TextMeshProUGUI>(true);
-        TMP_FontAsset font = sample != null ? sample.font : TMP_Settings.defaultFontAsset;
-        Material material = sample != null ? sample.fontSharedMaterial : null;
 
         GameObject root = new GameObject("Cult Creation", typeof(RectTransform), typeof(CanvasGroup));
         root.transform.SetParent(canvas, false);
@@ -55,7 +97,10 @@ public class CultCreationPanel : MonoBehaviour
         group.interactable = true;
 
         CultCreationPanel panel = root.AddComponent<CultCreationPanel>();
-        panel.Build(font, material);
+        panel.glossary = Tooltip.Glossary;
+        panel.font = sample != null ? sample.font : TMP_Settings.defaultFontAsset;
+        panel.material = sample != null ? sample.fontSharedMaterial : null;
+        panel.Build();
         root.transform.SetAsLastSibling();
         return panel;
     }
@@ -70,11 +115,47 @@ public class CultCreationPanel : MonoBehaviour
         if (this != null) Destroy(gameObject);
     }
 
-    private void Build(TMP_FontAsset font, Material material)
+    private void Build()
     {
         Image dim = ImageOf("Dim", (RectTransform)transform, null, new Color(0.04f, 0.03f, 0.02f, 0.72f));
         Stretch(dim.rectTransform);
 
+        RectTransform paper = BuildTemple();
+
+        RectTransform content = RectOf("Content", paper);
+        Stretch(content);
+        content.offsetMin = new Vector2(64f, 34f);
+        content.offsetMax = new Vector2(-64f, -54f);
+        VerticalLayoutGroup layout = Column(content, 6f, TextAnchor.UpperCenter);
+        layout.padding = new RectOffset(8, 8, 4, 0);
+
+        AddLabel(content, "FOUND YOUR CULT", 32f, 40f, TitleInk, TextAlignmentOptions.Center);
+        TMP_Text intro = AddLabel(content, Intro, 17f, 48f, InkSoft, TextAlignmentOptions.Center);
+        Link(intro, Intro);
+
+        RectTransform body = RectOf("Body", content);
+        body.gameObject.AddComponent<LayoutElement>().preferredHeight = 344f;
+        HorizontalLayoutGroup row = body.gameObject.AddComponent<HorizontalLayoutGroup>();
+        row.spacing = 24f;
+        row.childControlWidth = true;
+        row.childControlHeight = true;
+        row.childForceExpandWidth = false;
+        row.childForceExpandHeight = true;
+
+        BuildChoices(body);
+        BuildDetails(body);
+
+        hint = AddLabel(content, string.Empty, 15f, 22f, InkSoft, TextAlignmentOptions.Center);
+        confirm = AddButton(content, "FOUND THE CULT", Confirm, 50f, out _);
+
+        home = HomeDistrict();
+        recommended = Recommended();
+        MarkRecommended();
+        Select(recommended >= 0 ? recommended : 0);
+    }
+
+    private RectTransform BuildTemple()
+    {
         RectTransform temple = RectOf("Temple", (RectTransform)transform);
         temple.anchorMin = new Vector2(0.5f, 0.5f);
         temple.anchorMax = new Vector2(0.5f, 0.5f);
@@ -82,95 +163,218 @@ public class CultCreationPanel : MonoBehaviour
         Card = temple;
 
         const float baseHeight = 64f;
-        const float columnHeight = 700f;
+        const float columnHeight = 660f;
+        const float columnX = 560f;
         Sprite columnSprite = Art("Torre_Columna");
         float columnAspect = columnSprite != null && columnSprite.rect.height > 1f
             ? columnSprite.rect.width / columnSprite.rect.height
             : 0.16f;
         float columnWidth = columnHeight * columnAspect;
-        float columnX = 390f;
-        float columnFoot = baseHeight;
-        float columnTop = columnFoot + columnHeight;
+        float columnTop = baseHeight + columnHeight;
         float outerSpan = columnX * 2f + columnWidth;
-        const float roofOverhang = 0f;
 
         Sprite pedimentSprite = Art("Torre_Fronton");
-        float pedimentWidth = outerSpan + roofOverhang * 2f;
         float pedimentAspect = pedimentSprite != null && pedimentSprite.rect.height > 1f
             ? pedimentSprite.rect.width / pedimentSprite.rect.height
             : 6.2f;
-        float pedimentHeight = pedimentWidth / pedimentAspect;
-        temple.sizeDelta = new Vector2(pedimentWidth + 24f, columnTop + pedimentHeight + 8f);
+        float pedimentHeight = outerSpan / pedimentAspect;
+        temple.sizeDelta = new Vector2(outerSpan + 24f, columnTop + pedimentHeight + 8f);
 
         Image body = Piece(temple, "Body", "Torre_Cuerpo", false);
         SetRect(body.rectTransform, new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(0f, baseHeight), new Vector2(columnX * 2f - columnWidth, columnHeight));
         body.raycastTarget = false;
 
         Image parchment = Piece(temple, "Parchment", "Papel_Con_Borde", false);
-        float paperBottom = baseHeight + 10f;
-        float paperHeight = columnHeight - 20f;
-        SetRect(parchment.rectTransform, new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(0f, paperBottom), new Vector2(columnX * 2f - columnWidth - 16f, paperHeight));
+        SetRect(parchment.rectTransform, new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(0f, baseHeight + 10f), new Vector2(columnX * 2f - columnWidth - 16f, columnHeight - 20f));
 
         Image plinth = Piece(temple, "Base", "Torre_Base", false);
-        SetRect(plinth.rectTransform, new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(0f, 0f), new Vector2(outerSpan + 48f, baseHeight));
+        SetRect(plinth.rectTransform, new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), Vector2.zero, new Vector2(outerSpan + 48f, baseHeight));
         plinth.raycastTarget = false;
 
-        PlaceColumn(temple, "Column Left", -columnX, columnFoot, columnWidth, columnHeight);
-        PlaceColumn(temple, "Column Right", columnX, columnFoot, columnWidth, columnHeight);
+        PlaceColumn(temple, "Column Left", -columnX, baseHeight, columnWidth, columnHeight);
+        PlaceColumn(temple, "Column Right", columnX, baseHeight, columnWidth, columnHeight);
 
         Image pediment = Piece(temple, "Pediment", "Torre_Fronton", true);
-        SetRect(pediment.rectTransform, new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(0f, columnTop), new Vector2(pedimentWidth, pedimentHeight));
+        SetRect(pediment.rectTransform, new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(0f, columnTop), new Vector2(outerSpan, pedimentHeight));
         pediment.raycastTarget = false;
 
-        RectTransform content = RectOf("Content", parchment.rectTransform);
-        Stretch(content);
-        content.offsetMin = new Vector2(64f, 56f);
-        content.offsetMax = new Vector2(-64f, -52f);
+        return parchment.rectTransform;
+    }
 
-        VerticalLayoutGroup layout = content.gameObject.AddComponent<VerticalLayoutGroup>();
-        layout.padding = new RectOffset(8, 8, 8, 4);
-        layout.spacing = 8f;
-        layout.childAlignment = TextAnchor.UpperCenter;
-        layout.childControlWidth = true;
-        layout.childControlHeight = true;
-        layout.childForceExpandWidth = true;
-        layout.childForceExpandHeight = false;
+    private void BuildChoices(RectTransform body)
+    {
+        RectTransform left = RectOf("Choices", body);
+        LayoutElement leftSize = left.gameObject.AddComponent<LayoutElement>();
+        leftSize.minWidth = 330f;
+        leftSize.preferredWidth = 330f;
+        leftSize.flexibleWidth = 0f;
+        Column(left, 6f, TextAnchor.UpperCenter);
 
-        AddLabel(content, font, material, "NAME YOUR CULT", 32f, 42f, TitleInk, TextAlignmentOptions.Center);
-        input = AddInput(content, font, material);
+        AddLabel(left, "NAME", 14f, 18f, TitleInk, TextAlignmentOptions.Center);
+        input = AddInput(left);
         input.onValueChanged.AddListener(_ => RefreshConfirm());
-        AddLabel(content, font, material, "STARTING ATTRIBUTE", 16f, 24f, Ink, TextAlignmentOptions.Center);
+        AddLabel(left, "STARTING VIRTUE", 14f, 18f, TitleInk, TextAlignmentOptions.Center);
 
+        MapStatsBook book = FindAnyObjectByType<MapStatsBook>(FindObjectsInactive.Include);
         for (int i = 0; i < Choices.Length; i++)
         {
             int index = i;
-            AddChoice(content, font, material, Choices[i].Label, () => Select(index), out choiceImages[i]);
+            Button button = AddButton(left, Virtues.Name(Choices[i].Stat).ToUpperInvariant(), () => Select(index), 42f, out choiceImages[i]);
+            AddRibbons(button.transform, Virtues.DistrictsOf(Choices[i].Stat), book);
+            AddHover(button.gameObject, () => ShowDetails(index), () => ShowDetails(selected));
         }
+    }
 
-        blurb = AddLabel(content, font, material, "Choose the attribute your cult starts with.", 18f, 52f, Ink, TextAlignmentOptions.Center);
-        confirm = AddChoice(content, font, material, "CONFIRM", Confirm, out _);
-        RefreshConfirm();
+    private void BuildDetails(RectTransform body)
+    {
+        Image card = ImageOf("Details", body, null, new Color(0.27f, 0.16f, 0.11f, 0.07f));
+        card.raycastTarget = false;
+        LayoutElement cardSize = card.gameObject.AddComponent<LayoutElement>();
+        cardSize.preferredWidth = 0f;
+        cardSize.flexibleWidth = 1f;
+        VerticalLayoutGroup layout = Column(card.rectTransform, 4f, TextAnchor.UpperLeft);
+        layout.padding = new RectOffset(20, 20, 14, 12);
+
+        detailTitle = AddLabel(card.rectTransform, string.Empty, 28f, 34f, TitleInk, TextAlignmentOptions.Left);
+        detailTagline = AddLabel(card.rectTransform, string.Empty, 16f, 26f, InkSoft, TextAlignmentOptions.Left);
+        AddLabel(card.rectTransform, "WHAT IT CHANGES", 14f, 22f, TitleInk, TextAlignmentOptions.Left);
+        detailEffects = AddLabel(card.rectTransform, string.Empty, 17f, 128f, Ink, TextAlignmentOptions.TopLeft);
+        AddLabel(card.rectTransform, "YOU START WITH", 14f, 22f, TitleInk, TextAlignmentOptions.Left);
+        detailBonus = AddLabel(card.rectTransform, string.Empty, 17f, 26f, Ink, TextAlignmentOptions.Left);
+        detailNote = AddLabel(card.rectTransform, string.Empty, 15f, 40f, InkSoft, TextAlignmentOptions.TopLeft);
     }
 
     private void Select(int index)
     {
         selected = index;
-        blurb.text = Choices[index].Blurb;
         for (int i = 0; i < choiceImages.Length; i++)
         {
-            if (choiceImages[i] == null) continue;
-            choiceImages[i].color = i == index
-                ? new Color(1f, 0.84f, 0.48f, 1f)
-                : Color.white;
+            if (choiceImages[i] != null) choiceImages[i].color = i == index ? Selected : Color.white;
         }
 
+        ShowDetails(index);
         RefreshConfirm();
+    }
+
+    private void ShowDetails(int index)
+    {
+        if (index < 0 || index >= Choices.Length) return;
+
+        AttributeChoice choice = Choices[index];
+        List<Districts> districts = Virtues.DistrictsOf(choice.Stat);
+
+        detailTitle.text = Virtues.Name(choice.Stat).ToUpperInvariant();
+        detailTagline.text = choice.Tagline;
+        Link(detailEffects, string.Join("\n", Effects(choice.Stat, districts)));
+        detailBonus.text = Bonus(choice.StartingBonus);
+        Link(detailNote, index == recommended && home.HasValue
+            ? $"A good first pick: your cult starts in {Virtues.DistrictList(new List<Districts> { home.Value })}."
+            : "Doctrines can raise any virtue later in the game.");
+    }
+
+    private static List<string> Effects(PlayerStats.PlayerStat virtue, List<Districts> districts)
+    {
+        var lines = new List<string>();
+        string where = Virtues.DistrictList(districts);
+
+        int percent = Mathf.RoundToInt(StartingPoints * Virtues.InfluencePercentPerPoint);
+        if (districts.Count > 0 && percent > 0)
+        {
+            lines.Add($"- Your clerics gain {percent}% more influence in {where}.");
+        }
+
+        string yields = Yields(districts);
+        if (yields.Length > 0)
+        {
+            lines.Add($"- {Capitalized(where)} {(districts.Count == 1 ? "yields" : "yield")} {yields}.");
+        }
+
+        int learning = virtue == PlayerStats.PlayerStat.Learning ? StartingPoints : 0;
+        int stewardship = virtue == PlayerStats.PlayerStat.Stewardship ? StartingPoints : 0;
+        int training = PlayerClergy.TrainingFor(learning, stewardship) - PlayerClergy.TrainingFor(0, 0);
+        if (training > 0)
+        {
+            PlayerClergy clergy = FindAnyObjectByType<PlayerClergy>();
+            string cost = clergy != null ? $" ({clergy.OrdinationCost} makes a cleric)" : string.Empty;
+            lines.Add($"- New clerics train faster: +{training} training each turn{cost}.");
+        }
+
+        lines.Add($"- Better odds in event choices that test {Virtues.Name(virtue)}.");
+        return lines;
+    }
+
+    private static string Yields(List<Districts> districts)
+    {
+        DistrictProductionConfig config = InfluenceManager.IsNull ? null : InfluenceManager.Get.ProductionConfig;
+        if (config == null) return string.Empty;
+
+        var parts = new Dictionary<Resource, int>();
+        var order = new List<Resource>();
+        foreach (Districts district in districts)
+        {
+            if (!config.TryGetEntry(district, out DistrictProductionConfig.ProductionEntry entry) || entry.yields == null) continue;
+            foreach (DistrictProductionConfig.ResourceYield yield in entry.yields)
+            {
+                if (!parts.ContainsKey(yield.resource)) order.Add(yield.resource);
+                parts.TryGetValue(yield.resource, out int current);
+                parts[yield.resource] = current + yield.parts;
+            }
+        }
+
+        order.Sort((a, b) => parts[b].CompareTo(parts[a]));
+        var names = order.ConvertAll(resource => resource.ToString());
+        if (names.Count <= 1) return names.Count == 1 ? names[0] : string.Empty;
+        return $"{string.Join(", ", names.GetRange(0, names.Count - 1))} and {names[names.Count - 1]}";
+    }
+
+    private static string Bonus((Resource resource, int amount)[] bonus)
+    {
+        var parts = new List<string>();
+        foreach ((Resource resource, int amount) in bonus)
+        {
+            parts.Add($"<color=#{(amount >= 0 ? GainHex : LossHex)}>{(amount >= 0 ? "+" : "")}{amount} {resource}</color>");
+        }
+
+        return parts.Count > 0 ? string.Join("   ", parts) : "Nothing extra.";
+    }
+
+    private static string Capitalized(string text)
+    {
+        return string.IsNullOrEmpty(text) ? text : char.ToUpper(text[0], CultureInfo.InvariantCulture) + text.Substring(1);
+    }
+
+    private static Districts? HomeDistrict()
+    {
+        DistrictZone zone = TutorialContent.FindPlayerZone();
+        return zone != null ? zone.District : null;
+    }
+
+    private int Recommended()
+    {
+        if (!home.HasValue) return -1;
+        for (int i = 0; i < Choices.Length; i++)
+        {
+            if (Virtues.DistrictsOf(Choices[i].Stat).Contains(home.Value)) return i;
+        }
+
+        return -1;
+    }
+
+    private void MarkRecommended()
+    {
+        if (recommended < 0 || choiceImages[recommended] == null) return;
+
+        TextMeshProUGUI tag = CreateText("First Pick", choiceImages[recommended].transform, "first pick", 12f, TitleInk, TextAlignmentOptions.Right);
+        tag.rectTransform.offsetMax = new Vector2(-14f, 0f);
     }
 
     private void RefreshConfirm()
     {
         if (confirm == null) return;
-        confirm.interactable = selected >= 0 && !string.IsNullOrWhiteSpace(input.text);
+
+        bool named = input != null && !string.IsNullOrWhiteSpace(input.text);
+        confirm.interactable = selected >= 0 && named;
+        if (hint != null) hint.text = named ? string.Empty : "Type a name for your cult to begin.";
     }
 
     private void Confirm()
@@ -179,52 +383,15 @@ public class CultCreationPanel : MonoBehaviour
         string cultName = input.text.Trim();
         if (cultName.Length == 0) return;
 
-        Apply(Choices[selected].Stat);
-        TutorialSession.SetCult(cultName, Choices[selected].Stat);
+        AttributeChoice choice = Choices[selected];
+        Apply(choice.Stat);
+        TutorialSession.SetCult(cultName, choice.Stat);
+        foreach ((Resource resource, int amount) in choice.StartingBonus) ResourceManager.AddResource(resource, amount);
+
         FaithEclipseBar bar = FindAnyObjectByType<FaithEclipseBar>();
-
-        GiveResourcesForCultChoice(Choices[selected].Label);
-
         if (bar != null) bar.RefreshNames();
         Confirmed = true;
         Dismiss();
-    }
-
-    private void GiveResourcesForCultChoice(string label)
-    {
-        switch (label)
-        {
-            case "DIPLOMACY":
-                ResourceManager.AddResource(Resource.Authority, 1);
-                ResourceManager.AddResource(Resource.Materials, 20);
-                ResourceManager.AddResource(Resource.Flock, 50);
-                break;
-
-            case "AGGRESION":
-                ResourceManager.AddResource(Resource.Happiness, -25);
-                ResourceManager.AddResource(Resource.Zeal, 10);
-                ResourceManager.AddResource(Resource.Materials, -10);
-                ResourceManager.AddResource(Resource.Authority, 3);
-                ResourceManager.AddResource(Resource.Flock, 25);
-                break;
-
-            case "STEWARDSHIP":
-                ResourceManager.AddResource(Resource.Materials, 50);
-                ResourceManager.AddResource(Resource.Flock, 30);
-                break;
-
-            case "INTRIGUE":
-                ResourceManager.AddResource(Resource.Zeal, 25);
-                ResourceManager.AddResource(Resource.Secrets, 30);
-                ResourceManager.AddResource(Resource.Materials, 10);
-                break;
-
-            case "LEARNING":
-                ResourceManager.AddResource(Resource.Wealth, 30);
-                ResourceManager.AddResource(Resource.Secrets, 30);
-                ResourceManager.AddResource(Resource.Materials, 30);
-                break;
-        }
     }
 
     private static void Apply(PlayerStats.PlayerStat stat)
@@ -240,14 +407,67 @@ public class CultCreationPanel : MonoBehaviour
             if (stats == null || !seen.Add(stats)) return;
             stats.ResetValues();
             stats.ClearDoctrines();
-            if (stat != PlayerStats.PlayerStat.None) stats.ChangeStat(stat, 1);
+            if (stat != PlayerStats.PlayerStat.None) stats.ChangeStat(stat, StartingPoints);
         }
     }
 
-    private static void SetRect(RectTransform rect, Vector2 anchorMin, Vector2 pivot, Vector2 position, Vector2 size)
+    private void Link(TMP_Text text, string value)
     {
-        rect.anchorMin = anchorMin;
-        rect.anchorMax = anchorMin;
+        if (glossary == null)
+        {
+            text.text = value;
+            return;
+        }
+
+        text.text = glossary.Highlight(value);
+        if (text.GetComponent<HoverLinkHandlerTMPro>() != null) return;
+        text.gameObject.AddComponent<HoverLinkHandlerTMPro>();
+        text.gameObject.AddComponent<LinkTooltipTrigger>().Database = glossary;
+    }
+
+    private static void AddRibbons(Transform button, List<Districts> districts, MapStatsBook book)
+    {
+        if (book == null) return;
+
+        for (int i = 0; i < districts.Count && i < 2; i++)
+        {
+            Sprite marker = book.MarkerFor(districts[i]);
+            if (marker == null) continue;
+
+            Image ribbon = ImageOf("Ribbon", (RectTransform)button, marker, Color.white);
+            ribbon.preserveAspect = true;
+            ribbon.raycastTarget = false;
+            SetRect(ribbon.rectTransform, new Vector2(0f, 0.5f), new Vector2(0f, 0.5f), new Vector2(16f + i * 22f, 0f), new Vector2(24f, 28f));
+        }
+    }
+
+    private static void AddHover(GameObject target, UnityEngine.Events.UnityAction onEnter, UnityEngine.Events.UnityAction onExit)
+    {
+        EventTrigger trigger = target.AddComponent<EventTrigger>();
+        var enter = new EventTrigger.Entry { eventID = EventTriggerType.PointerEnter };
+        enter.callback.AddListener(_ => onEnter());
+        var exit = new EventTrigger.Entry { eventID = EventTriggerType.PointerExit };
+        exit.callback.AddListener(_ => onExit());
+        trigger.triggers.Add(enter);
+        trigger.triggers.Add(exit);
+    }
+
+    private static VerticalLayoutGroup Column(RectTransform rect, float spacing, TextAnchor alignment)
+    {
+        VerticalLayoutGroup layout = rect.gameObject.AddComponent<VerticalLayoutGroup>();
+        layout.spacing = spacing;
+        layout.childAlignment = alignment;
+        layout.childControlWidth = true;
+        layout.childControlHeight = true;
+        layout.childForceExpandWidth = true;
+        layout.childForceExpandHeight = false;
+        return layout;
+    }
+
+    private static void SetRect(RectTransform rect, Vector2 anchor, Vector2 pivot, Vector2 position, Vector2 size)
+    {
+        rect.anchorMin = anchor;
+        rect.anchorMax = anchor;
         rect.pivot = pivot;
         rect.anchoredPosition = position;
         rect.sizeDelta = size;
@@ -269,15 +489,7 @@ public class CultCreationPanel : MonoBehaviour
         return image;
     }
 
-    private static TMP_Text AddLabel(
-        Transform parent,
-        TMP_FontAsset font,
-        Material material,
-        string value,
-        float size,
-        float height,
-        Color color,
-        TextAlignmentOptions alignment)
+    private TMP_Text AddLabel(Transform parent, string value, float size, float height, Color color, TextAlignmentOptions alignment)
     {
         GameObject go = new GameObject("Label", typeof(RectTransform), typeof(TextMeshProUGUI), typeof(LayoutElement));
         go.transform.SetParent(parent, false);
@@ -294,11 +506,11 @@ public class CultCreationPanel : MonoBehaviour
         return text;
     }
 
-    private static TMP_InputField AddInput(Transform parent, TMP_FontAsset font, Material material)
+    private TMP_InputField AddInput(Transform parent)
     {
         GameObject go = new GameObject("Name", typeof(RectTransform), typeof(Image), typeof(TMP_InputField), typeof(LayoutElement));
         go.transform.SetParent(parent, false);
-        go.GetComponent<LayoutElement>().preferredHeight = 58f;
+        go.GetComponent<LayoutElement>().preferredHeight = 52f;
         Image image = go.GetComponent<Image>();
         image.sprite = Art("Ladrillo_Gris_Largo_1");
         image.type = Image.Type.Simple;
@@ -310,8 +522,8 @@ public class CultCreationPanel : MonoBehaviour
         ((RectTransform)viewport.transform).offsetMin = new Vector2(18f, 8f);
         ((RectTransform)viewport.transform).offsetMax = new Vector2(-18f, -8f);
 
-        TextMeshProUGUI text = CreateText("Text", viewport.transform, font, material, string.Empty, 24f, Ink, TextAlignmentOptions.Center);
-        TextMeshProUGUI placeholder = CreateText("Placeholder", viewport.transform, font, material, "Cult name", 24f, InkFaint, TextAlignmentOptions.Center);
+        TextMeshProUGUI text = CreateText("Text", viewport.transform, string.Empty, 24f, Ink, TextAlignmentOptions.Center);
+        TextMeshProUGUI placeholder = CreateText("Placeholder", viewport.transform, "Type a name", 24f, InkFaint, TextAlignmentOptions.Center);
 
         TMP_InputField field = go.GetComponent<TMP_InputField>();
         field.textViewport = (RectTransform)viewport.transform;
@@ -323,17 +535,11 @@ public class CultCreationPanel : MonoBehaviour
         return field;
     }
 
-    private static Button AddChoice(
-        Transform parent,
-        TMP_FontAsset font,
-        Material material,
-        string caption,
-        UnityEngine.Events.UnityAction onClick,
-        out Image image)
+    private Button AddButton(Transform parent, string caption, UnityEngine.Events.UnityAction onClick, float height, out Image image)
     {
         GameObject go = new GameObject(caption, typeof(RectTransform), typeof(Image), typeof(Button), typeof(LayoutElement));
         go.transform.SetParent(parent, false);
-        go.GetComponent<LayoutElement>().preferredHeight = 52f;
+        go.GetComponent<LayoutElement>().preferredHeight = height;
         image = go.GetComponent<Image>();
         image.sprite = Art("Ladrillo_Gris_Largo_1");
         image.type = Image.Type.Simple;
@@ -344,19 +550,14 @@ public class CultCreationPanel : MonoBehaviour
         colors.disabledColor = new Color(1f, 1f, 1f, 0.45f);
         button.colors = colors;
         button.onClick.AddListener(onClick);
-        CreateText("Label", go.transform, font, material, caption, 20f, Ink, TextAlignmentOptions.Center);
+        TextMeshProUGUI label = CreateText("Label", go.transform, caption, 20f, Ink, TextAlignmentOptions.Center);
+        label.enableAutoSizing = true;
+        label.fontSizeMin = 12f;
+        label.fontSizeMax = 20f;
         return button;
     }
 
-    private static TextMeshProUGUI CreateText(
-        string name,
-        Transform parent,
-        TMP_FontAsset font,
-        Material material,
-        string value,
-        float size,
-        Color color,
-        TextAlignmentOptions alignment)
+    private TextMeshProUGUI CreateText(string name, Transform parent, string value, float size, Color color, TextAlignmentOptions alignment)
     {
         GameObject go = new GameObject(name, typeof(RectTransform));
         go.transform.SetParent(parent, false);

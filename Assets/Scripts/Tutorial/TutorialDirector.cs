@@ -2,10 +2,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-/// Acompaña la partida: culto siempre, y la guía solo si es la primera vez.
-/// No bloquea la UI. Skip corta la guía y la partida sigue.
-/// </summary>
 public class TutorialDirector : MonoBehaviour
 {
     private CultCreationPanel cult;

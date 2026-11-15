@@ -16,11 +16,13 @@ MonoBehaviour:
   description: Pontiff, a famed philosopher visiting the Ocularium has agreed to
     deliver a lecture on the nature of the Beholder, provided he may use one of our
     halls. Every sect is eager for his favor.
+  premise: A famed philosopher will lecture on the Beholder and needs a hall. Every
+    sect wants his favor.
   icon: {fileID: 0}
   ticks: 4
   region: 2
   eventType: 0
-  difficulty: 1
+  difficulty: 2
   guideSeed: 0
   <Options>k__BackingField:
   - {fileID: 11400000, guid: 886c5333367418e41b995d600840a396, type: 2}

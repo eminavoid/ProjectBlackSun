@@ -78,17 +78,19 @@ public class DistrictSeedPlantPanel : MonoBehaviour
         cooldownSeeds.Add(new SeedCooldownData(seed, seed.PlayerPlantCooldown));
     }
 
-    private bool InCooldown(Seed seed)
+    private bool InCooldown(Seed seed) => TurnsUntilReady(seed) > 0;
+
+    private int TurnsUntilReady(Seed seed)
     {
-        for (int i = 0; i <  cooldownSeeds.Count; i++)
+        for (int i = 0; i < cooldownSeeds.Count; i++)
         {
             if (cooldownSeeds[i].seed == seed)
             {
-                return true;
+                return cooldownSeeds[i].cooldown;
             }
         }
 
-        return false;
+        return 0;
     }
 
     private void DebugLoadSeedsFromPool()
@@ -118,6 +120,11 @@ public class DistrictSeedPlantPanel : MonoBehaviour
         EnsureScrollContentLayout();
         WireButtons();
         SetPanelVisible(false);
+    }
+
+    private void OnDestroy()
+    {
+        GameTime.OnTurnStarted -= Tick;
     }
 
     private void OnDisable()
@@ -312,12 +319,8 @@ public class DistrictSeedPlantPanel : MonoBehaviour
         ShowPlantPopup($"{selectedSeed.Title} planted in the {MapStatsQuery.DistrictLabel(targetZone.District)} district.");
 
         PlaceInCooldown(selectedSeed);
-        
-        if (selectedSeed.name == "Tutorial Seed")
-        {
-            UpdateSeedInventory(selectedSeed, -1);
-        }
-        
+        if (TutorialContent.IsTutorialSeed(selectedSeed)) UpdateSeedInventory(selectedSeed, -1);
+
         if (selectedSeed == TutorialContent.FirstSeed) ReleaseStandardPool();
         RefreshSeedList();
         Planted?.Invoke();
@@ -448,7 +451,7 @@ public class DistrictSeedPlantPanel : MonoBehaviour
             int index = i;
             Button instance = Instantiate(templateButton, seedListContent);
             instance.gameObject.SetActive(true);
-            ConfigureSeedButton(instance, cachedSeeds[i], false);
+            ConfigureSeedButton(instance, cachedSeeds[i], false, TurnsUntilReady(cachedSeeds[i]));
             instance.onClick.AddListener(() => SelectSeed(index));
             runtimeSeedButtons.Add(instance);
 
@@ -569,18 +572,18 @@ public class DistrictSeedPlantPanel : MonoBehaviour
         for (int i = 0; i < runtimeSeedButtons.Count; i++)
         {
             if (runtimeSeedButtons[i] == null || i >= cachedSeeds.Count) continue;
-            ConfigureSeedButton(runtimeSeedButtons[i], cachedSeeds[i], i == selectedSeedIndex);
+            ConfigureSeedButton(runtimeSeedButtons[i], cachedSeeds[i], i == selectedSeedIndex, TurnsUntilReady(cachedSeeds[i]));
         }
     }
 
-    private static void ConfigureSeedButton(Button button, Seed seed, bool selected)
+    private static void ConfigureSeedButton(Button button, Seed seed, bool selected, int turnsUntilReady)
     {
         if (button == null || seed == null) return;
 
         SeedButtonView view = button.GetComponent<SeedButtonView>();
         if (view != null)
         {
-            view.Bind(seed, selected);
+            view.Bind(seed, selected, turnsUntilReady);
             return;
         }
 

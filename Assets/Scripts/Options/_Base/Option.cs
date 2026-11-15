@@ -6,7 +6,6 @@ using System;
 public class Option : ScriptableObject
 {
     [SerializeField] private PlayerStats playerStats;
-    [SerializeField] private PlayerStats.PlayerStat shineWith;
 
     [Header("Display")]
     [SerializeField] private string title;
@@ -19,7 +18,6 @@ public class Option : ScriptableObject
     [SerializeField] private List<FollowUpSeedConfig> followUpSeeds = new List<FollowUpSeedConfig>();
 
     public PlayerStats PlayerStats => playerStats;
-    public PlayerStats.PlayerStat ShineWith => shineWith;
     public Seed Seed => seed;
 
     private Seed seed;
@@ -63,6 +61,14 @@ public class Option : ScriptableObject
         for (int i = 0; i < modules.Count; i++)
         {
             modules[i]?.GetFixedResourceChanges(changes);
+        }
+    }
+
+    public void GetTestedVirtues(List<PlayerStats.PlayerStat> virtues)
+    {
+        for (int i = 0; i < modules.Count; i++)
+        {
+            modules[i]?.GetTestedVirtues(virtues);
         }
     }
 

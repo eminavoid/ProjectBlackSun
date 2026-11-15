@@ -4,12 +4,15 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Zeke.Tooltips;
 
 public class ResourceAmountRow : MonoBehaviour
 {
     [SerializeField] private ResourceIcons icons;
     [Tooltip("Disabled child with an Image (icon) and a TMP text (amount).")]
     [SerializeField] private GameObject chipTemplate;
+    [Tooltip("Hovering a chip explains its resource and shows how much you have.")]
+    [SerializeField] private TooltipLinksDB glossary;
 
     [Header("Colors")]
     [SerializeField] private Color gainColor = new Color(0.18f, 0.42f, 0.14f);
@@ -107,7 +110,25 @@ public class ResourceAmountRow : MonoBehaviour
             chip.amount.text = FormatAmount(chip, delta.Amount);
         }
 
+        AddTooltip(chip);
         return chip;
+    }
+
+    private void AddTooltip(Chip chip)
+    {
+        if (chip.icon != null) chip.icon.raycastTarget = true;
+
+        TooltipTrigger trigger = chip.root.GetComponent<TooltipTrigger>();
+        if (trigger == null) trigger = chip.root.AddComponent<TooltipTrigger>();
+        trigger.SetText(Explain(chip.delta.Resource));
+    }
+
+    private string Explain(Resource resource)
+    {
+        string described = glossary != null ? glossary.Describe(resource.ToString()) : null;
+        string owned = ResourceManager.IsNull ? null : $"<size=80%><b>You have {ResourceManager.Resources.GetResourceAmount(resource)}{(resource == Resource.Clerics ? " in reserve" : "")}.</b></size>";
+        if (described == null) return owned ?? resource.ToString();
+        return owned == null ? described : $"{described}\n{owned}";
     }
 
     private Color Dim(Color color)

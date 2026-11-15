@@ -29,15 +29,30 @@ namespace Zeke.Tooltips
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            Tooltip.Show(tooltipText, showBesides ? (RectTransform)transform : null);
-
-            showing = true;
+            TooltipTrigger innermost = InnermostUnder(eventData);
+            if (innermost != null && innermost != this) return;
+            Show();
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             showing = false;
             Tooltip.Hide();
+
+            TooltipTrigger under = InnermostUnder(eventData);
+            if (under != null && under != this && under.isActiveAndEnabled && transform.IsChildOf(under.transform)) under.Show();
+        }
+
+        private void Show()
+        {
+            Tooltip.Show(tooltipText, showBesides ? (RectTransform)transform : null);
+            showing = true;
+        }
+
+        private static TooltipTrigger InnermostUnder(PointerEventData eventData)
+        {
+            GameObject target = eventData.pointerCurrentRaycast.gameObject;
+            return target != null ? target.GetComponentInParent<TooltipTrigger>() : null;
         }
 
         private void OnDisable()

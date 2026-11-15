@@ -16,6 +16,8 @@ MonoBehaviour:
   description: My Pontiff, the night shift at the great foundry keeps a vigil beneath
     the smokestacks, and the foremen have allowed our clerics to lead the prayers.
     The workers look to us to set the tone.
+  premise: Our clerics lead a night vigil beneath the foundry smokestacks, and the
+    workers listen.
   icon: {fileID: 0}
   ticks: 2
   region: 3

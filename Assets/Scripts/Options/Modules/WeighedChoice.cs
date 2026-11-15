@@ -11,6 +11,15 @@ public class WeighedChoice : OptionModule
 
     public override bool CanExecute() => true;
 
+    public override void GetTestedVirtues(List<PlayerStats.PlayerStat> virtues)
+    {
+        for (int i = 0; i < modules.Count; i++)
+        {
+            PlayerStats.PlayerStat virtue = modules[i].statUsed;
+            if (virtue != PlayerStats.PlayerStat.None && !virtues.Contains(virtue)) virtues.Add(virtue);
+        }
+    }
+
     public override void Execute(Option option, Seed seed)
     {
         tempModules.Clear();

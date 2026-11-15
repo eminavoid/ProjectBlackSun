@@ -107,22 +107,22 @@ public class ResourceSidebar : MonoBehaviour
 
     private string Explain(Resource resource, TooltipTrigger tooltip)
     {
-        if (glossary != null && glossary.TryGetValue(resource.ToString().ToLowerInvariant(), out TooltipLinksDB.TooltipInfo info))
-        {
-            return $"{info.title}\n<size=80%>{info.description}</size>";
-        }
-
-        return tooltip != null ? tooltip.Text : null;
+        string described = glossary != null ? glossary.Describe(resource.ToString()) : null;
+        return described ?? (tooltip != null ? tooltip.Text : null);
     }
 
-    private static RectTransform FindIcon(TMP_Text text)
+    private RectTransform FindIcon(TMP_Text text)
     {
-        Transform slot = text.transform.parent;
-        foreach (Transform child in slot)
+        Transform branch = text.transform;
+        for (Transform level = branch.parent; level != null && level != transform; branch = level, level = level.parent)
         {
-            if (child != text.transform && child.GetComponent<Image>() != null) return (RectTransform)child;
+            foreach (Transform child in level)
+            {
+                if (child != branch && child.GetComponent<Image>() != null) return (RectTransform)child;
+            }
         }
-        return (RectTransform)slot;
+
+        return (RectTransform)text.transform.parent;
     }
 
     private void OnDestroy()

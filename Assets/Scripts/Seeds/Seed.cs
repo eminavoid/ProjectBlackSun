@@ -21,6 +21,8 @@ public class Seed : ScriptableObject
     [Header("Display")]
     [SerializeField] private string title;
     [SerializeField, TextArea(3, 6)] private string description;
+    [Tooltip("What the plant menu shows before it's planted. Empty uses the description.")]
+    [SerializeField, TextArea(2, 4)] private string premise;
     [SerializeField] private Sprite icon;
 
     [Header("Gameplay")]
@@ -44,6 +46,7 @@ public class Seed : ScriptableObject
     public string Title => string.IsNullOrWhiteSpace(title) ? name : title;
     public bool HasDisplayTitle => !string.IsNullOrWhiteSpace(title);
     public string Description => description;
+    public string Premise => string.IsNullOrWhiteSpace(premise) ? description : premise;
     public Sprite Icon => icon;
     public DistrictZone CurrentZone => currentZone;
     public Districts? CurrentDistrict => currentZone != null ? currentZone.District : null;

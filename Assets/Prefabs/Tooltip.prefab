@@ -324,9 +324,13 @@ MonoBehaviour:
   tooltipObject: {fileID: 126456386159115111}
   tooltipRect: {fileID: 6901168688039356111}
   tooltipText: {fileID: 8637702195364508197}
+  glossary: {fileID: 11400000, guid: 0757e23d3eef8cd4dbe1defaa82e93cf, type: 2}
   showDelay: 0.25
   appearDuration: 0.14
   hideDuration: 0.08
+  maxWidth: 400
+  anchorGap: 10
+  cursorOffset: {x: 14, y: 10}
 --- !u!223 &9071338205486071688
 Canvas:
   m_ObjectHideFlags: 0

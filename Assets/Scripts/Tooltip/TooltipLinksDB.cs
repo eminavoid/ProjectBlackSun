@@ -33,6 +33,16 @@ namespace Zeke.Tooltips
             return byKey.TryGetValue(key, out toolTipInfo);
         }
 
+        public string Describe(string keyOrTerm)
+        {
+            if (string.IsNullOrEmpty(keyOrTerm)) return null;
+            Build();
+            if (!byKey.TryGetValue(keyOrTerm, out TooltipInfo info)
+                && !byKey.TryGetValue(keyOrTerm.ToLowerInvariant(), out info)
+                && !byTerm.TryGetValue(keyOrTerm, out info)) return null;
+            return string.IsNullOrEmpty(info.title) ? info.description : $"{info.title}\n<size=80%>{info.description}</size>";
+        }
+
         public TooltipInfo this[string index]
         {
             get

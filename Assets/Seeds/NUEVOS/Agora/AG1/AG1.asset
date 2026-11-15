@@ -16,6 +16,8 @@ MonoBehaviour:
   description: My Pontiff, the bazaar we sponsored in the Agora has opened its gates,
     and the crowds are already thick as locusts. Stalls bearing our sigil sell trinkets,
     sweetmeats and blessed oils. A cleric asks how the proceeds should be handled.
+  premise: Sponsor a market stall run in the sect's name. Where the crowds go, the
+    coin follows.
   icon: {fileID: 0}
   ticks: 2
   region: 1

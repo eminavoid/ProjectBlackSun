@@ -38,11 +38,10 @@ namespace Zeke.Abilities
 
         private void OnHoverEnterLink(LinkHoverEventInfo linkHoverEventInfo)
         {
-            if (tooltipLinksDB == null || !tooltipLinksDB.TryGetValue(linkHoverEventInfo.id, out TooltipLinksDB.TooltipInfo toolTipInfo)) return;
+            string text = tooltipLinksDB != null ? tooltipLinksDB.Describe(linkHoverEventInfo.id) : null;
+            if (text == null) return;
 
-            Tooltip.Show(string.IsNullOrEmpty(toolTipInfo.title)
-                ? toolTipInfo.description
-                : $"{toolTipInfo.title}\n<size=80%>{toolTipInfo.description}</size>");
+            Tooltip.Show(text);
             showing = true;
         }
 

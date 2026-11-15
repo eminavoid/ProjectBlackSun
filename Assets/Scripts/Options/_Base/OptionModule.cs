@@ -10,5 +10,7 @@ public abstract class OptionModule
 
     public virtual void GetFixedResourceChanges(List<ResourceDelta> changes) { }
 
+    public virtual void GetTestedVirtues(List<PlayerStats.PlayerStat> virtues) { }
+
     public virtual bool IsRefund => false;
 }

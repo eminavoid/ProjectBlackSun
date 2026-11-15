@@ -17,11 +17,13 @@ MonoBehaviour:
     into debt, and a fixer in the Pink Quarter claims the house would trade a favor
     to a sect willing to settle it discreetly. The path to Authority is a narrow
     one.
+  premise: A great house has quietly fallen into debt, and a fixer claims it will
+    trade a favor to a discreet sect.
   icon: {fileID: 0}
   ticks: 5
   region: 4
   eventType: 0
-  difficulty: 1
+  difficulty: 3
   guideSeed: 0
   <Options>k__BackingField:
   - {fileID: 11400000, guid: f7b1a2f69ec16f044b80fe4d0418173d, type: 2}

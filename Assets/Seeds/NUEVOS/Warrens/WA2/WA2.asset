@@ -16,11 +16,13 @@ MonoBehaviour:
   description: Pontiff, a self-proclaimed prophet has been drawing crowds in the
     Warrens with fiery sermons on every street corner. He preaches nothing heretical,
     merely nothing of ours either. Our clerics await your word.
+  premise: A street prophet draws crowds in the Warrens. He preaches nothing heretical,
+    merely nothing of ours.
   icon: {fileID: 0}
   ticks: 3
   region: 5
   eventType: 0
-  difficulty: 1
+  difficulty: 2
   guideSeed: 0
   <Options>k__BackingField:
   - {fileID: 11400000, guid: 244d8c885a0b54448abef7914cc40ddd, type: 2}

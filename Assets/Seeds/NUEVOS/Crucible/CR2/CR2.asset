@@ -16,11 +16,13 @@ MonoBehaviour:
   description: Pontiff, three guilds of the Crucible are to swear a blood oath ending
     their eternal feud, and they have asked a sect to witness it. A rare chance to
     be remembered as the peacemakers of the Crucible.
+  premise: Three feuding guilds will swear an oath of peace and want a sect to witness
+    it.
   icon: {fileID: 0}
   ticks: 4
   region: 3
   eventType: 0
-  difficulty: 1
+  difficulty: 2
   guideSeed: 0
   <Options>k__BackingField:
   - {fileID: 11400000, guid: 91abb84b47a1c5a4f9f22f5a67e937f0, type: 2}

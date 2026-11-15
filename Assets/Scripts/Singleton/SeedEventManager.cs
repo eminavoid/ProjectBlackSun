@@ -55,6 +55,8 @@ public class SeedEventManager : Singleton<SeedEventManager>
     [SerializeField] private PlayerResources resources;
     [SerializeField] private PlayerStats playerStats;
 
+    private readonly List<PlayerStats.PlayerStat> testedVirtues = new List<PlayerStats.PlayerStat>();
+
     [SerializeField] private UIWindow spawnOptionsWindow;
     [SerializeField] private UIWindow eventOutputWindowPrefab;
     [SerializeField] private OptionDisplay optionDisplayPrefab;
@@ -600,13 +602,14 @@ public class SeedEventManager : Singleton<SeedEventManager>
                 uiWindow.TryGetElement<TextMeshProUGUI>("Title").text = seed.Options[i].Title;
                 uiWindow.TryGetElement<TextMeshProUGUI>("Description").text = seed.Options[i].Description;
 
-                bool hasStatRequiredAmount = seed.Options[i].ShineWith != PlayerStats.PlayerStat.None
-                    && playerStats.GetStat(seed.Options[i].ShineWith) > 0;
+                testedVirtues.Clear();
+                seed.Options[i].GetTestedVirtues(testedVirtues);
+                testedVirtues.RemoveAll(virtue => playerStats == null || playerStats.GetStat(virtue) <= 0);
 
-                if (hasStatRequiredAmount)
+                if (testedVirtues.Count > 0)
                 {
                     TooltipTrigger tooltipTrigger = uiWindow.gameObject.AddComponent<TooltipTrigger>();
-                    tooltipTrigger.SetText($"<color=#2b872d>Chances increased by your {seed.Options[i].ShineWith} stat.</color>");
+                    tooltipTrigger.SetText($"Your <b>{Virtues.Names(testedVirtues)}</b> {(testedVirtues.Count == 1 ? "makes" : "make")} the best outcome of this choice more likely.");
                     tooltipTrigger.ShowBesides = false;
                 }
                 else
@@ -828,21 +831,21 @@ public class SeedEventManager : Singleton<SeedEventManager>
     {
         if (optionsContent != null) return optionsContent;
 
-        GameObject[] objects =
+        string[] parts = { "Title Rect", "Description Rect", "Background", "Layout Group", "Close Button" };
+        var groups = new List<CanvasGroup>();
+        foreach (string part in parts)
         {
-            spawnOptionsWindow.TryGetElement<RectTransform>("Title Rect").gameObject,
-            spawnOptionsWindow.TryGetElement<RectTransform>("Description Rect").gameObject,
-            spawnOptionsWindow.TryGetElement<Image>("Background").gameObject,
-            spawnOptionsWindow.TryGetElement<LayoutGroup>("Layout Group").gameObject,
-            spawnOptionsWindow.TryGetElement<Button>("Close Button").gameObject
-        };
+            UIElement element = spawnOptionsWindow.TryGetElement(part);
+            if (element == null)
+            {
+                Debug.LogWarning($"SeedEventManager: the options window has no \"{part}\" element.", spawnOptionsWindow);
+                continue;
+            }
 
-        optionsContent = new CanvasGroup[objects.Length];
-        for (int i = 0; i < objects.Length; i++)
-        {
-            optionsContent[i] = GroupOf(objects[i]);
+            groups.Add(GroupOf(element.gameObject));
         }
 
+        optionsContent = groups.ToArray();
         return optionsContent;
     }
 

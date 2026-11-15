@@ -70,8 +70,13 @@ public class PlayerClergy : MonoBehaviour
 
     private static int TrainingFrom(PlayerStats stats)
     {
-        int learning = 10 + (stats != null ? stats.GetStat(PlayerStats.PlayerStat.Learning) : 0);
-        int stewardship = 10 + (stats != null ? stats.GetStat(PlayerStats.PlayerStat.Stewardship) : 0);
-        return (2 * learning + stewardship) / 2;
+        int learning = stats != null ? stats.GetStat(PlayerStats.PlayerStat.Learning) : 0;
+        int stewardship = stats != null ? stats.GetStat(PlayerStats.PlayerStat.Stewardship) : 0;
+        return TrainingFor(learning, stewardship);
+    }
+
+    public static int TrainingFor(int learningPoints, int stewardshipPoints)
+    {
+        return (2 * (10 + learningPoints) + 10 + stewardshipPoints) / 2;
     }
 }

@@ -1122,6 +1122,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ResourceAmountRow
   icons: {fileID: 11400000, guid: 0903aa614e451a541ba7dfa0b538fc32, type: 2}
   chipTemplate: {fileID: 7548236961502941138}
+  glossary: {fileID: 11400000, guid: 0757e23d3eef8cd4dbe1defaa82e93cf, type: 2}
   gainColor: {r: 0.72, g: 1, b: 0.6, a: 1}
   lossColor: {r: 1, g: 0.62, b: 0.55, a: 1}
   dimmedFactor: 0.5

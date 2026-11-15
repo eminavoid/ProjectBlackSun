@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Zeke.Tooltips;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
@@ -12,6 +14,8 @@ public class DistrictClericAssignPanel : MonoBehaviour
     [SerializeField] private CanvasGroup group;
     [SerializeField] private TMP_Text title;
     [SerializeField] private TMP_Text counts;
+    [Tooltip("Influence, next turn's gain and who else is here.")]
+    [SerializeField] private TMP_Text forecast;
     [SerializeField] private Button assignButton;
     [SerializeField] private Button withdrawButton;
     [SerializeField] private float hiddenDrop = 170f;
@@ -87,13 +91,93 @@ public class DistrictClericAssignPanel : MonoBehaviour
 
         shown.EnsureInfluenceState();
         InfluenceManager manager = InfluenceManager.Get;
-        title.text = $"{MapStatsQuery.ZoneLabel(shown)}  ·  {MapStatsQuery.DistrictLabel(shown.District)} district";
-        counts.text = $"Clerics here: {shown.Influence.GetClerics(FactionId.Player)}   Reserve: {manager.GetClericPool(FactionId.Player)}";
-        if (clergy != null && clergy.UpkeepPerCleric > 0)
+        ZoneInfluenceState state = shown.Influence;
+        int here = state.GetClerics(FactionId.Player);
+        int reserve = manager.GetClericPool(FactionId.Player);
+        int perCleric = clergy != null ? clergy.UpkeepPerCleric : 0;
+
+        title.text = $"{MapStatsQuery.ZoneLabel(shown)}  ·  {MapStatsQuery.DistrictLabel(shown.District)} district  ·  {RulerText(state)}";
+        string upkeep = perCleric > 0 ? $"  ·  Upkeep: {manager.CountDeployedClerics(FactionId.Player) * perCleric} Wealth a turn" : string.Empty;
+        SetLinked(counts, $"Clerics here: {here}  ·  Reserve: {reserve}{upkeep}");
+        if (forecast != null) SetLinked(forecast, Forecast(manager, state, here));
+
+        SetButtonTip(assignButton, AssignTip(manager, state, here, reserve, perCleric));
+        SetButtonTip(withdrawButton, here > 0
+            ? $"Recall a cleric to your reserve.{(perCleric > 0 ? $"\n<size=80%>Saves {perCleric} Wealth a turn.</size>" : string.Empty)}"
+            : "You have no clerics here to recall.");
+    }
+
+    private static string RulerText(ZoneInfluenceState state)
+    {
+        if (state.Status == ZoneControlStatus.Controlled && state.Controller.HasValue)
         {
-            int upkeep = manager.CountDeployedClerics(FactionId.Player) * clergy.UpkeepPerCleric;
-            counts.text += $"   Upkeep: {upkeep} Wealth";
+            return FactionIdUtil.IsPlayer(state.Controller.Value) ? "Ruled by you" : $"Ruled by {FactionIdUtil.DisplayName(state.Controller.Value)}";
         }
+
+        return state.HasAnyPresence ? "Contested" : "Free";
+    }
+
+    private string Forecast(InfluenceManager manager, ZoneInfluenceState state, int here)
+    {
+        int total = Mathf.Max(1, state.TotalInfluence);
+        int share = state.GetShare(FactionId.Player);
+        string mine = share > 0
+            ? $"Your influence: {Mathf.RoundToInt(share * 100f / total)}% ({share} of {state.TotalInfluence})."
+            : "You have no influence here yet.";
+        string next = here > 0 ? $" Next turn: {GainText(manager, here)} influence."
+            : share > 0 ? " With no clerics here, it won't grow."
+            : " Send a cleric to start gaining influence.";
+        bool yours = state.Status == ZoneControlStatus.Controlled && state.Controller == FactionId.Player;
+
+        var rivals = new List<string>();
+        foreach (FactionId faction in FactionIdUtil.All)
+        {
+            if (FactionIdUtil.IsPlayer(faction)) continue;
+            int rivalShare = state.GetShare(faction);
+            int rivalClerics = state.GetClerics(faction);
+            if (rivalShare <= 0 && rivalClerics <= 0) continue;
+            rivals.Add($"{FactionIdUtil.DisplayName(faction)} {Mathf.RoundToInt(rivalShare * 100f / total)}% ({rivalClerics} {(rivalClerics == 1 ? "cleric" : "clerics")})");
+        }
+
+        string others = rivals.Count > 0
+            ? $"\n{string.Join(",  ", rivals)}. {(yours ? "You keep it while you hold more than half its influence." : "Rule it by holding more than half its influence.")}"
+            : "\nNo rival faith is here.";
+        return mine + next + others;
+    }
+
+    private string GainText(InfluenceManager manager, int clerics)
+    {
+        Vector2Int range = ClericInfluenceTable.GetRange(clerics);
+        float multiplier = manager.GetInfluenceGenerationMultiplier(FactionId.Player, shown);
+        int low = Mathf.RoundToInt(range.x * multiplier);
+        int high = Mathf.RoundToInt(range.y * multiplier);
+        return low == high ? $"+{low}" : $"+{low} to +{high}";
+    }
+
+    private string AssignTip(InfluenceManager manager, ZoneInfluenceState state, int here, int reserve, int perCleric)
+    {
+        if (reserve <= 0) return "Your reserve is empty.\n<size=80%>Ordain clerics from your cult's Clergy page, or wait for new ones to train.</size>";
+        if (!state.CanEnterByNormalMeans(FactionId.Player)) return "This zone is full and your faith has no foothold here.";
+
+        string gain = here > 0
+            ? $"Next turn here: {GainText(manager, here + 1)} influence instead of {GainText(manager, here)}."
+            : $"Next turn here: {GainText(manager, 1)} influence.";
+        string cost = perCleric > 0 ? $"\n<size=80%>Costs {perCleric} Wealth a turn while it stays on the map.</size>" : string.Empty;
+        return $"Send a cleric from your reserve.\n<size=80%>{gain}</size>{cost}";
+    }
+
+    private static void SetButtonTip(Button button, string text)
+    {
+        if (button == null) return;
+        TooltipTrigger trigger = button.GetComponent<TooltipTrigger>();
+        if (trigger == null) trigger = button.gameObject.AddComponent<TooltipTrigger>();
+        trigger.SetText(text);
+    }
+
+    private static void SetLinked(TMP_Text text, string value)
+    {
+        TooltipLinksDB glossary = Tooltip.Glossary;
+        text.text = glossary != null ? glossary.Highlight(value) : value;
     }
 
     private void Change(int amount)

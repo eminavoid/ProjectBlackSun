@@ -16,11 +16,13 @@ MonoBehaviour:
   description: Pontiff, a noble family on the Lacrimal Hill, owner of the best vantage
     over the Eclipse grounds, is renting space to sects wishing to survey the site
     in advance. Fortune favors those who prepare.
+  premise: A noble family rents out the best view of the Eclipse grounds. Preparation
+    favors the bold.
   icon: {fileID: 0}
   ticks: 6
   region: 6
   eventType: 0
-  difficulty: 1
+  difficulty: 3
   guideSeed: 0
   <Options>k__BackingField:
   - {fileID: 11400000, guid: e80e8041ac8d72c44ac2adcf1bc75de4, type: 2}

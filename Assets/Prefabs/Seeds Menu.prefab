@@ -509,7 +509,7 @@ MonoBehaviour:
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 12
+  m_fontSizeMin: 10
   m_fontSizeMax: 24
   m_fontStyle: 0
   m_HorizontalAlignment: 2
@@ -522,7 +522,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 0
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -1108,6 +1108,7 @@ MonoBehaviour:
   selectedPrefix: 
   tierText: {fileID: 5852547885648797784}
   turnsText: {fileID: 2045417313982398584}
+  costText: {fileID: 5916857104450555806}
   resourceText: {fileID: 7025398843730391489}
   resourceIcon: {fileID: 1147230574070084899}
   resourceIcons: {fileID: 11400000, guid: 0903aa614e451a541ba7dfa0b538fc32, type: 2}

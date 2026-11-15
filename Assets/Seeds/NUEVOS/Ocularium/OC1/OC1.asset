@@ -16,6 +16,8 @@ MonoBehaviour:
   description: My Pontiff, our clerics have finished copying the first volume of
     our scriptures. The scribes ask how the sacred text should be presented to the
     faithful.
+  premise: Our clerics have copied the first volume of our scriptures. How it is
+    presented is up to us.
   icon: {fileID: 0}
   ticks: 3
   region: 2

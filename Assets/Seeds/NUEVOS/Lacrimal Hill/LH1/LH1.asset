@@ -16,11 +16,13 @@ MonoBehaviour:
   description: My Pontiff, a lady of the Lacrimal Hill has extended an invitation
     to a private garden party, and our rivals are certain to be there. A rare chance
     to be seen among the aristocracy.
+  premise: A lady of the Hill invites us to a private garden party where rival sects
+    will be watching.
   icon: {fileID: 0}
   ticks: 5
   region: 6
   eventType: 0
-  difficulty: 1
+  difficulty: 3
   guideSeed: 0
   <Options>k__BackingField:
   - {fileID: 11400000, guid: acf2f3d29f0043440965cd92168e0ff0, type: 2}
