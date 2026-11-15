@@ -6665,6 +6665,7 @@ GameObject:
   - component: {fileID: 868146997}
   - component: {fileID: 868146996}
   - component: {fileID: 868146995}
+  - component: {fileID: 868146998}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -6748,18 +6749,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 868146993}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &868146996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6798,6 +6787,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 868146993}
   m_CullTransparentMesh: 1
+--- !u!114 &868146998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 868146993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0eda2b0dda5ddc44baae6df7f05374c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Zeke.UI.UIElement
+  window: {fileID: 478184976}
+  <Name>k__BackingField: Close Button
+  <Element>k__BackingField: {fileID: 0}
 --- !u!1 &871149852 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4314052648714244165, guid: f5db8a30acde8f841a466f15e62fa833, type: 3}
@@ -15361,7 +15365,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4314052648714244165, guid: f5db8a30acde8f841a466f15e62fa833, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6653606219760129811, guid: f5db8a30acde8f841a466f15e62fa833, type: 3}
       propertyPath: m_Pivot.x

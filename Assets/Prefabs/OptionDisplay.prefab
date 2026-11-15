@@ -68,8 +68,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Tilte
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1edd54523ff3acd4e942871243f45066, type: 2}
-  m_sharedMaterial: {fileID: 6637940868953274025, guid: 1edd54523ff3acd4e942871243f45066, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 61cd207474dfa474387da65a68df7b35, type: 2}
+  m_sharedMaterial: {fileID: 1703758256517549410, guid: 61cd207474dfa474387da65a68df7b35, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -93,12 +93,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 34
+  m_fontSize: 20
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 14
-  m_fontSizeMax: 34
+  m_fontSizeMin: 10
+  m_fontSizeMax: 20
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -957,6 +957,9 @@ MonoBehaviour:
   gainColor: {r: 0.72, g: 1, b: 0.6, a: 1}
   lossColor: {r: 1, g: 0.62, b: 0.55, a: 1}
   dimmedFactor: 0.5
+  refundColor: {r: 0.36, g: 0.34, b: 0.31, a: 1}
+  refundIconColor: {r: 0.6, g: 0.6, b: 0.6, a: 0.8}
+  refundLabel: refund
   animateIn: 0
   appearDelay: 0.2
   stagger: 0.12

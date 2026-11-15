@@ -816,7 +816,8 @@ public class SeedEventManager : Singleton<SeedEventManager>
             spawnOptionsWindow.TryGetElement<RectTransform>("Title Rect").gameObject,
             spawnOptionsWindow.TryGetElement<RectTransform>("Description Rect").gameObject,
             spawnOptionsWindow.TryGetElement<Image>("Background").gameObject,
-            spawnOptionsWindow.TryGetElement<LayoutGroup>("Layout Group").gameObject
+            spawnOptionsWindow.TryGetElement<LayoutGroup>("Layout Group").gameObject,
+            spawnOptionsWindow.TryGetElement<Button>("Close Button").gameObject
         };
 
         optionsContent = new CanvasGroup[objects.Length];
