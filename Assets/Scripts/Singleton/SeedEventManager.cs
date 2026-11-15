@@ -6,7 +6,6 @@ using UnityEngine.UI;
 using Zeke.UI;
 using TMPro;
 using System;
-using Zeke.Abilities;
 using Zeke.Tooltips;
 
 public class SeedEventManager : Singleton<SeedEventManager>

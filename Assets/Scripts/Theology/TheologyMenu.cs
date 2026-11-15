@@ -25,6 +25,7 @@ public class TheologyMenu : MonoBehaviour
 
     [SerializeField] private Locked seedsPool;
     [SerializeField] private Locked doctrinesPool;
+    [SerializeField] private DistrictSeedPlantPanel districtSeedPlantPanel;
 
     [Space]
 
@@ -388,6 +389,7 @@ public class TheologyMenu : MonoBehaviour
         DistrictSeedPlantPanel panel = FindAnyObjectByType<DistrictSeedPlantPanel>();
         if (panel != null) panel.Grant(seed, 1);
         Reveal("Seed", seed.Title, seed.Description);
+        districtSeedPlantPanel.NewSeeds += 1;
     }
 
     private void RevealDoctrine()

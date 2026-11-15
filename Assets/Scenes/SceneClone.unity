@@ -3307,6 +3307,10 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3207784972399085606, guid: a7afed5e78cd44947a637251968f85f6, type: 3}
+      propertyPath: districtSeedPlantPanel
+      value: 
+      objectReference: {fileID: 1774865035}
+    - target: {fileID: 3207784972399085606, guid: a7afed5e78cd44947a637251968f85f6, type: 3}
       propertyPath: onSacrificed.m_PersistentCalls.m_Calls.Array.size
       value: 2
       objectReference: {fileID: 0}

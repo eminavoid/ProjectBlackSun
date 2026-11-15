@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Zeke.UI;
 
 [DefaultExecutionOrder(1)]
 public class DistrictSeedPlantPanel : MonoBehaviour
@@ -31,6 +32,43 @@ public class DistrictSeedPlantPanel : MonoBehaviour
     private readonly List<Seed> cachedSeeds = new List<Seed>();
     private readonly List<Button> runtimeSeedButtons = new List<Button>();
 
+    private int newSeeds = 0;
+
+    private UIWindow popUpInstance;
+
+    public int NewSeeds
+    {
+        get
+        {
+            return newSeeds;
+        }
+        set
+        {
+            newSeeds = value;
+
+            if (newSeeds > 0)
+            {
+                if (popUpInstance == null)
+                {
+                    popUpInstance = PopUpManager.SpawnPopUp(openMenuButton.GetComponent<RectTransform>(), PopUpManager.Direction.upperRight, 30f, true);
+                    popUpInstance.TryGetElement<TextMeshProUGUI>("Amount").SetText(newSeeds.ToString());
+                }
+                else
+                {
+                    popUpInstance.TryGetElement<TextMeshProUGUI>("Amount").SetText(newSeeds.ToString());
+                }
+            }
+            else
+            {
+                if (popUpInstance != null)
+                {
+                    PopUpManager.RemovePopUp(popUpInstance);
+                    popUpInstance = null;
+                }
+            }
+        }
+    }
+
     private readonly List<SeedCooldownData> cooldownSeeds = new List<SeedCooldownData>();
 
     private class SeedCooldownData
@@ -56,6 +94,7 @@ public class DistrictSeedPlantPanel : MonoBehaviour
     private void Awake()
     {
         SetPanelVisible(false);
+        openMenuButton.onClick.AddListener(() => NewSeeds = 0);
         if (!TutorialSession.SuppressAmbientEvents) ReleaseStandardPool();
     }
 
