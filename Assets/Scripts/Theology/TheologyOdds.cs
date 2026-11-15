@@ -43,10 +43,10 @@ public static class TheologyOdds
 
     public static TheologyChances Resolve(int offeringTiers, int sacrificeTiers)
     {
-        float curse = 75f;
+        float curse = 40f;
         float blessing = 15f;
-        float seed = 7.5f;
-        float doctrine = 2.5f;
+        float seed = 30f;
+        float doctrine = 15f;
         float points = PointsFor(offeringTiers, false) + PointsFor(sacrificeTiers, true);
 
         float fromCurse = Mathf.Min(points, curse);
