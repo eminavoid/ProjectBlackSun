@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
+  m_Name: AG1
+  m_EditorClassIdentifier: Assembly-CSharp::Seed
+  title: THE CHARITY BAZAAR
+  description: My Pontiff, the bazaar we sponsored in the Agora has opened its gates,
+    and the crowds are already thick as locusts. Stalls bearing our sigil sell trinkets,
+    sweetmeats and blessed oils. A cleric asks how the proceeds should be handled.
+  icon: {fileID: 0}
+  ticks: 2
+  region: 1
+  eventType: 0
+  difficulty: 1
+  guideSeed: 0
+  <Options>k__BackingField:
+  - {fileID: 11400000, guid: c364cd3315bb1f34882f0a624c1f075d, type: 2}
+  - {fileID: 11400000, guid: e367500d1e472454f82c64e163d94b8a, type: 2}
+  - {fileID: 11400000, guid: a21b3ee05e1bc07429dfc98c108b629b, type: 2}
+  - {fileID: 11400000, guid: 0e3e931934e52954ea1c332c57ece67a, type: 2}
+  <DefaultOption>k__BackingField: 4
+  playerPlantCooldown: 1

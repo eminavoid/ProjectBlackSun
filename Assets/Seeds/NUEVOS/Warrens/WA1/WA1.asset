@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
+  m_Name: WA1
+  m_EditorClassIdentifier: Assembly-CSharp::Seed
+  title: THE SOUP KITCHEN
+  description: My Pontiff, the kitchen we opened in the Warrens serves its first
+    meal this evening. A line of hungry families wraps around the block, and our
+    cooks ask how to serve them.
+  icon: {fileID: 0}
+  ticks: 2
+  region: 5
+  eventType: 0
+  difficulty: 1
+  guideSeed: 0
+  <Options>k__BackingField:
+  - {fileID: 11400000, guid: f827eaeeb3ab18f44a4061d0f0c98754, type: 2}
+  - {fileID: 11400000, guid: 38a827996bbf6aa45bea2c4a90d5d996, type: 2}
+  - {fileID: 11400000, guid: c8e7cd80536760e4390fc8ff52d63753, type: 2}
+  - {fileID: 11400000, guid: 0b8ca2bad3658db4e83ef5659f0e4c18, type: 2}
+  <DefaultOption>k__BackingField: 4
+  playerPlantCooldown: 1

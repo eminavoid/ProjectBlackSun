@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
+  m_Name: CR2
+  m_EditorClassIdentifier: Assembly-CSharp::Seed
+  title: THE GUILD OATH
+  description: Pontiff, three guilds of the Crucible are to swear a blood oath ending
+    their eternal feud, and they have asked a sect to witness it. A rare chance to
+    be remembered as the peacemakers of the Crucible.
+  icon: {fileID: 0}
+  ticks: 4
+  region: 3
+  eventType: 0
+  difficulty: 1
+  guideSeed: 0
+  <Options>k__BackingField:
+  - {fileID: 11400000, guid: 91abb84b47a1c5a4f9f22f5a67e937f0, type: 2}
+  - {fileID: 11400000, guid: 26c38ca3f465fa44ebc858acb995c454, type: 2}
+  - {fileID: 11400000, guid: c440cdc6a779030428c1374c14b673e7, type: 2}
+  - {fileID: 11400000, guid: 51aabe91022c3dd4998a27f23630da78, type: 2}
+  <DefaultOption>k__BackingField: 4
+  playerPlantCooldown: 1

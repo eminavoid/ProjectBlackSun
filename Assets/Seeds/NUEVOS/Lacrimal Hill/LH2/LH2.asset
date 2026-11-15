@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
+  m_Name: LH2
+  m_EditorClassIdentifier: Assembly-CSharp::Seed
+  title: THE ECLIPSE VANTAGE
+  description: Pontiff, a noble family on the Lacrimal Hill, owner of the best vantage
+    over the Eclipse grounds, is renting space to sects wishing to survey the site
+    in advance. Fortune favors those who prepare.
+  icon: {fileID: 0}
+  ticks: 6
+  region: 6
+  eventType: 0
+  difficulty: 1
+  guideSeed: 0
+  <Options>k__BackingField:
+  - {fileID: 11400000, guid: e80e8041ac8d72c44ac2adcf1bc75de4, type: 2}
+  - {fileID: 11400000, guid: 69fa4a8f818d26d499c574569e90cfae, type: 2}
+  - {fileID: 11400000, guid: 6a5de52576fb6d840b6502453a08ec01, type: 2}
+  - {fileID: 11400000, guid: 46f525f10ee847e4c82c5f665e4107a4, type: 2}
+  <DefaultOption>k__BackingField: 4
+  playerPlantCooldown: 1

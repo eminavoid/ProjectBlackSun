@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: CR2.outcomeB
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
+  shineWith: 0
+  title: Offer our clerics as escorts to each guild's delegation.
+  description: 'COST: 1 Cleric'
+  icon: {fileID: 0}
+  modules:
+  - rid: 6513433571317776533
+  - rid: 6513433571317776534
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 6513433571317776533
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 7
+        required: 1
+        consumeResource: 1
+    - rid: 6513433571317776534
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 50
+          module:
+          - rid: 6513433571317776535
+          - rid: 6513433571317776536
+          - rid: 6513433571317776537
+          statUsed: 0
+          output: The delegations arrive unharmed and the guilds repay us with their
+            most devoted recruits.
+        - weight: 50
+          module:
+          - rid: 6513433571317776538
+          statUsed: 0
+          output: The escort is a mere formality and our clerics march home unscathed.
+    - rid: 6513433571317776535
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 7
+        minAmount: 1
+        maxAmount: 1
+        refund: 1
+    - rid: 6513433571317776536
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 7
+        minAmount: 1
+        maxAmount: 1
+        refund: 0
+    - rid: 6513433571317776537
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: 40
+        maxAmount: 40
+        refund: 0
+    - rid: 6513433571317776538
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 7
+        minAmount: 1
+        maxAmount: 1
+        refund: 1

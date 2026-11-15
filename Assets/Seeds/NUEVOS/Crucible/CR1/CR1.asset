@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
+  m_Name: CR1
+  m_EditorClassIdentifier: Assembly-CSharp::Seed
+  title: THE FOUNDRY VIGIL
+  description: My Pontiff, the night shift at the great foundry keeps a vigil beneath
+    the smokestacks, and the foremen have allowed our clerics to lead the prayers.
+    The workers look to us to set the tone.
+  icon: {fileID: 0}
+  ticks: 2
+  region: 3
+  eventType: 0
+  difficulty: 1
+  guideSeed: 0
+  <Options>k__BackingField:
+  - {fileID: 11400000, guid: e5dffb4ca0cd157429f7589d660f239c, type: 2}
+  - {fileID: 11400000, guid: ecaafab93b416f942925b57f805819ac, type: 2}
+  - {fileID: 11400000, guid: 7a1c507ba1dc9824a9d2b1d0493e7d0e, type: 2}
+  - {fileID: 11400000, guid: 478bdb9d55e82164c9f790b41abb32a6, type: 2}
+  <DefaultOption>k__BackingField: 4
+  playerPlantCooldown: 1

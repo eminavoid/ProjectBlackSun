@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: WA2.outcomeA
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
+  shineWith: 0
+  title: Have our clerics stand beside him and lend weight to his words.
+  description: 'COST: 1 Cleric'
+  icon: {fileID: 0}
+  modules:
+  - rid: 6513433571317776616
+  - rid: 6513433571317776617
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 6513433571317776616
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 7
+        required: 1
+        consumeResource: 1
+    - rid: 6513433571317776617
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 75
+          module:
+          - rid: 6513433571317776618
+          - rid: 6513433571317776619
+          statUsed: 0
+          output: The crowd takes him for one of ours and many join our flock.
+        - weight: 25
+          module:
+          - rid: 6513433571317776620
+          - rid: 6513433571317776621
+          statUsed: 0
+          output: The prophet pays our clerics no mind, but the crowd takes notice.
+    - rid: 6513433571317776618
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: 40
+        maxAmount: 40
+        refund: 0
+    - rid: 6513433571317776619
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 7
+        minAmount: 1
+        maxAmount: 1
+        refund: 1
+    - rid: 6513433571317776620
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: 10
+        maxAmount: 10
+        refund: 0
+    - rid: 6513433571317776621
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 7
+        minAmount: 1
+        maxAmount: 1
+        refund: 1

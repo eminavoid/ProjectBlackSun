@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
+  m_Name: OC2
+  m_EditorClassIdentifier: Assembly-CSharp::Seed
+  title: THE MIDNIGHT LECTURE
+  description: Pontiff, a famed philosopher visiting the Ocularium has agreed to
+    deliver a lecture on the nature of the Beholder, provided he may use one of our
+    halls. Every sect is eager for his favor.
+  icon: {fileID: 0}
+  ticks: 4
+  region: 2
+  eventType: 0
+  difficulty: 1
+  guideSeed: 0
+  <Options>k__BackingField:
+  - {fileID: 11400000, guid: 886c5333367418e41b995d600840a396, type: 2}
+  - {fileID: 11400000, guid: 3f428340187136a4b9cb323ee0d3bdf6, type: 2}
+  - {fileID: 11400000, guid: 128c994ff515d3140beb6e5f4a82e533, type: 2}
+  - {fileID: 11400000, guid: d9ed0c1a3a40f7f4883c742b95262fc9, type: 2}
+  <DefaultOption>k__BackingField: 4
+  playerPlantCooldown: 1

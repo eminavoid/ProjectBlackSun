@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: AG1.outcomeC
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
+  shineWith: 0
+  title: Give a share of the proceeds to the needy. Let them see our generosity.
+  description: 'COST: 20 Wealth'
+  icon: {fileID: 0}
+  modules:
+  - rid: 6513433571317776495
+  - rid: 6513433571317776496
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 6513433571317776495
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        required: 20
+        consumeResource: 1
+    - rid: 6513433571317776496
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 60
+          module:
+          - rid: 6513433571317776497
+          - rid: 6513433571317776498
+          statUsed: 0
+          output: Word of our kindness spreads from stall to stall.
+        - weight: 40
+          module:
+          - rid: 6513433571317776499
+          statUsed: 0
+          output: The gesture is appreciated, if little noticed.
+    - rid: 6513433571317776497
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: 25
+        maxAmount: 25
+        refund: 0
+    - rid: 6513433571317776498
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: 10
+        maxAmount: 10
+        refund: 0
+    - rid: 6513433571317776499
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: 10
+        maxAmount: 10
+        refund: 0

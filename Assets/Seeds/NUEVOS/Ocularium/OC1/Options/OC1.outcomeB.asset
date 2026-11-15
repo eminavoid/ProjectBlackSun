@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: OC1.outcomeB
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
+  shineWith: 0
+  title: Bind it in gold leaf and put it on display.
+  description: 'COST: 40 Wealth'
+  icon: {fileID: 0}
+  modules:
+  - rid: 6513433571317776574
+  - rid: 6513433571317776575
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 6513433571317776574
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        required: 40
+        consumeResource: 1
+    - rid: 6513433571317776575
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 50
+          module:
+          - rid: 6513433571317776576
+          - rid: 6513433571317776577
+          statUsed: 0
+          output: The gilded volume draws pilgrims from across the Ocularium.
+        - weight: 50
+          module:
+          - rid: 6513433571317776578
+          statUsed: 0
+          output: The book is admired, though few dare to read it.
+    - rid: 6513433571317776576
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: 60
+        maxAmount: 60
+        refund: 0
+    - rid: 6513433571317776577
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: 20
+        maxAmount: 20
+        refund: 0
+    - rid: 6513433571317776578
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: 25
+        maxAmount: 25
+        refund: 0

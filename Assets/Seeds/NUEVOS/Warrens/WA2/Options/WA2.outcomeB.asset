@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: WA2.outcomeB
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
+  shineWith: 0
+  title: Invite him to preach from our sanctuary steps.
+  description: 'COST: 10 Zeal'
+  icon: {fileID: 0}
+  modules:
+  - rid: 6513433571317776622
+  - rid: 6513433571317776623
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 6513433571317776622
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        required: 10
+        consumeResource: 1
+    - rid: 6513433571317776623
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 50
+          module:
+          - rid: 6513433571317776624
+          - rid: 6513433571317776625
+          statUsed: 0
+          output: His voice fills the square, and our banners with it.
+        - weight: 50
+          module:
+          - rid: 6513433571317776626
+          statUsed: 0
+          output: He declines, though he speaks kindly of us.
+    - rid: 6513433571317776624
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: 60
+        maxAmount: 60
+        refund: 0
+    - rid: 6513433571317776625
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: 20
+        maxAmount: 20
+        refund: 0
+    - rid: 6513433571317776626
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: 10
+        maxAmount: 10
+        refund: 0

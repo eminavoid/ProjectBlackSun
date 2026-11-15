@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
+  m_Name: AG2
+  m_EditorClassIdentifier: Assembly-CSharp::Seed
+  title: THE CARAVAN'S BLESSING
+  description: Pontiff, a spice caravan bound for the eastern ports has paused at
+    our gates. The caravan master, superstitious as all travelers, begs a blessing
+    for safe passage and is willing to pay handsomely, though he haggles even over
+    holy words.
+  icon: {fileID: 0}
+  ticks: 3
+  region: 1
+  eventType: 0
+  difficulty: 1
+  guideSeed: 0
+  <Options>k__BackingField:
+  - {fileID: 11400000, guid: 88479610f318a0a4f9f83520bcca82d0, type: 2}
+  - {fileID: 11400000, guid: 4ce2e992c44ae9849b8edd7a3e4dfea1, type: 2}
+  - {fileID: 11400000, guid: 82e6aa2ef07a2894a9cf691851df61fe, type: 2}
+  - {fileID: 11400000, guid: 77b9532ba22a2444fb5e7f645e558c49, type: 2}
+  <DefaultOption>k__BackingField: 4
+  playerPlantCooldown: 1

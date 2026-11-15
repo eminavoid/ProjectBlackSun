@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: LH1.outcomeA
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
+  shineWith: 0
+  title: Attend with our most polished cleric.
+  description: 'COST: 25 Wealth'
+  icon: {fileID: 0}
+  modules:
+  - rid: 6513433571317776632
+  - rid: 6513433571317776633
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 6513433571317776632
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        required: 25
+        consumeResource: 1
+    - rid: 6513433571317776633
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 75
+          module:
+          - rid: 6513433571317776634
+          - rid: 6513433571317776635
+          statUsed: 0
+          output: Our cleric charms the guests with elegant sermons.
+        - weight: 25
+          module:
+          - rid: 6513433571317776636
+          statUsed: 0
+          output: Our cleric is an unremarkable guest, but leaves with a modest gift.
+    - rid: 6513433571317776634
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        minAmount: 100
+        maxAmount: 100
+        refund: 0
+    - rid: 6513433571317776635
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: 25
+        maxAmount: 25
+        refund: 0
+    - rid: 6513433571317776636
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        minAmount: 25
+        maxAmount: 25
+        refund: 0

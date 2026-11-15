@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
+  m_Name: OC1
+  m_EditorClassIdentifier: Assembly-CSharp::Seed
+  title: THE SCRIPTORIUM PROJECT
+  description: My Pontiff, our clerics have finished copying the first volume of
+    our scriptures. The scribes ask how the sacred text should be presented to the
+    faithful.
+  icon: {fileID: 0}
+  ticks: 3
+  region: 2
+  eventType: 0
+  difficulty: 1
+  guideSeed: 0
+  <Options>k__BackingField:
+  - {fileID: 11400000, guid: 9e3029d420a5ec448a7a0b051906776e, type: 2}
+  - {fileID: 11400000, guid: e294723c84181d34ca3cd5b848088dcf, type: 2}
+  - {fileID: 11400000, guid: fc4d5495a53fefc4c9b4e8c885e64c3e, type: 2}
+  - {fileID: 11400000, guid: aae28bc0f131e274e953df50fa9f85d5, type: 2}
+  <DefaultOption>k__BackingField: 4
+  playerPlantCooldown: 1

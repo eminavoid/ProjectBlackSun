@@ -10,6 +10,7 @@ using UnityEditor;
 public class EventExcelImporterWindow : EditorWindow
 {
     private string xlsxPath = "";
+    private static readonly HashSet<UnityEngine.Object> Written = new HashSet<UnityEngine.Object>();
     private readonly List<string> log = new List<string>();
     private Vector2 scroll;
 
@@ -23,7 +24,16 @@ public class EventExcelImporterWindow : EditorWindow
         { "Bliss", Resource.Happiness },
         { "Materials", Resource.Materials },
         { "Secrets", Resource.Secrets },
+        { "Clerics", Resource.Clerics },
+        { "Cleric", Resource.Clerics },
     };
+
+    private const string EventRoot = "Assets/Events/NUEVOS";
+    private const string SeedRoot = "Assets/Seeds/NUEVOS";
+    private const string SeedSheet = "Seeds";
+    private const string SeedOverviewSheet = "Seeds Overview";
+    private const string LockedSeedsPath = "Assets/Scripts/Unlocks/Locked Pool/Locked Seeds.asset";
+    private const string UnlockedSeedsPath = "Assets/Scripts/Unlocks/Unlocked Pool/Unlocked Seeds.asset";
 
     [MenuItem("Tools/Import Events From Excel")]
     public static void Open()
@@ -47,7 +57,10 @@ public class EventExcelImporterWindow : EditorWindow
         EditorGUILayout.Space();
         EditorGUILayout.HelpBox(
             "Creates the events that don't exist yet and re-imports the ones that differ from the Excel. " +
-            "Unchanged events are skipped. Fields the Excel doesn't have (ticks, type, difficulty, icons, follow-ups) are kept.",
+            "Unchanged events are skipped. Fields the Excel doesn't have (ticks, type, difficulty, icons, follow-ups) are kept, " +
+            "and so are options added in Unity past D (like the debt crises' settle option).\n" +
+            $"A sheet named \"{SeedSheet}\" holds plantable seeds: they go to {SeedRoot}, take district, turns to sprout and tier from \"{SeedOverviewSheet}\", " +
+            "and join the theology seed pool.",
             MessageType.Info);
 
         EditorGUILayout.BeginHorizontal();
@@ -102,20 +115,30 @@ public class EventExcelImporterWindow : EditorWindow
         int created = 0;
         int updated = 0;
         int unchanged = 0;
+        Written.Clear();
+
+        Dictionary<string, SeedOverviewRow> overview = ReadSeedOverview(sheets);
 
         foreach (var sheet in sheets)
         {
             string category = sheet.Name.Trim();
             if (category.Equals("TEMPLATE", StringComparison.OrdinalIgnoreCase)) continue;
+            if (category.Equals(SeedOverviewSheet, StringComparison.OrdinalIgnoreCase)) continue;
 
-            Region region = ParseRegion(category);
-            if (region == Region.None) log.Add($"WARNING: sheet \"{category}\" isn't named after a region; its events get none.");
+            bool seedSheet = category.Equals(SeedSheet, StringComparison.OrdinalIgnoreCase);
+            Region region = seedSheet ? Region.None : ParseRegion(category);
+            if (!seedSheet && region == Region.None) log.Add($"WARNING: sheet \"{category}\" isn't named after a region; its events get none.");
 
             var events = ScanSheet(sheet);
             foreach (var evt in events)
             {
+                evt.folder = category;
                 evt.region = region;
-                Seed existing = FindExistingSeed(evt.id);
+                if (seedSheet) ApplyOverview(evt, overview);
+
+                foreach (string warning in UnknownResourceWarnings(evt)) log.Add(warning);
+
+                Seed existing = FindExistingSeed(evt.isSeed ? SeedRoot : EventRoot, evt.id);
                 List<string> differences = null;
                 if (existing != null)
                 {
@@ -148,7 +171,7 @@ public class EventExcelImporterWindow : EditorWindow
                     }
                 }
 
-                if (apply) WriteEvent(category, evt, existing, sharedPlayerStats);
+                if (apply) WriteEvent(evt, existing, sharedPlayerStats);
 
                 if (existing == null)
                 {
@@ -166,22 +189,125 @@ public class EventExcelImporterWindow : EditorWindow
 
         if (apply)
         {
-            AssetDatabase.SaveAssets();
+            foreach (UnityEngine.Object asset in Written) AssetDatabase.SaveAssetIfDirty(asset);
             AssetDatabase.Refresh();
         }
 
         log.Add($"Done. Created: {created}, Updated: {updated}, Unchanged: {unchanged}." + (apply ? "" : " Preview only, nothing was written."));
     }
 
-    private static string EventFolder(string category, string id) => $"Assets/Events/NUEVOS/{category}/{id}";
+    private static string WithoutArticle(string name)
+    {
+        name = name.Trim();
+        return name.StartsWith("The ", StringComparison.OrdinalIgnoreCase) ? name.Substring(4).Trim() : name;
+    }
 
     private static Region ParseRegion(string sheetName)
     {
-        string name = sheetName.Trim();
-        if (name.StartsWith("The ", StringComparison.OrdinalIgnoreCase)) name = name.Substring(4);
-        name = name.Replace(" ", "");
+        string name = WithoutArticle(sheetName).Replace(" ", "");
+        if (name.Equals("LacrimalHill", StringComparison.OrdinalIgnoreCase)) return Region.ImperialDistrict;
 
         return Enum.TryParse(name, true, out Region region) && Enum.IsDefined(typeof(Region), region) ? region : Region.None;
+    }
+
+    private class SeedOverviewRow
+    {
+        public string district;
+        public int ticks;
+        public int tier;
+    }
+
+    private Dictionary<string, SeedOverviewRow> ReadSeedOverview(List<XlsxReader.Sheet> sheets)
+    {
+        var rows = new Dictionary<string, SeedOverviewRow>(StringComparer.OrdinalIgnoreCase);
+        XlsxReader.Sheet sheet = sheets.FirstOrDefault(candidate => candidate.Name.Trim().Equals(SeedOverviewSheet, StringComparison.OrdinalIgnoreCase));
+        if (sheet == null) return rows;
+
+        int idCol = HeaderColumn(sheet, "ID");
+        int districtCol = HeaderColumn(sheet, "District");
+        int ticksCol = HeaderColumn(sheet, "Turns to sprout");
+        int tierCol = HeaderColumn(sheet, "Tier");
+        if (idCol < 0 || districtCol < 0)
+        {
+            log.Add($"WARNING: \"{SeedOverviewSheet}\" has no ID or District column; seeds get no district, turns or tier.");
+            return rows;
+        }
+
+        for (int row = 2; row <= sheet.MaxRow; row++)
+        {
+            string id = (sheet.Get(row, idCol) ?? "").Trim();
+            string district = (sheet.Get(row, districtCol) ?? "").Trim();
+            if (id.Length == 0 || district.Length == 0) continue;
+
+            rows[id] = new SeedOverviewRow
+            {
+                district = district,
+                ticks = ticksCol > 0 && int.TryParse(sheet.Get(row, ticksCol), out int ticks) ? ticks : 0,
+                tier = tierCol > 0 && int.TryParse(sheet.Get(row, tierCol), out int tier) ? tier : 0
+            };
+        }
+
+        return rows;
+    }
+
+    private static int HeaderColumn(XlsxReader.Sheet sheet, string header)
+    {
+        for (int col = 1; col <= sheet.MaxCol; col++)
+        {
+            if ((sheet.Get(1, col) ?? "").Trim().Equals(header, StringComparison.OrdinalIgnoreCase)) return col;
+        }
+
+        return -1;
+    }
+
+    private void ApplyOverview(ParsedEvent evt, Dictionary<string, SeedOverviewRow> overview)
+    {
+        evt.isSeed = true;
+        if (!overview.TryGetValue(evt.id, out SeedOverviewRow row))
+        {
+            log.Add($"WARNING: seed {evt.id} isn't in \"{SeedOverviewSheet}\"; it gets no district, turns or tier.");
+            evt.folder = "No district";
+            return;
+        }
+
+        evt.folder = WithoutArticle(row.district);
+        evt.region = ParseRegion(row.district);
+        evt.ticks = row.ticks;
+        evt.rarity = row.tier >= 3 ? Rarity.Legendary : row.tier == 2 ? Rarity.Rare : Rarity.Common;
+        if (evt.region == Region.None && !row.district.StartsWith("Any", StringComparison.OrdinalIgnoreCase))
+        {
+            log.Add($"WARNING: seed {evt.id} has district \"{row.district}\", which isn't a region; it gets none.");
+        }
+    }
+
+    private static IEnumerable<string> UnknownResourceWarnings(ParsedEvent evt)
+    {
+        foreach (ParsedOption option in evt.options)
+        {
+            foreach (string name in UnknownResources(option.costRaw))
+            {
+                yield return $"WARNING: {evt.id} option {option.letter} cost uses \"{name}\", which isn't a resource in the game; it's ignored.";
+            }
+
+            for (int i = 0; i < option.outcomes.Count; i++)
+            {
+                foreach (string name in UnknownResources(option.outcomes[i].effectRaw))
+                {
+                    yield return $"WARNING: {evt.id} option {option.letter} outcome {i + 1} uses \"{name}\", which isn't a resource in the game; it's ignored.";
+                }
+            }
+        }
+    }
+
+    private static IEnumerable<string> UnknownResources(string raw)
+    {
+        if (string.IsNullOrWhiteSpace(raw)) yield break;
+
+        foreach (string clause in Regex.Split(raw, @"[&/,]"))
+        {
+            Match m = Regex.Match(clause.Replace("!!!", "").Trim(), @"^([+-]?\d+)\s*([A-Za-z]+)");
+            if (m.Success && !ResourceAliases.ContainsKey(m.Groups[2].Value)) yield return m.Groups[2].Value;
+        }
     }
 
     private PlayerStats FindSharedPlayerStats()
@@ -210,9 +336,13 @@ public class EventExcelImporterWindow : EditorWindow
     private class ParsedEvent
     {
         public string id;
+        public string folder;
         public Region region;
         public string title;
         public string description;
+        public bool isSeed;
+        public int ticks;
+        public Rarity rarity;
         public List<ParsedOption> options = new List<ParsedOption>();
     }
 
@@ -229,37 +359,54 @@ public class EventExcelImporterWindow : EditorWindow
     private List<ParsedEvent> ScanSheet(XlsxReader.Sheet sheet)
     {
         var events = new List<ParsedEvent>();
-        int startCol = 1;
+        List<int> bands = FindBands(sheet);
 
-        while (true)
+        for (int band = 0; band < bands.Count; band++)
         {
-            string id = sheet.Get(1, startCol);
-            if (string.IsNullOrWhiteSpace(id)) break;
+            int top = bands[band];
+            int bottom = band + 1 < bands.Count ? bands[band + 1] - 1 : sheet.MaxRow;
 
-            var evt = new ParsedEvent
+            for (int startCol = 1; ; startCol += 6)
             {
-                id = id.Trim(),
-                title = FindFirstNonBlank(sheet, 1, startCol + 1, startCol + 4),
-                description = FindFirstNonBlank(sheet, 2, startCol, startCol + 4)
-            };
+                string id = sheet.Get(top, startCol);
+                if (string.IsNullOrWhiteSpace(id)) break;
 
-            ScanOptions(sheet, startCol, evt.options);
-            ScanOptions(sheet, startCol + 3, evt.options);
-            evt.options.Sort((a, b) => string.CompareOrdinal(a.letter, b.letter));
+                var evt = new ParsedEvent
+                {
+                    id = id.Trim(),
+                    title = FindFirstNonBlank(sheet, top, startCol + 1, startCol + 4),
+                    description = FindFirstNonBlank(sheet, top + 1, startCol, startCol + 4)
+                };
 
-            if (evt.options.Count > 0) events.Add(evt);
-            startCol += 6;
+                ScanOptions(sheet, startCol, top + 2, bottom, evt.options);
+                ScanOptions(sheet, startCol + 3, top + 2, bottom, evt.options);
+                evt.options.Sort((a, b) => string.CompareOrdinal(a.letter, b.letter));
+
+                if (evt.options.Count > 0) events.Add(evt);
+            }
         }
 
         return events;
     }
 
-    private void ScanOptions(XlsxReader.Sheet sheet, int labelCol, List<ParsedOption> options)
+    private static List<int> FindBands(XlsxReader.Sheet sheet)
+    {
+        var bands = new List<int>();
+        for (int row = 1; row <= sheet.MaxRow; row++)
+        {
+            if (string.IsNullOrWhiteSpace(sheet.Get(row, 1))) continue;
+            if (row == 1 || (sheet.Get(row + 2, 1) ?? "").Trim() == "A") bands.Add(row);
+        }
+
+        return bands;
+    }
+
+    private void ScanOptions(XlsxReader.Sheet sheet, int labelCol, int fromRow, int toRow, List<ParsedOption> options)
     {
         int dataCol = labelCol + 1;
         ParsedOption option = null;
 
-        for (int row = 3; row <= sheet.MaxRow; row++)
+        for (int row = fromRow; row <= toRow; row++)
         {
             string label = (sheet.Get(row, labelCol) ?? "").Trim();
 
@@ -355,9 +502,8 @@ public class EventExcelImporterWindow : EditorWindow
         return IsEmptyCost(costRaw) ? new List<ResourceAmount>() : ParseResourceClauses(costRaw);
     }
 
-    private static Seed FindExistingSeed(string id)
+    private static Seed FindExistingSeed(string root, string id)
     {
-        const string root = "Assets/Events/NUEVOS";
         if (!AssetDatabase.IsValidFolder(root)) return null;
 
         foreach (string guid in AssetDatabase.FindAssets($"t:Seed {id}", new[] { root }))
@@ -388,7 +534,7 @@ public class EventExcelImporterWindow : EditorWindow
     private static List<string> FindDifferences(ParsedEvent evt, Seed seed)
     {
         List<EventField> expected = DescribeExcelEvent(evt);
-        List<EventField> actual = DescribeGameEvent(seed, evt.id);
+        List<EventField> actual = DescribeGameEvent(seed, evt);
 
         var actualValues = new Dictionary<string, string>();
         foreach (EventField field in actual) actualValues[field.Key] = field.value;
@@ -435,6 +581,11 @@ public class EventExcelImporterWindow : EditorWindow
         AddField(fields, "Event", "description", evt.description);
         AddField(fields, "Event", "region", evt.region.ToString());
         AddField(fields, "Event", "options", string.Join(", ", evt.options.Select(option => option.letter)));
+        if (evt.isSeed)
+        {
+            if (evt.ticks > 0) AddField(fields, "Event", "turns to sprout", evt.ticks.ToString());
+            AddField(fields, "Event", "theology pool", evt.rarity.ToString());
+        }
 
         foreach (ParsedOption option in evt.options)
         {
@@ -463,20 +614,28 @@ public class EventExcelImporterWindow : EditorWindow
         }
     }
 
-    private static List<EventField> DescribeGameEvent(Seed seed, string id)
+    private static List<EventField> DescribeGameEvent(Seed seed, ParsedEvent evt)
     {
         var fields = new List<EventField>();
         var seedObject = new SerializedObject(seed);
-        List<Option> options = seed.Options ?? new List<Option>();
+        List<Option> options = (seed.Options ?? new List<Option>())
+            .Where(option => option == null || IsExcelLetter(OptionLetter(option, evt.id)))
+            .ToList();
 
         AddField(fields, "Event", "title", seedObject.FindProperty("title").stringValue);
         AddField(fields, "Event", "description", seedObject.FindProperty("description").stringValue);
         AddField(fields, "Event", "region", ((Region)seedObject.FindProperty("region").intValue).ToString());
-        AddField(fields, "Event", "options", string.Join(", ", options.Select(option => option != null ? OptionLetter(option, id) : "(empty)")));
+        AddField(fields, "Event", "options", string.Join(", ", options.Select(option => option != null ? OptionLetter(option, evt.id) : "(empty)")));
+        if (evt.isSeed)
+        {
+            if (evt.ticks > 0) AddField(fields, "Event", "turns to sprout", seedObject.FindProperty("ticks").intValue.ToString());
+            Unlockeable unlock = FindTheologyUnlock(seed);
+            AddField(fields, "Event", "theology pool", unlock != null ? unlock.Rarity.ToString() : "not in it");
+        }
 
         foreach (Option option in options)
         {
-            if (option != null) DescribeGameOption(fields, option, OptionLetter(option, id));
+            if (option != null) DescribeGameOption(fields, option, OptionLetter(option, evt.id));
         }
 
         return fields;
@@ -553,6 +712,8 @@ public class EventExcelImporterWindow : EditorWindow
         return option.name.StartsWith(prefix) ? option.name.Substring(prefix.Length) : option.name;
     }
 
+    private static bool IsExcelLetter(string letter) => letter.Length == 1 && letter[0] >= 'A' && letter[0] <= 'D';
+
     private static string ModuleType(SerializedProperty module)
     {
         string fullName = module.managedReferenceFullTypename;
@@ -610,20 +771,15 @@ public class EventExcelImporterWindow : EditorWindow
     private static readonly FieldInfo OptionModulesField = typeof(Option).GetField("modules", BindingFlags.Instance | BindingFlags.NonPublic);
     private static readonly FieldInfo OutcomesField = typeof(WeighedChoice).GetField("modules", BindingFlags.Instance | BindingFlags.NonPublic);
 
-    private static void WriteEvent(string category, ParsedEvent evt, Seed seed, PlayerStats sharedPlayerStats)
+    private static void WriteEvent(ParsedEvent evt, Seed seed, PlayerStats sharedPlayerStats)
     {
         bool isNewEvent = seed == null;
         string eventFolder = isNewEvent
-            ? EventFolder(category, evt.id)
+            ? $"{(evt.isSeed ? SeedRoot : EventRoot)}/{evt.folder}/{evt.id}"
             : System.IO.Path.GetDirectoryName(AssetDatabase.GetAssetPath(seed)).Replace('\\', '/');
         string optionsFolder = $"{eventFolder}/Options";
 
-        if (isNewEvent)
-        {
-            EnsureFolder("Assets/Events/NUEVOS", category);
-            EnsureFolder($"Assets/Events/NUEVOS/{category}", evt.id);
-        }
-        EnsureFolder(eventFolder, "Options");
+        EnsurePath(optionsFolder);
 
         List<Option> currentOptions = isNewEvent || seed.Options == null ? new List<Option>() : seed.Options;
         var options = new List<Option>();
@@ -645,6 +801,8 @@ public class EventExcelImporterWindow : EditorWindow
             options.Add(option);
         }
 
+        options.AddRange(currentOptions.Where(current => current != null && !IsExcelLetter(OptionLetter(current, evt.id))));
+
         if (isNewEvent)
         {
             seed = ScriptableObject.CreateInstance<Seed>();
@@ -662,6 +820,7 @@ public class EventExcelImporterWindow : EditorWindow
             seedObject.FindProperty("eventType").enumValueIndex = 0;
             seedObject.FindProperty("difficulty").enumValueIndex = 0;
         }
+        if (evt.ticks > 0) seedObject.FindProperty("ticks").intValue = evt.ticks;
 
         SerializedProperty optionsProp = seedObject.FindProperty("<Options>k__BackingField");
         optionsProp.arraySize = options.Count;
@@ -671,6 +830,56 @@ public class EventExcelImporterWindow : EditorWindow
         }
 
         if (seedObject.ApplyModifiedProperties()) EditorUtility.SetDirty(seed);
+        Written.Add(seed);
+        if (evt.isSeed) AddToTheologyPool(seed, evt, eventFolder);
+    }
+
+    private static Unlockeable FindTheologyUnlock(Seed seed)
+    {
+        Locked pool = AssetDatabase.LoadAssetAtPath<Locked>(LockedSeedsPath);
+        return pool == null ? null : pool.GetCopy().FirstOrDefault(unlock => unlock != null && unlock.Scriptable == seed);
+    }
+
+    private static void AddToTheologyPool(Seed seed, ParsedEvent evt, string folder)
+    {
+        Locked pool = AssetDatabase.LoadAssetAtPath<Locked>(LockedSeedsPath);
+        if (pool == null)
+        {
+            Debug.LogWarning($"Event Importer: no seed pool at {LockedSeedsPath}; {evt.id} can't be won through theology.");
+            return;
+        }
+
+        Unlockeable unlock = FindTheologyUnlock(seed);
+        bool listed = unlock != null;
+        if (unlock == null)
+        {
+            string path = $"{folder}/{evt.id} Unlock.asset";
+            unlock = AssetDatabase.LoadAssetAtPath<Unlockeable>(path);
+            if (unlock == null)
+            {
+                unlock = ScriptableObject.CreateInstance<Unlockeable>();
+                AssetDatabase.CreateAsset(unlock, path);
+            }
+        }
+
+        var unlockObject = new SerializedObject(unlock);
+        unlockObject.FindProperty("scriptable").objectReferenceValue = seed;
+        unlockObject.FindProperty("target").objectReferenceValue = AssetDatabase.LoadAssetAtPath<Unlocked>(UnlockedSeedsPath);
+        unlockObject.FindProperty("rarity").enumValueIndex = (int)evt.rarity;
+        unlockObject.FindProperty("requeriments").arraySize = 0;
+        unlockObject.ApplyModifiedProperties();
+        EditorUtility.SetDirty(unlock);
+        Written.Add(unlock);
+
+        if (listed) return;
+
+        var poolObject = new SerializedObject(pool);
+        SerializedProperty locked = poolObject.FindProperty("locked");
+        locked.arraySize++;
+        locked.GetArrayElementAtIndex(locked.arraySize - 1).objectReferenceValue = unlock;
+        poolObject.ApplyModifiedProperties();
+        EditorUtility.SetDirty(pool);
+        Written.Add(pool);
     }
 
     private struct OutcomeExtras
@@ -760,6 +969,7 @@ public class EventExcelImporterWindow : EditorWindow
 
         optionObject.ApplyModifiedProperties();
         EditorUtility.SetDirty(option);
+        Written.Add(option);
     }
 
     private static List<OutcomeExtras> ReadOutcomeExtras(WeighedChoice weighedChoice)
@@ -784,12 +994,14 @@ public class EventExcelImporterWindow : EditorWindow
 
     #endregion
 
-    private static void EnsureFolder(string parent, string newFolderName)
+    private static void EnsurePath(string path)
     {
-        string combined = $"{parent}/{newFolderName}";
-        if (!AssetDatabase.IsValidFolder(combined))
+        string current = "Assets";
+        foreach (string part in path.Split('/').Skip(1))
         {
-            AssetDatabase.CreateFolder(parent, newFolderName);
+            string next = $"{current}/{part}";
+            if (!AssetDatabase.IsValidFolder(next)) AssetDatabase.CreateFolder(current, part);
+            current = next;
         }
     }
 }

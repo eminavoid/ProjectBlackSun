@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: CR1.outcomeA
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
+  shineWith: 0
+  title: Lead a solemn prayer over the forges.
+  description: 'COST: No cost'
+  icon: {fileID: 0}
+  modules:
+  - rid: 6513433571317776515
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 6513433571317776515
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 75
+          module:
+          - rid: 6513433571317776516
+          statUsed: 0
+          output: The workers join in unison and the fires burn brighter than ever.
+        - weight: 25
+          module:
+          - rid: 6513433571317776517
+          statUsed: 0
+          output: The prayer is drowned by the clang of hammers, but a few take heart.
+    - rid: 6513433571317776516
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: 30
+        maxAmount: 30
+        refund: 0
+    - rid: 6513433571317776517
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: 10
+        maxAmount: 10
+        refund: 0

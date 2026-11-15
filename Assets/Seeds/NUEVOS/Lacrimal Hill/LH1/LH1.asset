@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
+  m_Name: LH1
+  m_EditorClassIdentifier: Assembly-CSharp::Seed
+  title: A VILLA INVITATION
+  description: My Pontiff, a lady of the Lacrimal Hill has extended an invitation
+    to a private garden party, and our rivals are certain to be there. A rare chance
+    to be seen among the aristocracy.
+  icon: {fileID: 0}
+  ticks: 5
+  region: 6
+  eventType: 0
+  difficulty: 1
+  guideSeed: 0
+  <Options>k__BackingField:
+  - {fileID: 11400000, guid: acf2f3d29f0043440965cd92168e0ff0, type: 2}
+  - {fileID: 11400000, guid: 748831338f37f23428c14d905cf85136, type: 2}
+  - {fileID: 11400000, guid: 4feb364885cc66d4993cb806547172c1, type: 2}
+  - {fileID: 11400000, guid: 24d315c2df344954ebfc7928116cb47f, type: 2}
+  <DefaultOption>k__BackingField: 4
+  playerPlantCooldown: 1

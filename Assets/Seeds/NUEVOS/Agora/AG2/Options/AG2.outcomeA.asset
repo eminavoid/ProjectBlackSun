@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: AG2.outcomeA
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
+  shineWith: 0
+  title: Bless the caravan in the name of the Beholder.
+  description: 'COST: 10 Zeal'
+  icon: {fileID: 0}
+  modules:
+  - rid: 6513433571317776502
+  - rid: 6513433571317776503
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 6513433571317776502
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        required: 10
+        consumeResource: 1
+    - rid: 6513433571317776503
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 75
+          module:
+          - rid: 6513433571317776504
+          statUsed: 0
+          output: The master weeps with gratitude and empties his purse.
+        - weight: 25
+          module: []
+          statUsed: 0
+          output: He leaves the blessing unpaid, though he swears he will return.
+    - rid: 6513433571317776504
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        minAmount: 50
+        maxAmount: 50
+        refund: 0

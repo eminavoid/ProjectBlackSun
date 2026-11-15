@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: LH1.outcomeB
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
+  shineWith: 0
+  title: Bring a lavish gift for the hostess.
+  description: 'COST: 100 Wealth'
+  icon: {fileID: 0}
+  modules:
+  - rid: 6513433571317776637
+  - rid: 6513433571317776638
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 6513433571317776637
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        required: 100
+        consumeResource: 1
+    - rid: 6513433571317776638
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 50
+          module:
+          - rid: 6513433571317776639
+          - rid: 6513433571317776640
+          statUsed: 0
+          output: The hostess is delighted and speaks highly of us to her peers.
+        - weight: 50
+          module:
+          - rid: 6513433571317776641
+          statUsed: 0
+          output: The gift is accepted with polite indifference.
+    - rid: 6513433571317776639
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 2
+        minAmount: 1
+        maxAmount: 1
+        refund: 0
+    - rid: 6513433571317776640
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        minAmount: 100
+        maxAmount: 100
+        refund: 0
+    - rid: 6513433571317776641
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        minAmount: 50
+        maxAmount: 50
+        refund: 0

@@ -27,3 +27,5 @@ MonoBehaviour:
     icon: {fileID: 21300000, guid: f42ded92759791943b83c0522a2a9a8f, type: 3}
   - resource: 6
     icon: {fileID: 21300000, guid: 168de4c929e775b4b95348d03b1d3bc4, type: 3}
+  - resource: 7
+    icon: {fileID: 21300000, guid: ac5497984f27967449691217936b9661, type: 3}

@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
+  m_Name: PQ2
+  m_EditorClassIdentifier: Assembly-CSharp::Seed
+  title: A NOBLE'S DEBT
+  description: Pontiff, one of the great houses of the Lacrimal Hill has fallen quietly
+    into debt, and a fixer in the Pink Quarter claims the house would trade a favor
+    to a sect willing to settle it discreetly. The path to Authority is a narrow
+    one.
+  icon: {fileID: 0}
+  ticks: 5
+  region: 4
+  eventType: 0
+  difficulty: 1
+  guideSeed: 0
+  <Options>k__BackingField:
+  - {fileID: 11400000, guid: f7b1a2f69ec16f044b80fe4d0418173d, type: 2}
+  - {fileID: 11400000, guid: 7b19e55defb61f84c839afb265595bb5, type: 2}
+  - {fileID: 11400000, guid: 81f3076376dff8448885e392de57c1ab, type: 2}
+  - {fileID: 11400000, guid: 53d683b0846836c44a121548392d85b2, type: 2}
+  <DefaultOption>k__BackingField: 4
+  playerPlantCooldown: 1

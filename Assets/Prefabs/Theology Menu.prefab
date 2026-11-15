@@ -1019,7 +1019,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 673e6d6b7e4a025478add7f439338e9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TheologyMenu
-  seedsPool: {fileID: 0}
+  seedsPool: {fileID: 11400000, guid: 9786add8a4e8444409a2ad9893cbf832, type: 2}
   doctrinesPool: {fileID: 0}
   costResource: 1
   startCost: 0

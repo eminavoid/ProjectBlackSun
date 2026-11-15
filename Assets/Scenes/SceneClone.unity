@@ -413,6 +413,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Zeke.Tooltips.TooltipTrigger
   tooltipText: Withdraw a cleric from this zone
+  showBesides: 1
 --- !u!114 &53602711
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -841,6 +842,7 @@ MonoBehaviour:
   tooltipText: 'Doctrines
 
     <size=80%>Shape the creed of your cult.</size>'
+  showBesides: 1
 --- !u!1 &75577248
 GameObject:
   m_ObjectHideFlags: 0
@@ -1437,6 +1439,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Zeke.Tooltips.TooltipTrigger
   tooltipText: Send a cleric to this zone
+  showBesides: 1
 --- !u!114 &130182086
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2251,6 +2254,7 @@ MonoBehaviour:
   tooltipText: 'Theology
 
     <size=80%>Commune to unlock new seeds and doctrines.</size>'
+  showBesides: 1
 --- !u!1 &268629323
 GameObject:
   m_ObjectHideFlags: 0
@@ -3214,6 +3218,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Zeke.Tooltips.TooltipTrigger
   tooltipText: End Turn
+  showBesides: 1
 --- !u!1001 &359442742
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4190,6 +4195,7 @@ MonoBehaviour:
   tooltipText: 'Your Cult
 
     <size=80%>Your standing, virtues and doctrines.</size>'
+  showBesides: 1
 --- !u!114 &411320459
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9520,6 +9526,7 @@ MonoBehaviour:
   tooltipText: 'Seeds
 
     <size=80%>Plant schemes in the city''s zones.</size>'
+  showBesides: 1
 --- !u!1 &1303250374
 GameObject:
   m_ObjectHideFlags: 0
@@ -11260,6 +11267,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Zeke.Tooltips.TooltipTrigger
   tooltipText: Options
+  showBesides: 1
 --- !u!114 &1521916563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11666,6 +11674,7 @@ MonoBehaviour:
   tooltipText: 'Rival Cults
 
     <size=80%>The faiths fighting you for Beheld.</size>'
+  showBesides: 1
 --- !u!1 &1605283458
 GameObject:
   m_ObjectHideFlags: 0
@@ -11906,6 +11915,7 @@ MonoBehaviour:
   tooltipText: 'Clerics
 
     <size=80%>Ordain clerics and see where they preach.</size>'
+  showBesides: 1
 --- !u!1 &1643673628
 GameObject:
   m_ObjectHideFlags: 0
@@ -14405,6 +14415,7 @@ MonoBehaviour:
   tooltipText: 'Pending Events
 
     <size=80%>Events your seeds have set in motion.</size>'
+  showBesides: 1
 --- !u!4 &2121203401892262
 Transform:
   m_ObjectHideFlags: 0
@@ -22437,6 +22448,7 @@ MonoBehaviour:
     Zones each faith controls. A faith controls a
     zone when it holds more than half of the influence there. Hover a color to see
     whose faith it is.'
+  showBesides: 1
 --- !u!4 &7666917609014833986
 Transform:
   m_ObjectHideFlags: 0
@@ -23435,6 +23447,7 @@ MonoBehaviour:
 
     Each time you end the turn, your districts pay their tithes,
     planted seeds ripen into events and rival faiths make their moves.'
+  showBesides: 1
 --- !u!1 &8293462578934888246
 GameObject:
   m_ObjectHideFlags: 0

@@ -20,6 +20,14 @@ public class PlayerResources : ScriptableObject
 
     public void AddResource(Resource resource, int amount)
     {
+        if (resource == Resource.Clerics)
+        {
+            if (InfluenceManager.IsNull) return;
+            InfluenceManager.Get.GetStock(FactionId.Player).Clerics += amount;
+            onResourceGained?.Invoke(resource, amount);
+            return;
+        }
+
         resources[resource] += amount;
         onResourceGained?.Invoke(resource, amount);
 
@@ -39,17 +47,18 @@ public class PlayerResources : ScriptableObject
 
     public int GetResourceAmount(Resource resource)
     {
+        if (resource == Resource.Clerics) return InfluenceManager.IsNull ? 0 : InfluenceManager.Get.GetClericPool(FactionId.Player);
         return resources[resource];
     }
 
     public Dictionary<Resource, int> Snapshot()
     {
-        return new Dictionary<Resource, int>(resources);
+        return new Dictionary<Resource, int>(resources) { [Resource.Clerics] = GetResourceAmount(Resource.Clerics) };
     }
 
     public void GetChangesSince(Dictionary<Resource, int> snapshot, List<ResourceDelta> changes, bool asRefund = false)
     {
-        foreach (KeyValuePair<Resource, int> pair in resources)
+        foreach (KeyValuePair<Resource, int> pair in Snapshot())
         {
             snapshot.TryGetValue(pair.Key, out int before);
             if (pair.Value != before) ResourceDelta.Add(changes, pair.Key, pair.Value - before, asRefund);

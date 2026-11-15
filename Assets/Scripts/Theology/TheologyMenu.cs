@@ -423,9 +423,17 @@ public class TheologyMenu : MonoBehaviour
 
     private Seed PickSeed()
     {
-        List<Seed> choices = seedsPool.Get<Seed>();
+        if (seedsPool == null) return null;
 
-        if (choices == null || choices.Count == 0) return null;
+        List<Seed> choices = new List<Seed>();
+        foreach (Unlockeable unlock in seedsPool.GetCopy())
+        {
+            if (unlock == null || !(unlock.Scriptable is Seed seed)) continue;
+            if (unlockedSeeds != null && unlockedSeeds.Contains(seed)) continue;
+            choices.Add(seed);
+        }
+
+        if (choices.Count == 0) return null;
         return choices[Random.Range(0, choices.Count)];
     }
 

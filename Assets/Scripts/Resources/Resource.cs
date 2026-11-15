@@ -6,5 +6,6 @@ public enum Resource
     Flock,
     Happiness,
     Materials,
-    Secrets
+    Secrets,
+    Clerics
 }

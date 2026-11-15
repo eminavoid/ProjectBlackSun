@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: WA1.outcomeC
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
+  shineWith: 0
+  title: Open the kitchen to the children first.
+  description: 'COST: 10 Flock'
+  icon: {fileID: 0}
+  modules:
+  - rid: 6513433571317776609
+  - rid: 6513433571317776610
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 6513433571317776609
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        required: 10
+        consumeResource: 1
+    - rid: 6513433571317776610
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 75
+          module:
+          - rid: 6513433571317776611
+          - rid: 6513433571317776612
+          statUsed: 0
+          output: The children's laughter fills the hall and warms every heart.
+        - weight: 25
+          module:
+          - rid: 6513433571317776613
+          statUsed: 0
+          output: The children are fed and sent home content.
+    - rid: 6513433571317776611
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: 20
+        maxAmount: 20
+        refund: 0
+    - rid: 6513433571317776612
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 3
+        minAmount: 10
+        maxAmount: 10
+        refund: 0
+    - rid: 6513433571317776613
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: 10
+        maxAmount: 10
+        refund: 0
