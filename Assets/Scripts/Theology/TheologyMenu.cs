@@ -57,6 +57,8 @@ public class TheologyMenu : MonoBehaviour
     [Tooltip("The same, once the rite has opened the wall.")]
     [SerializeField] private Vector2 openCloseInset = new Vector2(70f, 150f);
 
+    private bool firstTime = true;
+
     private readonly Vector3[] artCorners = new Vector3[4];
 
     private Button offeringButton;
@@ -348,7 +350,18 @@ public class TheologyMenu : MonoBehaviour
             return;
         }
 
-        TheologyChances chances = TheologyOdds.Resolve(offeringTier, sacrificeTier);
+        TheologyChances chances;
+
+        if (firstTime)
+        {
+            chances = TheologyOdds.GuaranteedResolve(offeringTier, sacrificeTier);
+            firstTime = false;
+        }
+        else
+        {
+            chances = TheologyOdds.Resolve(offeringTier, sacrificeTier);
+        }
+
         TheologyRewardKind kind = TheologyOdds.Roll(chances);
         switch (kind)
         {

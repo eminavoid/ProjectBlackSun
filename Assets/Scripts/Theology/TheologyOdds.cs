@@ -41,6 +41,40 @@ public static class TheologyOdds
         return sum;
     }
 
+    public static TheologyChances GuaranteedResolve(int offeringTiers, int sacrificeTiers)
+    {
+        float curse = 0f;
+        float blessing = 0f;
+        float seed = 90f;
+        float doctrine = 10f;
+        float points = PointsFor(offeringTiers, false) + PointsFor(sacrificeTiers, true);
+
+        float fromCurse = Mathf.Min(points, curse);
+        curse -= fromCurse;
+        blessing += fromCurse * 0.5f;
+        seed += fromCurse * 0.3f;
+        doctrine += fromCurse * 0.2f;
+        points -= fromCurse;
+
+        float fromBlessing = Mathf.Min(points, Mathf.Max(0f, blessing));
+        blessing -= fromBlessing;
+        seed += fromBlessing * 0.5f;
+        doctrine += fromBlessing * 0.5f;
+        points -= fromBlessing;
+
+        float fromSeed = Mathf.Min(points, Mathf.Max(0f, seed));
+        seed -= fromSeed;
+        doctrine += fromSeed;
+
+        return new TheologyChances
+        {
+            Curse = Mathf.Max(0f, curse),
+            Blessing = Mathf.Max(0f, blessing),
+            Seed = Mathf.Max(0f, seed),
+            Doctrine = Mathf.Max(0f, doctrine)
+        };
+    }
+
     public static TheologyChances Resolve(int offeringTiers, int sacrificeTiers)
     {
         float curse = 40f;

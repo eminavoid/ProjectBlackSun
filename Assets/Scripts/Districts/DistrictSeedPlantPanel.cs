@@ -50,7 +50,7 @@ public class DistrictSeedPlantPanel : MonoBehaviour
             {
                 if (popUpInstance == null)
                 {
-                    popUpInstance = PopUpManager.SpawnPopUp(openMenuButton.GetComponent<RectTransform>(), PopUpManager.Direction.upperRight, 30f, true);
+                    popUpInstance = PopUpManager.SpawnPopUp(openMenuButton.GetComponent<RectTransform>(), PopUpManager.Direction.upperRight, -20f, true);
                     popUpInstance.TryGetElement<TextMeshProUGUI>("Amount").SetText(newSeeds.ToString());
                 }
                 else
