@@ -684,6 +684,7 @@ MonoBehaviour:
   lossColor: {r: 1, g: 0.42, b: 0.36, a: 1}
   refundColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   debtColor: {r: 1, g: 0.42, b: 0.36, a: 1}
+  glossary: {fileID: 11400000, guid: 0757e23d3eef8cd4dbe1defaa82e93cf, type: 2}
   countDuration: 0.55
   punchDuration: 0.42
   punchScale: 1.25

@@ -16,7 +16,7 @@ namespace Zeke.Tooltips
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            Tooltip.Show(tooltipText);
+            Tooltip.Show(tooltipText, (RectTransform)transform);
             showing = true;
         }
 

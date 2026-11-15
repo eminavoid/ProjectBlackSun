@@ -16,6 +16,8 @@ public class ResourceSidebar : MonoBehaviour
     [SerializeField] private Color refundColor = new Color(0.8f, 0.8f, 0.8f);
     [Tooltip("A resource below 0 keeps this color.")]
     [SerializeField] private Color debtColor = new Color(1f, 0.42f, 0.36f);
+    [Tooltip("Each slot's tooltip explains its resource with the glossary entry of the same name.")]
+    [SerializeField] private TooltipLinksDB glossary;
 
     [Header("Ticking Number")]
     [SerializeField, Min(0.01f)] private float countDuration = 0.55f;
@@ -89,7 +91,7 @@ public class ResourceSidebar : MonoBehaviour
                 text = text,
                 textColor = text.color,
                 tooltip = tooltip,
-                tooltipText = tooltip != null ? tooltip.Text : null,
+                tooltipText = Explain(resource, tooltip),
                 shown = amount,
                 target = amount
             };
@@ -101,6 +103,16 @@ public class ResourceSidebar : MonoBehaviour
         }
 
         resources.onResourceGained += OnResourceChanged;
+    }
+
+    private string Explain(Resource resource, TooltipTrigger tooltip)
+    {
+        if (glossary != null && glossary.TryGetValue(resource.ToString().ToLowerInvariant(), out TooltipLinksDB.TooltipInfo info))
+        {
+            return $"{info.title}\n<size=80%>{info.description}</size>";
+        }
+
+        return tooltip != null ? tooltip.Text : null;
     }
 
     private static RectTransform FindIcon(TMP_Text text)
@@ -205,7 +217,7 @@ public class ResourceSidebar : MonoBehaviour
         if (slot.tooltip == null) return;
 
         slot.tooltip.SetText(SeedEventManager.IsInDebt(resource)
-            ? $"{slot.tooltipText}\n\nIN DEBT\nEach turn your {resource} stays below 0, some of your faithful leave and a crisis grows more likely. Crises you ignore cost you flock."
+            ? $"{slot.tooltipText}\n\n<size=80%><b>IN DEBT.</b> Each turn your {resource} stays below 0, some of your faithful leave and a crisis grows more likely. Crises you ignore cost you flock.</size>"
             : slot.tooltipText);
     }
 

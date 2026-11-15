@@ -117,7 +117,7 @@ Shader "Universal Render Pipeline/Custom/LitBandDitherFade"
                 int2 pixelCoord = int2((input.screenPos.xy / input.screenPos.w) * _ScreenParams.xy);
                 float ditherThreshold = Bayer4(pixelCoord);
 
-                clip(ditherThreshold - fadeAmount);
+                clip(ditherThreshold - fadeAmount - 0.001);
 
                 // 6. Sample texture and color
                 half4 albedo = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, input.uv) * _BaseColor;
@@ -163,18 +163,33 @@ Shader "Universal Render Pipeline/Custom/LitBandDitherFade"
             struct Varyings
             {
                 float4 positionCS   : SV_POSITION;
+                float3 positionWS   : TEXCOORD0;
             };
+
+            CBUFFER_START(UnityPerMaterial)
+                float4 _BaseColor;
+                float4 _BaseMap_ST;
+                float _NearFadeStart;
+                float _NearFadeEnd;
+                float _FarFadeStart;
+                float _FarFadeEnd;
+            CBUFFER_END
 
             Varyings vert(Attributes input)
             {
                 Varyings output;
                 VertexPositionInputs vertexInput = GetVertexPositionInputs(input.positionOS.xyz);
                 output.positionCS = vertexInput.positionCS;
+                output.positionWS = vertexInput.positionWS;
                 return output;
             }
 
             half4 frag(Varyings input) : SV_Target
             {
+                float dist = distance(input.positionWS, GetCameraPositionWS());
+                float nearFade = saturate((_NearFadeStart - dist) / max(0.0001, _NearFadeStart - _NearFadeEnd));
+                float farFade = saturate((dist - _FarFadeStart) / max(0.0001, _FarFadeEnd - _FarFadeStart));
+                clip(0.5 - max(nearFade, farFade));
                 return 0;
             }
             ENDHLSL

@@ -57,7 +57,7 @@ public class FaithEclipseChip : MonoBehaviour, IPointerEnterHandler, IPointerExi
         string zonesText = zones == 1 ? "1 zone" : $"{Mathf.Max(0, zones)} zones";
         string text = $"{title}\nControls {zonesText}.";
         if (leads) text += "\nControls the most zones in the city.";
-        Tooltip.Show(text);
+        Tooltip.Show(text, (RectTransform)transform);
     }
 
     public void OnPointerExit(PointerEventData eventData)
