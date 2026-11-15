@@ -10112,6 +10112,7 @@ MonoBehaviour:
   costFlightStagger: 0.13
   choiceBeat: 0.2
   maxStatForShine: 5
+  startAlpha: 0.25
   unrollDuration: 0.5
   optionsFadeOutDuration: 0.25
   resourceSeedPools:
