@@ -76,6 +76,10 @@ public class SeedEventManager : Singleton<SeedEventManager>
     [Tooltip("Pause after the cost lands, before the option runs.")]
     [SerializeField, Min(0f)] private float choiceBeat = 0.2f;
 
+    [Space]
+
+    [SerializeField] private int maxStatForShine = 5;
+
     [Header("Result Transition")]
     [Tooltip("The result's parchment unrolls out of the chosen option.")]
     [SerializeField, Min(0.01f)] private float unrollDuration = 0.5f;
@@ -613,7 +617,16 @@ public class SeedEventManager : Singleton<SeedEventManager>
                 }
                 else
                 {
-                    uiWindow.TryGetElement<Image>("Outline").color = new Color(0f, 0f, 0f, 0);
+                    int shinePower = 0;
+
+                    for (int x = 0; x < testedVirtues.Count; x++)
+                    {
+                        shinePower += playerStats.GetStat(testedVirtues[x]);
+                    }
+
+                    float alpha = 100 * (shinePower / maxStatForShine);
+
+                    uiWindow.TryGetElement<Image>("Outline").color = new Color(0f, 0f, 0f, alpha);
                 }
             }
 
