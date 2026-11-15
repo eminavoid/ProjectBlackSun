@@ -614,9 +614,7 @@ public class SeedEventManager : Singleton<SeedEventManager>
                     TooltipTrigger tooltipTrigger = uiWindow.gameObject.AddComponent<TooltipTrigger>();
                     tooltipTrigger.SetText($"Your <b>{Virtues.Names(testedVirtues)}</b> {(testedVirtues.Count == 1 ? "makes" : "make")} the best outcome of this choice more likely.");
                     tooltipTrigger.ShowBesides = false;
-                }
-                else
-                {
+
                     int shinePower = 0;
 
                     for (int x = 0; x < testedVirtues.Count; x++)
@@ -625,8 +623,11 @@ public class SeedEventManager : Singleton<SeedEventManager>
                     }
 
                     float alpha = 100 * (shinePower / maxStatForShine);
-
                     uiWindow.TryGetElement<Image>("Outline").color = new Color(0f, 0f, 0f, alpha);
+                }
+                else
+                {
+                    uiWindow.TryGetElement<Image>("Outline").color = new Color(0f, 0f, 0f, 0f);
                 }
             }
 
