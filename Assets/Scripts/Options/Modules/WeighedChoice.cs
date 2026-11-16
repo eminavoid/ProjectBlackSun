@@ -9,6 +9,27 @@ public class WeighedChoice : OptionModule
 
     private readonly List<WeightedElementWrapper> tempModules = new List<WeightedElementWrapper>();
 
+    public OutcomeChances GetOutcomeChances(PlayerStats playerStats)
+    {
+        float totalWeight = 0f;
+        float positiveWeight = 0f;
+
+        for (int i = 0; i < modules.Count; i++)
+        {
+            float weight = modules[i].Weight + playerStats.GetStatExtraWeight(modules[i].statUsed);
+
+            totalWeight += weight;
+
+            if (modules[i].outcomeType == OutcomeType.Good)
+            {
+                positiveWeight += weight;
+            }
+        }
+
+        float positiveChance = positiveWeight / totalWeight;
+        return new OutcomeChances(positiveChance, 1f - positiveChance);
+    }
+
     public override bool CanExecute() => true;
 
     public override void GetTestedVirtues(List<PlayerStats.PlayerStat> virtues)
@@ -51,6 +72,7 @@ public class WeighedChoice : OptionModule
         public int weight;
         [SerializeReferenceDropdown, SerializeReference] public List<OptionModule> module;
         [SerializeField] public PlayerStats.PlayerStat statUsed;
+        [SerializeField] public OutcomeType outcomeType;
 
         [Space]
 

@@ -43,6 +43,28 @@ public class Option : ScriptableObject
         return option;
     }
 
+    public T GetModule<T>() where T : OptionModule
+    {
+        for (int i = 0; i < modules.Count; i++)
+        {
+            if (modules[i] is T t)
+            {
+                return t;
+            }
+        }
+
+        return null;
+    }
+
+    public OutcomeChances GetOutcomeChances()
+    {
+        WeighedChoice weightedChoice = GetModule<WeighedChoice>();
+
+        if (weightedChoice == null) return OutcomeChances.GuarantedPositive;
+
+        return weightedChoice.GetOutcomeChances(playerStats);
+    }
+
     public bool CanExecute()
     {
         for (int i = 0; i < modules.Count; i++)
@@ -74,6 +96,10 @@ public class Option : ScriptableObject
 
     public void ExecuteOption()
     {
+        OutcomeChances outcome = GetOutcomeChances();
+
+        Debug.Log($"positive chance: {outcome.GoodPercentage}% | negative chance: {outcome.BadPercentage}%");
+
         for (int i = 0; i < modules.Count; i++)
         {
             modules[i]?.Execute(this, seed);
