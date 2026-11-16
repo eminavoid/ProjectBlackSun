@@ -314,7 +314,7 @@ public class AIInfluenceController : MonoBehaviour
             AIInfluenceProfile.CreateRuntime(
                 FactionId.Rival1,
                 "Crimson Choir",
-                15,
+                8,
                 AIObjective.Of(Districts.District1, 4),
                 AIObjective.Of(Districts.District6, 3),
                 AIObjective.Of(Districts.District3, 2),
@@ -323,7 +323,7 @@ public class AIInfluenceController : MonoBehaviour
             AIInfluenceProfile.CreateRuntime(
                 FactionId.Rival2,
                 "Rose Ledger",
-                15,
+                8,
                 AIObjective.Of(Districts.District2, 4),
                 AIObjective.Of(Districts.District3, 3),
                 AIObjective.Of(Districts.District6, 2),
@@ -332,7 +332,7 @@ public class AIInfluenceController : MonoBehaviour
             AIInfluenceProfile.CreateRuntime(
                 FactionId.Rival3,
                 "Ochre Flock",
-                15,
+                8,
                 AIObjective.Of(Districts.District4, 4),
                 AIObjective.Of(Districts.District5, 3),
                 AIObjective.Of(Districts.District6, 2),
