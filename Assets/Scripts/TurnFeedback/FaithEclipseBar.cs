@@ -15,12 +15,16 @@ public class FaithEclipseBar : MonoBehaviour
     [Tooltip("From this many turns left, the turn counter warns that the eclipse is near.")]
     [SerializeField, Min(0)] private int warnTurns = 5;
     [SerializeField] private Color warnColor = new Color(0.62f, 0.12f, 0.08f, 1f);
+    [Tooltip("While the eclipse is near, the turn counter fades to this alpha and back.")]
+    [SerializeField, Range(0f, 1f)] private float warnPulseAlpha = 0.45f;
+    [SerializeField, Min(0.1f)] private float warnPulseSeconds = 0.7f;
 
     private readonly List<FaithEclipseChip> chips = new List<FaithEclipseChip>();
     private InfluenceManager influence;
     private GameLoopEvents gameLoop;
     private Color turnColor;
     private int shownTurn;
+    private Tween warnPulse;
 
     private void Start()
     {
@@ -51,6 +55,7 @@ public class FaithEclipseBar : MonoBehaviour
 
     private void OnDestroy()
     {
+        warnPulse?.Kill();
         GameTime.OnTurnResolved -= Refresh;
         if (influence != null) influence.OnControlChanged -= Refresh;
     }
@@ -87,7 +92,17 @@ public class FaithEclipseBar : MonoBehaviour
         int eclipse = gameLoop.EclipseTurn;
         int left = gameLoop.TurnsUntilEclipse;
         turnText.text = $"TURN {Mathf.Min(turn, eclipse)}/{eclipse}";
-        turnText.color = left <= warnTurns ? warnColor : turnColor;
+        bool warning = left <= warnTurns;
+        turnText.color = warning ? warnColor : turnColor;
+        if (warning && warnPulse == null)
+        {
+            warnPulse = turnText.DOFade(warnPulseAlpha, warnPulseSeconds).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine).SetLink(gameObject);
+        }
+        else if (!warning && warnPulse != null)
+        {
+            warnPulse.Kill();
+            warnPulse = null;
+        }
 
         if (turnTooltip == null) return;
         string countdown = left <= 1

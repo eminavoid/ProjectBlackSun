@@ -28,13 +28,18 @@ public class AIIntentOverlay : MonoBehaviour
     [SerializeField] private bool startVisible = true;
     [SerializeField] private float fadeSeconds = 0.2f;
 
+    [Header("Zoom")]
+    [Tooltip("Camera height where arrows keep their full size. Closer, they shrink so they never cover the view.")]
+    [SerializeField, Min(0.1f)] private float fullSizeHeight = 5f;
+    [SerializeField, Range(0.05f, 1f)] private float closestScale = 0.3f;
+
     private readonly List<IntentArrowView> views = new List<IntentArrowView>();
 
     private Transform root;
     private Material arrowMaterial;
     private AIIntentBoard board;
-    private InfluenceOverlaySettings settings;
     private float referenceSize = 1f;
+    private float zoomScale = 1f;
     private bool visible = true;
     private float alpha;
     private bool rebuildQueued;
@@ -42,9 +47,8 @@ public class AIIntentOverlay : MonoBehaviour
     private void Start()
     {
         visible = startVisible;
-        settings = InfluenceOverlaySettings.LoadOrCreate();
-        MapViewLod.Weights(settings, out float arrows, out _);
-        alpha = visible ? arrows : 0f;
+        alpha = visible ? 1f : 0f;
+        zoomScale = ZoomScale();
 
         arrowMaterial = ResolveMaterial();
         if (arrowMaterial == null)
@@ -80,8 +84,7 @@ public class AIIntentOverlay : MonoBehaviour
     {
         ReadToggleInput();
 
-        MapViewLod.Weights(settings, out float arrows, out _);
-        float targetAlpha = visible ? arrows : 0f;
+        float targetAlpha = visible ? 1f : 0f;
         if (!Mathf.Approximately(alpha, targetAlpha))
         {
             float step = fadeSeconds > 0f ? Time.unscaledDeltaTime / fadeSeconds : 1f;
@@ -89,9 +92,21 @@ public class AIIntentOverlay : MonoBehaviour
             ApplyAlpha();
         }
 
+        float scale = ZoomScale();
+        if (Mathf.Abs(scale - zoomScale) > zoomScale * 0.04f)
+        {
+            zoomScale = scale;
+            rebuildQueued = true;
+        }
+
         if (!rebuildQueued) return;
         rebuildQueued = false;
         Rebuild();
+    }
+
+    private float ZoomScale()
+    {
+        return Mathf.Clamp(MapViewLod.CameraHeight / fullSizeHeight, closestScale, 1f);
     }
 
     private void QueueRebuild()
@@ -145,18 +160,19 @@ public class AIIntentOverlay : MonoBehaviour
     {
         view.SetVisible(true);
 
-        float lift = referenceSize * liftFactor;
+        float size = referenceSize * zoomScale;
+        float lift = size * liftFactor;
         Bounds targetBounds = intent.Target.GetWorldBounds();
         Vector3 target = SurfacePoint(targetBounds, lift);
         Color color = intent.Color;
 
         IntentArrowView.ArrowStyle style = new IntentArrowView.ArrowStyle
         {
-            Width = referenceSize * widthFactor,
+            Width = size * widthFactor,
             HeadRatio = headRatio,
             HeadWidthScale = headWidthScale,
-            DropHeight = referenceSize * dropHeightFactor,
-            RingRadius = referenceSize * ringRadiusFactor
+            DropHeight = size * dropHeightFactor,
+            RingRadius = size * ringRadiusFactor
         };
 
         bool hasOrigin = intent.Origin != null && intent.Origin != intent.Target;
@@ -177,7 +193,7 @@ public class AIIntentOverlay : MonoBehaviour
                 distance = maxLength;
             }
 
-            style.ArcHeight = referenceSize * 0.28f + distance * 0.05f;
+            style.ArcHeight = size * 0.28f + distance * 0.05f;
 
             view.BuildArc(origin, target, color, style);
             view.SetLabel(string.Empty, intent.LabelColor, Vector3.zero, 1f);

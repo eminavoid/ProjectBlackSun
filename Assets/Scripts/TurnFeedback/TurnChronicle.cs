@@ -18,6 +18,9 @@ public class TurnChronicle : MonoBehaviour
     [Tooltip("Rival faiths mentioned at most, the ones that spread the most first.")]
     [SerializeField, Min(0)] private int maxRivalLines = 2;
     [SerializeField, Min(0.5f)] private float quietNoticeSeconds = 5f;
+    [Tooltip("From this many turns left, every chronicle opens with how close the eclipse is and who leads.")]
+    [SerializeField, Min(0)] private int eclipseWarnTurns = 5;
+    [SerializeField] private Color eclipseInk = new Color(0.55f, 0.11f, 0.07f, 1f);
 
     private readonly Dictionary<DistrictZone, FactionId?> controllersBefore = new Dictionary<DistrictZone, FactionId?>();
     private Dictionary<Resource, int> resourcesBefore;
@@ -131,6 +134,7 @@ public class TurnChronicle : MonoBehaviour
         var news = new List<string>();
         var rivalNews = new List<string>();
         AddTerritoryNews(news, rivalNews);
+        AddEclipseNews(news);
         AddLeaderNews(news);
         AddEventNews(news);
         AddClergyNews(news);
@@ -223,6 +227,35 @@ public class TurnChronicle : MonoBehaviour
             int spread = spreading[i].Value;
             rivalNews.Add($"{Name(spreading[i].Key)} spread to {spread} more {(spread == 1 ? "zone" : "zones")}.");
         }
+    }
+
+    private void AddEclipseNews(List<string> news)
+    {
+        GameLoopEvents loop = FindAnyObjectByType<GameLoopEvents>();
+        if (loop == null || InfluenceManager.IsNull) return;
+
+        int left = loop.TurnsUntilEclipse;
+        if (left <= 0 || left > eclipseWarnTurns) return;
+
+        string ink = ColorUtility.ToHtmlStringRGB(eclipseInk);
+        string countdown = left == 1
+            ? "This is the last turn. When it ends, the Faith Eclipse falls on Beheld."
+            : $"The Faith Eclipse comes in {left} turns.";
+        news.Insert(0, $"<color=#{ink}><b>{countdown}</b></color> {Standing()}");
+    }
+
+    private static string Standing()
+    {
+        InfluenceManager influence = InfluenceManager.Get;
+        FactionId? leader = influence.GetFaithEclipseLeader(out int leading);
+        int mine = influence.CountControlledZones(FactionId.Player);
+
+        if (leader == FactionId.Player) return $"You lead with {Zones(leading)}. Hold them.";
+        if (leader.HasValue) return $"{Name(leader.Value)} leads with {Zones(leading)} and you rule {mine}. Take zones from them.";
+        if (leading <= 0) return "No faith leads yet. Rule the most zones to win.";
+        return mine == leading
+            ? $"You share the lead at {Zones(leading)}. One more zone decides it."
+            : $"The lead is tied at {Zones(leading)} and you rule {mine}. Take zones from the leaders.";
     }
 
     private void AddLeaderNews(List<string> news)
