@@ -20,7 +20,17 @@ public class DayPassage : MonoBehaviour
         }
     };
 
+    [Header("Eclipse Gloom")]
+    [Tooltip("From this many turns left, each day starts a little darker until the eclipse.")]
+    [SerializeField, Min(1)] private int gloomTurns = 5;
+    [SerializeField, Range(0f, 1f)] private float eclipseLight = 0.5f;
+    [SerializeField, Range(0f, 1f)] private float eclipseAmbient = 0.55f;
+    [SerializeField] private Color eclipseTint = new Color(1f, 0.6f, 0.45f, 1f);
+
     private Light sun;
+    private GameLoopEvents gameLoop;
+    private float gloomFrom;
+    private float gloomTo;
     private Vector3 dayAngles;
     private float dayIntensity;
     private Color dayColor;
@@ -40,6 +50,13 @@ public class DayPassage : MonoBehaviour
         groundAmbient = RenderSettings.ambientGroundColor;
     }
 
+    private void Start()
+    {
+        gameLoop = FindAnyObjectByType<GameLoopEvents>();
+        gloomFrom = gloomTo = Gloom(TurnsLeft(0));
+        Apply(1f);
+    }
+
     private void OnEnable() => GameTime.OnTurnEnded += Pass;
 
     private void OnDisable()
@@ -52,7 +69,13 @@ public class DayPassage : MonoBehaviour
     private void Pass()
     {
         float duration = GameTime.TurnStartDelay;
-        if (duration <= 0f) return;
+        gloomFrom = gloomTo;
+        gloomTo = Gloom(TurnsLeft(1));
+        if (duration <= 0f)
+        {
+            Apply(1f);
+            return;
+        }
 
         passage?.Kill();
         passage = DOVirtual.Float(0f, 1f, duration, Apply)
@@ -61,16 +84,28 @@ public class DayPassage : MonoBehaviour
             .SetLink(gameObject);
     }
 
+    private int TurnsLeft(int turnsAhead)
+    {
+        return gameLoop == null ? int.MaxValue : gameLoop.TurnsUntilEclipse - turnsAhead;
+    }
+
+    private float Gloom(int turnsLeft)
+    {
+        if (turnsLeft > gloomTurns) return 0f;
+        return Mathf.Clamp01((gloomTurns + 1 - turnsLeft) / (float)gloomTurns);
+    }
+
     private void Apply(float t)
     {
         float night = Mathf.Sin(t * Mathf.PI);
         night *= night;
+        float gloom = Mathf.Lerp(gloomFrom, gloomTo, t);
 
         transform.rotation = Quaternion.Euler(dayAngles.x, dayAngles.y + 360f * t, dayAngles.z);
-        sun.intensity = dayIntensity * Mathf.Lerp(1f, nightLight, night);
-        sun.color = dayColor * tint.Evaluate(t);
+        sun.intensity = dayIntensity * Mathf.Lerp(1f, nightLight, night) * Mathf.Lerp(1f, eclipseLight, gloom);
+        sun.color = dayColor * tint.Evaluate(t) * Color.Lerp(Color.white, eclipseTint, gloom);
 
-        float ambient = Mathf.Lerp(1f, nightAmbient, night);
+        float ambient = Mathf.Lerp(1f, nightAmbient, night) * Mathf.Lerp(1f, eclipseAmbient, gloom);
         RenderSettings.ambientSkyColor = skyAmbient * ambient;
         RenderSettings.ambientEquatorColor = equatorAmbient * ambient;
         RenderSettings.ambientGroundColor = groundAmbient * ambient;
