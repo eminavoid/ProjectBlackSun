@@ -15,8 +15,8 @@ public class CustomCursor : MonoBehaviour
 
     void Awake()
     {
-        Tooltip.onTooltipShow += () => gameObject.SetActive(false);
-        Tooltip.onTooltipHide += () => SyncAndEnable();
+        Tooltip.onTooltipShow += Disable;
+        Tooltip.onTooltipHide += SyncAndEnable;
 
         Cursor.visible = false;
 
@@ -37,6 +37,17 @@ public class CustomCursor : MonoBehaviour
 
         // Optional: Hide the default OS hardware cursor if you want to rely entirely on this UI cursor
         // Cursor.visible = false;
+    }
+
+    private void OnDestroy()
+    {
+        Tooltip.onTooltipShow -= Disable;
+        Tooltip.onTooltipHide -= SyncAndEnable;
+    }
+
+    private void Disable()
+    {
+        gameObject.SetActive(false);
     }
 
     private void SyncAndEnable()
