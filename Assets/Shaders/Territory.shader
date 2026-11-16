@@ -189,11 +189,18 @@ Shader "Custom/Territory"
                     color = lerp(color, saturate(color * 1.5h + 0.3h), sheen);
                     alpha = saturate(alpha + sheen * 0.3h);
                 }
-                else if (_Mode > 2.5)
+                else if (_Mode > 2.5 && _Mode < 3.5)
                 {
                     half stripe = Stripe(xz, time * _ContestSpeed);
                     color = lerp(_Color.rgb, _Color2.rgb, stripe);
                     alpha *= 0.82h + 0.18h * (half)sin(time * 7.0 + _Seed * 6.28 + r * 4.0);
+                }
+                else if (_Mode > 3.5)
+                {
+                    half border = (half)smoothstep(0.55, 0.95, r);
+                    half beat = 0.55h + 0.45h * (half)sin(time * 3.0 + _Seed * 6.28);
+                    color = saturate(_Color.rgb * 1.25h + 0.1h);
+                    alpha = _Alpha * (0.18h + border * beat);
                 }
 
                 half wave = 0.0h;

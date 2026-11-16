@@ -166,6 +166,12 @@ public class SeedEventManager : Singleton<SeedEventManager>
             ? Instance.unresolvedPopUpInstance.transform as RectTransform
             : null;
 
+    public static Transform OptionsWindow => IsNull || Instance.spawnOptionsWindow == null ? null : Instance.spawnOptionsWindow.transform;
+
+    public static bool OptionsOpen => !IsNull && Instance.optionsVisible;
+
+    public static Transform OutputWindow => IsNull || Instance.currentOutput == null ? null : Instance.currentOutput.transform;
+
     private void UpdateSeedEventsCount()
     {
         if (seedEvents.Count == 0)

@@ -369,7 +369,7 @@ public class MapCameraController : MonoBehaviour
 
         if (IsRightButtonReleasedThisFrame())
         {
-            if (pendingRightContext && !IsPointerOverUi(pointer))
+            if (pendingRightContext && !IsPointerOverUi(pointer) && !InputLocks.MapContext)
             {
                 OnMapContextRequested?.Invoke(pointer);
             }

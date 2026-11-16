@@ -15,6 +15,7 @@ public class MapStatsPanel : MonoBehaviour
     private DistrictSelectionController selection;
 
     public bool IsOpen => book != null && book.IsOpen;
+    public Component Book => book;
     public event System.Action PageOpened;
 
     private void Awake()

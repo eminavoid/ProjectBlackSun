@@ -1,22 +1,20 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class CultLedger : MonoBehaviour
 {
-    private enum Page
+    public enum Page
     {
         Cult,
         Clergy,
-        Rivals
+        Rivals,
+        Doctrines
     }
 
     [SerializeField] private MapStatsBook book;
     [SerializeField] private TMP_Text coverKicker;
     [SerializeField] private TMP_Text coverTitle;
-    [Tooltip("The sidebar's Doctrines button, opened from the cult page.")]
-    [SerializeField] private Button doctrinesButton;
 
     private PlayerClergy clergy;
     private GameLoopEvents gameLoop;
@@ -35,6 +33,12 @@ public class CultLedger : MonoBehaviour
         mapCamera = FindAnyObjectByType<MapCameraController>();
         doctrines = FindAnyObjectByType<DoctrinesController>(FindObjectsInactive.Include);
         if (!InfluenceManager.IsNull) InfluenceManager.Get.OnControlChanged += RefreshIfOpen;
+        if (coverTitle != null)
+        {
+            coverTitle.fontSizeMax = coverTitle.fontSize;
+            coverTitle.fontSizeMin = coverTitle.fontSize * 0.5f;
+            coverTitle.enableAutoSizing = true;
+        }
     }
 
     private void OnDestroy()
@@ -47,6 +51,14 @@ public class CultLedger : MonoBehaviour
     public void OpenClergy() => Show(Page.Clergy);
 
     public void OpenRivals() => Show(Page.Rivals);
+
+    public void OpenDoctrines() => Show(Page.Doctrines);
+
+    public bool IsShowing(Page target) => book.IsOpen && page == target;
+
+    public Component Book => book;
+
+    public void Close() => book.Close();
 
     private void Show(Page target)
     {
@@ -78,6 +90,7 @@ public class CultLedger : MonoBehaviour
         {
             case Page.Cult: RenderCult(animate); break;
             case Page.Clergy: RenderClergy(animate); break;
+            case Page.Doctrines: RenderDoctrines(animate); break;
             default: RenderRivals(animate); break;
         }
 
@@ -104,11 +117,9 @@ public class CultLedger : MonoBehaviour
         foreach (PlayerStats.PlayerStat virtue in Virtues.All) AddVirtue(stats, virtue);
 
         book.AddSection("DOCTRINES");
-        var equipped = new List<Doctrine>();
-        if (doctrines != null) doctrines.GetEquippedDoctrines(equipped);
-        if (equipped.Count == 0) book.AddText("Your cult follows no doctrine yet.");
-        foreach (Doctrine doctrine in equipped) book.AddEntry(null, Color.clear, doctrine.Name, StatChanges(doctrine));
-        if (doctrinesButton != null) book.AddAction("SHAPE YOUR DOCTRINES", OpenDoctrines);
+        if (doctrines == null || doctrines.Kept.Count == 0) book.AddText("Your cult keeps no doctrine yet.");
+        else foreach (Doctrine doctrine in doctrines.Kept) book.AddEntry(null, Color.clear, doctrine.Name, StatChanges(doctrine));
+        if (doctrines != null) book.AddAction("SHAPE YOUR DOCTRINES", OpenDoctrines);
 
         book.AddSection("TREASURY");
         int clerics = InfluenceManager.Get.CountDeployedClerics(FactionId.Player);
@@ -215,6 +226,85 @@ public class CultLedger : MonoBehaviour
         book.AddAction("OPEN THE CITY LEDGER", OpenCityLedger);
     }
 
+    private void RenderDoctrines(bool animate)
+    {
+        string name = CultName();
+        SetCover("THE DOCTRINES OF", name);
+        if (doctrines == null)
+        {
+            book.SetHeading("YOUR CREED", "DOCTRINES", TurnLine());
+            book.SetSeal(FactionId.Player, "YOUR CREED", name, animate);
+            return;
+        }
+
+        int max = doctrines.MaxDoctrines;
+        int kept = doctrines.Kept.Count;
+        int ready = doctrines.ReadyCharges;
+        int wait = doctrines.TurnsUntilCharge;
+        string when = ready > 0 ? "Ready now" : wait <= 1 ? "Next turn" : $"In {wait} turns";
+        book.SetHeading("YOUR CREED", "DOCTRINES", $"{kept}/{max} kept  ·  {Count(ready, "adoption")} ready");
+        book.SetSeal(FactionId.Player, "NEXT ADOPTION", when, animate);
+
+        book.AddSection("KEPT");
+        if (kept == 0) book.AddText("Your cult keeps no doctrine yet. Adopt one below.");
+        foreach (Doctrine doctrine in doctrines.Kept)
+        {
+            Doctrine target = doctrine;
+            book.AddEntry(null, Color.clear, doctrine.Name, DoctrineDetail(doctrine));
+            book.AddAction($"RENOUNCE {doctrine.Name.ToUpperInvariant()}", () => Renounce(target));
+        }
+
+        if (kept > 0 && kept < max) book.AddText($"{Count(max - kept, "place")} still open for a doctrine.");
+
+        book.AddSection("KNOWN");
+        var known = new List<Doctrine>();
+        PlayerStats stats = doctrines.Stats;
+        if (stats != null && stats.DoctrineInventory != null)
+        {
+            foreach (Doctrine doctrine in stats.DoctrineInventory)
+            {
+                if (doctrine != null && !doctrines.IsKept(doctrine)) known.Add(doctrine);
+            }
+        }
+
+        if (known.Count == 0) book.AddText("No other doctrine is known yet. Commune with the Beholder in Theology to find more.");
+        else if (kept >= max) book.AddText("Every place is taken. Renounce a doctrine to adopt another.");
+        else if (ready == 0) book.AddText($"You can adopt again {when.ToLowerInvariant()}.");
+
+        foreach (Doctrine doctrine in known)
+        {
+            Doctrine target = doctrine;
+            book.AddEntry(null, Color.clear, doctrine.Name, DoctrineDetail(doctrine));
+            if (doctrines.CanAdopt(doctrine)) book.AddAction($"ADOPT {doctrine.Name.ToUpperInvariant()}", () => Adopt(target));
+        }
+
+        book.AddSection("HOW DOCTRINES WORK");
+        book.AddText($"Your cult keeps up to {max} doctrines. While kept, each one raises or lowers your virtues.");
+        book.AddText($"Each adoption spends one of {max} charges, and a spent charge returns {Count(doctrines.ChangeCooldown, "turn")} later.");
+        book.AddText("Renouncing costs nothing, and the doctrine's effects end at once.");
+    }
+
+    private void Adopt(Doctrine doctrine)
+    {
+        if (doctrines == null || !doctrines.Adopt(doctrine)) return;
+        Render(true, false);
+    }
+
+    private void Renounce(Doctrine doctrine)
+    {
+        if (doctrines == null) return;
+        doctrines.Renounce(doctrine);
+        Render(true, false);
+    }
+
+    private static string DoctrineDetail(Doctrine doctrine)
+    {
+        string changes = StatChanges(doctrine);
+        string description = string.IsNullOrWhiteSpace(doctrine.Description) ? string.Empty : doctrine.Description.Trim();
+        if (string.IsNullOrEmpty(changes)) return description;
+        return string.IsNullOrEmpty(description) ? $"<b>{changes}</b>" : $"<b>{changes}</b>\n{description}";
+    }
+
     private void AddVirtue(PlayerStats stats, PlayerStats.PlayerStat virtue)
     {
         int value = 10 + (stats != null ? stats.GetStat(virtue) : 0);
@@ -246,12 +336,6 @@ public class CultLedger : MonoBehaviour
         book.Close();
         if (mapCamera != null) mapCamera.FocusOnZone(zone);
         DistrictSelectionController.SetSelectedDistrict(zone.District, zone, zone.name, DistrictSelectionController.ResolvePartColorName(zone));
-    }
-
-    private void OpenDoctrines()
-    {
-        book.Close();
-        doctrinesButton.onClick.Invoke();
     }
 
     private void OpenCityLedger()

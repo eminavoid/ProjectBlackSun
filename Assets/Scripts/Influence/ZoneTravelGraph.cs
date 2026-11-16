@@ -426,6 +426,19 @@ public class ZoneTravelGraph : MonoBehaviour
         }
     }
 
+    public void CollectNeighbors(DistrictZone zone, List<DistrictZone> result)
+    {
+        result.Clear();
+        EnsureReady();
+        if (zone == null || !neighbors.TryGetValue(zone, out List<ZoneTravelEdge> links)) return;
+
+        for (int i = 0; i < links.Count; i++)
+        {
+            DistrictZone other = links[i] != null ? links[i].Other(zone) : null;
+            if (other != null && !result.Contains(other)) result.Add(other);
+        }
+    }
+
     private void AddNeighbor(DistrictZone zone, ZoneTravelEdge edge)
     {
         if (!neighbors.TryGetValue(zone, out List<ZoneTravelEdge> list))

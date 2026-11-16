@@ -15,6 +15,13 @@ public class EventsMenu : MonoBehaviour
 
     public GameObject Panel => ui;
 
+    public RectTransform EntryFor(Seed seed)
+    {
+        if (seed == null || !seedWindows.TryGetValue(seed.UniqueID, out UIWindow window) || window == null) return null;
+        Button clickbox = window.TryGetElement<Button>("Event Clickbox");
+        return clickbox != null ? (RectTransform)clickbox.transform : (RectTransform)window.transform;
+    }
+
     private readonly Dictionary<int, UIWindow> seedWindows = new Dictionary<int, UIWindow>();
 
     private void Awake()

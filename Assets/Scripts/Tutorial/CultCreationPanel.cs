@@ -62,7 +62,6 @@ public class CultCreationPanel : MonoBehaviour
     private static readonly Color Selected = new Color(1f, 0.84f, 0.48f, 1f);
     private const string GainHex = "2E6B24";
     private const string LossHex = "8C1C12";
-    private static readonly Dictionary<string, Sprite> ArtCache = new Dictionary<string, Sprite>();
 
     private TooltipLinksDB glossary;
     private TMP_FontAsset font;
@@ -165,7 +164,7 @@ public class CultCreationPanel : MonoBehaviour
         const float baseHeight = 64f;
         const float columnHeight = 660f;
         const float columnX = 560f;
-        Sprite columnSprite = Art("Torre_Columna");
+        Sprite columnSprite = UiArt.Find("Torre_Columna");
         float columnAspect = columnSprite != null && columnSprite.rect.height > 1f
             ? columnSprite.rect.width / columnSprite.rect.height
             : 0.16f;
@@ -173,7 +172,7 @@ public class CultCreationPanel : MonoBehaviour
         float columnTop = baseHeight + columnHeight;
         float outerSpan = columnX * 2f + columnWidth;
 
-        Sprite pedimentSprite = Art("Torre_Fronton");
+        Sprite pedimentSprite = UiArt.Find("Torre_Fronton");
         float pedimentAspect = pedimentSprite != null && pedimentSprite.rect.height > 1f
             ? pedimentSprite.rect.width / pedimentSprite.rect.height
             : 6.2f;
@@ -482,7 +481,7 @@ public class CultCreationPanel : MonoBehaviour
 
     private static Image Piece(RectTransform parent, string name, string spriteName, bool keepAspect)
     {
-        Sprite sprite = Art(spriteName);
+        Sprite sprite = UiArt.Find(spriteName);
         Image image = ImageOf(name, parent, sprite, Color.white);
         image.preserveAspect = keepAspect && sprite != null;
         image.raycastTarget = sprite != null;
@@ -512,7 +511,7 @@ public class CultCreationPanel : MonoBehaviour
         go.transform.SetParent(parent, false);
         go.GetComponent<LayoutElement>().preferredHeight = 52f;
         Image image = go.GetComponent<Image>();
-        image.sprite = Art("Ladrillo_Gris_Largo_1");
+        image.sprite = UiArt.Find("Ladrillo_Gris_Largo_1");
         image.type = Image.Type.Simple;
         image.color = Color.white;
 
@@ -541,7 +540,7 @@ public class CultCreationPanel : MonoBehaviour
         go.transform.SetParent(parent, false);
         go.GetComponent<LayoutElement>().preferredHeight = height;
         image = go.GetComponent<Image>();
-        image.sprite = Art("Ladrillo_Gris_Largo_1");
+        image.sprite = UiArt.Find("Ladrillo_Gris_Largo_1");
         image.type = Image.Type.Simple;
         image.color = Color.white;
         Button button = go.GetComponent<Button>();
@@ -591,22 +590,6 @@ public class CultCreationPanel : MonoBehaviour
         return (RectTransform)go.transform;
     }
 
-    private static Sprite Art(string spriteName)
-    {
-        if (ArtCache.TryGetValue(spriteName, out Sprite cached)) return cached;
-
-        Sprite[] sprites = Resources.FindObjectsOfTypeAll<Sprite>();
-        for (int i = 0; i < sprites.Length; i++)
-        {
-            Sprite sprite = sprites[i];
-            if (sprite == null || ArtCache.ContainsKey(sprite.name)) continue;
-            ArtCache[sprite.name] = sprite;
-        }
-
-        ArtCache.TryGetValue(spriteName, out cached);
-        if (!ArtCache.ContainsKey(spriteName)) ArtCache[spriteName] = cached;
-        return cached;
-    }
 
     private static void Stretch(RectTransform rect)
     {

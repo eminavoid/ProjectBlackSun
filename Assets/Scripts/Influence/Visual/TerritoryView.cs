@@ -15,7 +15,8 @@ public class TerritoryView : MonoBehaviour
         Plain = 0,
         Held = 1,
         Hatched = 2,
-        Contested = 3
+        Contested = 3,
+        Reach = 4
     }
 
     [SerializeField] private Material territoryMaterial;
@@ -28,6 +29,8 @@ public class TerritoryView : MonoBehaviour
     [SerializeField, Range(0f, 1f)] private float growingAlpha = 0.35f;
     [Tooltip("The selected zone's fill fades so its highlight shows through.")]
     [SerializeField, Range(0f, 1f)] private float selectedDim = 0.3f;
+    [Tooltip("Free zones your clerics can reach, tinted while a zone is selected.")]
+    [SerializeField, Range(0f, 1f)] private float reachAlpha = 0.6f;
 
     [Header("Owner Change")]
     [Tooltip("How long the wave takes to sweep out of a zone that changes hands.")]
@@ -60,6 +63,7 @@ public class TerritoryView : MonoBehaviour
         public bool Known;
         public FactionId? Owner;
         public bool Present;
+        public bool Reach;
         public Look Look;
         public Color Primary;
         public Color Secondary;
@@ -171,7 +175,16 @@ public class TerritoryView : MonoBehaviour
 
     private void OnSelectionChanged(Districts? district)
     {
-        foreach (Tile tile in tiles.Values) Apply(tile);
+        foreach (KeyValuePair<DistrictZone, Tile> pair in tiles)
+        {
+            UpdateReach(pair.Key, pair.Value);
+            Apply(pair.Value);
+        }
+    }
+
+    private static void UpdateReach(DistrictZone zone, Tile tile)
+    {
+        tile.Reach = !tile.Present && InfluenceManager.Get.InClericReach(zone, FactionId.Player);
     }
 
     private void Refresh()
@@ -193,6 +206,7 @@ public class TerritoryView : MonoBehaviour
             tile.Known = true;
             tile.Owner = owner;
             Describe(tile, state, owner);
+            UpdateReach(zone, tile);
             Apply(tile);
         }
     }
@@ -240,17 +254,18 @@ public class TerritoryView : MonoBehaviour
 
         float progress = FlashProgress(tile);
         float flash = progress >= 0f ? 1f - progress : 0f;
-        bool show = visible && (tile.Present || flash > 0f);
+        DistrictZone selected = DistrictSelectionController.SelectedZone;
+        bool reachOnly = !tile.Present && tile.Reach && selected != null;
+        bool show = visible && (tile.Present || reachOnly || flash > 0f);
         tile.Renderer.enabled = show;
         if (!show) return;
 
-        DistrictZone selected = DistrictSelectionController.SelectedZone;
-        float alpha = tile.Alpha;
+        float alpha = reachOnly ? reachAlpha : tile.Alpha;
         if (selected != null && tiles.TryGetValue(selected, out Tile selectedTile) && selectedTile == tile) alpha *= selectedDim;
 
         tile.Renderer.GetPropertyBlock(block);
-        block.SetFloat(ModeId, (float)tile.Look);
-        block.SetColor(ColorId, tile.Primary);
+        block.SetFloat(ModeId, (float)(reachOnly ? Look.Reach : tile.Look));
+        block.SetColor(ColorId, reachOnly ? MapColor(FactionId.Player) : tile.Primary);
         block.SetColor(Color2Id, tile.Secondary);
         block.SetFloat(AlphaId, alpha);
         block.SetFloat(FlashId, flash);

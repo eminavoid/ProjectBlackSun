@@ -10,15 +10,10 @@ public static class TutorialContent
 
     private static readonly HashSet<Seed> tutorialSeeds = new HashSet<Seed>();
     private static Seed firstSeed;
-    private static Seed returnedSeed;
 
     public static Seed FirstSeed => firstSeed != null ? firstSeed : (firstSeed = CreatePlantable(
         "First Seed",
         "Plant this on a free zone. Its name and the turns it still needs are how you read a seed."));
-
-    public static Seed ReturnedSeed => returnedSeed != null ? returnedSeed : (returnedSeed = CreatePlantable(
-        "Returned Seed",
-        "Yours to plant on a free zone."));
 
     public static bool IsTutorialSeed(Seed seed) =>
         seed != null && (seed.IsGuideSeed || tutorialSeeds.Contains(seed));
@@ -27,17 +22,10 @@ public static class TutorialContent
 
     public static void MarkFirstSeedGranted() => firstSeedGranted = true;
 
-    public static void GiveTutorialSeeds(bool returnedOnly)
+    public static void GiveTutorialSeeds()
     {
         DistrictSeedPlantPanel.ReleaseStandardSeeds();
-        if (!returnedOnly && !firstSeedGranted) EnsureOwned(FirstSeed);
-        ForgetReturnedSeed();
-    }
-
-    public static void ForgetReturnedSeed()
-    {
-        if (returnedSeed == null) return;
-        DistrictSeedPlantPanel.ForgetSeed(returnedSeed);
+        if (!firstSeedGranted) EnsureOwned(FirstSeed);
     }
 
     public static void FillIntents(List<AIIntent> intents, int turn)
@@ -55,28 +43,6 @@ public static class TutorialContent
             "A short answer is enough. The street remembers you.",
             zone,
             Region.Warrens);
-    }
-
-    public static Seed CreateRivalReply(DistrictZone zone)
-    {
-        return Tray(
-            "Crimson Choir",
-            "The Choir is moving on a street. Rival plays arrive in this tray. Answer them here.",
-            "Answer",
-            "You answer the Choir. Their move still lands unless you hold the street.",
-            zone,
-            Region.Agora);
-    }
-
-    public static Seed CreateReward(DistrictZone zone)
-    {
-        return Tray(
-            "A Seed Returns",
-            "A seed of your own is waiting in this tray. Rewards and rival plays both arrive here.",
-            "Take it",
-            "The seed is yours to plant.",
-            zone,
-            Region.Ocularium);
     }
 
     public static Seed CreatePlantable(string title, string description)
@@ -121,18 +87,6 @@ public static class TutorialContent
         return doctrine == null ? null : Unlockeable.CreateRuntime(doctrine.Name, doctrine);
     }
 
-    public static string DistrictLine(Districts district)
-    {
-        string name = MapStatsQuery.DistrictLabel(district);
-        if (InfluenceManager.IsNull || InfluenceManager.Get.ProductionConfig == null)
-            return $"{name} district.";
-
-        if (!InfluenceManager.Get.ProductionConfig.TryGetEntry(district, out DistrictProductionConfig.ProductionEntry entry))
-            return $"{name} district.";
-
-        return $"{name} district yields {entry.primaryResource}.";
-    }
-
     public static DistrictZone FindPlayerZone()
     {
         if (InfluenceManager.IsNull) return null;
@@ -155,20 +109,6 @@ public static class TutorialContent
         }
 
         return named != null ? named : FirstPlayable(zones);
-    }
-
-    public static DistrictZone FirstInDistrict(Districts district)
-    {
-        if (InfluenceManager.IsNull) return null;
-
-        IReadOnlyList<DistrictZone> zones = InfluenceManager.Get.GetPlayableZones();
-        for (int i = 0; i < zones.Count; i++)
-        {
-            DistrictZone zone = zones[i];
-            if (zone != null && zone.IsPlayable && zone.District == district) return zone;
-        }
-
-        return null;
     }
 
     private static Seed Tray(

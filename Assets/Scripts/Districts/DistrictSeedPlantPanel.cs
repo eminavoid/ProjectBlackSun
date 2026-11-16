@@ -214,6 +214,14 @@ public class DistrictSeedPlantPanel : MonoBehaviour
     public bool MenuOpen => isOpen;
     public Button MenuButton => openMenuButton;
     public Button PlantButton => plantButton;
+    public Transform PanelRoot => panelRoot != null ? panelRoot.transform : null;
+    public Seed SelectedSeed => selectedSeedIndex >= 0 && selectedSeedIndex < cachedSeeds.Count ? cachedSeeds[selectedSeedIndex] : null;
+
+    public Button ButtonFor(Seed seed)
+    {
+        int index = cachedSeeds.IndexOf(seed);
+        return index >= 0 && index < runtimeSeedButtons.Count ? runtimeSeedButtons[index] : null;
+    }
     public System.Collections.Generic.IReadOnlyList<Seed> KnownSeeds =>
         loadSeeds != null && loadSeeds.Get<Seed>() != null ? loadSeeds.Get<Seed>() : System.Array.Empty<Seed>();
 
@@ -304,7 +312,6 @@ public class DistrictSeedPlantPanel : MonoBehaviour
         foreach (Seed seed in currentSeeds.Keys)
         {
             if (seed == null || !seed.HasDisplayTitle) continue;
-            if (seed == TutorialContent.ReturnedSeed && !TutorialSession.SuppressAmbientEvents) continue;
 
             if (filterDistrict.HasValue && !seed.CanPlantInDistrict(filterDistrict.Value)) continue;
 

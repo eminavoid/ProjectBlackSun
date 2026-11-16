@@ -22,8 +22,10 @@ public class InfluenceManager : Singleton<InfluenceManager>
     private readonly List<DistrictZone> cachedZones = new List<DistrictZone>();
     private readonly Dictionary<Districts, FactionId?> districtControllers = new Dictionary<Districts, FactionId?>();
     private readonly List<IZoneModifier> modifiers = new List<IZoneModifier>();
+    private readonly List<DistrictZone> reachBuffer = new List<DistrictZone>();
 
     private bool graphBuilt;
+    private ZoneTravelGraph travel;
 
     public DistrictProductionConfig ProductionConfig => productionConfig;
     public PlayerStats Stats => playerStats;
@@ -184,6 +186,12 @@ public class InfluenceManager : Singleton<InfluenceManager>
                 return false;
             }
 
+            if (FactionIdUtil.IsPlayer(faction) && !InClericReach(zone, faction))
+            {
+                error = "Too far. Clerics can only go to zones next to one you rule.";
+                return false;
+            }
+
             FactionStock stock = GetStock(faction);
             if (!stock.TrySpendClerics(amount))
             {
@@ -211,6 +219,39 @@ public class InfluenceManager : Singleton<InfluenceManager>
         zone.RefreshControlVisual();
         OnControlChanged?.Invoke();
         return true;
+    }
+
+    public bool InClericReach(DistrictZone zone, FactionId faction)
+    {
+        if (zone == null || !zone.IsPlayable) return false;
+
+        zone.EnsureInfluenceState(defaultZoneCap);
+        if (zone.Influence.GetShare(faction) > 0 || zone.Influence.GetClerics(faction) > 0) return true;
+        if (!RulesAnyZone(faction)) return true;
+
+        if (travel == null) travel = FindAnyObjectByType<ZoneTravelGraph>();
+        if (travel == null) return true;
+
+        travel.CollectNeighbors(zone, reachBuffer);
+        for (int i = 0; i < reachBuffer.Count; i++)
+        {
+            ZoneInfluenceState neighbor = reachBuffer[i].Influence;
+            if (neighbor != null && neighbor.Status == ZoneControlStatus.Controlled && neighbor.Controller == faction) return true;
+        }
+
+        return false;
+    }
+
+    private bool RulesAnyZone(FactionId faction)
+    {
+        IReadOnlyList<DistrictZone> zones = GetPlayableZones();
+        for (int i = 0; i < zones.Count; i++)
+        {
+            ZoneInfluenceState state = zones[i] != null ? zones[i].Influence : null;
+            if (state != null && state.Status == ZoneControlStatus.Controlled && state.Controller == faction) return true;
+        }
+
+        return false;
     }
 
     public bool TryAssignClerics(DistrictZone zone, FactionId faction, int amount)

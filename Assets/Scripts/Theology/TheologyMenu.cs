@@ -4,24 +4,44 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Zeke.Tooltips;
 
 public class TheologyMenu : MonoBehaviour
 {
     private const string HumanSacrificeDoctrine = "Human Sacrifices";
 
-    private static readonly string[] DefaultBlessings =
+    private static readonly Omen[] Blessings =
     {
-        "A Quiet Favor",
-        "The Street Bows",
-        "Zeal Flickers"
+        new Omen("A Quiet Favor", "A new believer takes the cloth. One more cleric waits in your reserve.", Resource.Clerics, 1),
+        new Omen("The Street Bows", "The street bows its head. New faithful join your flock.", Resource.Flock, 20),
+        new Omen("Zeal Flickers", "A spark runs through your faithful. Their zeal burns brighter.", Resource.Zeal, 30)
     };
 
-    private static readonly string[] DefaultCurses =
+    private static readonly Omen[] Curses =
     {
-        "The Flock Grows Restless",
-        "A Tithe Goes Missing",
-        "Whispers Turn Sour"
+        new Omen("The Flock Grows Restless", "Doubt spreads through the pews. Some of your faithful drift away.", Resource.Flock, -15),
+        new Omen("A Tithe Goes Missing", "A collection plate comes back empty. Someone has taken the tithe.", Resource.Wealth, -20),
+        new Omen("Whispers Turn Sour", "Your informants fall silent. Some of your secrets are spent.", Resource.Secrets, -10)
     };
+
+    private static readonly Color Ink = new Color(0.27f, 0.16f, 0.11f, 1f);
+    private static readonly Color Shortfall = new Color(0.62f, 0.12f, 0.08f, 1f);
+
+    private readonly struct Omen
+    {
+        public readonly string Name;
+        public readonly string Text;
+        public readonly Resource Resource;
+        public readonly int Amount;
+
+        public Omen(string name, string text, Resource resource, int amount)
+        {
+            Name = name;
+            Text = text;
+            Resource = resource;
+            Amount = amount;
+        }
+    }
 
     [SerializeField] private Locked seedsPool;
     [SerializeField] private Locked doctrinesPool;
@@ -80,6 +100,11 @@ public class TheologyMenu : MonoBehaviour
     private bool communeLabelStored;
     private bool communeWasAffordable = true;
     private Color communeLabelColor;
+    private Color costColor;
+    private TMP_Text oddsText;
+    private TMP_Text eyePrompt;
+    private bool eyeIdling;
+    private bool punching;
 
     public static event System.Action Communed;
     public static event System.Action RewardGranted;
@@ -99,6 +124,8 @@ public class TheologyMenu : MonoBehaviour
         offeringButton = PlateNamed("Offerings");
         sacrificeButton = PlateNamed("Sacrifices");
         blessingsCount = FindCount("Blessings Count");
+        costColor = costText.color;
+        BuildFeedback();
         if (offeringButton != null) offeringButton.onClick.AddListener(() => StartCoroutine(PayStake(false)));
         if (sacrificeButton != null) sacrificeButton.onClick.AddListener(() => StartCoroutine(PayStake(true)));
         if (closeButton != null)
@@ -144,6 +171,8 @@ public class TheologyMenu : MonoBehaviour
         if (!ResourceManager.IsNull && ResourceManager.Resources != null)
             ResourceManager.Resources.onResourceGained -= OnWalletChanged;
         dismissLocked = false;
+        punching = false;
+        StopEyeIdle();
         StopAllCoroutines();
         DOTween.Kill(this);
         if (!ResourceManager.IsNull && ResourceManager.Sidebar != null) ResourceManager.Sidebar.Release(this);
@@ -203,6 +232,17 @@ public class TheologyMenu : MonoBehaviour
         }
 
         eyeNext.sprite = eyePhases[++phase];
+        bool waking = phase == eyePhases.Length - 1;
+        StopEyeIdle();
+        punching = true;
+        eye.transform.DOPunchScale(Vector3.one * (waking ? 0.16f : 0.08f), waking ? 0.5f : 0.3f, waking ? 10 : 8, 0.6f)
+            .SetUpdate(true).SetLink(gameObject).OnComplete(() =>
+            {
+                punching = false;
+                RefreshFeedback();
+            });
+        if (waking) eye.transform.DOShakeRotation(0.5f, new Vector3(0f, 0f, 6f), 14, 90f).SetUpdate(true).SetLink(gameObject);
+        RefreshFeedback();
         eyeNext.DOFade(1f, 0.35f).SetId(this).OnComplete(() =>
         {
             eye.sprite = eyeNext.sprite;
@@ -346,21 +386,12 @@ public class TheologyMenu : MonoBehaviour
             Unlockeable unlock = TutorialSession.FixedUnlock;
             TutorialSession.ClaimFixedUnlock(unlock);
             GiveDoctrine(fixedDoctrine);
-            Reveal("Doctrine", fixedDoctrine.Name, fixedDoctrine.Description);
+            RevealDoctrine(fixedDoctrine);
             return;
         }
 
-        TheologyChances chances;
-
-        if (firstTime)
-        {
-            chances = TheologyOdds.GuaranteedResolve(offeringTier, sacrificeTier);
-            firstTime = false;
-        }
-        else
-        {
-            chances = TheologyOdds.Resolve(offeringTier, sacrificeTier);
-        }
+        TheologyChances chances = CurrentChances();
+        firstTime = false;
 
         TheologyRewardKind kind = TheologyOdds.Roll(chances);
         switch (kind)
@@ -369,16 +400,25 @@ public class TheologyMenu : MonoBehaviour
                 RevealSeed();
                 break;
             case TheologyRewardKind.Doctrine:
-                RevealDoctrine();
+                Doctrine doctrine = PickDoctrine();
+                GiveDoctrine(doctrine);
+                RevealDoctrine(doctrine);
                 break;
             case TheologyRewardKind.Blessing:
                 blessingsGranted++;
-                Reveal("Blessing", Pick(DefaultBlessings), "The eye grants a blessing.");
+                RevealOmen("Blessing", Pick(Blessings));
                 break;
             default:
-                Reveal("Curse", Pick(DefaultCurses), "The eye turns against you.");
+                RevealOmen("Curse", Pick(Curses));
                 break;
         }
+    }
+
+    private TheologyChances CurrentChances()
+    {
+        return firstTime
+            ? TheologyOdds.GuaranteedResolve(offeringTier, sacrificeTier)
+            : TheologyOdds.Resolve(offeringTier, sacrificeTier);
     }
 
     private void CloseAfterReward()
@@ -394,28 +434,44 @@ public class TheologyMenu : MonoBehaviour
         Seed seed = PickSeed();
         if (seed == null)
         {
-            Reveal("Seed", "Seed", "The eye offers a seed, but none are prepared.");
+            Reveal("New Seed", "The eye offers a seed, but none are prepared.");
             return;
         }
 
         if (unlockedSeeds != null && !unlockedSeeds.Contains(seed)) unlockedSeeds.Add(seed, Rarity.Common);
         DistrictSeedPlantPanel panel = FindAnyObjectByType<DistrictSeedPlantPanel>();
         if (panel != null) panel.Grant(seed, 1);
-        Reveal("Seed", seed.Title, seed.Description);
+        Reveal($"New Seed: {seed.Title}", $"{seed.Description}\n\n<size=85%>It waits in your seed menu. Plant it on a free zone.</size>");
         districtSeedPlantPanel.NewSeeds += 1;
     }
 
-    private void RevealDoctrine()
+    private void RevealDoctrine(Doctrine doctrine)
     {
-        Doctrine doctrine = PickDoctrine();
         if (doctrine == null)
         {
-            Reveal("Doctrine", "Doctrine", "The eye offers a doctrine, but none are prepared.");
+            Reveal("New Doctrine", "The eye offers a doctrine, but none are prepared.");
             return;
         }
 
-        GiveDoctrine(doctrine);
-        Reveal("Doctrine", doctrine.Name, doctrine.Description);
+        Reveal($"New Doctrine: {doctrine.Name}", $"{doctrine.Description}\n\n<size=85%>{DoctrineEffect(doctrine)}Adopt it from Doctrines to put it to work.</size>");
+    }
+
+    private void RevealOmen(string kind, Omen omen)
+    {
+        ResourceManager.AddResource(omen.Resource, omen.Amount);
+        Reveal($"{kind}: {omen.Name}", omen.Text, new[] { new ResourceDelta(omen.Resource, omen.Amount) });
+    }
+
+    private static string DoctrineEffect(Doctrine doctrine)
+    {
+        var parts = new List<string>();
+        foreach (Doctrine.StatUpdate update in doctrine.StatUpdates)
+        {
+            if (update.changeAmount == 0) continue;
+            parts.Add($"{(update.changeAmount > 0 ? "+" : string.Empty)}{update.changeAmount} {Virtues.Name(update.playerStat)}");
+        }
+
+        return parts.Count > 0 ? $"When adopted: {string.Join(", ", parts)}. " : string.Empty;
     }
 
     private void GiveDoctrine(Doctrine doctrine)
@@ -429,11 +485,9 @@ public class TheologyMenu : MonoBehaviour
             doctrines.Stats.RememberDoctrine(doctrine);
     }
 
-    private void Reveal(string kind, string title, string body)
+    private void Reveal(string title, string body, IReadOnlyList<ResourceDelta> changes = null)
     {
-        string heading = string.IsNullOrWhiteSpace(title) ? kind : title;
-        string detail = string.IsNullOrWhiteSpace(body) ? kind : body;
-        SeedEventManager.CreateEventOutputWindow(heading, detail, null, false, CloseAfterReward);
+        SeedEventManager.CreateEventOutputWindow(title, body, changes, false, CloseAfterReward);
     }
 
     private Seed PickSeed()
@@ -474,9 +528,8 @@ public class TheologyMenu : MonoBehaviour
         return available[Random.Range(0, available.Count)];
     }
 
-    private static string Pick(string[] options)
+    private static T Pick<T>(T[] options)
     {
-        if (options == null || options.Length == 0) return string.Empty;
         return options[Random.Range(0, options.Length)];
     }
 
@@ -490,11 +543,13 @@ public class TheologyMenu : MonoBehaviour
         if (sacrificeButton != null)
             sacrificeButton.interactable = allow && SacrificeUnlocked() && sacrificeCost > 0 && CanAfford(Resource.Flock, sacrificeCost);
         RefreshPlates(open);
+        RefreshFeedback();
     }
 
     private void Refresh()
     {
         costText.text = cost > 0 ? cost.ToString() : "FREE";
+        costText.color = cost > 0 && !riteOpen && !opening && !CanAfford(costResource, cost) ? Shortfall : costColor;
         if (icons != null && costIcon != null)
         {
             costIcon.sprite = icons.Get(costResource);
@@ -666,5 +721,165 @@ public class TheologyMenu : MonoBehaviour
         }
 
         return null;
+    }
+
+    private void BuildFeedback()
+    {
+        RectTransform eyeRect = (RectTransform)eye.transform;
+        oddsText = BuildPlate("Odds", eyeRect, new Vector2(eyeRect.anchoredPosition.x - 40f, 800f), new Vector2(500f, 92f), 21f);
+        eyePrompt = BuildPlate("Eye Prompt", eyeRect, new Vector2(eyeRect.anchoredPosition.x, 198f), new Vector2(480f, 54f), 20f);
+    }
+
+    private TMP_Text BuildPlate(string plateName, RectTransform anchor, Vector2 position, Vector2 size, float fontSize)
+    {
+        GameObject plate = new GameObject(plateName, typeof(RectTransform), typeof(Image));
+        RectTransform rect = (RectTransform)plate.transform;
+        rect.SetParent(anchor.parent, false);
+        rect.anchorMin = anchor.anchorMin;
+        rect.anchorMax = anchor.anchorMax;
+        rect.pivot = new Vector2(0.5f, 0.5f);
+        rect.anchoredPosition = position;
+        rect.sizeDelta = size;
+
+        Image image = plate.GetComponent<Image>();
+        image.sprite = UiArt.Find("Papel_Con_Borde");
+        image.color = new Color(1f, 1f, 1f, 0.94f);
+        image.raycastTarget = false;
+
+        GameObject label = new GameObject("Text", typeof(RectTransform));
+        RectTransform labelRect = (RectTransform)label.transform;
+        labelRect.SetParent(rect, false);
+        labelRect.anchorMin = Vector2.zero;
+        labelRect.anchorMax = Vector2.one;
+        labelRect.offsetMin = new Vector2(26f, 8f);
+        labelRect.offsetMax = new Vector2(-26f, -8f);
+
+        TextMeshProUGUI text = label.AddComponent<TextMeshProUGUI>();
+        text.font = costText.font;
+        text.fontSize = fontSize;
+        text.enableAutoSizing = true;
+        text.fontSizeMin = 12f;
+        text.fontSizeMax = fontSize;
+        text.color = Ink;
+        text.alignment = TextAlignmentOptions.Center;
+        text.textWrappingMode = TextWrappingModes.Normal;
+        text.raycastTarget = false;
+        plate.SetActive(false);
+        return text;
+    }
+
+    private void RefreshFeedback()
+    {
+        if (oddsText == null || eyePrompt == null) return;
+
+        bool live = riteOpen && !rewarding;
+        RefreshOdds(live);
+        RefreshPrompt(live);
+        RefreshEyeIdle(live);
+        SetTip(communeButton, CommuneTip());
+        SetTip(offeringButton, StakeTip(false));
+        SetTip(sacrificeButton, StakeTip(true));
+    }
+
+    private void RefreshOdds(bool live)
+    {
+        GameObject plate = oddsText.transform.parent.gameObject;
+        plate.SetActive(live);
+        if (!live) return;
+
+        string line = OddsLine();
+        if (line == oddsText.text) return;
+
+        bool changed = !string.IsNullOrEmpty(oddsText.text);
+        oddsText.text = line;
+        if (!changed) return;
+        plate.transform.DOComplete();
+        plate.transform.DOPunchScale(Vector3.one * 0.06f, 0.3f, 6, 0.6f).SetUpdate(true).SetLink(plate);
+    }
+
+    private string OddsLine()
+    {
+        if (TutorialSession.FixedUnlock != null && TutorialSession.PendingDoctrine != null)
+            return "<size=80%>THE EYE WILL GRANT</size>\nA doctrine for your cult";
+
+        TheologyChances chances = CurrentChances();
+        float total = Mathf.Max(0.01f, chances.Curse + chances.Blessing + chances.Seed + chances.Doctrine);
+        return "<size=80%>THE EYE MAY GRANT</size>\n" + string.Join("   ",
+            Chance("Curse", chances.Curse, total, "8B1A1A"),
+            Chance("Blessing", chances.Blessing, total, "8A6400"),
+            Chance("Seed", chances.Seed, total, "3D6B2A"),
+            Chance("Doctrine", chances.Doctrine, total, "34407F"));
+    }
+
+    private static string Chance(string label, float value, float total, string hex)
+    {
+        return $"<color=#{hex}>{label} {Mathf.RoundToInt(value * 100f / total)}%</color>";
+    }
+
+    private void RefreshPrompt(bool live)
+    {
+        int touches = eyePhases != null ? eyePhases.Length - 1 : 0;
+        GameObject plate = eyePrompt.transform.parent.gameObject;
+        plate.SetActive(live && touches > 0);
+        if (!plate.activeSelf) return;
+
+        eyePrompt.text = stakesLocked
+            ? $"Touch the eye to wake it  ({phase}/{touches})"
+            : "Make offerings if you wish, then touch the eye";
+    }
+
+    private void RefreshEyeIdle(bool live)
+    {
+        bool wanted = live && eyePhases != null && phase < eyePhases.Length - 1 && !punching;
+        if (wanted == eyeIdling) return;
+        if (!wanted)
+        {
+            if (!punching) StopEyeIdle();
+            return;
+        }
+
+        eyeIdling = true;
+        eye.transform.localScale = Vector3.one;
+        eye.transform.DOScale(1.04f, 0.9f).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo).SetUpdate(true).SetLink(gameObject);
+    }
+
+    private void StopEyeIdle()
+    {
+        eyeIdling = false;
+        eye.transform.DOKill();
+        eye.transform.localScale = Vector3.one;
+        eye.transform.localRotation = Quaternion.identity;
+    }
+
+    private string CommuneTip()
+    {
+        if (riteOpen || opening) return "The rite is open. Touch the eye.";
+        if (cost <= 0) return "Open the rite. This one is free.\n<size=80%>Then make offerings and touch the eye for a reward.</size>";
+        return $"Open the rite for {cost} Zeal.\n<size=80%>Each rite costs {costIncrease} more than the last.</size>";
+    }
+
+    private string StakeTip(bool sacrifice)
+    {
+        if (sacrifice && !SacrificeUnlocked()) return "Locked.\n<size=80%>Your cult must keep the Human Sacrifices doctrine.</size>";
+
+        Resource resource = sacrifice ? Resource.Flock : Resource.Wealth;
+        string effect = sacrifice
+            ? "Moves the odds twice as far as an offering."
+            : "Moves the odds away from curses, toward seeds and doctrines.";
+        if (!riteOpen) return $"{(sacrifice ? "Sacrifice Flock" : "Offer Wealth")} once the rite is open.\n<size=80%>{effect}</size>";
+        if (stakesLocked) return "Too late: you already touched the eye.";
+
+        int next = TheologyOdds.NextCost(sacrifice ? sacrificeTier : offeringTier);
+        if (next <= 0) return "The eye wants no more.";
+        if (!CanAfford(resource, next)) return $"Not enough {resource}. You need {next}.";
+        return $"{(sacrifice ? "Sacrifice" : "Offer")} {next} {resource}.\n<size=80%>{effect} Only before you touch the eye.</size>";
+    }
+
+    private static void SetTip(Button button, string text)
+    {
+        if (button == null) return;
+        TooltipTrigger trigger = button.GetComponent<TooltipTrigger>();
+        if (trigger == null) trigger = button.gameObject.AddComponent<TooltipTrigger>();
+        trigger.SetText(text);
     }
 }

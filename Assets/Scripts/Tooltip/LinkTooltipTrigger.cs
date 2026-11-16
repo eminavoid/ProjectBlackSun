@@ -24,14 +24,20 @@ namespace Zeke.Abilities
 
         private void OnEnable()
         {
+            if (linkHoverEvents == null) linkHoverEvents = GetComponent<ILinkHoverEvents>();
+            if (linkHoverEvents == null) return;
             linkHoverEvents.OnHoverEnterLink += OnHoverEnterLink;
             linkHoverEvents.OnHoverExitLink += OnHoverExitLink;
         }
 
         private void OnDisable()
         {
-            linkHoverEvents.OnHoverEnterLink -= OnHoverEnterLink;
-            linkHoverEvents.OnHoverExitLink -= OnHoverExitLink;
+            if (linkHoverEvents != null)
+            {
+                linkHoverEvents.OnHoverEnterLink -= OnHoverEnterLink;
+                linkHoverEvents.OnHoverExitLink -= OnHoverExitLink;
+            }
+
             if (showing && !Tooltip.IsNull) Tooltip.Hide();
             showing = false;
         }

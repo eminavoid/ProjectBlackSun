@@ -136,6 +136,7 @@ public class DistrictSelectionController : MonoBehaviour
         if (!enableSelection) return;
         if (!TryGetPrimaryClickDown(out Vector2 mousePosition)) return;
         if (blockClicksOverUI && IsPointerOverUi(mousePosition)) return;
+        if (InputLocks.MapSelection) return;
 
         Camera targetCamera = GetSelectionCamera();
         if (targetCamera == null)

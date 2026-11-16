@@ -24,6 +24,7 @@ public static class TutorialSession
         Skipped = false;
         Finished = false;
         ClearCult();
+        FirstTimeHints.ResetSeen();
     }
 
     public static void BeginFree()

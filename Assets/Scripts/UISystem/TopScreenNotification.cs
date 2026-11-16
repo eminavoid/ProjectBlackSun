@@ -4,6 +4,8 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Zeke.Abilities;
+using Zeke.Tooltips;
 
 /// <summary>
 /// Notificación breve en la parte superior de la pantalla.
@@ -19,6 +21,7 @@ public class TopScreenNotification : MonoBehaviour
 
     private static readonly Vector2 RestSize = new Vector2(760f, 96f);
     private static readonly Vector2 HeldSize = new Vector2(840f, 136f);
+    private static readonly Vector2 TopRight = new Vector2(-210f, 416f);
 
     private RectTransform root;
     private RectTransform textRect;
@@ -26,6 +29,8 @@ public class TopScreenNotification : MonoBehaviour
     private Image background;
     private TextMeshProUGUI label;
     private Button continueButton;
+    private TextMeshProUGUI continueMark;
+    private LinkTooltipTrigger links;
     private Coroutine hideRoutine;
     private bool holding;
     private float bottomLift;
@@ -45,7 +50,9 @@ public class TopScreenNotification : MonoBehaviour
         notifier.ShowInternal(message, durationSeconds ?? notifier.durationSeconds);
     }
 
-    public static void Hold(string message, bool showContinue, Action onContinue)
+    public static bool IsHolding => instance != null && instance.holding;
+
+    public static void Hold(string message, bool showContinue, Action onContinue, string continueLabel = "NEXT")
     {
         TopScreenNotification notifier = ResolveInstance();
         if (notifier == null)
@@ -54,6 +61,7 @@ public class TopScreenNotification : MonoBehaviour
             return;
         }
 
+        if (notifier.continueMark != null) notifier.continueMark.text = continueLabel;
         notifier.HoldInternal(message, showContinue, onContinue);
     }
 
@@ -63,7 +71,7 @@ public class TopScreenNotification : MonoBehaviour
         if (notifier == null) return;
         notifier.bottomLift = Mathf.Max(0f, extra);
         if (notifier.root != null)
-            notifier.root.anchoredPosition = new Vector2(-210f, 360f);
+            notifier.root.anchoredPosition = TopRight;
     }
 
     public static void Release()
@@ -92,7 +100,6 @@ public class TopScreenNotification : MonoBehaviour
         GameObject rootObject = new GameObject(RootName, typeof(RectTransform));
         rootObject.transform.SetParent(GlobalReferences.ScreenCanvas.transform, false);
         instance = rootObject.AddComponent<TopScreenNotification>();
-        instance.BuildUi();
         return instance;
     }
 
@@ -121,16 +128,16 @@ public class TopScreenNotification : MonoBehaviour
 
         root.anchorMin = new Vector2(1f, 0.5f);
         root.anchorMax = new Vector2(1f, 0.5f);
-        root.pivot = new Vector2(1f, 0.5f);
-        root.anchoredPosition = new Vector2(-210f, 360f);
+        root.pivot = new Vector2(1f, 1f);
+        root.anchoredPosition = TopRight;
         root.sizeDelta = RestSize;
 
         background = GetComponent<Image>();
         if (background == null) background = gameObject.AddComponent<Image>();
-        background.sprite = Art("Papel_Con_Borde");
+        background.sprite = UiArt.Find("Papel_Con_Borde");
         background.type = Image.Type.Simple;
         background.color = new Color(1f, 1f, 1f, 0.72f);
-        background.raycastTarget = false;
+        background.raycastTarget = true;
 
         Outline outline = gameObject.GetComponent<Outline>();
         if (outline != null) outline.enabled = false;
@@ -165,6 +172,8 @@ public class TopScreenNotification : MonoBehaviour
         label.textWrappingMode = TextWrappingModes.Normal;
         label.raycastTarget = false;
         label.text = string.Empty;
+        textObject.AddComponent<HoverLinkHandlerTMPro>();
+        links = textObject.AddComponent<LinkTooltipTrigger>();
 
         GameObject buttonObject = new GameObject("Continue", typeof(RectTransform), typeof(Image), typeof(Button));
         buttonObject.transform.SetParent(transform, false);
@@ -175,7 +184,7 @@ public class TopScreenNotification : MonoBehaviour
         buttonRect.anchoredPosition = new Vector2(-22f, 0f);
         buttonRect.sizeDelta = new Vector2(148f, 46f);
         Image buttonImage = buttonObject.GetComponent<Image>();
-        buttonImage.sprite = Art("Ladrillo_Gris_Largo_1");
+        buttonImage.sprite = UiArt.Find("Ladrillo_Gris_Largo_1");
         buttonImage.type = Image.Type.Simple;
         buttonImage.color = new Color(1f, 1f, 1f, 0.92f);
         continueButton = buttonObject.GetComponent<Button>();
@@ -190,6 +199,7 @@ public class TopScreenNotification : MonoBehaviour
         markRect.offsetMin = Vector2.zero;
         markRect.offsetMax = Vector2.zero;
         TextMeshProUGUI mark = markObject.AddComponent<TextMeshProUGUI>();
+        continueMark = mark;
         mark.font = label.font;
         mark.fontSharedMaterial = label.fontSharedMaterial;
         mark.text = "NEXT";
@@ -239,11 +249,13 @@ public class TopScreenNotification : MonoBehaviour
     private void ApplyHold()
     {
         if (label == null) BuildUi();
-        label.text = heldMessage;
+        TooltipLinksDB glossary = Tooltip.Glossary;
+        if (links != null) links.Database = glossary;
+        label.text = glossary != null ? glossary.Highlight(heldMessage) : heldMessage;
         Place(true);
         FitToText(heldShowsContinue);
         SetContinueVisible(heldShowsContinue);
-        group.blocksRaycasts = heldShowsContinue;
+        group.blocksRaycasts = true;
         group.interactable = heldShowsContinue;
         transform.SetAsLastSibling();
         SetVisible(true);
@@ -300,8 +312,8 @@ public class TopScreenNotification : MonoBehaviour
         if (root == null) return;
         root.anchorMin = new Vector2(1f, 0.5f);
         root.anchorMax = new Vector2(1f, 0.5f);
-        root.pivot = new Vector2(1f, 0.5f);
-        root.anchoredPosition = new Vector2(-210f, 360f);
+        root.pivot = new Vector2(1f, 1f);
+        root.anchoredPosition = TopRight;
         root.sizeDelta = held ? HeldSize : RestSize;
     }
 
@@ -327,17 +339,6 @@ public class TopScreenNotification : MonoBehaviour
         if (textRect == null) return;
         textRect.offsetMin = new Vector2(padX, padY);
         textRect.offsetMax = new Vector2(-(padX + side), -padY);
-    }
-
-    private static Sprite Art(string spriteName)
-    {
-        Sprite[] sprites = Resources.FindObjectsOfTypeAll<Sprite>();
-        for (int i = 0; i < sprites.Length; i++)
-        {
-            if (sprites[i] != null && sprites[i].name == spriteName) return sprites[i];
-        }
-
-        return null;
     }
 
     private void SetVisible(bool visible)

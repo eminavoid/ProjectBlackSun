@@ -1,234 +1,123 @@
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
-using Zeke.UI;
 
 public class DoctrinesController : MonoBehaviour
 {
     public static event System.Action<Doctrine> DoctrineAdded;
+
     [SerializeField] private PlayerStats stats;
 
-    public PlayerStats Stats => stats;
-
-    [Header("Windows")]
-
-    [SerializeField] private UIWindow window;
-    [SerializeField] private UIWindow doctrineSlot;
-    [SerializeField] private UIWindow selectorMenu;
-    [SerializeField] private UIWindow selectorSlot;
-
-    [Space]
-
-    [SerializeField] private UIWindow addDoctrineSlot;
-
     [Header("Settings")]
-
     [SerializeField] private int maxDoctrines = 3;
     [SerializeField] private int changeCooldown = 3;
 
-    [Header("Debug")]
-    [SerializeField] private bool logging = false;
+    private readonly List<Doctrine> kept = new List<Doctrine>();
+    private readonly List<Charge> charges = new List<Charge>();
 
-    private readonly List<DoctrineSlot> doctrineSlots = new List<DoctrineSlot>();
-    private readonly List<PlaceSlotsData> placeSlots = new List<PlaceSlotsData>();
+    public PlayerStats Stats => stats;
+    public int MaxDoctrines => maxDoctrines;
+    public int ChangeCooldown => changeCooldown;
+    public IReadOnlyList<Doctrine> Kept => kept;
 
-    //cuando el jugador saca una doctrina puede poner una libremente
-    //cuando el jugador saca una doctrina no puede sacar mas durante el timer pero si poner 1 mas
-
-    private class PlaceSlotsData
+    public int ReadyCharges
     {
-        public bool canPlace;
-        public int ticksRequired;
-        public int ticks;
-
-        public void StartCooldown()
+        get
         {
-            canPlace = false;
-            ticks = 0;
-        }
-
-        public PlaceSlotsData(int ticksRequired)
-        {
-            this.ticksRequired = ticksRequired;
-            canPlace = true;
-            ticks = ticksRequired;
-        }
-    }
-
-    public void OnDoctrineSelected(Doctrine doctrine)
-    {
-        AddDoctrine(doctrine);
-        MenuTransition.Hide(selectorMenu.gameObject);
-    }
-
-    public void OpenSelectorMenu()
-    {
-        if (doctrineSlots.Count >= maxDoctrines) return;
-        if (!CanPlaceFreeAny()) return;
-
-        MenuTransition.Show(selectorMenu.gameObject);
-
-        LayoutGroup layout = selectorMenu.TryGetElement<LayoutGroup>("Layout");
-
-        List<Transform> children = new List<Transform>();
-
-        foreach (Transform child in layout.transform)
-        {
-            children.Add(child);
-        }
-
-        for (int i = children.Count - 1; i >= 0; i--)
-        {
-            Destroy(children[i].gameObject);
-        }
-
-        for (int i = 0; i < stats.DoctrineInventory.Count; i++)
-        {
-            if (!CanDisplayInventoryDoctrine(stats.DoctrineInventory[i])) continue;
-
-            UIWindow slotWindow = Instantiate(selectorSlot, layout.transform);
-            Button clickBox = slotWindow.TryGetElement<Button>("Clickbox");
-
-            slotWindow.TryGetElement<TextMeshProUGUI>("Name").text = stats.DoctrineInventory[i].Name;
-            slotWindow.TryGetElement<TextMeshProUGUI>("Description").text = stats.DoctrineInventory[i].Description;
-
-            Doctrine doctrine = stats.DoctrineInventory[i];
-
-            clickBox.onClick.AddListener(() => OnDoctrineSelected(doctrine));
-            clickBox.onClick.AddListener(() =>
+            int ready = 0;
+            foreach (Charge charge in charges)
             {
-                if (AudioManager.Instance != null) AudioManager.Instance.PlayCardClick();
-            });
-        }
+                if (charge.Ready) ready++;
+            }
 
-        if (layout.transform.childCount == 0)
-        {
-            selectorMenu.TryGetElement<TextMeshProUGUI>("Unlock Text").SetText("Unlock more doctrines in the theology menu!");
-        }
-        else
-        {
-            selectorMenu.TryGetElement<TextMeshProUGUI>("Unlock Text").SetText("");
+            return ready;
         }
     }
 
-    public void AddDoctrine(Doctrine doctrine)
+    public int TurnsUntilCharge
     {
-        for (int i = 0; i < doctrine.StatUpdates.Count; i++)
+        get
         {
-            stats.ChangeStat(doctrine.StatUpdates[i].playerStat, doctrine.StatUpdates[i].changeAmount);
+            int soonest = 0;
+            foreach (Charge charge in charges)
+            {
+                if (charge.Ready) return 0;
+                int left = charge.TurnsLeft;
+                if (soonest == 0 || left < soonest) soonest = left;
+            }
+
+            return soonest;
         }
-
-        CreateDoctrineSlot(doctrine);
-        StartFreeSlotTimer();
-
-        UpdateAddDoctrineMenuState();
-        DoctrineAdded?.Invoke(doctrine);
     }
 
-    public void RemoveDoctrine(Doctrine doctrine)
+    private class Charge
     {
-        for (int i = 0; i < doctrine.StatUpdates.Count; i++)
+        private readonly int turnsRequired;
+        private int turns;
+
+        public Charge(int turnsRequired)
         {
-            stats.ChangeStat(doctrine.StatUpdates[i].playerStat, -doctrine.StatUpdates[i].changeAmount);
+            this.turnsRequired = turnsRequired;
+            turns = turnsRequired;
         }
 
-        RemoveDoctrineSlot(doctrine);
-        UpdateAddDoctrineMenuState();
+        public bool Ready => turns >= turnsRequired;
+        public int TurnsLeft => Mathf.Max(0, turnsRequired - turns);
+
+        public void Spend() => turns = 0;
+
+        public void Tick() => turns++;
     }
 
     private void Awake()
     {
-        GameTime.OnTurnEnded += OnTickEnd;
-        GameTime.OnTurnStarted += OnTickStart;
+        GameTime.OnTurnEnded += OnTurnEnded;
+        GameTime.OnTurnStarted += OnTurnStarted;
 
-        for (int i = 0; i < maxDoctrines; i++)
-        {
-            placeSlots.Add(new PlaceSlotsData(changeCooldown));
-        }
+        for (int i = 0; i < maxDoctrines; i++) charges.Add(new Charge(changeCooldown));
     }
 
     private void OnDestroy()
     {
-        GameTime.OnTurnEnded -= OnTickEnd;
-        GameTime.OnTurnStarted -= OnTickStart;
+        GameTime.OnTurnEnded -= OnTurnEnded;
+        GameTime.OnTurnStarted -= OnTurnStarted;
     }
 
-    private void Start()
+    public bool IsKept(Doctrine doctrine) => doctrine != null && kept.Contains(doctrine);
+
+    public bool CanAdopt(Doctrine doctrine)
     {
-        if (selectorMenu != null) selectorMenu.gameObject.SetActive(false);
-        if (window != null) window.gameObject.SetActive(false);
-        UpdateAddDoctrineMenuState();
+        return doctrine != null && !kept.Contains(doctrine) && kept.Count < maxDoctrines && ReadyCharges > 0;
     }
 
-    private void OnTickStart()
+    public bool Adopt(Doctrine doctrine)
     {
-        for (int i = 0; i < doctrineSlots.Count; i++)
+        if (!CanAdopt(doctrine)) return false;
+
+        ApplyStats(doctrine, 1);
+        kept.Add(doctrine);
+        foreach (Charge charge in charges)
         {
-            doctrineSlots[i].doctrine.OnTickStart();
+            if (!charge.Ready) continue;
+            charge.Spend();
+            break;
         }
+
+        DoctrineAdded?.Invoke(doctrine);
+        return true;
     }
 
-    private void OnTickEnd()
+    public void Renounce(Doctrine doctrine)
     {
-        for (int i = placeSlots.Count - 1; i >= 0; i--)
-        {
-            placeSlots[i].ticks += 1;
-
-            if (placeSlots[i].ticks >= placeSlots[i].ticksRequired)
-            {
-                placeSlots[i].canPlace = true;
-            }
-        }
-
-        for (int i = 0; i < doctrineSlots.Count; i++)
-        {
-            doctrineSlots[i].doctrine.OnTickEnd();
-        }
-
-        UpdateAddDoctrineMenuState();
-    }
-
-    private bool CanPlaceFreeAny()
-    {
-        for (int i = 0; i < placeSlots.Count; i++)
-        {
-            if (placeSlots[i].canPlace) return true;
-        }
-
-        return false;
-    }
-
-    private int GetFreeSlotsAmount()
-    {
-        int amount = 0;
-
-        for (int i = 0; i < placeSlots.Count; i++)
-        {
-            if (placeSlots[i].canPlace)
-            {
-                amount += 1;
-            }
-        }
-
-        return amount;
-    }
-
-    public void GetEquippedDoctrines(List<Doctrine> doctrines)
-    {
-        for (int i = 0; i < doctrineSlots.Count; i++)
-        {
-            if (doctrineSlots[i].doctrine != null) doctrines.Add(doctrineSlots[i].doctrine);
-        }
+        if (!kept.Remove(doctrine)) return;
+        ApplyStats(doctrine, -1);
     }
 
     public bool HasEquippedDoctrine(string doctrineName)
     {
         if (string.IsNullOrWhiteSpace(doctrineName)) return false;
 
-        for (int i = 0; i < doctrineSlots.Count; i++)
+        foreach (Doctrine doctrine in kept)
         {
-            Doctrine doctrine = doctrineSlots[i].doctrine;
             if (doctrine == null || string.IsNullOrWhiteSpace(doctrine.Name)) continue;
             if (string.Equals(doctrine.Name, doctrineName, System.StringComparison.OrdinalIgnoreCase)) return true;
         }
@@ -236,99 +125,22 @@ public class DoctrinesController : MonoBehaviour
         return false;
     }
 
-    private void StartFreeSlotTimer()
+    private void ApplyStats(Doctrine doctrine, int sign)
     {
-        for (int i = 0; i < placeSlots.Count; i++)
+        foreach (Doctrine.StatUpdate update in doctrine.StatUpdates)
         {
-            if (placeSlots[i].canPlace)
-            {
-                placeSlots[i].StartCooldown();
-                break;
-            }
-        }
-
-        if (logging)
-        {
-            Debug.Log("---------------------------------");
-
-            for (int i = 0; i < placeSlots.Count; i++)
-            {
-                Debug.Log($"{placeSlots[i].canPlace} timer: {placeSlots[i].ticks} / {placeSlots[i].ticksRequired}");
-            }
+            stats.ChangeStat(update.playerStat, update.changeAmount * sign);
         }
     }
 
-    private void UpdateAddDoctrineMenuState()
+    private void OnTurnStarted()
     {
-        if (addDoctrineSlot != null)
-        {
-            addDoctrineSlot.gameObject.SetActive(doctrineSlots.Count < maxDoctrines);
-            addDoctrineSlot.transform.SetSiblingIndex(9999);
-        }
-
-        if (window == null) return;
-
-        TextMeshProUGUI replacesLeftLabel = window.TryGetElement<TextMeshProUGUI>("ReplacesLeft");
-        if (replacesLeftLabel != null)
-        {
-            replacesLeftLabel.text = $"Add Left: {GetFreeSlotsAmount()}";
-        }
+        foreach (Doctrine doctrine in kept) doctrine.OnTickStart();
     }
 
-    private void CreateDoctrineSlot(Doctrine doctrine)
+    private void OnTurnEnded()
     {
-        LayoutGroup layout = window.TryGetElement<LayoutGroup>("Layout");
-        UIWindow slotWindow = Instantiate(doctrineSlot, layout.transform);
-        Button clickbox = slotWindow.TryGetElement<Button>("Clickbox");
-
-        slotWindow.TryGetElement<TextMeshProUGUI>("Name").text = doctrine.Name;
-        slotWindow.TryGetElement<TextMeshProUGUI>("Description").text = doctrine.Description;
-
-        clickbox.onClick.AddListener(() => RemoveDoctrine(doctrine));
-        clickbox.onClick.AddListener(() =>
-        {
-            if (AudioManager.Instance != null) AudioManager.Instance.PlayCardClick();
-        });
-
-        doctrineSlots.Add(new DoctrineSlot(slotWindow, doctrine));
-    }
-
-    private void RemoveDoctrineSlot(Doctrine doctrine)
-    {
-        for (int i = 0; i < doctrineSlots.Count; i++)
-        {
-            if (doctrineSlots[i].doctrine == doctrine)
-            {
-                doctrineSlots[i].window.DestroyWindow();
-                doctrineSlots.RemoveAt(i);
-
-                break;
-            }
-        }
-    }
-
-    private bool CanDisplayInventoryDoctrine(Doctrine doctrine)
-    {
-        for (int i = 0; i < doctrineSlots.Count; i++)
-        {
-            if (doctrine == doctrineSlots[i].doctrine)
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private class DoctrineSlot
-    {
-        public UIWindow window;
-        public Doctrine doctrine;
-
-        public DoctrineSlot(UIWindow window, Doctrine doctrine)
-        {
-            this.window = window;
-            this.doctrine = doctrine;
-        }
+        foreach (Charge charge in charges) charge.Tick();
+        foreach (Doctrine doctrine in kept) doctrine.OnTickEnd();
     }
 }

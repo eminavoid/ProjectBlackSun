@@ -41,6 +41,8 @@ public class GameTime : Singleton<GameTime>
         confirmationPopUpOpen = false;
         if (FindAnyObjectByType<TutorialDirector>() == null)
             gameObject.AddComponent<TutorialDirector>();
+        if (FindAnyObjectByType<FirstTimeHints>() == null)
+            gameObject.AddComponent<FirstTimeHints>();
     }
 
     private void Update()
@@ -74,6 +76,7 @@ public class GameTime : Singleton<GameTime>
 
     public static void NextTurn()
     {
+        if (InputLocks.EndTurn) return;
         if (processingTurn) return;
         if (confirmationPopUpOpen) return;
         if (SeedEventManager.HasUnresolvedEvents)

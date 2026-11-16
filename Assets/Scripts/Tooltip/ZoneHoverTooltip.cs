@@ -112,7 +112,16 @@ namespace Zeke.Tooltips
                 owner = FactionIdUtil.DisplayName(state.Controller.Value);
             }
 
-            return owner + "\n" + FormatGeneration(zone, state);
+            return owner + "\n" + FormatGeneration(zone, state) + ReachLine(zone, state);
+        }
+
+        private static string ReachLine(DistrictZone zone, ZoneInfluenceState state)
+        {
+            if (InfluenceManager.IsNull || state == null) return string.Empty;
+            if (state.GetShare(FactionId.Player) > 0 || state.GetClerics(FactionId.Player) > 0) return string.Empty;
+            return InfluenceManager.Get.InClericReach(zone, FactionId.Player)
+                ? "\n<size=80%>Your clerics can reach it</size>"
+                : "\n<size=80%>Too far for your clerics</size>";
         }
 
         private static string FormatGeneration(DistrictZone zone, ZoneInfluenceState state)

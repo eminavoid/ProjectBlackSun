@@ -29,6 +29,14 @@ public class DistrictClericAssignPanel : MonoBehaviour
     private float restY;
 
     public Button AssignButton => assignButton;
+    public RectTransform Plate => panel;
+
+    public void Reveal()
+    {
+        if (visible && shown == DistrictSelectionController.SelectedZone) return;
+        visible = true;
+        Show(DistrictSelectionController.SelectedZone);
+    }
 
     private void Awake()
     {
@@ -126,7 +134,8 @@ public class DistrictClericAssignPanel : MonoBehaviour
             : "You have no influence here yet.";
         string next = here > 0 ? $" Next turn: {GainText(manager, here)} influence."
             : share > 0 ? " With no clerics here, it won't grow."
-            : " Send a cleric to start gaining influence.";
+            : manager.InClericReach(shown, FactionId.Player) ? " Send a cleric to start gaining influence."
+            : " Too far: clerics can only go to zones next to one you rule.";
         bool yours = state.Status == ZoneControlStatus.Controlled && state.Controller == FactionId.Player;
 
         var rivals = new List<string>();
@@ -158,6 +167,7 @@ public class DistrictClericAssignPanel : MonoBehaviour
     {
         if (reserve <= 0) return "Your reserve is empty.\n<size=80%>Ordain clerics from your cult's Clergy page, or wait for new ones to train.</size>";
         if (!state.CanEnterByNormalMeans(FactionId.Player)) return "This zone is full and your faith has no foothold here.";
+        if (!manager.InClericReach(shown, FactionId.Player)) return "Too far.\n<size=80%>Clerics can only go to zones next to one you rule.</size>";
 
         string gain = here > 0
             ? $"Next turn here: {GainText(manager, here + 1)} influence instead of {GainText(manager, here)}."

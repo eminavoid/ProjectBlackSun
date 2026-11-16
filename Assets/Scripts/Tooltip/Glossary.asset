@@ -326,3 +326,11 @@ MonoBehaviour:
     - Violet Veil
     recolor: 0
     description: Rival faith.
+  - key: arrow
+    title: Rival moves
+    terms:
+    - arrow
+    - arrows
+    recolor: 1
+    description: A move a rival faith has chosen but not made yet. It happens when
+      the turn ends, sending clerics to a zone or planting a seed there.

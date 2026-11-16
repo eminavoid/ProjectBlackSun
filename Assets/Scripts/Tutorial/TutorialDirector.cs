@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,21 +8,20 @@ public class TutorialDirector : MonoBehaviour
 {
     private CultCreationPanel cult;
     private TutorialHighlight highlight;
-    private DistrictExplainHighlight districtExplain;
-    private MapCameraController tourCamera;
-    private MenuTransition doctrineMenu;
+    private TutorialGate gate;
+    private DistrictZone homeZone;
+    private DistrictZone clericZone;
     private Seed waitingSeed;
-    private Seed grantOnSettle;
+    private string heldLine;
+    private bool heldContinue;
+    private bool continueBeat;
     private bool settled;
     private bool planted;
-    private bool assigned;
+    private bool turnEnding;
+    private bool turnResolved;
+    private bool communed;
     private bool rewardClaimed;
     private bool doctrineKept;
-    private bool continueBeat;
-    private bool tourCancel;
-    private bool journalOpened;
-    private bool communed;
-    private MapStatsPanel journalStats;
 
     private bool Stopped => !TutorialSession.Guide || TutorialSession.Skipped || TutorialSession.Finished;
 
@@ -28,29 +29,28 @@ public class TutorialDirector : MonoBehaviour
     {
         SeedEventManager.onEventSettled += OnSettled;
         DistrictSeedPlantPanel.Planted += OnPlanted;
-        DistrictClericAssignPanel.Assigned += OnAssigned;
         DoctrinesController.DoctrineAdded += OnDoctrineAdded;
-        UnlockerMenuTest.RewardChosen += OnReward;
         TheologyMenu.Communed += OnCommuned;
         TheologyMenu.RewardGranted += OnTheologyReward;
+        GameTime.OnTurnResolving += OnTurnResolving;
+        GameTime.OnTurnResolved += OnTurnResolved;
     }
 
     private void OnDisable()
     {
         SeedEventManager.onEventSettled -= OnSettled;
         DistrictSeedPlantPanel.Planted -= OnPlanted;
-        DistrictClericAssignPanel.Assigned -= OnAssigned;
         DoctrinesController.DoctrineAdded -= OnDoctrineAdded;
-        UnlockerMenuTest.RewardChosen -= OnReward;
         TheologyMenu.Communed -= OnCommuned;
         TheologyMenu.RewardGranted -= OnTheologyReward;
-        StopTourListen();
-        UnhookJournal();
+        GameTime.OnTurnResolving -= OnTurnResolving;
+        GameTime.OnTurnResolved -= OnTurnResolved;
     }
 
     private void OnDestroy()
     {
         if (!doctrineKept) ForgetPending();
+        if (gate != null) InputLocks.Clear();
     }
 
     private void Start()
@@ -68,223 +68,264 @@ public class TutorialDirector : MonoBehaviour
         if (!TutorialSession.Guide)
         {
             while (cult != null && !cult.Confirmed) yield return null;
-            TutorialContent.GiveTutorialSeeds(false);
+            TutorialContent.GiveTutorialSeeds();
             yield break;
         }
 
+        InputLocks.Lock(true, true, true);
         highlight = TutorialHighlight.Create(canvas);
         highlight.SkipClicked += SkipGuide;
-        districtExplain = gameObject.AddComponent<DistrictExplainHighlight>();
+        gate = TutorialGate.Create(canvas);
 
-        yield return CultStep();
-        if (Stopped) yield break;
-        yield return WaitForCamera();
-        if (Stopped) yield break;
-        yield return WhereStep();
-        if (Stopped) yield break;
-        yield return RivalsStep();
-        if (Stopped) yield break;
-        yield return DistrictStep();
-        if (Stopped) yield break;
-        yield return TrayStep(TutorialContent.CreateWhisper(HomeZone()), "A matter is waiting in the tray. Open it and choose an answer.", null);
-        if (Stopped) yield break;
-        yield return SeedStep();
-        if (Stopped) yield break;
-        yield return ClericStep();
-        if (Stopped) yield break;
-        yield return JournalStep();
-        if (Stopped) yield break;
-        yield return EndTurnStep(2, "End the turn. The arrow you saw becomes a real move.");
-        if (Stopped) yield break;
-        yield return TrayStep(TutorialContent.CreateRivalReply(IntentZone()), "A rival play is in the tray. Open it and answer.", null);
-        if (Stopped) yield break;
-        yield return EndTurnStep(3, "End the turn again.");
-        if (Stopped) yield break;
-        yield return TrayStep(
-            TutorialContent.CreateReward(HomeZone()),
-            "A seed of your own came back through the tray. This is where rewards and rival plays arrive. Open it.",
-            TutorialContent.ReturnedSeed);
-        if (Stopped) yield break;
-        yield return TheologyStep();
-        if (Stopped) yield break;
-        yield return DoctrineStep();
-        if (Stopped) yield break;
+        foreach (IEnumerator step in Steps())
+        {
+            yield return step;
+            if (Stopped) yield break;
+        }
 
         doctrineKept = true;
-        TutorialContent.GiveTutorialSeeds(true);
+        TutorialContent.GiveTutorialSeeds();
         TutorialSession.Complete();
         CleanupGuide();
     }
 
+    private IEnumerable<IEnumerator> Steps()
+    {
+        yield return CultStep();
+        yield return WaitForCamera();
+        homeZone = TutorialContent.FindPlayerZone();
+        clericZone = FreeNeighbor(homeZone);
+        yield return IntroBeat();
+        yield return RivalsBeat();
+        yield return ClericStep();
+        yield return SeedStep();
+        yield return EventStep(TutorialContent.CreateWhisper(homeZone), "Something needs your answer: an event. Open the scroll on the left.");
+        yield return EndTurnStep(2, "End the turn. Your clerics and the rival's move take effect.");
+        yield return ChronicleStep();
+        yield return RuleBeat();
+        yield return BookStep(CultLedger.Page.Clergy, "OpenClergy",
+            "Open Clerics to see where yours preach and how new ones join.",
+            "A new cleric joins your reserve every few turns, or you can ordain one now for Wealth. Below, see where each of yours preaches.");
+        yield return LedgerStep();
+        yield return BookStep(CultLedger.Page.Rivals, "OpenRivals",
+            "Open Rival Cults to size up the other faiths.",
+            "Each rival covets its own districts and plays its own way. When a faith leads the eclipse, the others turn on it.");
+        yield return EndTurnStep(3, "End the turn again.");
+        yield return ChronicleStep();
+        yield return TheologyStep();
+        yield return DoctrineStep();
+        yield return BookStep(CultLedger.Page.Cult, "OpenCult",
+            "Open Your Cult to see where you stand.",
+            "Your standing, virtues and treasury. Each virtue raises your influence in its districts, and your doctrines shape your virtues.");
+        yield return ClosingBeat();
+    }
+
     private IEnumerator CultStep()
     {
-        if (highlight != null) highlight.Clear();
+        highlight.Clear();
+        gate.Allow(cult);
         while ((cult == null || !cult.Confirmed) && !TutorialSession.CultChosen && !Stopped) yield return null;
+        gate.Allow();
     }
 
-    private IEnumerator WhereStep()
+    private IEnumerator IntroBeat()
     {
-        DistrictZone zone = TutorialContent.FindPlayerZone();
-        if (zone != null && MapCameraController.Instance != null)
-        {
-            MapCameraController.Instance.FocusOnZone(zone);
-            highlight.TrackZone(zone);
-        }
-        else
-        {
-            highlight.Clear();
-        }
-
-        string line = zone != null
-            ? "This street is yours. Your color on the Faith Eclipse bar is your cult. The cult that rules the most zones wins the Faith Eclipse. If your Flock runs out, the cult falls apart."
-            : "Your color on the Faith Eclipse bar is your cult. The cult that rules the most zones wins the Faith Eclipse. If your Flock runs out, the cult falls apart.";
-        yield return WaitContinue(line);
+        Focus(homeZone);
+        FirstTimeHints.MarkSeen(FirstTimeHints.Goal);
+        yield return Beat(homeZone, $"This zone is your cult's first. When the Faith Eclipse comes on turn {EclipseTurn()}, the faith that rules the most zones wins.");
     }
 
-    private IEnumerator RivalsStep()
+    private IEnumerator RivalsBeat()
     {
         DistrictZone zone = TutorialContent.ScriptedClericZone;
-        if (zone != null && MapCameraController.Instance != null)
+        string rival = FactionIdUtil.DisplayName(FactionId.Rival1);
+        if (zone == null)
         {
-            MapCameraController.Instance.FocusOnZone(zone);
-            highlight.TrackZone(zone);
-        }
-
-        yield return WaitContinue("The arrow is a play the Crimson Choir has already chosen and has not made. Rose Ledger and Ochre Flock move the same way.");
-    }
-
-    private IEnumerator DistrictStep()
-    {
-        MapCameraController camera = MapCameraController.Instance;
-        tourCancel = false;
-        if (camera != null)
-        {
-            tourCamera = camera;
-            camera.OnUserAdjusted += OnCameraNudged;
-            camera.ZoomToMax();
-        }
-
-        foreach (Districts district in System.Enum.GetValues(typeof(Districts)))
-        {
-            if (Stopped || tourCancel) break;
-            if (districtExplain == null || !districtExplain.Show(district, out _)) continue;
-            highlight.Clear();
-            continueBeat = false;
-            Hold(TutorialContent.DistrictLine(district), true);
-            float elapsed = 0f;
-            while (elapsed < 3.2f && !continueBeat && !tourCancel && !Stopped)
-            {
-                elapsed += Time.unscaledDeltaTime;
-                yield return null;
-            }
-        }
-
-        StopTourListen();
-        if (districtExplain != null) districtExplain.Clear();
-    }
-
-    private IEnumerator TrayStep(Seed seed, string line, Seed grant)
-    {
-        settled = false;
-        waitingSeed = null;
-        grantOnSettle = null;
-
-        if (seed == null || seed.CurrentZone == null)
-        {
-            yield return WaitContinue(line);
+            yield return Beat(null, "Other colors on the map are rival faiths. Their arrows show the moves they will make when the turn ends.");
             yield break;
         }
 
-        grantOnSettle = grant;
-        waitingSeed = seed;
-        SeedEventManager.StoreSeedEvent(seed);
-        highlight.Track(TrayMark());
-        Hold(line, false);
-        while (!settled && !Stopped) yield return null;
-        waitingSeed = null;
-        grantOnSettle = null;
-    }
-
-    private IEnumerator SeedStep()
-    {
-        planted = false;
-        DistrictSeedPlantPanel panel = FindAnyObjectByType<DistrictSeedPlantPanel>();
-        if (panel == null)
-        {
-            yield return WaitContinue("Seeds are planted from the seed menu onto a free zone. A seed shows its name and how many turns it still needs.");
-            yield break;
-        }
-
-        panel.Grant(TutorialContent.FirstSeed, 1);
-        TutorialContent.MarkFirstSeedGranted();
-
-        highlight.Track(panel.MenuButton);
-        Hold("Seeds are how a cult acts on a street. Open the seed menu.", false);
-        while (!panel.MenuOpen && !planted && !Stopped) yield return null;
-        if (Stopped || planted) yield break;
-
-        highlight.Track(panel.PlantButton);
-        Hold("Read the name and the turns it needs. Pick the seed, pick a free zone, and plant it.", false);
-        while (!planted && !Stopped) yield return null;
+        Focus(zone);
+        yield return Beat(zone, $"Other colors on the map are rival faiths. This arrow is a move the {rival} will make when the turn ends.");
     }
 
     private IEnumerator ClericStep()
     {
-        assigned = false;
-        TopScreenNotification.Lift(176f);
-        DistrictZone zone = HomeZone();
-        if (zone != null)
-        {
-            DistrictSelectionController.SetSelectedDistrict(zone.District, zone, zone.SectorName, null);
-            if (MapCameraController.Instance != null) MapCameraController.Instance.FocusOnZone(zone);
-        }
-
         DistrictClericAssignPanel panel = FindAnyObjectByType<DistrictClericAssignPanel>();
-        if (panel == null || panel.AssignButton == null)
+        DistrictZone target = clericZone != null ? clericZone : homeZone;
+        if (panel == null || target == null || InfluenceManager.IsNull) yield break;
+
+        target.EnsureInfluenceState();
+        Focus(target);
+        InputLocks.Lock(true, false, true);
+        while (!Stopped && target.Influence.GetClerics(FactionId.Player) < 1)
         {
-            yield return WaitContinue("Clerics are your people on a street. Select a zone and assign one. The panel shows how many stand here and how many wait in reserve.");
-            TopScreenNotification.Lift(0f);
-            yield break;
-        }
+            if (InfluenceManager.Get.GetClericPool(FactionId.Player) <= 0) break;
 
-        highlight.Track(panel.AssignButton);
-        Hold("Clerics are your people on a street. Assign one. The panel shows how many stand here and how many wait in reserve.", false);
-        while (!assigned && !Stopped) yield return null;
-        TopScreenNotification.Lift(0f);
-    }
+            if (DistrictSelectionController.SelectedZone != target)
+            {
+                Guide("Clerics spread your faith, but only into zones next to one you rule. Click the marked zone.", target);
+            }
+            else
+            {
+                panel.Reveal();
+                Guide("Press + to send a cleric. The panel shows the influence it will bring next turn.", panel.AssignButton, panel.Plate);
+            }
 
-    private IEnumerator JournalStep()
-    {
-        DistrictZone zone = HomeZone();
-        if (zone != null) highlight.TrackZone(zone);
-        Hold("Right-click a district to open the ledger. Choose a district or a zone. The page lists your influence beside the other cults.", false);
-
-        journalOpened = false;
-        journalStats = MapStatsPanel.Instance;
-        if (journalStats == null)
-        {
-            yield return WaitContinue("Right-click a district to open the ledger.");
-            yield break;
-        }
-
-        bool wasOpen = journalStats.IsOpen;
-        journalStats.PageOpened += OnJournalPage;
-        while (!journalOpened && !Stopped)
-        {
-            if (!wasOpen && journalStats.IsOpen) journalOpened = true;
             yield return null;
         }
 
-        UnhookJournal();
+        InputLocks.Lock(true, true, true);
+    }
+
+    private IEnumerator SeedStep()
+    {
+        DistrictSeedPlantPanel panel = FindAnyObjectByType<DistrictSeedPlantPanel>();
+        if (panel == null) yield break;
+
+        Seed seed = TutorialContent.FirstSeed;
+        panel.Grant(seed, 1);
+        TutorialContent.MarkFirstSeedGranted();
+        DistrictZone target = clericZone != null ? clericZone : homeZone;
+        planted = false;
+        InputLocks.Lock(true, false, true);
+
+        while (!planted && !Stopped)
+        {
+            if (panel.Owned(seed) <= 0) panel.Grant(seed, 1);
+            DistrictZone zone = DistrictSelectionController.SelectedZone;
+            bool zoneReady = zone != null && zone.IsPlayable && !zone.IsOccupied;
+
+            if (!zoneReady)
+            {
+                Guide("Click the marked zone to plant there.", target, panel.MenuButton, panel.PanelRoot);
+            }
+            else if (!panel.MenuOpen)
+            {
+                Guide("Seeds are schemes that grow into events. Open the seed menu.", panel.MenuButton, panel.MenuButton);
+            }
+            else if (panel.SelectedSeed != seed)
+            {
+                Guide("Pick First Seed.", panel.ButtonFor(seed), panel.MenuButton, panel.PanelRoot);
+            }
+            else
+            {
+                Guide("Press Plant. It grows in the selected zone for a few turns, then becomes an event.", panel.PlantButton, panel.MenuButton, panel.PanelRoot);
+            }
+
+            yield return null;
+        }
+
+        InputLocks.Lock(true, true, true);
+    }
+
+    private IEnumerator EventStep(Seed seed, string openLine)
+    {
+        if (seed == null || seed.CurrentZone == null) yield break;
+
+        FirstTimeHints.MarkSeen(FirstTimeHints.FirstEvent);
+        EventsMenu menu = FindAnyObjectByType<EventsMenu>();
+        Button opener = menu != null ? FindOpener(menu.Panel) : null;
+        settled = false;
+        waitingSeed = seed;
+        SeedEventManager.StoreSeedEvent(seed);
+
+        while (!Stopped && (!settled || SeedEventManager.OutputWindow != null))
+        {
+            if (SeedEventManager.OutputWindow != null)
+            {
+                Quiet(SeedEventManager.OutputWindow);
+            }
+            else if (SeedEventManager.OptionsOpen)
+            {
+                Quiet(SeedEventManager.OptionsWindow);
+            }
+            else if (menu != null && menu.Panel.activeInHierarchy && !settled)
+            {
+                Guide("Click the event to answer it.", menu.EntryFor(seed), menu.Panel.transform);
+            }
+            else if (!settled)
+            {
+                Guide(openLine, TrayMark(), SeedEventManager.UnresolvedBadge, opener);
+            }
+
+            yield return null;
+        }
+
+        waitingSeed = null;
     }
 
     private IEnumerator EndTurnStep(int turnAtLeast, string line)
     {
         if (GameTime.CurrentTurn >= turnAtLeast) yield break;
 
-        highlight.Track(FindByMethod("NextTurn"));
-        Hold(line, false);
-        while (GameTime.CurrentTurn < turnAtLeast && !Stopped) yield return null;
+        Button endTurn = FindByMethod("NextTurn");
+        turnEnding = false;
+        turnResolved = false;
+        InputLocks.Lock(false, true, true);
+        while (!turnEnding && !Stopped)
+        {
+            Guide(line, endTurn, endTurn);
+            yield return null;
+        }
+
+        InputLocks.Lock(true, true, true);
+        Quiet();
+        while ((!turnResolved || GameTime.CurrentTurn < turnAtLeast) && !Stopped) yield return null;
+        yield return null;
+    }
+
+    private IEnumerator ChronicleStep()
+    {
+        ChronicleWindow window = FindAnyObjectByType<ChronicleWindow>();
+        while (window != null && !Stopped)
+        {
+            Quiet(window);
+            yield return null;
+        }
+    }
+
+    private IEnumerator RuleBeat()
+    {
+        FirstTimeHints.MarkSeen(FirstTimeHints.ZoneTaken);
+        DistrictZone zone = clericZone;
+        if (zone == null || zone.Influence == null) yield break;
+        if (zone.Influence.Status != ZoneControlStatus.Controlled || zone.Influence.Controller != FactionId.Player) yield break;
+
+        Focus(zone);
+        yield return Beat(zone, "You rule this zone now: more than half its influence is yours. Every zone you rule pays tithes each turn, and every cleric on the map costs upkeep.");
+    }
+
+    private IEnumerator LedgerStep()
+    {
+        MapStatsPanel stats = MapStatsPanel.Instance;
+        if (stats == null) yield break;
+
+        DistrictZone zone = TutorialContent.ScriptedClericZone;
+        string openLine = zone != null
+            ? $"The {FactionIdUtil.DisplayName(FactionId.Rival1)} moved here, as its arrow warned. Right-click this zone to open its ledger."
+            : "Right-click a zone to open its ledger.";
+        Focus(zone);
+
+        continueBeat = false;
+        while (!continueBeat && !Stopped)
+        {
+            if (stats.IsOpen)
+            {
+                InputLocks.Lock(true, true, true);
+                Guide("The ledger shows who rules each zone and district, and how much influence every faith holds.", null, true, stats.Book);
+            }
+            else
+            {
+                InputLocks.Lock(true, true, false);
+                Guide(openLine, zone);
+            }
+
+            yield return null;
+        }
+
+        InputLocks.Lock(true, true, true);
+        if (stats.IsOpen) stats.Close();
     }
 
     private IEnumerator TheologyStep()
@@ -295,63 +336,81 @@ public class TutorialDirector : MonoBehaviour
         TutorialSession.ArmFixedUnlock(TutorialContent.Wrap(doctrine), doctrine);
 
         TheologyMenu theology = FindAnyObjectByType<TheologyMenu>(FindObjectsInactive.Include);
-        Button opener = theology != null ? FindOpener(theology.gameObject) : null;
+        if (theology == null) yield break;
+
+        Button opener = FindOpener(theology.gameObject);
         Button commune = FindByMethod("Commune");
-
-        if (theology != null && !theology.gameObject.activeInHierarchy)
-        {
-            highlight.Track(opener != null ? opener : commune);
-            Hold("Open Theology.", false);
-            while (!theology.gameObject.activeInHierarchy && !communed && !rewardClaimed && !Stopped)
-                yield return null;
-        }
-
-        if (Stopped || rewardClaimed) yield break;
-
-        highlight.Track(commune);
-        yield return WaitContinue("Commune costs Zeal. The price sits in the middle, and the first one is free.", true);
-        if (Stopped) yield break;
-        highlight.Track(commune);
-        yield return WaitContinue("Offerings spend Wealth, doubling from 25 up to 200, for a kinder reward. Sacrifices stay locked until the cult keeps Human Sacrifices.", true);
-        if (Stopped) yield break;
-        highlight.Track(commune);
-        yield return WaitContinue("Press Commune, then wake the eye. The first touch locks the offerings.", true);
-        if (Stopped || rewardClaimed) yield break;
-
-        if (!communed)
-        {
-            highlight.Track(commune);
-            Hold("Press Commune. It costs Zeal.", false);
-            while (!communed && !rewardClaimed && !Stopped) yield return null;
-        }
-
-        if (Stopped || rewardClaimed) yield break;
-
         Button eye = FindByMethod("AdvanceEye");
-        highlight.Track(eye);
-        Hold("Offer Wealth before you touch the eye. The first touch locks offerings. Wake the eye to receive the reward.", false);
-        while (!rewardClaimed && !Stopped) yield return null;
+
+        while (!rewardClaimed && !Stopped)
+        {
+            if (SeedEventManager.OutputWindow != null)
+            {
+                Quiet(SeedEventManager.OutputWindow, theology);
+            }
+            else if (!theology.gameObject.activeInHierarchy)
+            {
+                Guide("Theology: spend Zeal to commune with the Beholder for seeds, doctrines and blessings. Open it.", opener, opener);
+            }
+            else if (!communed)
+            {
+                Guide("Press Commune. The first one is free.", commune, theology);
+            }
+            else
+            {
+                Guide("Click the eye until it wakes to receive your reward.", eye, theology);
+            }
+
+            yield return null;
+        }
     }
 
     private IEnumerator DoctrineStep()
     {
-        MenuTransition menu = DoctrineMenu();
-        if (menu == null)
+        Doctrine doctrine = TutorialSession.PendingDoctrine;
+        CultLedger ledger = FindAnyObjectByType<CultLedger>(FindObjectsInactive.Include);
+        Button opener = FindByMethod("OpenDoctrines");
+        if (ledger == null || opener == null || doctrine == null) yield break;
+
+        string adopt = $"ADOPT {doctrine.Name.ToUpperInvariant()}";
+        while (!doctrineKept && !Stopped)
         {
-            yield return WaitContinue("Open your cult. A doctrine is a rule the cult keeps. Choose First Vigil.");
-            yield break;
+            if (ledger.IsShowing(CultLedger.Page.Doctrines))
+            {
+                Guide($"Adopt {doctrine.Name}. While your cult keeps it, it raises a virtue.", ButtonLabeled(ledger.Book, adopt), ledger.Book);
+            }
+            else
+            {
+                Guide("The eye gave you a doctrine. Open Doctrines to adopt it.", opener, opener);
+            }
+
+            yield return null;
         }
 
-        Button opener = FindOpener(menu.gameObject);
-        highlight.Track(opener);
-        Hold("Open your cult. A doctrine is a rule the cult keeps.", false);
-        while ((menu == null || !menu.gameObject.activeInHierarchy) && !doctrineKept && !Stopped) yield return null;
-        if (Stopped || doctrineKept) yield break;
+        ledger.Close();
+    }
 
-        Button add = FindByMethod("OpenSelectorMenu");
-        highlight.Track(add);
-        Hold("Choose First Vigil.", false);
-        while (!doctrineKept && !Stopped) yield return null;
+    private IEnumerator BookStep(CultLedger.Page page, string openMethod, string openLine, string readLine)
+    {
+        CultLedger ledger = FindAnyObjectByType<CultLedger>(FindObjectsInactive.Include);
+        Button opener = FindByMethod(openMethod);
+        if (ledger == null || opener == null) yield break;
+
+        continueBeat = false;
+        while (!continueBeat && !Stopped)
+        {
+            if (ledger.IsShowing(page)) Guide(readLine, null, true, ledger.Book);
+            else Guide(openLine, opener, opener);
+            yield return null;
+        }
+
+        ledger.Close();
+    }
+
+    private IEnumerator ClosingBeat()
+    {
+        string hints = FirstTimeHints.Enabled ? " Hints will appear the first time something new happens." : string.Empty;
+        yield return Beat(null, $"That's the basics. Rule the most zones by turn {EclipseTurn()}.{hints}", "DONE");
     }
 
     private IEnumerator WaitForCamera()
@@ -366,17 +425,75 @@ public class TutorialDirector : MonoBehaviour
         }
     }
 
-    private IEnumerator WaitContinue(string line, bool keepHighlight = false)
+    private IEnumerator Beat(DistrictZone zone, string line, string label = "NEXT")
     {
         continueBeat = false;
-        if (!keepHighlight) highlight.Clear();
-        Hold(line, true);
-        while (!continueBeat && !Stopped) yield return null;
+        while (!continueBeat && !Stopped)
+        {
+            Guide(line, zone, true, label);
+            yield return null;
+        }
     }
 
-    private void Hold(string line, bool showContinue)
+    private void Guide(string line, Object target, params Component[] allow)
     {
-        TopScreenNotification.Hold(line, showContinue, () => continueBeat = true);
+        Guide(line, target, false, allow);
+    }
+
+    private void Guide(string line, Object target, bool showContinue, params Component[] allow)
+    {
+        Guide(line, target, showContinue, "NEXT", allow);
+    }
+
+    private void Guide(string line, Object target, bool showContinue, string label, params Component[] allow)
+    {
+        gate.Allow(allow);
+        Point(target);
+        if (line == heldLine && showContinue == heldContinue && TopScreenNotification.IsHolding) return;
+
+        heldLine = line;
+        heldContinue = showContinue;
+        continueBeat = false;
+        TopScreenNotification.Hold(line, showContinue, () => continueBeat = true, label);
+    }
+
+    private void Quiet(params Component[] allow)
+    {
+        gate.Allow(allow);
+        highlight.Clear();
+        if (heldLine == null) return;
+        heldLine = null;
+        TopScreenNotification.Release();
+    }
+
+    private void Point(Object target)
+    {
+        if (target == null)
+        {
+            highlight.Clear();
+            return;
+        }
+
+        switch (target)
+        {
+            case DistrictZone zone:
+                highlight.TrackZone(zone);
+                break;
+            case Button button:
+                highlight.Track(button);
+                break;
+            case Component component when component.transform is RectTransform rect && component.gameObject.activeInHierarchy:
+                highlight.Track(rect);
+                break;
+            default:
+                highlight.Clear();
+                break;
+        }
+    }
+
+    private static void Focus(DistrictZone zone)
+    {
+        if (zone != null && MapCameraController.Instance != null) MapCameraController.Instance.FocusOnZone(zone);
     }
 
     public void SkipGuide()
@@ -388,7 +505,7 @@ public class TutorialDirector : MonoBehaviour
         }
 
         ForgetPending();
-        TutorialContent.GiveTutorialSeeds(false);
+        TutorialContent.GiveTutorialSeeds();
         TutorialSession.Skip();
         if (!AIIntentBoard.IsNull) AIIntentBoard.Get.PlayLivePlans();
         CleanupGuide();
@@ -397,12 +514,12 @@ public class TutorialDirector : MonoBehaviour
 
     private void CleanupGuide()
     {
-        StopTourListen();
-        UnhookJournal();
-        if (districtExplain != null) districtExplain.Clear();
         TopScreenNotification.Release();
         if (highlight != null) Destroy(highlight.gameObject);
         highlight = null;
+        if (gate != null) Destroy(gate.gameObject);
+        gate = null;
+        InputLocks.Clear();
     }
 
     private void ForgetPending()
@@ -423,31 +540,10 @@ public class TutorialDirector : MonoBehaviour
     private void OnSettled(SettledEvent settledEvent)
     {
         if (waitingSeed == null || settledEvent == null || settledEvent.Seed != waitingSeed) return;
-
-        if (grantOnSettle != null)
-        {
-            DistrictSeedPlantPanel panel = FindAnyObjectByType<DistrictSeedPlantPanel>();
-            if (panel != null) panel.Grant(grantOnSettle, 1);
-            grantOnSettle = null;
-        }
-
-        waitingSeed = null;
         settled = true;
     }
 
     private void OnPlanted() => planted = true;
-
-    private void OnAssigned() => assigned = true;
-
-    private void OnReward(Unlockeable unlock)
-    {
-        if (TutorialSession.PendingDoctrine != null &&
-            unlock != null &&
-            unlock.Scriptable == TutorialSession.PendingDoctrine)
-        {
-            rewardClaimed = true;
-        }
-    }
 
     private void OnDoctrineAdded(Doctrine doctrine)
     {
@@ -458,32 +554,52 @@ public class TutorialDirector : MonoBehaviour
 
     private void OnTheologyReward() => rewardClaimed = true;
 
-    private void OnCameraNudged() => tourCancel = true;
+    private void OnTurnResolving() => turnEnding = true;
 
-    private void OnJournalPage() => journalOpened = true;
+    private void OnTurnResolved() => turnResolved = true;
 
-    private void StopTourListen()
+    private static DistrictZone FreeNeighbor(DistrictZone home)
     {
-        if (tourCamera == null) return;
-        tourCamera.OnUserAdjusted -= OnCameraNudged;
-        tourCamera = null;
+        if (home == null || InfluenceManager.IsNull) return null;
+
+        InfluenceManager manager = InfluenceManager.Get;
+        DistrictZone rivalTarget = TutorialContent.ScriptedClericZone;
+        Vector3 origin = home.GetWorldBounds().center;
+        IReadOnlyList<DistrictZone> zones = manager.GetPlayableZones();
+        DistrictZone best = null;
+        float bestDistance = float.MaxValue;
+        for (int i = 0; i < zones.Count; i++)
+        {
+            DistrictZone zone = zones[i];
+            if (zone == null || zone == home || zone == rivalTarget || zone.IsOccupied) continue;
+            zone.EnsureInfluenceState();
+            if (zone.Influence == null || zone.Influence.HasAnyPresence) continue;
+            if (!zone.Influence.CanEnterByNormalMeans(FactionId.Player) || !manager.InClericReach(zone, FactionId.Player)) continue;
+
+            float distance = (zone.GetWorldBounds().center - origin).sqrMagnitude;
+            if (distance >= bestDistance) continue;
+            bestDistance = distance;
+            best = zone;
+        }
+
+        return best;
     }
 
-    private void UnhookJournal()
+    private static int EclipseTurn()
     {
-        if (journalStats == null) return;
-        journalStats.PageOpened -= OnJournalPage;
-        journalStats = null;
+        GameLoopEvents loop = FindAnyObjectByType<GameLoopEvents>();
+        return loop != null ? loop.EclipseTurn : 30;
     }
 
-    private static DistrictZone HomeZone()
+    private static Button ButtonLabeled(Component root, string label)
     {
-        return TutorialContent.FindPlayerZone();
-    }
+        foreach (Button button in root.GetComponentsInChildren<Button>())
+        {
+            TMP_Text text = button.GetComponentInChildren<TMP_Text>();
+            if (text != null && text.text == label) return button;
+        }
 
-    private static DistrictZone IntentZone()
-    {
-        return TutorialContent.ScriptedClericZone;
+        return null;
     }
 
     private RectTransform TrayMark()
@@ -496,20 +612,6 @@ public class TutorialDirector : MonoBehaviour
         return opener != null ? (RectTransform)opener.transform : null;
     }
 
-    private MenuTransition DoctrineMenu()
-    {
-        if (doctrineMenu != null) return doctrineMenu;
-
-        MenuTransition[] menus = FindObjectsByType<MenuTransition>(FindObjectsInactive.Include);
-        for (int i = 0; i < menus.Length; i++)
-        {
-            if (menus[i] == null || menus[i].gameObject.name != "DoctrineMenu") continue;
-            doctrineMenu = menus[i];
-            break;
-        }
-
-        return doctrineMenu;
-    }
 
     private static Button FindByMethod(string methodName)
     {
