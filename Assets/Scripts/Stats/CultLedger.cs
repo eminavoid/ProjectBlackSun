@@ -156,7 +156,7 @@ public class CultLedger : MonoBehaviour
             int perTurn = Mathf.Max(1, clergy.TrainingPerTurn);
             int turns = Mathf.Max(1, Mathf.CeilToInt((clergy.OrdinationCost - clergy.Training) / (float)perTurn));
             book.SetSeal(FactionId.Player, "NEXT CLERIC", turns == 1 ? "Next turn" : $"In {turns} turns", animate);
-            book.AddText($"Each turn your cult trains {perTurn} points: twice its Learning plus its Stewardship, halved. {clergy.Training}/{clergy.OrdinationCost} toward the next cleric.");
+            book.AddText($"Each turn your cult trains {perTurn} points: twice its Learning plus its Stewardship, halved and rounded up. {clergy.Training}/{clergy.OrdinationCost} toward the next cleric.");
             book.AddAction($"ORDAIN NOW  ·  {clergy.OrdainPrice} WEALTH", Ordain);
         }
         else
@@ -267,7 +267,11 @@ public class CultLedger : MonoBehaviour
             }
         }
 
-        if (known.Count == 0) book.AddText("No other doctrine is known yet. Commune with the Beholder in Theology to find more.");
+        if (known.Count == 0)
+        {
+            book.AddText("No other doctrine is known yet. New doctrines come from Theology: spend Zeal to commune with the Beholder and one may be revealed.");
+            book.AddAction("SEEK DOCTRINES IN THEOLOGY", OpenTheology);
+        }
         else if (kept >= max) book.AddText("Every place is taken. Renounce a doctrine to adopt another.");
         else if (ready == 0) book.AddText($"You can adopt again {when.ToLowerInvariant()}.");
 
@@ -336,6 +340,14 @@ public class CultLedger : MonoBehaviour
         book.Close();
         if (mapCamera != null) mapCamera.FocusOnZone(zone);
         DistrictSelectionController.SetSelectedDistrict(zone.District, zone, zone.name, DistrictSelectionController.ResolvePartColorName(zone));
+    }
+
+    private void OpenTheology()
+    {
+        TheologyMenu theology = FindAnyObjectByType<TheologyMenu>(FindObjectsInactive.Include);
+        if (theology == null) return;
+        book.Close();
+        MenuTransition.Show(theology.gameObject);
     }
 
     private void OpenCityLedger()

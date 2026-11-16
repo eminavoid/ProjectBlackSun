@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class HouseUvFix : AssetPostprocessor
 {
-    private const string HousesFolder = "/Houses Fixed/";
+    private static readonly string[] HouseFolders = { "/Casas-Zonas/" };
     private const float FlatSpan = 1e-4f;
     private const float MappedSpan = 0.1f;
 
     private void OnPostprocessModel(GameObject root)
     {
-        if (!assetPath.Replace('\\', '/').Contains(HousesFolder)) return;
+        string path = assetPath.Replace('\\', '/');
+        if (!System.Array.Exists(HouseFolders, folder => path.Contains(folder))) return;
 
         var swapped = new List<string>();
         foreach (MeshFilter filter in root.GetComponentsInChildren<MeshFilter>(true))

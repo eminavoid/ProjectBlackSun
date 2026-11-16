@@ -518,7 +518,7 @@ public class DistrictZone : MonoBehaviour
             MeshRenderer[] renderers = GetComponentsInChildren<MeshRenderer>(true);
             for (int i = 0; i < renderers.Length; i++)
             {
-                if (renderers[i].name == "InfluenceOverlay" || renderers[i].name == BeaconChildName) continue;
+                if (renderers[i].name == BeaconChildName) continue;
                 cachedRenderer = renderers[i];
                 break;
             }

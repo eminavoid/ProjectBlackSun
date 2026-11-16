@@ -37,6 +37,10 @@ Shader "Custom/Territory"
         _Flash("Flash", Range(0, 1)) = 0
         _FlashT("Flash Progress", Range(0, 1)) = 0
         _FlashColor("Flash Color", Color) = (1, 1, 1, 1)
+        _FlashAlpha("Flash Max Alpha", Range(0, 1)) = 0.65
+
+        [Header(Readability)]
+        _ShadowStrength("House Shadows On Tint", Range(0, 1)) = 0.75
     }
 
     SubShader
@@ -62,13 +66,18 @@ Shader "Custom/Territory"
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
+            #pragma multi_compile_fragment _ _SHADOWS_SOFT
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Shadows.hlsl"
 
             CBUFFER_START(UnityPerMaterial)
                 half4 _Color;
                 half4 _Color2;
                 half4 _FlashColor;
+                half _FlashAlpha;
+                half _ShadowStrength;
                 float4 _Center;
                 float _Mode;
                 half _Alpha;
@@ -212,7 +221,10 @@ Shader "Custom/Territory"
 
                 half flare = saturate(_Flash * 0.55h + wave);
                 color = lerp(color, _FlashColor.rgb, flare);
-                alpha = saturate(max(alpha, flare * 0.95h));
+                alpha = saturate(max(alpha, flare * _FlashAlpha));
+
+                half shadow = MainLightRealtimeShadow(TransformWorldToShadowCoord(input.positionWS));
+                color *= lerp(1.0h, shadow, _ShadowStrength);
                 return half4(color, alpha);
             }
             ENDHLSL

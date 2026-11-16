@@ -65,6 +65,8 @@ public static class ZoneTravelCatalogEditor
             }
         }
 
+        if (records.Count == 0) return 0;
+
         ZoneTravelCatalog catalog = GetOrCreate();
         catalog.SetLinks(records);
         EditorUtility.SetDirty(catalog);

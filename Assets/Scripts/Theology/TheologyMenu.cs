@@ -109,6 +109,8 @@ public class TheologyMenu : MonoBehaviour
     public static event System.Action Communed;
     public static event System.Action RewardGranted;
 
+    private Image communePlate;
+
     public static void PrepareNewMatch()
     {
         TheologyMenu menu = FindAnyObjectByType<TheologyMenu>(FindObjectsInactive.Include);
@@ -126,6 +128,10 @@ public class TheologyMenu : MonoBehaviour
         blessingsCount = FindCount("Blessings Count");
         costColor = costText.color;
         BuildFeedback();
+        Transform plate = communeButton.transform.Find("Plate");
+        if (plate != null) communePlate = plate.GetComponent<Image>();
+        PressFeedback communeFeedback = communeButton.GetComponent<PressFeedback>();
+        if (communeFeedback != null) communeFeedback.Denied += OnCommuneDenied;
         if (offeringButton != null) offeringButton.onClick.AddListener(() => StartCoroutine(PayStake(false)));
         if (sacrificeButton != null) sacrificeButton.onClick.AddListener(() => StartCoroutine(PayStake(true)));
         if (closeButton != null)
@@ -180,6 +186,7 @@ public class TheologyMenu : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (communePlate != null) communePlate.color = new Color(1f, 1f, 1f, closedArt.color.a);
         ApplyCommuneGate();
         PlaceCloseButton();
     }
@@ -216,6 +223,8 @@ public class TheologyMenu : MonoBehaviour
         opening = true;
         dismissLocked = true;
         if (communeButton != null) communeButton.interactable = false;
+        closedArt.transform.DOComplete();
+        closedArt.transform.DOPunchScale(Vector3.one * 0.035f, 0.4f, 6, 0.5f).SetUpdate(true).SetLink(gameObject);
         Communed?.Invoke();
         StartCoroutine(PayAndOpen());
     }
@@ -567,16 +576,16 @@ public class TheologyMenu : MonoBehaviour
     {
         if (communeButton == null) return;
 
-        bool affordable = CommuneAllowed();
+        bool idle = RiteIdle();
+        bool affordable = idle && CommuneAllowed();
         communeButton.interactable = affordable;
-        communeButton.enabled = affordable;
 
         Image hit = communeButton.GetComponent<Image>();
-        if (hit != null) hit.raycastTarget = affordable;
+        if (hit != null) hit.raycastTarget = idle;
 
         RaycastGate gate = communeButton.GetComponent<RaycastGate>();
         if (gate == null) gate = communeButton.gameObject.AddComponent<RaycastGate>();
-        gate.open = affordable;
+        gate.open = idle;
 
         TMP_Text label = communeButton.GetComponentInChildren<TMP_Text>(true);
         if (label != null)
@@ -594,9 +603,24 @@ public class TheologyMenu : MonoBehaviour
         communeWasAffordable = affordable;
     }
 
+    private bool RiteIdle() => !opening && !riteOpen && !rewarding && !paying;
+
+    private void OnCommuneDenied()
+    {
+        if (!RiteIdle()) return;
+        int price = ShownCost();
+        TopScreenNotification.Show($"Not enough Zeal. The rite costs {price} and you have {ShownAmount()}.", 3f);
+        Transform plate = costText.transform.parent;
+        plate.DOComplete();
+        plate.DOPunchScale(Vector3.one * 0.18f, 0.4f, 8, 0.6f).SetUpdate(true).SetLink(gameObject);
+        costText.DOComplete();
+        costText.color = Color.white;
+        costText.DOColor(Shortfall, 0.45f).SetUpdate(true).SetLink(gameObject);
+    }
+
     private bool CommuneAllowed()
     {
-        if (opening || riteOpen || rewarding || paying) return false;
+        if (!RiteIdle()) return false;
         int price = ShownCost();
         if (price <= 0) return true;
         return ShownAmount() >= price;
@@ -855,6 +879,7 @@ public class TheologyMenu : MonoBehaviour
     {
         if (riteOpen || opening) return "The rite is open. Touch the eye.";
         if (cost <= 0) return "Open the rite. This one is free.\n<size=80%>Then make offerings and touch the eye for a reward.</size>";
+        if (!CommuneAllowed()) return $"Not enough Zeal.\n<size=80%>The rite costs {cost} Zeal and you have {ShownAmount()}. Zones you hold in the Ocularium bring the most Zeal.</size>";
         return $"Open the rite for {cost} Zeal.\n<size=80%>Each rite costs {costIncrease} more than the last.</size>";
     }
 

@@ -1038,7 +1038,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8357693336626421907}
   - component: {fileID: 8950167880736451004}
-  - component: {fileID: 7740052902949848093}
   - component: {fileID: 1801133064166905744}
   - component: {fileID: 1745435395701365064}
   m_Layer: 5
@@ -1075,21 +1074,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2777507346810216032}
   m_CullTransparentMesh: 1
---- !u!114 &7740052902949848093
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2777507346810216032}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0eda2b0dda5ddc44baae6df7f05374c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Zeke.UI.UIElement
-  window: {fileID: 6986076241118867485, guid: 26ede2eefc574e0458ee06d975b56568, type: 3}
-  <Name>k__BackingField: Blur
-  <Element>k__BackingField: {fileID: 1801133064166905744}
 --- !u!114 &1801133064166905744
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -34,7 +34,7 @@ public class ZoneTravelGraphEditor : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("showZoneNames"), new GUIContent("Show zone names"));
 
         EditorGUILayout.Space(8f);
-        if (GUILayout.Button("Rebuild from zone sides", GUILayout.Height(28f)))
+        if (GUILayout.Button("Rebuild from zone outlines", GUILayout.Height(28f)))
         {
             ZoneTravelGraphBuilder.Rebuild(graph);
         }
@@ -59,9 +59,8 @@ public class ZoneTravelGraphEditor : Editor
         if (settingsOpen)
         {
             EditorGUI.indentLevel++;
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("touchThreshold"), new GUIContent("Touch distance"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("minOverlap"), new GUIContent("Shared wall length"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("lateralNormalLimit"), new GUIContent("Side face cutoff"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("streetWidth"), new GUIContent("Street width"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("minFrontage"), new GUIContent("Shared frontage"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("gapWeight"), new GUIContent("Gap weight"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("borderSurcharge"), new GUIContent("Unclaimed border cost"));
             EditorGUI.indentLevel--;
@@ -129,20 +128,19 @@ public class ZoneTravelGraphEditor : Editor
 
 public static class ZoneTravelGraphBuilder
 {
-    private struct LateralSide
+    private struct Segment
     {
         public Vector2 a;
         public Vector2 b;
-        public Vector2 outward;
-        public float height;
+        public Rect box;
     }
 
-    private sealed class EdgeInfo
+    private struct Facing
     {
-        public int count;
-        public Vector3 p;
-        public Vector3 q;
-        public Vector2 outward;
+        public float length;
+        public float gap;
+        public Vector2 near;
+        public Vector2 far;
     }
 
     private struct EdgeKey : IEquatable<EdgeKey>
@@ -275,17 +273,17 @@ public static class ZoneTravelGraphBuilder
             FindObjectsSortMode.None);
 
         List<DistrictZone> zones = new List<DistrictZone>();
-        List<List<LateralSide>> sides = new List<List<LateralSide>>();
+        List<List<Segment>> outlines = new List<List<Segment>>();
         for (int i = 0; i < found.Length; i++)
         {
             DistrictZone zone = found[i];
             if (zone == null || !zone.IsPlayable) continue;
 
-            List<LateralSide> zoneSides = ExtractSides(zone, graph.LateralNormalLimit, out bool usedBounds);
-            if (zoneSides.Count == 0) continue;
+            List<Segment> outline = ReadOutline(zone, out bool usedBounds);
+            if (outline.Count == 0) continue;
             if (usedBounds) boundsFallback++;
             zones.Add(zone);
-            sides.Add(zoneSides);
+            outlines.Add(outline);
         }
 
         if (zones.Count == 0)
@@ -294,22 +292,25 @@ public static class ZoneTravelGraphBuilder
             return null;
         }
 
-        float threshold = graph.TouchThreshold;
-        float overlap = graph.MinOverlap;
+        float street = graph.StreetWidth;
+        float frontage = graph.MinFrontage;
+        float step = street * 0.03f;
         List<ZoneTravelEdge> edges = new List<ZoneTravelEdge>();
 
         for (int i = 0; i < zones.Count; i++)
         {
             Bounds bounds = zones[i].GetWorldBounds();
-            bounds.Expand(threshold * 2f);
+            bounds.Expand(street * 2f);
 
             for (int j = i + 1; j < zones.Count; j++)
             {
-                if (!bounds.Intersects(zones[j].GetWorldBounds())) continue;
-                if (!TryBestContact(sides[i], sides[j], threshold, overlap, out float gap, out Vector3 contactA, out Vector3 contactB))
-                {
-                    continue;
-                }
+                Bounds other = zones[j].GetWorldBounds();
+                if (!bounds.Intersects(other)) continue;
+
+                Facing there = Measure(outlines[i], outlines[j], street, step);
+                if (there.length < frontage) continue;
+                Facing back = Measure(outlines[j], outlines[i], street, step);
+                if (back.length < frontage) continue;
 
                 TravelEdgeKind kind = zones[i].District == zones[j].District
                     ? TravelEdgeKind.IntraDistrict
@@ -318,14 +319,16 @@ public static class ZoneTravelGraphBuilder
                 if (kind == TravelEdgeKind.IntraDistrict) intra++;
                 else cross++;
 
+                float heightA = zones[i].GetWorldBounds().max.y;
+                float heightB = other.max.y;
                 edges.Add(new ZoneTravelEdge
                 {
                     a = zones[i],
                     b = zones[j],
-                    gap = gap,
+                    gap = Mathf.Min(there.gap, back.gap),
                     kind = kind,
-                    contactA = contactA,
-                    contactB = contactB
+                    contactA = new Vector3(there.near.x, heightA, there.near.y),
+                    contactB = new Vector3(there.far.x, heightB, there.far.y)
                 });
             }
         }
@@ -333,59 +336,151 @@ public static class ZoneTravelGraphBuilder
         return edges;
     }
 
-    private static bool TryBestContact(
-        List<LateralSide> aSides,
-        List<LateralSide> bSides,
-        float threshold,
-        float minOverlap,
-        out float gap,
-        out Vector3 contactA,
-        out Vector3 contactB)
+    private static Facing Measure(List<Segment> from, List<Segment> to, float street, float step)
     {
-        gap = float.MaxValue;
-        contactA = Vector3.zero;
-        contactB = Vector3.zero;
-        bool found = false;
+        Facing result = new Facing { gap = float.MaxValue };
+        Vector2 nearSum = Vector2.zero;
+        Vector2 farSum = Vector2.zero;
+        int hits = 0;
 
-        for (int i = 0; i < aSides.Count; i++)
+        for (int i = 0; i < from.Count; i++)
         {
-            LateralSide a = aSides[i];
-            for (int j = 0; j < bSides.Count; j++)
-            {
-                LateralSide b = bSides[j];
-                if (!TryContact(a, b, threshold, minOverlap, out float pairGap, out Vector2 ca, out Vector2 cb)) continue;
-                if (pairGap >= gap) continue;
+            Segment segment = from[i];
+            Vector2 direction = segment.b - segment.a;
+            float length = direction.magnitude;
+            if (length < 1e-6f) continue;
+            direction /= length;
 
-                gap = pairGap;
-                contactA = new Vector3(ca.x, a.height, ca.y);
-                contactB = new Vector3(cb.x, b.height, cb.y);
-                found = true;
+            int samples = Mathf.Max(1, Mathf.CeilToInt(length / step));
+            float piece = length / samples;
+            for (int k = 0; k < samples; k++)
+            {
+                Vector2 point = Vector2.Lerp(segment.a, segment.b, (k + 0.5f) / samples);
+                if (!TryClosest(point, to, street, out Vector2 closest, out float distance)) continue;
+                if (distance > 1e-6f && Mathf.Abs(Vector2.Dot((closest - point) / distance, direction)) > 0.5f) continue;
+
+                result.length += piece;
+                result.gap = Mathf.Min(result.gap, distance);
+                nearSum += point;
+                farSum += closest;
+                hits++;
             }
         }
 
-        return found;
-    }
-
-    private static List<LateralSide> ExtractSides(DistrictZone zone, float normalLimit, out bool usedBounds)
-    {
-        usedBounds = false;
-        List<LateralSide> sides = new List<LateralSide>();
-        Vector3 center3 = zone.GetWorldBounds().center;
-        Vector2 center = new Vector2(center3.x, center3.z);
-
-        if (TryReadMesh(zone, out Vector3[] vertices, out int[] triangles))
+        if (hits > 0)
         {
-            CollectLateralSides(vertices, triangles, normalLimit, center, sides);
-            if (sides.Count > 80) sides = HullSides(sides);
-            else MergeSides(sides);
+            result.near = nearSum / hits;
+            result.far = farSum / hits;
         }
 
-        if (sides.Count >= 3) return sides;
+        return result;
+    }
+
+    private static bool TryClosest(Vector2 point, List<Segment> segments, float reach, out Vector2 closest, out float distance)
+    {
+        closest = point;
+        distance = float.MaxValue;
+        for (int i = 0; i < segments.Count; i++)
+        {
+            Rect box = segments[i].box;
+            if (point.x < box.xMin - reach || point.x > box.xMax + reach || point.y < box.yMin - reach || point.y > box.yMax + reach)
+            {
+                continue;
+            }
+
+            Vector2 onSegment = ClosestOnSegment(point, segments[i].a, segments[i].b);
+            float candidate = Vector2.Distance(point, onSegment);
+            if (candidate >= distance) continue;
+            distance = candidate;
+            closest = onSegment;
+        }
+
+        return distance <= reach;
+    }
+
+    private static Vector2 ClosestOnSegment(Vector2 point, Vector2 a, Vector2 b)
+    {
+        Vector2 ab = b - a;
+        float lengthSquared = ab.sqrMagnitude;
+        if (lengthSquared < 1e-12f) return a;
+        return a + ab * Mathf.Clamp01(Vector2.Dot(point - a, ab) / lengthSquared);
+    }
+
+    private static List<Segment> ReadOutline(DistrictZone zone, out bool usedBounds)
+    {
+        usedBounds = false;
+        List<Segment> outline = new List<Segment>();
+        if (TryReadMesh(zone, out Vector3[] vertices, out int[] triangles))
+        {
+            CollectOutline(vertices, triangles, outline);
+        }
+
+        if (outline.Count >= 3) return outline;
 
         usedBounds = true;
-        sides.Clear();
-        AddBoundsSides(zone, sides);
-        return sides;
+        outline.Clear();
+        Bounds bounds = zone.GetWorldBounds();
+        Vector2 min = new Vector2(bounds.min.x, bounds.min.z);
+        Vector2 max = new Vector2(bounds.max.x, bounds.max.z);
+        outline.Add(MakeSegment(min, new Vector2(max.x, min.y)));
+        outline.Add(MakeSegment(new Vector2(max.x, min.y), max));
+        outline.Add(MakeSegment(max, new Vector2(min.x, max.y)));
+        outline.Add(MakeSegment(new Vector2(min.x, max.y), min));
+        return outline;
+    }
+
+    private static void CollectOutline(Vector3[] vertices, int[] triangles, List<Segment> outline)
+    {
+        Dictionary<EdgeKey, int> uses = new Dictionary<EdgeKey, int>();
+
+        for (int i = 0; i + 2 < triangles.Length; i += 3)
+        {
+            int i0 = triangles[i];
+            int i1 = triangles[i + 1];
+            int i2 = triangles[i + 2];
+            if (i0 < 0 || i1 < 0 || i2 < 0 || i0 >= vertices.Length || i1 >= vertices.Length || i2 >= vertices.Length)
+            {
+                continue;
+            }
+
+            Vector3 normal = Vector3.Cross(vertices[i1] - vertices[i0], vertices[i2] - vertices[i0]);
+            float magnitude = normal.magnitude;
+            if (magnitude <= 0f || Mathf.Abs(normal.y) < magnitude * 0.5f) continue;
+
+            Count(uses, i0, i1);
+            Count(uses, i1, i2);
+            Count(uses, i2, i0);
+        }
+
+        foreach (KeyValuePair<EdgeKey, int> pair in uses)
+        {
+            if (pair.Value != 1) continue;
+            Vector3 p = vertices[pair.Key.lo];
+            Vector3 q = vertices[pair.Key.hi];
+            outline.Add(MakeSegment(new Vector2(p.x, p.z), new Vector2(q.x, q.z)));
+        }
+    }
+
+    private static void Count(Dictionary<EdgeKey, int> uses, int indexA, int indexB)
+    {
+        EdgeKey key = new EdgeKey
+        {
+            lo = Mathf.Min(indexA, indexB),
+            hi = Mathf.Max(indexA, indexB)
+        };
+
+        uses.TryGetValue(key, out int count);
+        uses[key] = count + 1;
+    }
+
+    private static Segment MakeSegment(Vector2 a, Vector2 b)
+    {
+        return new Segment
+        {
+            a = a,
+            b = b,
+            box = Rect.MinMaxRect(Mathf.Min(a.x, b.x), Mathf.Min(a.y, b.y), Mathf.Max(a.x, b.x), Mathf.Max(a.y, b.y))
+        };
     }
 
     private static bool TryReadMesh(DistrictZone zone, out Vector3[] vertices, out int[] triangles)
@@ -451,380 +546,5 @@ public static class ZoneTravelGraphBuilder
             Debug.LogWarning($"Zone travel graph: could not read '{zone.SectorName}'. Using its bounding box. {exception.Message}", zone);
             return false;
         }
-    }
-
-    private static void CollectLateralSides(
-        Vector3[] vertices,
-        int[] triangles,
-        float normalLimit,
-        Vector2 center,
-        List<LateralSide> sides)
-    {
-        Dictionary<EdgeKey, EdgeInfo> edges = new Dictionary<EdgeKey, EdgeInfo>();
-
-        for (int i = 0; i + 2 < triangles.Length; i += 3)
-        {
-            int i0 = triangles[i];
-            int i1 = triangles[i + 1];
-            int i2 = triangles[i + 2];
-            if (i0 < 0 || i1 < 0 || i2 < 0 || i0 >= vertices.Length || i1 >= vertices.Length || i2 >= vertices.Length)
-            {
-                continue;
-            }
-
-            Vector3 p0 = vertices[i0];
-            Vector3 p1 = vertices[i1];
-            Vector3 p2 = vertices[i2];
-            Vector3 normal = Vector3.Cross(p1 - p0, p2 - p0);
-            float magnitude = normal.magnitude;
-            if (magnitude < 1e-6f) continue;
-            normal /= magnitude;
-            if (Mathf.Abs(normal.y) > normalLimit) continue;
-
-            Vector2 outward = new Vector2(normal.x, normal.z);
-            if (outward.sqrMagnitude < 1e-6f) continue;
-            outward.Normalize();
-
-            AddEdge(edges, i0, i1, p0, p1, outward);
-            AddEdge(edges, i1, i2, p1, p2, outward);
-            AddEdge(edges, i2, i0, p2, p0, outward);
-        }
-
-        foreach (KeyValuePair<EdgeKey, EdgeInfo> pair in edges)
-        {
-            EdgeInfo info = pair.Value;
-            if (info.count != 1) continue;
-
-            Vector2 a = new Vector2(info.p.x, info.p.z);
-            Vector2 b = new Vector2(info.q.x, info.q.z);
-            if ((b - a).sqrMagnitude < 0.0004f) continue;
-
-            Vector2 outward = info.outward;
-            Vector2 mid = (a + b) * 0.5f;
-            if (Vector2.Dot(outward, mid - center) < 0f) outward = -outward;
-
-            sides.Add(new LateralSide
-            {
-                a = a,
-                b = b,
-                outward = outward,
-                height = (info.p.y + info.q.y) * 0.5f
-            });
-        }
-    }
-
-    private static void AddEdge(
-        Dictionary<EdgeKey, EdgeInfo> edges,
-        int indexA,
-        int indexB,
-        Vector3 p,
-        Vector3 q,
-        Vector2 outward)
-    {
-        EdgeKey key = new EdgeKey
-        {
-            lo = Mathf.Min(indexA, indexB),
-            hi = Mathf.Max(indexA, indexB)
-        };
-
-        if (!edges.TryGetValue(key, out EdgeInfo info))
-        {
-            edges[key] = new EdgeInfo
-            {
-                count = 1,
-                p = p,
-                q = q,
-                outward = outward
-            };
-            return;
-        }
-
-        info.count++;
-    }
-
-    private static List<LateralSide> HullSides(List<LateralSide> sides)
-    {
-        List<Vector2> points = new List<Vector2>();
-        float height = 0f;
-        for (int i = 0; i < sides.Count; i++)
-        {
-            points.Add(sides[i].a);
-            points.Add(sides[i].b);
-            height += sides[i].height;
-        }
-
-        height /= Mathf.Max(1, sides.Count);
-        List<Vector2> hull = ConvexHull(points);
-        if (hull.Count < 3) return sides;
-
-        Vector2 center = Vector2.zero;
-        for (int i = 0; i < hull.Count; i++) center += hull[i];
-        center /= hull.Count;
-
-        List<LateralSide> result = new List<LateralSide>();
-        for (int i = 0; i < hull.Count; i++)
-        {
-            AddEdge(result, hull[i], hull[(i + 1) % hull.Count], height, center);
-        }
-
-        return result.Count >= 3 ? result : sides;
-    }
-
-    private static List<Vector2> ConvexHull(List<Vector2> points)
-    {
-        points.Sort((p, q) =>
-        {
-            int byX = p.x.CompareTo(q.x);
-            return byX != 0 ? byX : p.y.CompareTo(q.y);
-        });
-
-        List<Vector2> unique = new List<Vector2>();
-        for (int i = 0; i < points.Count; i++)
-        {
-            if (unique.Count == 0 || (unique[unique.Count - 1] - points[i]).sqrMagnitude > 0.0001f)
-            {
-                unique.Add(points[i]);
-            }
-        }
-
-        if (unique.Count < 3) return unique;
-
-        List<Vector2> hull = new List<Vector2>();
-        for (int i = 0; i < unique.Count; i++)
-        {
-            while (hull.Count >= 2 && Cross(hull[hull.Count - 2], hull[hull.Count - 1], unique[i]) <= 0f)
-            {
-                hull.RemoveAt(hull.Count - 1);
-            }
-
-            hull.Add(unique[i]);
-        }
-
-        int lowerCount = hull.Count + 1;
-        for (int i = unique.Count - 2; i >= 0; i--)
-        {
-            while (hull.Count >= lowerCount && Cross(hull[hull.Count - 2], hull[hull.Count - 1], unique[i]) <= 0f)
-            {
-                hull.RemoveAt(hull.Count - 1);
-            }
-
-            hull.Add(unique[i]);
-        }
-
-        if (hull.Count > 1) hull.RemoveAt(hull.Count - 1);
-        return hull;
-    }
-
-    private static float Cross(Vector2 a, Vector2 b, Vector2 c)
-    {
-        Vector2 ab = b - a;
-        Vector2 ac = c - a;
-        return ab.x * ac.y - ab.y * ac.x;
-    }
-
-    private static void MergeSides(List<LateralSide> sides)
-    {
-        const float join = 0.15f;
-        const float align = 0.98f;
-        bool changed = true;
-        while (changed)
-        {
-            changed = false;
-            for (int i = 0; i < sides.Count && !changed; i++)
-            {
-                for (int j = i + 1; j < sides.Count; j++)
-                {
-                    if (!TryMerge(sides[i], sides[j], join, align, out LateralSide merged)) continue;
-                    sides[i] = merged;
-                    sides.RemoveAt(j);
-                    changed = true;
-                    break;
-                }
-            }
-        }
-    }
-
-    private static bool TryMerge(LateralSide a, LateralSide b, float join, float align, out LateralSide merged)
-    {
-        merged = default;
-        Vector2 direction = b.b - b.a;
-        float lengthA = (a.b - a.a).magnitude;
-        float lengthB = direction.magnitude;
-        if (lengthA < 0.001f || lengthB < 0.001f) return false;
-
-        Vector2 da = (a.b - a.a) / lengthA;
-        Vector2 db = direction / lengthB;
-        if (Mathf.Abs(Vector2.Dot(da, db)) < align) return false;
-        if (DistanceToLine(b.a, a.a, da) > join || DistanceToLine(b.b, a.a, da) > join) return false;
-
-        float b0 = Vector2.Dot(b.a - a.a, da);
-        float b1 = Vector2.Dot(b.b - a.a, da);
-        float bMin = Mathf.Min(b0, b1);
-        float bMax = Mathf.Max(b0, b1);
-        if (bMin > lengthA + join || 0f > bMax + join) return false;
-
-        float start = Mathf.Min(0f, bMin);
-        float end = Mathf.Max(lengthA, bMax);
-        Vector2 outward = a.outward + b.outward;
-        if (outward.sqrMagnitude < 0.0001f) outward = a.outward;
-        else outward.Normalize();
-
-        merged = new LateralSide
-        {
-            a = a.a + da * start,
-            b = a.a + da * end,
-            outward = outward,
-            height = (a.height + b.height) * 0.5f
-        };
-        return true;
-    }
-
-    private static float DistanceToLine(Vector2 point, Vector2 origin, Vector2 directionUnit)
-    {
-        Vector2 relative = point - origin;
-        Vector2 along = directionUnit * Vector2.Dot(relative, directionUnit);
-        return (relative - along).magnitude;
-    }
-
-    private static void AddBoundsSides(DistrictZone zone, List<LateralSide> sides)
-    {
-        Bounds bounds = zone.GetWorldBounds();
-        Vector3 center = bounds.center;
-        Vector3 extents = bounds.extents;
-        Vector2 p0 = new Vector2(center.x - extents.x, center.z - extents.z);
-        Vector2 p1 = new Vector2(center.x + extents.x, center.z - extents.z);
-        Vector2 p2 = new Vector2(center.x + extents.x, center.z + extents.z);
-        Vector2 p3 = new Vector2(center.x - extents.x, center.z + extents.z);
-        Vector2 flatCenter = new Vector2(center.x, center.z);
-        AddEdge(sides, p0, p1, center.y, flatCenter);
-        AddEdge(sides, p1, p2, center.y, flatCenter);
-        AddEdge(sides, p2, p3, center.y, flatCenter);
-        AddEdge(sides, p3, p0, center.y, flatCenter);
-    }
-
-    private static void AddEdge(List<LateralSide> sides, Vector2 a, Vector2 b, float height, Vector2 center)
-    {
-        Vector2 edge = b - a;
-        if (edge.sqrMagnitude < 0.0004f) return;
-
-        Vector2 outward = new Vector2(-edge.y, edge.x);
-        Vector2 mid = (a + b) * 0.5f;
-        if (Vector2.Dot(outward, mid - center) < 0f) outward = -outward;
-        outward.Normalize();
-
-        sides.Add(new LateralSide
-        {
-            a = a,
-            b = b,
-            outward = outward,
-            height = height
-        });
-    }
-
-    private static bool TryContact(
-        LateralSide a,
-        LateralSide b,
-        float maxGap,
-        float minOverlap,
-        out float gap,
-        out Vector2 contactA,
-        out Vector2 contactB)
-    {
-        gap = ClosestSegment(a.a, a.b, b.a, b.b, out contactA, out contactB);
-        if (gap > maxGap) return false;
-
-        Vector2 da = a.b - a.a;
-        Vector2 db = b.b - b.a;
-        float lengthA = da.magnitude;
-        float lengthB = db.magnitude;
-        if (lengthA < 0.02f || lengthB < 0.02f) return false;
-        da /= lengthA;
-        db /= lengthB;
-        if (Mathf.Abs(Vector2.Dot(da, db)) < 0.75f) return false;
-
-        Vector2 dir = contactB - contactA;
-        if (dir.sqrMagnitude < 1e-6f)
-        {
-            if (Vector2.Dot(a.outward, b.outward) > -0.25f) return false;
-        }
-        else
-        {
-            dir.Normalize();
-            if (Vector2.Dot(a.outward, dir) < 0.25f) return false;
-            if (Vector2.Dot(b.outward, -dir) < 0.25f) return false;
-        }
-
-        return OverlapAtLeast(a.a, a.b, b.a, b.b, da, minOverlap);
-    }
-
-    private static bool OverlapAtLeast(Vector2 a0, Vector2 a1, Vector2 b0, Vector2 b1, Vector2 axis, float min)
-    {
-        float aMin = Mathf.Min(Vector2.Dot(a0, axis), Vector2.Dot(a1, axis));
-        float aMax = Mathf.Max(Vector2.Dot(a0, axis), Vector2.Dot(a1, axis));
-        float bMin = Mathf.Min(Vector2.Dot(b0, axis), Vector2.Dot(b1, axis));
-        float bMax = Mathf.Max(Vector2.Dot(b0, axis), Vector2.Dot(b1, axis));
-        return Mathf.Min(aMax, bMax) - Mathf.Max(aMin, bMin) >= min;
-    }
-
-    private static float ClosestSegment(
-        Vector2 p1,
-        Vector2 q1,
-        Vector2 p2,
-        Vector2 q2,
-        out Vector2 c1,
-        out Vector2 c2)
-    {
-        Vector2 d1 = q1 - p1;
-        Vector2 d2 = q2 - p2;
-        Vector2 r = p1 - p2;
-        float a = Vector2.Dot(d1, d1);
-        float e = Vector2.Dot(d2, d2);
-        float f = Vector2.Dot(d2, r);
-        const float epsilon = 1e-6f;
-        float s;
-        float t;
-
-        if (a <= epsilon && e <= epsilon)
-        {
-            c1 = p1;
-            c2 = p2;
-            return Vector2.Distance(c1, c2);
-        }
-
-        if (a <= epsilon)
-        {
-            s = 0f;
-            t = Mathf.Clamp01(f / e);
-        }
-        else
-        {
-            float c = Vector2.Dot(d1, r);
-            if (e <= epsilon)
-            {
-                t = 0f;
-                s = Mathf.Clamp01(-c / a);
-            }
-            else
-            {
-                float b = Vector2.Dot(d1, d2);
-                float denom = a * e - b * b;
-                s = denom > epsilon ? Mathf.Clamp01((b * f - c * e) / denom) : 0f;
-                t = (b * s + f) / e;
-                if (t < 0f)
-                {
-                    t = 0f;
-                    s = Mathf.Clamp01(-c / a);
-                }
-                else if (t > 1f)
-                {
-                    t = 1f;
-                    s = Mathf.Clamp01((b - c) / a);
-                }
-            }
-        }
-
-        c1 = p1 + d1 * s;
-        c2 = p2 + d2 * t;
-        return Vector2.Distance(c1, c2);
     }
 }

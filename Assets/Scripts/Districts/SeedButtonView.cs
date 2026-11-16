@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class SeedButtonView : MonoBehaviour
 {
     private static readonly string[] Tiers = { "I", "II", "III" };
+    private static readonly System.Globalization.TextInfo TitleCase = System.Globalization.CultureInfo.InvariantCulture.TextInfo;
 
     [SerializeField] private TMP_Text titleText;
     [SerializeField] private TMP_Text descriptionText;
@@ -27,7 +28,8 @@ public class SeedButtonView : MonoBehaviour
 
         if (titleText != null)
         {
-            titleText.text = selected ? $"{selectedPrefix}{seed.Title}" : seed.Title;
+            string title = TitleCase.ToTitleCase(seed.Title.ToLowerInvariant());
+            titleText.text = selected ? $"{selectedPrefix}{title}" : title;
         }
 
         if (descriptionText != null)
@@ -50,7 +52,7 @@ public class SeedButtonView : MonoBehaviour
 
         if (tierText != null)
         {
-            tierText.text = seed.DifficultyValue >= 1 && seed.DifficultyValue <= Tiers.Length ? $"TIER {Tiers[seed.DifficultyValue - 1]}" : "-";
+            tierText.text = $"TIER {Tiers[Mathf.Clamp(seed.DifficultyValue, 1, Tiers.Length) - 1]}";
         }
 
         if (turnsText != null)
@@ -61,7 +63,7 @@ public class SeedButtonView : MonoBehaviour
         if (resourceText != null)
         {
             bool hasResource = seed.Region.TryGetResource(out Resource resource);
-            resourceText.text = hasResource ? resource.ToString().ToUpperInvariant() : "-";
+            resourceText.text = hasResource ? resource.ToString().ToUpperInvariant() : "ANY DISTRICT";
             if (resourceIcon != null)
             {
                 resourceIcon.sprite = hasResource ? resourceIcons.Get(resource) : null;

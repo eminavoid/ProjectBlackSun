@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerClergy : MonoBehaviour
 {
     [Header("Ordination")]
-    [Tooltip("Training points for a new cleric. Each turn the cult earns (2 x Learning + Stewardship) / 2, both stats counted from 10.")]
+    [Tooltip("Training points for a new cleric. Each turn the cult earns (2 x Learning + Stewardship) / 2, rounded up, both stats counted from 10.")]
     [SerializeField, Min(1)] private int ordinationCost = 50;
     [Tooltip("Wealth to ordain a cleric at once from the clerics menu.")]
     [SerializeField, Min(0)] private int ordainPrice = 60;
@@ -77,6 +77,6 @@ public class PlayerClergy : MonoBehaviour
 
     public static int TrainingFor(int learningPoints, int stewardshipPoints)
     {
-        return (2 * (10 + learningPoints) + 10 + stewardshipPoints) / 2;
+        return (2 * (10 + learningPoints) + 10 + stewardshipPoints + 1) / 2;
     }
 }

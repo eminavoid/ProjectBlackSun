@@ -71,7 +71,7 @@ public class MapStatsPanel : MonoBehaviour
     {
         if (selection == null || !selection.TryPickPlayableZone(screenPosition, out DistrictZone zone) || zone == null) return;
 
-        if (MapViewLod.IsClose(InfluenceOverlaySettings.LoadOrCreate())) OpenNode(zone);
+        if (MapViewLod.IsClose) OpenNode(zone);
         else OpenDistrict(zone.District);
     }
 

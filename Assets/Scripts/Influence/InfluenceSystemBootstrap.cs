@@ -9,7 +9,6 @@ public class InfluenceSystemBootstrap : MonoBehaviour
     [SerializeField] private DistrictProductionConfig productionConfig;
     [SerializeField] private PlayerStats playerStats;
     [SerializeField] private bool ensureAiController = true;
-    [SerializeField] private bool ensureInfluenceOverlay;
     [SerializeField] private bool ensureIntentOverlay = true;
 
     public static void EnsureInScene()
@@ -51,11 +50,6 @@ public class InfluenceSystemBootstrap : MonoBehaviour
         if (FindAnyObjectByType<ZoneTravelGraph>() == null)
         {
             gameObject.AddComponent<ZoneTravelGraph>();
-        }
-
-        if (ensureInfluenceOverlay && FindAnyObjectByType<InfluenceOverlayRenderer>() == null)
-        {
-            gameObject.AddComponent<InfluenceOverlayRenderer>();
         }
 
         if (ensureIntentOverlay)

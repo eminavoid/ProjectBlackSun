@@ -51,6 +51,8 @@ public class MainMenu : MonoBehaviour
             intro.Insert(1.6f + i * 0.14f, rect.DOAnchorPosX(restX, 0.6f).SetEase(Ease.OutCubic));
         }
 
+        intro.SetLink(gameObject);
+
         eclipseGlow.DOFade(0.25f, 2.6f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine).SetLink(gameObject);
     }
 
@@ -109,6 +111,6 @@ public class MainMenu : MonoBehaviour
     {
         curtain.blocksRaycasts = true;
         curtain.DOKill();
-        curtain.DOFade(1f, duration).SetEase(Ease.InSine).OnComplete(then);
+        curtain.DOFade(1f, duration).SetEase(Ease.InSine).SetLink(gameObject).OnComplete(then);
     }
 }

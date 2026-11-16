@@ -52,9 +52,10 @@ public class ZoneTravelLink
 /// </summary>
 public class ZoneTravelGraph : MonoBehaviour
 {
-    [SerializeField] private float touchThreshold = 1.25f;
-    [SerializeField] private float minOverlap = 0.45f;
-    [SerializeField] private float lateralNormalLimit = 0.45f;
+    [Tooltip("Widest street two zones can face each other across and still be neighbors.")]
+    [SerializeField] private float streetWidth = 0.2f;
+    [Tooltip("Border two zones must face each other along. Corners that only meet across an intersection stay apart.")]
+    [SerializeField] private float minFrontage = 0.08f;
     [SerializeField] private float gapWeight = 0.15f;
     [SerializeField] private int borderSurcharge = 2;
     [SerializeField] private bool showOverlay = true;
@@ -81,9 +82,8 @@ public class ZoneTravelGraph : MonoBehaviour
     public bool HasLegacyEdgeList => HasUsableBake();
     public IReadOnlyList<ZoneTravelEdge> LegacyEdges => edges;
 
-    public float TouchThreshold => Mathf.Max(0f, touchThreshold);
-    public float MinOverlap => Mathf.Max(0f, minOverlap);
-    public float LateralNormalLimit => Mathf.Clamp(lateralNormalLimit, 0f, 0.99f);
+    public float StreetWidth => Mathf.Max(0.001f, streetWidth);
+    public float MinFrontage => Mathf.Max(0f, minFrontage);
     public int BorderSurcharge => Mathf.Max(0, borderSurcharge);
     public IReadOnlyList<ZoneTravelEdge> Edges => HasUsableBake() ? edges : fallbackEdges;
 
