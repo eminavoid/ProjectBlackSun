@@ -39,7 +39,7 @@ MonoBehaviour:
         - weight: 20
           module:
           - rid: 107151343762276428
-          statUsed: 0
+          statUsed: 4
           output: Our followers find peace in our words. His Gaze is upon all, and
             even the worst shall pass. This is enough to calm them, though they remain
             visibly troubled.
@@ -49,15 +49,18 @@ MonoBehaviour:
         resource: 4
         minAmount: -10
         maxAmount: -10
+        refund: 0
     - rid: 107151343762276427
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: -10
         maxAmount: -10
+        refund: 0
     - rid: 107151343762276428
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 4
         minAmount: -5
         maxAmount: -5
+        refund: 0

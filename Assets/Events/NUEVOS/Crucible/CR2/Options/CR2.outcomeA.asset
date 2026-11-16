@@ -38,7 +38,7 @@ MonoBehaviour:
         - weight: 50
           module:
           - rid: 2174037052531671142
-          statUsed: 0
+          statUsed: 2
           output: Our men make short work of the strikers. The guilds are grateful
             and eager to return the favor
         - weight: 50

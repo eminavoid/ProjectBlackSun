@@ -30,7 +30,7 @@ MonoBehaviour:
         - weight: 60
           module:
           - rid: 107151359355650148
-          statUsed: 0
+          statUsed: 2
           output: A nocturnal visit is all it takes for the director to abandon his
             patrons. Our men can be so persuasive when the need arises... it is their
             trade, after all!
@@ -48,15 +48,18 @@ MonoBehaviour:
         resource: 4
         minAmount: 5
         maxAmount: 5
+        refund: 0
     - rid: 107151359355650149
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: -20
         maxAmount: -20
+        refund: 0
     - rid: 107151359355650150
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 4
         minAmount: -10
         maxAmount: -10
+        refund: 0

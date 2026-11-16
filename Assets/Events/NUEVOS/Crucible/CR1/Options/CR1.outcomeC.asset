@@ -37,7 +37,7 @@ MonoBehaviour:
         - weight: 85
           module:
           - rid: 2174037052531671136
-          statUsed: 0
+          statUsed: 1
           output: Now we are truly well supplied!
         - weight: 15
           module:
@@ -50,9 +50,11 @@ MonoBehaviour:
         resource: 5
         minAmount: 100
         maxAmount: 100
+        refund: 0
     - rid: 2174037052531671137
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 4
         minAmount: -10
         maxAmount: -10
+        refund: 0

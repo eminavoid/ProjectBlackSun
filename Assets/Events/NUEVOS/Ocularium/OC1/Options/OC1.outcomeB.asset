@@ -38,7 +38,7 @@ MonoBehaviour:
         - weight: 25
           module:
           - rid: 2174037052531671132
-          statUsed: 0
+          statUsed: 3
           output: The entire temple is brought to tears by the young prophet's stirring
             words! Faith in our sect has reached unprecedented heights!
         - weight: 75
@@ -54,9 +54,11 @@ MonoBehaviour:
         resource: 1
         minAmount: 50
         maxAmount: 50
+        refund: 0
     - rid: 2174037052531671133
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: -50
         maxAmount: -50
+        refund: 0

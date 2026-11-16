@@ -32,7 +32,7 @@ MonoBehaviour:
           module:
           - rid: 107151343762276421
           - rid: 107151343762276422
-          statUsed: 0
+          statUsed: 2
           output: Our men track the culprits to a small rival parish, which is promptly
             stormed and its inhabitants beaten. We have not only defended our followers
             but proven that the Beholder favors us.
@@ -57,27 +57,32 @@ MonoBehaviour:
         resource: 4
         minAmount: 10
         maxAmount: 10
+        refund: 0
     - rid: 107151343762276422
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: 20
         maxAmount: 20
+        refund: 0
     - rid: 107151343762276423
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 4
         minAmount: -10
         maxAmount: -10
+        refund: 0
     - rid: 107151343762276424
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: -20
         maxAmount: -20
+        refund: 0
     - rid: 107151343762276425
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: -5
         maxAmount: -5
+        refund: 0

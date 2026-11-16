@@ -31,7 +31,7 @@ MonoBehaviour:
         - weight: 75
           module:
           - rid: 2174037531835236781
-          statUsed: 0
+          statUsed: 1
           output: The guilds agree to lower their rates. Quite the bargain!
         - weight: 25
           module: []

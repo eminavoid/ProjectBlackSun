@@ -31,7 +31,7 @@ MonoBehaviour:
         - weight: 100
           module:
           - rid: 2174037052531671262
-          statUsed: 0
+          statUsed: 4
           output: You shall make a fine cleric one day, lad!
     - rid: 2174037052531671262
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
@@ -39,3 +39,4 @@ MonoBehaviour:
         resource: 1
         minAmount: 25
         maxAmount: 25
+        refund: 0

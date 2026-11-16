@@ -38,7 +38,7 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671142
           - rid: 2174037052531671249
-          statUsed: 0
+          statUsed: 2
           output: The stall is quietly shut down. The common folk miss its wares.
         - weight: 50
           module:

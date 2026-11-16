@@ -30,7 +30,7 @@ MonoBehaviour:
         modules:
         - weight: 80
           module: []
-          statUsed: 0
+          statUsed: 4
           output: The outbreak passes without much fuss; it truly was nothing worse
             than a common cold.
         - weight: 20
@@ -45,3 +45,4 @@ MonoBehaviour:
         resource: 3
         minAmount: -20
         maxAmount: -20
+        refund: 0

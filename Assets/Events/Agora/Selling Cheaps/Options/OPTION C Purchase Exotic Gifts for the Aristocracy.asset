@@ -37,7 +37,7 @@ MonoBehaviour:
         - weight: 50
           module:
           - rid: 107151359355650081
-          statUsed: 0
+          statUsed: 1
           output: Such reverence! The aristocrats are fascinated by our offerings.
             The exotic nature of the gifts has given us the edge we required, as
             it seems we have started a new trend among the nobility. They shall not
@@ -56,9 +56,11 @@ MonoBehaviour:
         resource: 2
         minAmount: 1
         maxAmount: 1
+        refund: 0
     - rid: 107151359355650082
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 2
         minAmount: 1
         maxAmount: 1
+        refund: 0

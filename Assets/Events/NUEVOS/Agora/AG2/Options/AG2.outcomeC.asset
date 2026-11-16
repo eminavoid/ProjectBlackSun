@@ -38,7 +38,7 @@ MonoBehaviour:
         - weight: 30
           module:
           - rid: 2174037052531671150
-          statUsed: 0
+          statUsed: 1
           output: The merchant agrees, securing a mutually beneficial partnership.
         - weight: 70
           module:
@@ -53,9 +53,11 @@ MonoBehaviour:
         resource: 0
         minAmount: 100
         maxAmount: 100
+        refund: 0
     - rid: 2174037052531671151
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: -10
         maxAmount: -10
+        refund: 0

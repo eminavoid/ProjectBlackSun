@@ -37,7 +37,7 @@ MonoBehaviour:
         - weight: 80
           module:
           - rid: 107151343762276418
-          statUsed: 0
+          statUsed: 5
           output: "Gold serves well to soothe the Overseer\u2019s temper. However,
             his men remain restless, fearing the future intervention of other rival
             sects."
@@ -57,3 +57,4 @@ MonoBehaviour:
         resource: 4
         minAmount: -5
         maxAmount: -5
+        refund: 0

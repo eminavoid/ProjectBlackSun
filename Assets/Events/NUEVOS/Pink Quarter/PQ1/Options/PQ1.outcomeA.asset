@@ -32,7 +32,7 @@ MonoBehaviour:
         - weight: 75
           module:
           - rid: 2174037531835236791
-          statUsed: 0
+          statUsed: 2
           output: We deal with the cleric in total secrecy. No one shall ever uncover
             what transpired here.
         - weight: 25

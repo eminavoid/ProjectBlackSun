@@ -38,7 +38,7 @@ MonoBehaviour:
           module:
           - rid: 107151343762276451
           - rid: 107151343762276452
-          statUsed: 0
+          statUsed: 2
           output: "Our followers discover where this \u201Corator\u201D dwells and
             pay him a nocturnal visit. Coincidentally, he does not appear in the
             plaza the following morning, nor any day thereafter."
@@ -67,33 +67,39 @@ MonoBehaviour:
         resource: 1
         minAmount: 20
         maxAmount: 20
+        refund: 0
     - rid: 107151343762276452
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: 10
         maxAmount: 10
+        refund: 0
     - rid: 107151343762276453
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: -20
         maxAmount: -20
+        refund: 0
     - rid: 107151343762276455
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: -25
         maxAmount: -25
+        refund: 0
     - rid: 107151343762276456
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 4
         minAmount: -10
         maxAmount: -10
+        refund: 0
     - rid: 107151343762276457
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: -20
         maxAmount: -20
+        refund: 0

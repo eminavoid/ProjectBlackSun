@@ -37,7 +37,7 @@ MonoBehaviour:
         - weight: 75
           module:
           - rid: 2174037052531671128
-          statUsed: 0
+          statUsed: 1
           output: More materials are always welcome.
         - weight: 25
           module: []
@@ -49,3 +49,4 @@ MonoBehaviour:
         resource: 5
         minAmount: 50
         maxAmount: 50
+        refund: 0

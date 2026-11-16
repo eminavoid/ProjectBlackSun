@@ -32,7 +32,7 @@ MonoBehaviour:
         - weight: 75
           module:
           - rid: 2174037052531671128
-          statUsed: 0
+          statUsed: 3
           output: The lad delivers a masterclass in rhetoric! The congregation hangs
             on his every word!
         - weight: 25
@@ -48,12 +48,14 @@ MonoBehaviour:
         resource: 1
         minAmount: 25
         maxAmount: 25
+        refund: 0
     - rid: 2174037052531671129
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: -25
         maxAmount: -25
+        refund: 0
     - rid: 2174037052531671260
       type: {class: DoNothing, ns: , asm: Assembly-CSharp}
       data: 

@@ -30,7 +30,7 @@ MonoBehaviour:
         - weight: 30
           module:
           - rid: 107151358184390666
-          statUsed: 0
+          statUsed: 5
           output: The cleric speaks with absolute certainty. Our Inquisitor could
             not determine if the visions are genuine or merely delusions, but there
             seems to be no harm in allowing him to minister to the masses. However,
@@ -55,9 +55,11 @@ MonoBehaviour:
         resource: 1
         minAmount: 10
         maxAmount: 10
+        refund: 0
     - rid: 107151358184390667
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 4
         minAmount: -10
         maxAmount: -10
+        refund: 0

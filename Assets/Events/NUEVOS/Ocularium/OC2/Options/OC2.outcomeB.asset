@@ -38,7 +38,7 @@ MonoBehaviour:
         - weight: 50
           module:
           - rid: 2174037052531671146
-          statUsed: 0
+          statUsed: 4
           output: The eclipse bore no divine essence, yet the masses took it as such.
             It may have been somewhat extravagant, but our festival was warmly embraced
             by the populace.
@@ -55,9 +55,11 @@ MonoBehaviour:
         resource: 1
         minAmount: 50
         maxAmount: 50
+        refund: 0
     - rid: 2174037052531671147
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: -10
         maxAmount: -10
+        refund: 0

@@ -30,7 +30,7 @@ MonoBehaviour:
         - weight: 25
           module:
           - rid: 2174037371569569812
-          statUsed: 0
+          statUsed: 2
           output: The sheer force of our zealots beats some sense into the flock;
             our temples are packed once more!
         - weight: 75
@@ -45,9 +45,11 @@ MonoBehaviour:
         resource: 1
         minAmount: 50
         maxAmount: 50
+        refund: 0
     - rid: 2174037371569569813
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: -40
         maxAmount: -40
+        refund: 0

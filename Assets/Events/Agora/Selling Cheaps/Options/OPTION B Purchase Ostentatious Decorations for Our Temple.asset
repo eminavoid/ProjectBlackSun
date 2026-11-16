@@ -37,7 +37,7 @@ MonoBehaviour:
         - weight: 50
           module:
           - rid: 107151359355650076
-          statUsed: 0
+          statUsed: 4
           output: The merchant may have been an outlander, but it is impossible to
             deny that his ornaments are truly breathtaking. Their modest price allowed
             us to adorn many of our temples, granting us newfound legitimacy in the
@@ -57,9 +57,11 @@ MonoBehaviour:
         resource: 1
         minAmount: 30
         maxAmount: 30
+        refund: 0
     - rid: 107151359355650077
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: -30
         maxAmount: -30
+        refund: 0

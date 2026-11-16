@@ -37,13 +37,13 @@ MonoBehaviour:
         - weight: 10
           module:
           - rid: 5841915870972215301
-          statUsed: 0
+          statUsed: 3
           output: The collection is a resounding success! The faithful flock to our
             aid and fill our coffers with tribute!
         - weight: 60
           module:
           - rid: 5841915870972215302
-          statUsed: 0
+          statUsed: 1
           output: The faithful do their part! Though they possess little, our flock
             recognizes the crisis we are facing. May the Beholder bless them!
         - weight: 20
@@ -66,27 +66,32 @@ MonoBehaviour:
         resource: 0
         minAmount: 60
         maxAmount: 60
+        refund: 0
     - rid: 5841915870972215302
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 0
         minAmount: 30
         maxAmount: 30
+        refund: 0
     - rid: 5841915870972215303
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 0
         minAmount: 10
         maxAmount: 10
+        refund: 0
     - rid: 5841915870972215304
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 0
         minAmount: 10
         maxAmount: 10
+        refund: 0
     - rid: 5841915870972215305
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: -30
         maxAmount: -30
+        refund: 0

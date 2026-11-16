@@ -30,7 +30,7 @@ MonoBehaviour:
         - weight: 45
           module:
           - rid: 107151359355650173
-          statUsed: 0
+          statUsed: 2
           output: What is better than having a talented painter under our sway? Having
             that same artist dedicate his skills to slandering our primary rival!
         - weight: 45
@@ -54,15 +54,18 @@ MonoBehaviour:
         resource: 1
         minAmount: 40
         maxAmount: 40
+        refund: 0
     - rid: 107151359355650174
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 4
         minAmount: -10
         maxAmount: -10
+        refund: 0
     - rid: 107151359355650175
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: -55
         maxAmount: -55
+        refund: 0

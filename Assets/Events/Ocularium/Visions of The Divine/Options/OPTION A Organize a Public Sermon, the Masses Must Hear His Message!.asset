@@ -31,7 +31,7 @@ MonoBehaviour:
         - weight: 45
           module:
           - rid: 107151358184390657
-          statUsed: 0
+          statUsed: 4
           output: The prophet speaks with undeniable conviction, enough to stir the
             hearts of all present. Even if his divine visions do not truly descend
             from the Beholder, it is undeniable that his words inspire the faithful!
@@ -59,18 +59,21 @@ MonoBehaviour:
         resource: 1
         minAmount: 30
         maxAmount: 30
+        refund: 0
     - rid: 107151358184390658
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: -30
         maxAmount: -30
+        refund: 0
     - rid: 107151358184390659
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: 50
         maxAmount: 50
+        refund: 0
     - rid: 107151358184390660
       type: {class: DoNothing, ns: , asm: Assembly-CSharp}
       data: 

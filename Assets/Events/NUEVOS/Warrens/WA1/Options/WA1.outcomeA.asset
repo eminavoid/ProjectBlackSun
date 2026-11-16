@@ -33,7 +33,8 @@ MonoBehaviour:
           module:
           - rid: 2174037531835236795
           - rid: 2174037531835236796
-          statUsed: 0
+          - rid: 5546513177521160324
+          statUsed: 3
           output: We are hailed as the saviors of the hour! Praised be the Beholder
             for placing us upon this earth!
         - weight: 70
@@ -64,4 +65,11 @@ MonoBehaviour:
         resource: 3
         minAmount: -25
         maxAmount: -25
+        refund: 0
+    - rid: 5546513177521160324
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: 15
+        maxAmount: 15
         refund: 0

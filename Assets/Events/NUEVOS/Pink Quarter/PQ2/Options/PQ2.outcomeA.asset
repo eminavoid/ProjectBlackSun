@@ -31,7 +31,7 @@ MonoBehaviour:
         - weight: 20
           module:
           - rid: 2174037052531671142
-          statUsed: 0
+          statUsed: 1
           output: A public scandal erupts and the aristocrat is dragged away in chains.
             That will teach the rest not to cross us.
         - weight: 80
@@ -46,12 +46,14 @@ MonoBehaviour:
         resource: 6
         minAmount: 25
         maxAmount: 25
+        refund: 0
     - rid: 2174037052531671143
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 6
         minAmount: -50
         maxAmount: -50
+        refund: 0
     - rid: 2174037052531671282
       type: {class: DoNothing, ns: , asm: Assembly-CSharp}
       data: 

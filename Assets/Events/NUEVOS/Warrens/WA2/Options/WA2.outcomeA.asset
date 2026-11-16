@@ -41,7 +41,7 @@ MonoBehaviour:
           - rid: 2174037052531671142
           - rid: 2174037052531671291
           - rid: 2174037052531671293
-          statUsed: 0
+          statUsed: 3
           output: Our charitable efforts are warmly embraced.
         - weight: 30
           module:

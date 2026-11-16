@@ -30,7 +30,7 @@ MonoBehaviour:
         - weight: 50
           module:
           - rid: 107151343762276447
-          statUsed: 0
+          statUsed: 5
           output: "The Beholder is with us! Our man utterly humiliated this so-called
             \u201Corator.\u201D He exposed the fallacies of his arguments and proved
             to all that he is naught but a charlatan. The commoners themselves drove
@@ -50,9 +50,11 @@ MonoBehaviour:
         resource: 1
         minAmount: 30
         maxAmount: 30
+        refund: 0
     - rid: 107151343762276448
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: -30
         maxAmount: -30
+        refund: 0

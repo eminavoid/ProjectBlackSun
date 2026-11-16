@@ -37,7 +37,7 @@ MonoBehaviour:
         - weight: 50
           module:
           - rid: 107151359355650165
-          statUsed: 0
+          statUsed: 3
           output: Though the price is steep, can one truly place a value upon talent?
             The prodigy accepts us as his new benefactors, and our priests are already
             planning his first commission. Our sacred truths shall take form through
@@ -67,39 +67,46 @@ MonoBehaviour:
         resource: 1
         minAmount: 40
         maxAmount: 40
+        refund: 0
     - rid: 107151359355650166
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 0
         minAmount: 50
         maxAmount: 50
+        refund: 0
     - rid: 107151359355650167
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 4
         minAmount: -15
         maxAmount: -15
+        refund: 0
     - rid: 107151359355650168
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 0
         minAmount: 50
         maxAmount: 50
+        refund: 0
     - rid: 107151359355650169
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: -30
         maxAmount: -30
+        refund: 0
     - rid: 107151359355650170
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 4
         minAmount: -10
         maxAmount: -10
+        refund: 0
     - rid: 107151359355650171
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: -20
         maxAmount: -20
+        refund: 0

@@ -32,7 +32,7 @@ MonoBehaviour:
         - weight: 50
           module:
           - rid: 2174037052531671132
-          statUsed: 0
+          statUsed: 5
           output: Those with nowhere else to turn, or burdened by sick kin at home,
             are deeply grateful for our sanctuary.
         - weight: 50
@@ -48,12 +48,14 @@ MonoBehaviour:
         resource: 3
         minAmount: 10
         maxAmount: 10
+        refund: 0
     - rid: 2174037052531671133
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: -10
         maxAmount: -10
+        refund: 0
     - rid: 2174037052531671287
       type: {class: DoNothing, ns: , asm: Assembly-CSharp}
       data: 
@@ -63,3 +65,4 @@ MonoBehaviour:
         resource: 1
         minAmount: -20
         maxAmount: -20
+        refund: 0

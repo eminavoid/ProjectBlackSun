@@ -38,7 +38,7 @@ MonoBehaviour:
           module:
           - rid: 107151359355650109
           - rid: 107151359355650110
-          statUsed: 0
+          statUsed: 5
           output: The order is given and our followers mobilize. Barricades, buckets,
             and every precaution are employed to keep the waters at bay. When the
             storm finally breaks, the homes of the faithful lie in ruins, but the
@@ -70,45 +70,53 @@ MonoBehaviour:
         resource: 1
         minAmount: 20
         maxAmount: 20
+        refund: 0
     - rid: 107151359355650110
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: 40
         maxAmount: 40
+        refund: 0
     - rid: 107151359355650111
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: 10
         maxAmount: 10
+        refund: 0
     - rid: 107151359355650112
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: 20
         maxAmount: 20
+        refund: 0
     - rid: 107151359355650113
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 4
         minAmount: -15
         maxAmount: -15
+        refund: 0
     - rid: 107151359355650114
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 0
         minAmount: -40
         maxAmount: -40
+        refund: 0
     - rid: 107151359355650115
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: -10
         maxAmount: -10
+        refund: 0
     - rid: 107151359355650116
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 4
         minAmount: -15
         maxAmount: -15
+        refund: 0

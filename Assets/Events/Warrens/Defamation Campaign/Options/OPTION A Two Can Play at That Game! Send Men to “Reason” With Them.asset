@@ -39,7 +39,7 @@ MonoBehaviour:
           module:
           - rid: 107151359355650090
           - rid: 107151359355650091
-          statUsed: 0
+          statUsed: 2
           output: We dispatched our faithful to demonstrate the error of their ways...
             with their fists! Clearly, we are the superior sect, for our men gave
             them a thorough thrashing. They shall think twice before crossing us
@@ -58,21 +58,25 @@ MonoBehaviour:
         resource: 1
         minAmount: 20
         maxAmount: 20
+        refund: 0
     - rid: 107151359355650091
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: 20
         maxAmount: 20
+        refund: 0
     - rid: 107151359355650092
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: 10
         maxAmount: 10
+        refund: 0
     - rid: 107151359355650093
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: -30
         maxAmount: -30
+        refund: 0

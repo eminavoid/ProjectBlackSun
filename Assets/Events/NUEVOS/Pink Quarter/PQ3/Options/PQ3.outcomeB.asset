@@ -39,7 +39,7 @@ MonoBehaviour:
         - weight: 50
           module:
           - rid: 2174037371569569826
-          statUsed: 0
+          statUsed: 2
           output: Nothing like a brutal public punishment to drive out fear from
             the flock. Or, at the very least, point all that terror right back at
             us.
@@ -56,9 +56,11 @@ MonoBehaviour:
         resource: 6
         minAmount: 40
         maxAmount: 40
+        refund: 0
     - rid: 2174037371569569827
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: -40
         maxAmount: -40
+        refund: 0

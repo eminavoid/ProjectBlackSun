@@ -31,7 +31,7 @@ MonoBehaviour:
         - weight: 50
           module:
           - rid: 2174037531835236793
-          statUsed: 0
+          statUsed: 2
           output: 'The crowds applaud our forthrightness. Better still: they lynch
             the heretic on the spot.'
         - weight: 50

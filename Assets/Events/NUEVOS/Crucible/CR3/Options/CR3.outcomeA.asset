@@ -47,3 +47,4 @@ MonoBehaviour:
         resource: 5
         minAmount: 30
         maxAmount: 30
+        refund: 0

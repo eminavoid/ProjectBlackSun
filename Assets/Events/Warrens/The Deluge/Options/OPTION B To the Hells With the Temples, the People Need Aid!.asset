@@ -40,7 +40,7 @@ MonoBehaviour:
           - rid: 107151359355650120
           - rid: 107151359355650121
           - rid: 107151359355650122
-          statUsed: 0
+          statUsed: 3
           output: We are the talk of the town. Everyone witnessed our followers mobilizing
             to save those in need throughout the city. By the time the waters recede,
             our temples lie in ruins, but our image is untarnished.
@@ -61,45 +61,53 @@ MonoBehaviour:
         resource: 1
         minAmount: 30
         maxAmount: 30
+        refund: 0
     - rid: 107151359355650120
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 4
         minAmount: 10
         maxAmount: 10
+        refund: 0
     - rid: 107151359355650121
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: 70
         maxAmount: 70
+        refund: 0
     - rid: 107151359355650122
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 0
         minAmount: -40
         maxAmount: -40
+        refund: 0
     - rid: 107151359355650123
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: 50
         maxAmount: 50
+        refund: 0
     - rid: 107151359355650124
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: 25
         maxAmount: 25
+        refund: 0
     - rid: 107151359355650125
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 4
         minAmount: -15
         maxAmount: -15
+        refund: 0
     - rid: 107151359355650126
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 0
         minAmount: -40
         maxAmount: -40
+        refund: 0

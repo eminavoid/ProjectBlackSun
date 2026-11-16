@@ -45,7 +45,7 @@ MonoBehaviour:
         - weight: 50
           module:
           - rid: 2174037371569569822
-          statUsed: 0
+          statUsed: 3
           output: The men, along with a few good beatings handed to local thugs,
             clear the dread from the streets. Our flock can finally breathe easy
             again!
@@ -61,9 +61,11 @@ MonoBehaviour:
         resource: 6
         minAmount: 40
         maxAmount: 40
+        refund: 0
     - rid: 2174037371569569823
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: -40
         maxAmount: -40
+        refund: 0

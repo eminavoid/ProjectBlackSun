@@ -40,7 +40,7 @@ MonoBehaviour:
           module:
           - rid: 107151358184390671
           - rid: 107151358184390672
-          statUsed: 0
+          statUsed: 2
           output: The people rejoice! The shrieks of a heretic are as music to the
             ears of the masses. The burning of a transgressor always serves to rouse
             the spirit... and keep dissidents at bay.
@@ -59,27 +59,32 @@ MonoBehaviour:
         resource: 1
         minAmount: -10
         maxAmount: -10
+        refund: 0
     - rid: 107151358184390670
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 4
         minAmount: -5
         maxAmount: -5
+        refund: 0
     - rid: 107151358184390671
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: 10
         maxAmount: 10
+        refund: 0
     - rid: 107151358184390672
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 4
         minAmount: 10
         maxAmount: 10
+        refund: 0
     - rid: 107151358184390673
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: -50
         maxAmount: -50
+        refund: 0

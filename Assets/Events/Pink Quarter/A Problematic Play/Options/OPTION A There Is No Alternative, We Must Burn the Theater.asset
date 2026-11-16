@@ -38,7 +38,7 @@ MonoBehaviour:
           module:
           - rid: 107151359355650140
           - rid: 107151359355650141
-          statUsed: 0
+          statUsed: 2
           output: The roaring flames of the theater are the only entertainment the
             commoners shall derive from that establishment. It appears the play has
             been canceled... permanently. Our men saw to that personally!
@@ -67,39 +67,46 @@ MonoBehaviour:
         resource: 4
         minAmount: 10
         maxAmount: 10
+        refund: 0
     - rid: 107151359355650141
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: 10
         maxAmount: 10
+        refund: 0
     - rid: 107151359355650142
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: 10
         maxAmount: 10
+        refund: 0
     - rid: 107151359355650143
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: -20
         maxAmount: -20
+        refund: 0
     - rid: 107151359355650144
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 4
         minAmount: -15
         maxAmount: -15
+        refund: 0
     - rid: 107151359355650145
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: -40
         maxAmount: -40
+        refund: 0
     - rid: 107151359355650146
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 4
         minAmount: -15
         maxAmount: -15
+        refund: 0

@@ -38,7 +38,7 @@ MonoBehaviour:
           module:
           - rid: 107151359355650070
           - rid: 107151359355650071
-          statUsed: 0
+          statUsed: 3
           output: The masses are moved by our charity. Many among them had never
             received a gift in all their lives! We may take satisfaction in a righteous
             deed well done, with the added grace of new initiates joining our fold.
@@ -57,21 +57,25 @@ MonoBehaviour:
         resource: 4
         minAmount: 10
         maxAmount: 10
+        refund: 0
     - rid: 107151359355650071
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: 20
         maxAmount: 20
+        refund: 0
     - rid: 107151359355650072
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 4
         minAmount: -10
         maxAmount: -10
+        refund: 0
     - rid: 107151359355650073
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: -20
         maxAmount: -20
+        refund: 0

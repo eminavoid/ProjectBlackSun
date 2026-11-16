@@ -39,11 +39,13 @@ MonoBehaviour:
         - weight: 50
           module:
           - rid: 2174037371569569809
-          statUsed: 0
+          - rid: 5546513177521160322
+          statUsed: 3
           output: Appealing to the material greed of the masses never fails!
         - weight: 50
           module:
           - rid: 2174037371569569810
+          - rid: 5546513177521160323
           statUsed: 0
           output: Curse it all! We merely confirmed what they already suspected about
             our cult's shallowness!
@@ -53,9 +55,25 @@ MonoBehaviour:
         resource: 1
         minAmount: 30
         maxAmount: 30
+        refund: 0
     - rid: 2174037371569569810
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: -40
         maxAmount: -40
+        refund: 0
+    - rid: 5546513177521160322
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: 10
+        maxAmount: 10
+        refund: 0
+    - rid: 5546513177521160323
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: 10
+        maxAmount: 10
+        refund: 0

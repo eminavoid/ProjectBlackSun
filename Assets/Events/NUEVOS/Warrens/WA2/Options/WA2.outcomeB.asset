@@ -40,7 +40,7 @@ MonoBehaviour:
           - rid: 2174037052531671146
           - rid: 2174037052531671296
           - rid: 2174037052531671297
-          statUsed: 0
+          statUsed: 5
           output: The cleric persuades the cutthroats to forsake their wicked ways.
             A true miracle!
         - weight: 90

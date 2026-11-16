@@ -37,7 +37,7 @@ MonoBehaviour:
         - weight: 50
           module:
           - rid: 2174037052531671146
-          statUsed: 0
+          statUsed: 1
           output: Our cleric successfully brokers a compromise between both factions.
         - weight: 50
           module:

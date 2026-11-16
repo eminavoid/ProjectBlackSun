@@ -31,7 +31,7 @@ MonoBehaviour:
           module:
           - rid: 107151359355650160
           - rid: 107151359355650161
-          statUsed: 0
+          statUsed: 1
           output: The Beholder smiles upon us! Our cleric successfully convinced
             the youth to join our ranks. With such a talented figure by our side,
             our doctrine shall breathe life upon the canvas. Through his brush, we
@@ -50,15 +50,18 @@ MonoBehaviour:
         resource: 1
         minAmount: 40
         maxAmount: 40
+        refund: 0
     - rid: 107151359355650161
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 4
         minAmount: 10
         maxAmount: 10
+        refund: 0
     - rid: 107151359355650162
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 4
         minAmount: -15
         maxAmount: -15
+        refund: 0

@@ -33,7 +33,7 @@ MonoBehaviour:
         - weight: 15
           module:
           - rid: 2174037052531671150
-          statUsed: 0
+          statUsed: 3
           output: The aristocrat is immensely grateful and pledges to assist our
             endeavors in the future!
         - weight: 85
@@ -48,12 +48,14 @@ MonoBehaviour:
         resource: 2
         minAmount: 1
         maxAmount: 1
+        refund: 0
     - rid: 2174037052531671151
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 6
         minAmount: -50
         maxAmount: -50
+        refund: 0
     - rid: 2174037052531671284
       type: {class: DoNothing, ns: , asm: Assembly-CSharp}
       data: 
