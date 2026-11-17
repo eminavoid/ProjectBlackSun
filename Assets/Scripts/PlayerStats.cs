@@ -4,6 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Player Stats", menuName = "new Player Stats", order = 1)]
 public class PlayerStats : ScriptableObject
 {
+    [field: SerializeField] public int baseStat = 10;
     [field: SerializeField] public List<Doctrine> DoctrineInventory { get; private set; }
     [field: SerializeField] public int ExtraWeightPerStat { get; private set; } = 10;
 
@@ -19,7 +20,7 @@ public class PlayerStats : ScriptableObject
 
     public int GetStatExtraWeight(PlayerStat stat) => GetStat(stat) * ExtraWeightPerStat;
 
-    public int GetStat(PlayerStat stat) => Mathf.Max(0, playerStats[stat]);
+    public int GetStat(PlayerStat stat) => playerStats[stat];
     
     public void ChangeStat(PlayerStat stat, int value)
     {
