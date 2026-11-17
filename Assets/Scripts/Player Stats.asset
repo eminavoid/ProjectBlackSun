@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ae319df3a711024daf9d3ca2835107a, type: 3}
   m_Name: Player Stats
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
-  <DoctrineInventory>k__BackingField: []
-  <ExtraWeightPerStat>k__BackingField: 10
+  baseStat: 10
+  <DoctrineInventory>k__BackingField:
+  - {fileID: 11400000, guid: 31f763f483306014fbd9b954d18de2ae, type: 2}
+  <ExtraWeightPerStat>k__BackingField: 15

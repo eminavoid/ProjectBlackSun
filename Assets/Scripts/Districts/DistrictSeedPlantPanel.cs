@@ -364,7 +364,8 @@ public class DistrictSeedPlantPanel : MonoBehaviour
 
         ShowPlantPopup($"{selectedSeed.Title} planted in the {MapStatsQuery.DistrictLabel(targetZone.District)} district.");
 
-        PlaceInCooldown(selectedSeed);
+        //PlaceInCooldown(selectedSeed);
+        currentSeeds.Remove(selectedSeed);
         if (TutorialContent.IsTutorialSeed(selectedSeed)) UpdateSeedInventory(selectedSeed, -1);
 
         if (selectedSeed == TutorialContent.FirstSeed) ReleaseStandardPool();
