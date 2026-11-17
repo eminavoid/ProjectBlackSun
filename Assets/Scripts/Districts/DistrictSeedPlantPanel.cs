@@ -7,9 +7,6 @@ using Zeke.UI;
 [DefaultExecutionOrder(1)]
 public class DistrictSeedPlantPanel : MonoBehaviour
 {
-    [Header("Cooldown")]
-    [SerializeField] private int repeatSeedCooldown;
-
     [Header("Data")]
     [SerializeField] private Unlocked loadSeeds;
 
@@ -69,20 +66,6 @@ public class DistrictSeedPlantPanel : MonoBehaviour
         }
     }
 
-    private readonly List<SeedCooldownData> cooldownSeeds = new List<SeedCooldownData>();
-
-    private class SeedCooldownData
-    {
-        public Seed seed;
-        public int cooldown;
-
-        public SeedCooldownData(Seed seed, int cooldown)
-        {
-            this.seed = seed;
-            this.cooldown = cooldown;
-        }
-    }
-
     public static event System.Action Planted;
 
     private bool isOpen;
@@ -96,40 +79,6 @@ public class DistrictSeedPlantPanel : MonoBehaviour
         SetPanelVisible(false);
         openMenuButton.onClick.AddListener(() => NewSeeds = 0);
         if (!TutorialSession.SuppressAmbientEvents) ReleaseStandardPool();
-    }
-
-    private void Tick()
-    {
-        for (int i = cooldownSeeds.Count - 1; i >= 0; i--)
-        {
-            cooldownSeeds[i].cooldown -= 1;
-
-            if (cooldownSeeds[i].cooldown <= 0)
-            {
-                cooldownSeeds.RemoveAt(i);
-            }
-        }
-    }
-
-    private void PlaceInCooldown(Seed seed)
-    {
-        if (seed.PlayerPlantCooldown == 0) return;
-        cooldownSeeds.Add(new SeedCooldownData(seed, seed.PlayerPlantCooldown));
-    }
-
-    private bool InCooldown(Seed seed) => TurnsUntilReady(seed) > 0;
-
-    private int TurnsUntilReady(Seed seed)
-    {
-        for (int i = 0; i < cooldownSeeds.Count; i++)
-        {
-            if (cooldownSeeds[i].seed == seed)
-            {
-                return cooldownSeeds[i].cooldown;
-            }
-        }
-
-        return 0;
     }
 
     private void DebugLoadSeedsFromPool()
@@ -152,18 +101,11 @@ public class DistrictSeedPlantPanel : MonoBehaviour
 
     private void Start()
     {
-        GameTime.OnTurnStarted += Tick;
-
         ResolveOpenMenuButton();
         ResolveSeedListScrollRect();
         EnsureScrollContentLayout();
         WireButtons();
         SetPanelVisible(false);
-    }
-
-    private void OnDestroy()
-    {
-        GameTime.OnTurnStarted -= Tick;
     }
 
     private void OnDisable()
@@ -362,11 +304,12 @@ public class DistrictSeedPlantPanel : MonoBehaviour
             AudioManager.Instance.PlaySeedPlant();
         }
 
-        ShowPlantPopup($"{selectedSeed.Title} planted in the {MapStatsQuery.DistrictLabel(targetZone.District)} district.");
+        int turns = selectedSeed.PlayerTicks;
+        if (targetZone.PlantedSeed != null) targetZone.PlantedSeed.SproutIn(turns);
+        string sprouts = turns == 1 ? "next turn" : $"in {turns} turns";
+        ShowPlantPopup($"{selectedSeed.Title} planted in the {MapStatsQuery.DistrictLabel(targetZone.District)} district. It sprouts {sprouts}.");
 
-        //PlaceInCooldown(selectedSeed);
-        currentSeeds.Remove(selectedSeed);
-        if (TutorialContent.IsTutorialSeed(selectedSeed)) UpdateSeedInventory(selectedSeed, -1);
+        UpdateSeedInventory(selectedSeed, -1);
 
         if (selectedSeed == TutorialContent.FirstSeed) ReleaseStandardPool();
         RefreshSeedList();
@@ -456,8 +399,7 @@ public class DistrictSeedPlantPanel : MonoBehaviour
         plantButton.interactable = isOpen
             && selectedZone != null
             && selectedSeedIndex >= 0
-            && selectedSeedIndex < cachedSeeds.Count
-            && !InCooldown(cachedSeeds[selectedSeedIndex]);
+            && selectedSeedIndex < cachedSeeds.Count;
     }
 
     private void UpdatePanelTexts()
@@ -498,11 +440,9 @@ public class DistrictSeedPlantPanel : MonoBehaviour
             int index = i;
             Button instance = Instantiate(templateButton, seedListContent);
             instance.gameObject.SetActive(true);
-            ConfigureSeedButton(instance, cachedSeeds[i], false, TurnsUntilReady(cachedSeeds[i]));
+            ConfigureSeedButton(instance, cachedSeeds[i], false, Owned(cachedSeeds[i]));
             instance.onClick.AddListener(() => SelectSeed(index));
             runtimeSeedButtons.Add(instance);
-
-            instance.interactable = !InCooldown(cachedSeeds[index]);
         }
 
         UpdateSelectionVisuals();
@@ -619,18 +559,18 @@ public class DistrictSeedPlantPanel : MonoBehaviour
         for (int i = 0; i < runtimeSeedButtons.Count; i++)
         {
             if (runtimeSeedButtons[i] == null || i >= cachedSeeds.Count) continue;
-            ConfigureSeedButton(runtimeSeedButtons[i], cachedSeeds[i], i == selectedSeedIndex, TurnsUntilReady(cachedSeeds[i]));
+            ConfigureSeedButton(runtimeSeedButtons[i], cachedSeeds[i], i == selectedSeedIndex, Owned(cachedSeeds[i]));
         }
     }
 
-    private static void ConfigureSeedButton(Button button, Seed seed, bool selected, int turnsUntilReady)
+    private static void ConfigureSeedButton(Button button, Seed seed, bool selected, int copies)
     {
         if (button == null || seed == null) return;
 
         SeedButtonView view = button.GetComponent<SeedButtonView>();
         if (view != null)
         {
-            view.Bind(seed, selected, turnsUntilReady);
+            view.Bind(seed, selected, copies);
             return;
         }
 

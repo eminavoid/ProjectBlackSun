@@ -15,14 +15,14 @@ public class SeedButtonView : MonoBehaviour
     [Header("Card")]
     [SerializeField] private TMP_Text tierText;
     [SerializeField] private TMP_Text turnsText;
-    [Tooltip("Says it's free, or when a seed you just planted can be planted again.")]
+    [Tooltip("How many copies of this seed you hold. Planting one spends it.")]
     [SerializeField] private TMP_Text costText;
     [SerializeField] private TMP_Text resourceText;
     [SerializeField] private Image resourceIcon;
     [SerializeField] private ResourceIcons resourceIcons;
     [SerializeField] private GameObject selectedMark;
 
-    public void Bind(Seed seed, bool selected, int turnsUntilReady = 0)
+    public void Bind(Seed seed, bool selected, int copies = 1)
     {
         if (seed == null) return;
 
@@ -39,9 +39,7 @@ public class SeedButtonView : MonoBehaviour
 
         if (costText != null)
         {
-            costText.text = turnsUntilReady <= 0 ? "FREE"
-                : turnsUntilReady == 1 ? "READY NEXT TURN"
-                : $"READY IN {turnsUntilReady} TURNS";
+            costText.text = copies == 1 ? "LAST ONE" : $"{copies} LEFT";
         }
 
         if (iconImage != null)
@@ -57,7 +55,7 @@ public class SeedButtonView : MonoBehaviour
 
         if (turnsText != null)
         {
-            turnsText.text = seed.Ticks == 1 ? "1 TURN" : $"{seed.Ticks} TURNS";
+            turnsText.text = seed.PlayerTicks == 1 ? "1 TURN" : $"{seed.PlayerTicks} TURNS";
         }
 
         if (resourceText != null)

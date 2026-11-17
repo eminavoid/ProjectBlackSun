@@ -96,7 +96,9 @@ public class TutorialDirector : MonoBehaviour
         homeZone = TutorialContent.FindPlayerZone();
         clericZone = FreeNeighbor(homeZone);
         yield return IntroBeat();
+        yield return Beat(null, "Scroll the mouse wheel to zoom in and out. Move the map with WASD or the arrow keys, or drag it with the right mouse button.");
         yield return RivalsBeat();
+        yield return TabBeat();
         yield return ClericStep();
         yield return SeedStep();
         yield return EventStep(TutorialContent.CreateWhisper(homeZone), "Something needs your answer: an event. Open the scroll on the left.");
@@ -149,6 +151,29 @@ public class TutorialDirector : MonoBehaviour
 
         Focus(zone);
         yield return Beat(zone, $"Other colors on the map are rival faiths. This arrow is a move the {rival} will make when the turn ends.");
+    }
+
+    private IEnumerator TabBeat()
+    {
+        int presses = 0;
+        continueBeat = false;
+        while (presses < 2 && !continueBeat && !Stopped)
+        {
+            if (TabPressed()) presses++;
+            Guide(presses == 0
+                ? "Press Tab to hide the faith colors and the rivals' arrows, and see the city beneath."
+                : "Press Tab again to bring them back.", null, true);
+            yield return null;
+        }
+    }
+
+    private static bool TabPressed()
+    {
+#if ENABLE_INPUT_SYSTEM
+        return UnityEngine.InputSystem.Keyboard.current != null && UnityEngine.InputSystem.Keyboard.current.tabKey.wasPressedThisFrame;
+#else
+        return Input.GetKeyDown(KeyCode.Tab);
+#endif
     }
 
     private IEnumerator ClericStep()
@@ -212,7 +237,7 @@ public class TutorialDirector : MonoBehaviour
             }
             else
             {
-                Guide("Press Plant. It grows in the selected zone for a few turns, then becomes an event.", panel.PlantButton, panel.MenuButton, panel.PanelRoot);
+                Guide("Press Plant. It grows in the selected zone for a few turns, then becomes an event. Planting spends the seed.", panel.PlantButton, panel.MenuButton, panel.PanelRoot);
             }
 
             yield return null;
@@ -267,7 +292,9 @@ public class TutorialDirector : MonoBehaviour
         InputLocks.Lock(false, true, true);
         while (!turnEnding && !Stopped)
         {
-            Guide(line, endTurn, endTurn);
+            Component confirm = GameTime.PendingConfirmation;
+            if (confirm != null) Guide("Some events still await your answer. Confirm, and your advisors will choose for you.", null, confirm);
+            else Guide(line, endTurn, endTurn);
             yield return null;
         }
 
@@ -344,7 +371,7 @@ public class TutorialDirector : MonoBehaviour
             if (stats.IsOpen)
             {
                 InputLocks.Lock(true, true, true);
-                Guide("The ledger shows who rules each zone and district, and how much influence every faith holds.", null, true, stats.Book);
+                Guide("The ledger shows who rules each zone and district, and how much influence every faith holds. Right-click while zoomed in to open a zone's page, or zoomed out to open its whole district.", null, true, stats.Book);
             }
             else
             {
@@ -441,7 +468,7 @@ public class TutorialDirector : MonoBehaviour
     private IEnumerator ClosingBeat()
     {
         string hints = FirstTimeHints.Enabled ? " Hints will appear the first time something new happens." : string.Empty;
-        yield return Beat(null, $"That's the basics. Rule the most zones by turn {EclipseTurn()}, and guard them: rivals take what you leave unattended.{hints}", "DONE");
+        yield return Beat(null, $"That's the basics. Rule the most zones by turn {EclipseTurn()}, and guard them: rivals take what you leave unattended. Press Esc anytime for the options.{hints}", "DONE");
     }
 
     private IEnumerator WaitForCamera()

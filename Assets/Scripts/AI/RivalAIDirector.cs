@@ -87,10 +87,16 @@ public class RivalAIDirector : MonoBehaviour
     [Tooltip("Most clerics a Cautious rival keeps in one zone, even while defending it.")]
     [SerializeField, Min(1)] private int cautiousClericCap = 5;
 
+    [Header("Alliance")]
+    [Tooltip("Zones the leading sect must hold over the second before the other rivals unite against it.")]
+    [SerializeField, Min(1)] private int allianceLead = 4;
+    [Tooltip("The leader must also hold this many times the second sect's zones.")]
+    [SerializeField, Min(1f)] private float allianceRatio = 1.5f;
+
     [Header("Pace")]
-    [SerializeField] private Pace easyPace = new Pace { seedsPerTurn = 0.5f, clericsSentPerTurn = 2, clericsPerTurn = 0.5f, clericReserve = 2 };
-    [SerializeField] private Pace normalPace = new Pace { seedsPerTurn = 1f, clericsSentPerTurn = 3, clericsPerTurn = 1.5f, clericReserve = 2 };
-    [SerializeField] private Pace hardPace = new Pace { seedsPerTurn = 2f, clericsSentPerTurn = 4, clericsPerTurn = 2f, clericReserve = 1 };
+    [SerializeField] private Pace easyPace = new Pace { seedsPerTurn = 0.5f, clericsSentPerTurn = 2, clericsPerTurn = 0.75f, clericReserve = 2 };
+    [SerializeField] private Pace normalPace = new Pace { seedsPerTurn = 1f, clericsSentPerTurn = 3, clericsPerTurn = 2f, clericReserve = 2 };
+    [SerializeField] private Pace hardPace = new Pace { seedsPerTurn = 2f, clericsSentPerTurn = 4, clericsPerTurn = 2.5f, clericReserve = 1 };
 
     private struct Tuning
     {
@@ -118,7 +124,9 @@ public class RivalAIDirector : MonoBehaviour
     private readonly Dictionary<DistrictZone, int> plannedClerics = new Dictionary<DistrictZone, int>();
     private readonly Dictionary<FactionId, HashSet<DistrictZone>> controlledMemory =
         new Dictionary<FactionId, HashSet<DistrictZone>>();
+    private FactionId? allianceTarget;
 
+    public FactionId? AllianceTarget => allianceTarget;
     public int ActionsPerTurn => TutorialActionBudget(actionPoints);
     public float Aggressiveness => aggressiveness;
 
@@ -244,6 +252,7 @@ public class RivalAIDirector : MonoBehaviour
     {
         if (intents == null || InfluenceManager.IsNull) return;
 
+        UpdateAlliance();
         seedTitlesTaken.Clear();
         SeedEventManager.CollectPendingTitles(seedTitlesTaken);
         IReadOnlyList<DistrictZone> zones = InfluenceManager.Get.GetPlayableZones();
@@ -286,6 +295,40 @@ public class RivalAIDirector : MonoBehaviour
             if (agent == null) continue;
             PlanAgent(agent, intents);
         }
+    }
+
+    private void UpdateAlliance()
+    {
+        FactionId? leader = null;
+        int best = 0;
+        int second = 0;
+        foreach (FactionId faction in FactionIdUtil.All)
+        {
+            int zones = FaithEclipseTracker.GetControlledZoneCount(faction);
+            if (zones > best)
+            {
+                second = best;
+                best = zones;
+                leader = faction;
+            }
+            else if (zones > second)
+            {
+                second = zones;
+            }
+        }
+
+        FactionId? target = leader.HasValue && best - second >= allianceLead && best >= second * allianceRatio ? leader : null;
+        if (target == allianceTarget) return;
+
+        allianceTarget = target;
+        if (TutorialSession.SuppressAmbientEvents) return;
+
+        string text = !target.HasValue
+            ? "The rivals' pact breaks. Every sect fights for itself again."
+            : target == FactionId.Player
+                ? "Your lead alarms the rivals. They set their feuds aside and unite against you."
+                : $"The {FactionIdUtil.DisplayName(target.Value)} pulls far ahead. The other sects unite against it.";
+        TopScreenNotification.Show(text, 6f);
     }
 
     private void RememberEvent(string title)
@@ -485,6 +528,7 @@ public class RivalAIDirector : MonoBehaviour
         IReadOnlyList<DistrictZone> zones = InfluenceManager.Get.GetPlayableZones();
         FactionId? leader = FaithEclipseTracker.GetLeader(out _);
         if (leader == agent.faction) leader = null;
+        FactionId? pact = allianceTarget == agent.faction ? null : allianceTarget;
         List<Choice> choices = new List<Choice>();
         for (int i = 0; i < zones.Count; i++)
         {
@@ -494,7 +538,9 @@ public class RivalAIDirector : MonoBehaviour
 
             bool lost = slipping != null && slipping.Contains(zone);
             FactionId? owner = zone.Influence.Status == ZoneControlStatus.Controlled ? zone.Influence.Controller : null;
-            bool hunt = owner.HasValue && owner != agent.faction && Hunts(agent.personality, owner.Value, leader, zone.District);
+            bool foreign = owner.HasValue && owner != agent.faction;
+            bool ally = pact.HasValue && foreign && owner != pact;
+            bool hunt = foreign && (pact.HasValue ? owner == pact : Hunts(agent.personality, owner.Value, leader, zone.District));
             int weight = influence != null ? influence.ObjectiveWeight(agent.faction, zone.District) : 0;
             if (!lost && !hunt && weight <= 0) continue;
 
@@ -507,8 +553,8 @@ public class RivalAIDirector : MonoBehaviour
             plannedClerics.TryGetValue(zone, out int planned);
             int stack = zone.Influence.GetClerics(agent.faction) + planned;
             int opposition = Opposition(zone, agent.faction);
-            if (canSend && zone.Influence.CanEnterByNormalMeans(agent.faction)
-                && WillingToSend(agent.personality, lost, opposition, EnemyShare(zone, agent.faction), stack, sendsAllowed))
+            if (canSend && (!ally || lost) && zone.Influence.CanEnterByNormalMeans(agent.faction)
+                && WillingToSend(agent.personality, lost, opposition, EnemyShare(zone, agent.faction), stack, sendsAllowed, hunt && pact.HasValue))
             {
                 Choice clerics = MakeChoice(zone, AIIntentKind.AssignClerics, null, weight, cost, lost, secured, pressure, agent.personality);
                 clerics.hunt = hunt;
@@ -625,10 +671,11 @@ public class RivalAIDirector : MonoBehaviour
         }
     }
 
-    private bool WillingToSend(AIPersonality personality, bool slipping, int opposition, bool enemyShare, int stack, int sendsAllowed)
+    private bool WillingToSend(AIPersonality personality, bool slipping, int opposition, bool enemyShare, int stack, int sendsAllowed, bool united)
     {
         if (personality == AIPersonality.Cautious && stack >= cautiousClericCap) return false;
         if (slipping) return true;
+        if (united) return personality == AIPersonality.Aggressive || opposition <= stack + sendsAllowed;
         switch (personality)
         {
             case AIPersonality.Cautious: return opposition == 0 && !enemyShare;

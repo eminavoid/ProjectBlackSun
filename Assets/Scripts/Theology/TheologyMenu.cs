@@ -506,14 +506,16 @@ public class TheologyMenu : MonoBehaviour
     {
         if (seedsPool == null) return null;
 
-        List<Seed> choices = new List<Seed>();
+        List<Seed> fresh = new List<Seed>();
+        List<Seed> known = new List<Seed>();
         foreach (Unlockeable unlock in seedsPool.GetCopy())
         {
             if (unlock == null || !(unlock.Scriptable is Seed seed)) continue;
-            if (unlockedSeeds != null && unlockedSeeds.Contains(seed)) continue;
-            choices.Add(seed);
+            if (unlockedSeeds != null && unlockedSeeds.Contains(seed)) known.Add(seed);
+            else fresh.Add(seed);
         }
 
+        List<Seed> choices = fresh.Count > 0 ? fresh : known;
         if (choices.Count == 0) return null;
         return choices[Random.Range(0, choices.Count)];
     }

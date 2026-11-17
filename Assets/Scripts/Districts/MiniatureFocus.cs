@@ -11,6 +11,8 @@ public class MiniatureFocus : MonoBehaviour
     [Tooltip("Aperture when the focus is at the reference distance. Closer views stop down so the blur stays about the same on screen.")]
     [SerializeField, Min(1f)] private float referenceAperture = 2.4f;
     [SerializeField, Min(0.1f)] private float referenceDistance = 5f;
+    [Tooltip("How much sharper the view gets as you zoom in past the reference distance. 1 keeps the blur the same at every zoom.")]
+    [SerializeField, Min(1f)] private float zoomSharpening = 1.5f;
 
     private DepthOfField depthOfField;
     private Camera mapCamera;
@@ -42,6 +44,6 @@ public class MiniatureFocus : MonoBehaviour
         if (distance <= 0f) return;
 
         depthOfField.focusDistance.value = distance;
-        depthOfField.aperture.value = Mathf.Clamp(referenceAperture * referenceDistance / distance, 1f, 32f);
+        depthOfField.aperture.value = Mathf.Clamp(referenceAperture * Mathf.Pow(referenceDistance / distance, zoomSharpening), 1f, 32f);
     }
 }

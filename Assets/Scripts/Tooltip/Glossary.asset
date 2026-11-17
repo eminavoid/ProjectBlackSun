@@ -36,7 +36,7 @@ MonoBehaviour:
     - faithful
     recolor: 1
     description: Your faithful. If they all leave, your cult falls. Every 75 of
-      them feed one of your clerics for free. Your zones can shelter 100 plus 25
+      them feed one of your clerics for free. Your zones can shelter 100 plus 15
       per zone; beyond that, some drift away each turn. Grows in the Warrens, Crucible
       and Lacrimal Hill; crises and debts drive it away.
   - key: authority
@@ -174,7 +174,7 @@ MonoBehaviour:
     - seed
     - seeds
     recolor: 1
-    description: Schemes planted in a zone. After a few turns they ripen into events.
+    description: Schemes planted in a zone. After a few turns they ripen into events. Planting spends the seed; Theology grants more.
   - key: event
     title: Events
     terms:

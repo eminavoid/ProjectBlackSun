@@ -226,6 +226,7 @@ public class CultLedger : MonoBehaviour
         book.AddSection("HOW RIVALS PLAY");
         book.AddText("Each rival trains new clerics as the turns pass and plants events of its own.");
         book.AddText("Each rival's temperament is drawn anew every match. Aggressive and opportunist faiths turn on whoever leads the eclipse; cautious ones keep to their own.");
+        book.AddText("If one faith pulls far ahead, the others stop fighting each other and unite against it, even the cautious ones.");
         book.AddAction("OPEN THE CITY LEDGER", OpenCityLedger);
     }
 

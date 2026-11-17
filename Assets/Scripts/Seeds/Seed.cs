@@ -37,6 +37,7 @@ public class Seed : ScriptableObject
     [field: Tooltip("Not index (1 == 0 index)")]
     [field: SerializeField] public int DefaultOption { get; private set; } = 4;
     [Header("Player only")]
+    [Tooltip("Turns this seed takes to sprout when the player plants it.")]
     [SerializeField] private int playerPlantCooldown = 1;
     public Region Region => region;
     public int Ticks => ticks;
@@ -53,7 +54,9 @@ public class Seed : ScriptableObject
     public int CurrentTicks => currentTicks;
     public int TurnsRemaining => Mathf.Max(0, ticks - currentTicks);
     public bool IsPlanted => currentZone != null;
-    public int PlayerPlantCooldown => playerPlantCooldown;
+    public int PlayerTicks => Mathf.Max(1, playerPlantCooldown);
+
+    public void SproutIn(int turns) => ticks = Mathf.Max(1, turns);
 
     public bool CanPlantInDistrict(Districts district) => true;
     public bool IsGuideSeed => guideSeed;
@@ -72,6 +75,7 @@ public class Seed : ScriptableObject
         seed.title = seedTitle;
         seed.description = seedDescription;
         seed.ticks = Mathf.Max(1, turns);
+        seed.playerPlantCooldown = seed.ticks;
         seed.region = seedRegion;
         seed.eventType = SeedEventType.Social;
         seed.difficulty = SeedDifficulty.Easy;

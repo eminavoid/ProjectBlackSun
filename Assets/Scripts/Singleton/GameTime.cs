@@ -33,6 +33,9 @@ public class GameTime : Singleton<GameTime>
 
     private static bool processingTurn = false;
     private static bool confirmationPopUpOpen = false;
+    private static UIWindow confirmationWindow;
+
+    public static Component PendingConfirmation => confirmationPopUpOpen && confirmationWindow != null ? confirmationWindow : null;
 
     protected override void OnInitialization()
     {
@@ -84,6 +87,7 @@ public class GameTime : Singleton<GameTime>
             confirmationPopUpOpen = true;
 
             UIWindow popUp = Instantiate(Instance.seedConfirmationPopUp, GlobalReferences.ScreenCanvas.transform);
+            confirmationWindow = popUp;
 
             popUp.TryGetElement<TextMeshProUGUI>("Description").text = "Some events still await your judgement. End the turn anyway? Your advisors will take the free option on each one.";
 
