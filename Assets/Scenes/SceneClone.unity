@@ -1260,7 +1260,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 63a322589735a514c901d9fbfa85cab7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 630.8867
+      value: 630.5396
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 63a322589735a514c901d9fbfa85cab7, type: 3}
       propertyPath: m_LocalPosition.z
@@ -6976,7 +6976,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6163564860518439661, guid: 7c82d56a550e1bb499dc1f3a87beec36, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2
+      value: -2.016
       objectReference: {fileID: 0}
     - target: {fileID: 6163564860518439661, guid: 7c82d56a550e1bb499dc1f3a87beec36, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7991,6 +7991,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DebtDefection
   flockLostPerDebt: 0.1
+  baseFlockCapacity: 100
+  flockCapacityPerZone: 25
+  driftShare: 0.2
 --- !u!114 &828777558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8005,8 +8008,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerClergy
   ordinationCost: 35
   ordainPrice: 60
+  ordainSecretsPrice: 40
   upkeepPerCleric: 2
   clericsFedPerZone: 1
+  flockPerFedCleric: 75
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -8118,6 +8123,9 @@ MonoBehaviour:
   fade: {fileID: 552770790}
   victoryTitleColor: {r: 0.62, g: 0.42, b: 0.06, a: 1}
   victoryAgainText: PLAY AGAIN
+  pace: 1
+  standingsY: -92
+  standingsSize: 24
 --- !u!114 &848656296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22531,6 +22539,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mapa Ciudad
       objectReference: {fileID: 0}
+    - target: {fileID: 4030903864418962063, guid: 2071b06eda427a444890d726d2e56b2f, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: fa2c0f1109bd673458171edd6659224a, type: 2}
+    - target: {fileID: 8687217963443285226, guid: 2071b06eda427a444890d726d2e56b2f, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: fa2c0f1109bd673458171edd6659224a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:

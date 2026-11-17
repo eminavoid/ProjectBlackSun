@@ -12,6 +12,7 @@ public class FirstTimeHints : MonoBehaviour
     private const string ReserveEmpty = "reserveEmpty";
     private const string Debt = "debt";
     private const string DistrictRuled = "district";
+    private const string AtRisk = "atRisk";
 
     private const string EnabledKey = "hints.enabled";
     private const string SeenKey = "hints.seen";
@@ -61,6 +62,7 @@ public class FirstTimeHints : MonoBehaviour
         GameTime.OnTurnResolving += OnTurnResolving;
         GameTime.OnTurnResolved += OnTurnResolved;
         SeedEventManager.onSeedStored += OnSeedStored;
+        ZoneMarkers.RiskShown += OnRiskShown;
     }
 
     private void OnDisable()
@@ -69,6 +71,7 @@ public class FirstTimeHints : MonoBehaviour
         GameTime.OnTurnResolving -= OnTurnResolving;
         GameTime.OnTurnResolved -= OnTurnResolved;
         SeedEventManager.onSeedStored -= OnSeedStored;
+        ZoneMarkers.RiskShown -= OnRiskShown;
         if (influence != null) influence.OnInfluenceTurnResolved -= OnInfluenceResolved;
         influence = null;
     }
@@ -105,6 +108,11 @@ public class FirstTimeHints : MonoBehaviour
         MarkSeen(key);
         showing = true;
         TopScreenNotification.Hold(text, true, Dismiss, "GOT IT", "HINT");
+    }
+
+    private void OnRiskShown(DistrictZone zone)
+    {
+        Raise(AtRisk, $"A red ! over {ZoneName(zone)} means the rivals' planned moves could take it next turn. Send more clerics there to hold it.");
     }
 
     private void Raise(string key, string text)

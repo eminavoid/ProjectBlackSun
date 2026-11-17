@@ -8,12 +8,16 @@ public class PlayerClergy : MonoBehaviour
     [SerializeField, Min(1)] private int ordinationCost = 35;
     [Tooltip("Wealth to ordain a cleric at once from the clerics menu.")]
     [SerializeField, Min(0)] private int ordainPrice = 60;
+    [Tooltip("Secrets to ordain a cleric at once from the clerics menu.")]
+    [SerializeField, Min(0)] private int ordainSecretsPrice = 40;
 
     [Header("Upkeep")]
     [Tooltip("Wealth each cleric on the map costs per turn. Clerics in reserve cost nothing.")]
     [SerializeField, Min(0)] private int upkeepPerCleric = 2;
     [Tooltip("Clerics each zone you rule feeds for free. Only the clerics beyond that pay upkeep.")]
     [SerializeField, Min(0)] private int clericsFedPerZone = 1;
+    [Tooltip("Faithful needed to feed one more cleric for free, on top of the ones your zones feed.")]
+    [SerializeField, Min(1)] private int flockPerFedCleric = 75;
 
     public static Action<int> onOrdained;
     public static Action<int, int> onUpkeepPaid;
@@ -22,14 +26,19 @@ public class PlayerClergy : MonoBehaviour
 
     public int UpkeepPerCleric => upkeepPerCleric;
 
+    public int FlockPerFedCleric => flockPerFedCleric;
+
     public int UnfedClerics(InfluenceManager influence)
     {
         if (influence == null) return 0;
-        int fed = influence.CountControlledZones(FactionId.Player) * clericsFedPerZone;
+        int flock = ResourceManager.IsNull ? 0 : Mathf.Max(0, ResourceManager.Resources.GetResourceAmount(Resource.Flock));
+        int fed = influence.CountControlledZones(FactionId.Player) * clericsFedPerZone + flock / flockPerFedCleric;
         return Mathf.Max(0, influence.CountDeployedClerics(FactionId.Player) - fed);
     }
+
     public int OrdinationCost => ordinationCost;
     public int OrdainPrice => ordainPrice;
+    public int OrdainSecretsPrice => ordainSecretsPrice;
     public int Training => training;
     public int TrainingPerTurn => InfluenceManager.IsNull ? 0 : TrainingFrom(InfluenceManager.Get.Stats);
 
@@ -37,12 +46,16 @@ public class PlayerClergy : MonoBehaviour
 
     private void OnDisable() => GameTime.OnTurnEnded -= OnTurnEnded;
 
-    public bool TryOrdain()
+    public bool TryOrdain() => TryOrdain(Resource.Wealth, ordainPrice);
+
+    public bool TryOrdainWithSecrets() => TryOrdain(Resource.Secrets, ordainSecretsPrice);
+
+    private bool TryOrdain(Resource resource, int price)
     {
         if (InfluenceManager.IsNull || ResourceManager.IsNull) return false;
-        if (ResourceManager.Resources.GetResourceAmount(Resource.Wealth) < ordainPrice) return false;
+        if (ResourceManager.Resources.GetResourceAmount(resource) < price) return false;
 
-        ResourceManager.AddResource(Resource.Wealth, -ordainPrice);
+        ResourceManager.AddResource(resource, -price);
         InfluenceManager.Get.GetStock(FactionId.Player).ReturnClerics(1);
         return true;
     }

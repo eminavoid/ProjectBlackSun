@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Option
   playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
   title: Bind it in gold leaf and put it on display.
-  description: 'COST: 40 Wealth'
+  description: 'COST: 25 Wealth & 15 Materials'
   icon: {fileID: 0}
   modules:
   - rid: 6513433571317776574
+  - rid: 6513433601966867060
   - rid: 6513433571317776575
   endsQuestline: 1
   followUpSeeds: []
@@ -28,7 +29,7 @@ MonoBehaviour:
       type: {class: RequireResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 0
-        required: 40
+        required: 25
         consumeResource: 1
     - rid: 6513433571317776575
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
@@ -68,3 +69,9 @@ MonoBehaviour:
         minAmount: 25
         maxAmount: 25
         refund: 0
+    - rid: 6513433601966867060
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 5
+        required: 15
+        consumeResource: 1

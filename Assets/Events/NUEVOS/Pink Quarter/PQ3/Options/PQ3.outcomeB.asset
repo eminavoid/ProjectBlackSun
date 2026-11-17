@@ -16,10 +16,11 @@ MonoBehaviour:
   title: So they fear our rivals, do they? Very well. We will publicly and brutally
     punish our worst sinners. That will teach the rest to fear us far more than anyone
     else.
-  description: 'COST: 200 Zeal'
+  description: 'COST: 120 Zeal & 15 Happiness'
   icon: {fileID: 0}
   modules:
   - rid: 2174037371569569824
+  - rid: 6513433601966867056
   - rid: 2174037371569569825
   endsQuestline: 1
   followUpSeeds: []
@@ -30,7 +31,7 @@ MonoBehaviour:
       type: {class: RequireResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
-        required: 200
+        required: 120
         consumeResource: 1
     - rid: 2174037371569569825
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
@@ -66,3 +67,9 @@ MonoBehaviour:
         minAmount: -40
         maxAmount: -40
         refund: 0
+    - rid: 6513433601966867056
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        required: 15
+        consumeResource: 1

@@ -22,6 +22,10 @@ public class InfluenceManager : Singleton<InfluenceManager>
     [SerializeField, Min(0f)] private float attackerRollMultiplier = 1.5f;
     [Tooltip("Extra roll for each cleric a sect has over the strongest rival in the zone.")]
     [SerializeField, Min(0)] private int outnumberBonusPerCleric = 2;
+
+    [Header("Bliss")]
+    [Tooltip("Extra Wealth your zones yield at 100% Bliss. It scales down to nothing at 0%.")]
+    [SerializeField, Range(0f, 1f)] private float blissTitheBonus = 0.25f;
     [SerializeField] private bool logTurnSummary;
 
     private readonly Dictionary<FactionId, FactionStock> stocks = new Dictionary<FactionId, FactionStock>();
@@ -374,6 +378,8 @@ public class InfluenceManager : Singleton<InfluenceManager>
     }
 
     public int OutnumberBonusPerCleric => outnumberBonusPerCleric;
+    public float StruggleSwing => struggleSwing;
+    public float BlissTitheMultiplier => 1f + blissTitheBonus * Mathf.Clamp01((ResourceManager.IsNull ? 0 : ResourceManager.Resources.GetResourceAmount(Resource.Happiness)) / 100f);
 
     public float AttackMultiplier(ZoneInfluenceState state, FactionId faction)
     {
@@ -694,6 +700,7 @@ public class InfluenceManager : Singleton<InfluenceManager>
         {
             if (!ResourceManager.IsNull)
             {
+                if (resource == Resource.Wealth) amount = Mathf.RoundToInt(amount * BlissTitheMultiplier);
                 ResourceManager.Resources.AddResource(resource, amount);
             }
             else

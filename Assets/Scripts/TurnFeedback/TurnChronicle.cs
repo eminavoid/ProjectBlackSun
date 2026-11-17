@@ -33,6 +33,8 @@ public class TurnChronicle : MonoBehaviour
     private int upkeepClerics;
     private int upkeepCost;
     private int defected;
+    private int drifted;
+    private int flockCapacity;
     private bool explainedUpkeep;
     private int ripenedEvents;
     private bool explainedEvents;
@@ -52,6 +54,7 @@ public class TurnChronicle : MonoBehaviour
         PlayerClergy.onOrdained += CollectOrdained;
         PlayerClergy.onUpkeepPaid += CollectUpkeep;
         DebtDefection.onFaithfulLeft += CollectDefected;
+        DebtDefection.onFaithfulDrifted += CollectDrifted;
     }
 
     private void OnDisable()
@@ -65,6 +68,7 @@ public class TurnChronicle : MonoBehaviour
         PlayerClergy.onOrdained -= CollectOrdained;
         PlayerClergy.onUpkeepPaid -= CollectUpkeep;
         DebtDefection.onFaithfulLeft -= CollectDefected;
+        DebtDefection.onFaithfulDrifted -= CollectDrifted;
         ResumeSidebar();
     }
 
@@ -77,6 +81,7 @@ public class TurnChronicle : MonoBehaviour
         upkeepClerics = 0;
         upkeepCost = 0;
         defected = 0;
+        drifted = 0;
         ripenedEvents = 0;
 
         controllersBefore.Clear();
@@ -121,6 +126,13 @@ public class TurnChronicle : MonoBehaviour
         upkeepCost = cost;
     }
 
+    private void CollectDrifted(int faithful, int capacity)
+    {
+        if (phase != Phase.Resolving) return;
+        drifted += faithful;
+        flockCapacity = capacity;
+    }
+
     private void CollectDefected(int faithful)
     {
         if (phase == Phase.Resolving) defected += faithful;
@@ -130,6 +142,13 @@ public class TurnChronicle : MonoBehaviour
     {
         if (phase == Phase.Idle) return;
         phase = Phase.Idle;
+
+        GameLoopEvents loop = FindAnyObjectByType<GameLoopEvents>();
+        if (loop != null && loop.IsOver)
+        {
+            ResumeSidebar();
+            return;
+        }
 
         var news = new List<string>();
         var rivalNews = new List<string>();
@@ -312,7 +331,7 @@ public class TurnChronicle : MonoBehaviour
 
         if (upkeepCost > 0 && !explainedUpkeep)
         {
-            news.Add($"Each zone you rule feeds one cleric. The other {upkeepClerics} {(upkeepClerics == 1 ? "cleric" : "clerics")} on the map cost {upkeepCost} Wealth in upkeep. Recall the ones you don't need to spend less.");
+            news.Add($"Your zones and faithful feed some of your clerics. The other {upkeepClerics} {(upkeepClerics == 1 ? "cleric" : "clerics")} on the map cost {upkeepCost} Wealth in upkeep. Recall the ones you don't need, or grow your flock, to spend less.");
             explainedUpkeep = true;
         }
     }
@@ -338,6 +357,7 @@ public class TurnChronicle : MonoBehaviour
         }
 
         if (defected > 0) news.Add($"{defected} of your faithful left over your debts.");
+        if (drifted > 0) news.Add($"{drifted} of your faithful drifted away: your zones can only shelter {flockCapacity}. Rule more zones to keep a bigger flock.");
     }
 
     private void AddFlockWarning(List<string> news)

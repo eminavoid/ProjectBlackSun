@@ -77,8 +77,8 @@ public static class TheologyOdds
 
     public static TheologyChances Resolve(int offeringTiers, int sacrificeTiers)
     {
-        float curse = 40f;
-        float blessing = 15f;
+        float curse = 35f;
+        float blessing = 20f;
         float seed = 30f;
         float doctrine = 15f;
         float points = PointsFor(offeringTiers, false) + PointsFor(sacrificeTiers, true);

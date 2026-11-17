@@ -149,9 +149,16 @@ public class DistrictClericAssignPanel : MonoBehaviour
         }
 
         string others = rivals.Count > 0
-            ? $"\n{string.Join(",  ", rivals)}. {(yours ? "You keep it while you hold more than half its influence." : "Rule it by holding more than half its influence.")}"
+            ? $"\n{string.Join(",  ", rivals)}. {(yours ? Holding() : "Rule it by holding more than half its influence.")}"
             : "\nNo rival faith is here.";
         return mine + next + others;
+    }
+
+    private string Holding()
+    {
+        return ZoneRisk.PlayerCouldLose(shown)
+            ? "<color=#A8261B>At risk: with the moves they have planned, they could take it next turn.</color>"
+            : "You keep it while you hold more than half its influence.";
     }
 
     private string GainText(InfluenceManager manager, int clerics)

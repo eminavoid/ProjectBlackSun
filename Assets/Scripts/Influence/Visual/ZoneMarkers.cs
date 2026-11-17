@@ -31,6 +31,8 @@ public class ZoneMarkers : MonoBehaviour
     [SerializeField] private Color gainedColor = new Color(1f, 0.9f, 0.55f, 1f);
     [SerializeField] private Color lostColor = new Color(1f, 0.36f, 0.3f, 1f);
 
+    public static event System.Action<DistrictZone> RiskShown;
+
     private readonly Dictionary<DistrictZone, Marker> markers = new Dictionary<DistrictZone, Marker>();
     private readonly List<FactionId> ranked = new List<FactionId>();
     private Camera mapCamera;
@@ -42,6 +44,7 @@ public class ZoneMarkers : MonoBehaviour
         public readonly List<Badge> Badges = new List<Badge>();
         public readonly Dictionary<FactionId, int> Clerics = new Dictionary<FactionId, int>();
         public bool Present;
+        public TextMeshProUGUI Risk;
     }
 
     private class Badge
@@ -66,12 +69,16 @@ public class ZoneMarkers : MonoBehaviour
         InfluenceManager.Get.OnControlChanged += Refresh;
         InfluenceManager.Get.OnInfluenceTurnResolved += Refresh;
         TerritoryView.OwnerChanged += OnOwnerChanged;
+        DistrictClericAssignPanel.Assigned += RefreshRisk;
+        if (!AIIntentBoard.IsNull) AIIntentBoard.Get.OnIntentsChanged += RefreshRisk;
         Refresh();
     }
 
     private void OnDestroy()
     {
         TerritoryView.OwnerChanged -= OnOwnerChanged;
+        DistrictClericAssignPanel.Assigned -= RefreshRisk;
+        if (!AIIntentBoard.IsNull) AIIntentBoard.Get.OnIntentsChanged -= RefreshRisk;
         if (InfluenceManager.IsNull) return;
         InfluenceManager.Get.OnControlChanged -= Refresh;
         InfluenceManager.Get.OnInfluenceTurnResolved -= Refresh;
@@ -111,6 +118,47 @@ public class ZoneMarkers : MonoBehaviour
     private void Refresh()
     {
         foreach (KeyValuePair<DistrictZone, Marker> pair in markers) Refresh(pair.Key, pair.Value);
+        RefreshRisk();
+    }
+
+    private void RefreshRisk()
+    {
+        foreach (KeyValuePair<DistrictZone, Marker> pair in markers) SetRisk(pair.Key, pair.Value, ZoneRisk.PlayerCouldLose(pair.Key));
+    }
+
+    private void SetRisk(DistrictZone zone, Marker marker, bool atRisk)
+    {
+        bool showing = marker.Risk != null && marker.Risk.gameObject.activeSelf;
+        if (atRisk == showing) return;
+        if (marker.Risk == null) marker.Risk = CreateRiskMark(marker.Rect);
+
+        RectTransform rect = marker.Risk.rectTransform;
+        rect.DOKill();
+        rect.localScale = Vector3.one;
+        marker.Risk.gameObject.SetActive(atRisk);
+        if (!atRisk) return;
+
+        rect.DOScale(1.3f, 0.55f).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo).SetLink(rect.gameObject);
+        RiskShown?.Invoke(zone);
+    }
+
+    private TextMeshProUGUI CreateRiskMark(RectTransform parent)
+    {
+        TextMeshProUGUI mark = new GameObject("At Risk", typeof(RectTransform)).AddComponent<TextMeshProUGUI>();
+        RectTransform rect = mark.rectTransform;
+        rect.SetParent(parent, false);
+        rect.sizeDelta = new Vector2(40f, 40f);
+        rect.anchoredPosition = new Vector2(0f, badgeSize.y * 1.15f);
+        mark.font = font;
+        mark.fontSize = labelSize * 1.2f;
+        mark.fontStyle = FontStyles.Bold;
+        mark.alignment = TextAlignmentOptions.Center;
+        mark.color = lostColor;
+        mark.outlineWidth = 0.3f;
+        mark.outlineColor = new Color(0.08f, 0.05f, 0.03f, 1f);
+        mark.raycastTarget = false;
+        mark.text = "!";
+        return mark;
     }
 
     private void Refresh(DistrictZone zone, Marker marker)

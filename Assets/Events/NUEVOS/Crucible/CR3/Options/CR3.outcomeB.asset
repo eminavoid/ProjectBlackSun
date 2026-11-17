@@ -15,7 +15,7 @@ MonoBehaviour:
   playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
   title: What good are all these followers if we cannot put them to work in a crisis?
     Conscript labor for the rebuild right now!
-  description: 'COST: 50 Flock & 100 Zeal'
+  description: 'COST: 50 Flock & 20 Happiness'
   icon: {fileID: 0}
   modules:
   - rid: 2174037371569569795
@@ -35,8 +35,8 @@ MonoBehaviour:
     - rid: 2174037371569569796
       type: {class: RequireResource, ns: , asm: Assembly-CSharp}
       data:
-        resource: 1
-        required: 100
+        resource: 4
+        required: 20
         consumeResource: 1
     - rid: 2174037371569569797
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}

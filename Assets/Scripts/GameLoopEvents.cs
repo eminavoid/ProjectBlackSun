@@ -26,6 +26,8 @@ public class GameLoopEvents : MonoBehaviour
 
     public int TurnsUntilEclipse => Mathf.Max(0, eclipseTurn - GameTime.CurrentTurn + 1);
 
+    public bool IsOver => over || GameTime.CurrentTurn > eclipseTurn;
+
     private void OnEnable()
     {
         GameTime.OnTurnResolved += OnTurnResolved;

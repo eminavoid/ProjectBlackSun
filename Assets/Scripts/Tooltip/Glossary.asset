@@ -35,8 +35,10 @@ MonoBehaviour:
     - Flock
     - faithful
     recolor: 1
-    description: Your faithful. If they all leave, your cult falls. Grows in the
-      Warrens, Crucible and Lacrimal Hill; crises and debts drive it away.
+    description: Your faithful. If they all leave, your cult falls. Every 75 of
+      them feed one of your clerics for free. Your zones can shelter 100 plus 25
+      per zone; beyond that, some drift away each turn. Grows in the Warrens, Crucible
+      and Lacrimal Hill; crises and debts drive it away.
   - key: authority
     title: Authority
     terms:
@@ -56,14 +58,15 @@ MonoBehaviour:
     terms:
     - Secrets
     recolor: 1
-    description: Whispers and leverage. Produced in the Pink Quarter, Agora, Ocularium
-      and Lacrimal Hill.
+    description: Whispers and leverage. Can ordain new clerics from your Clergy
+      page. Produced in the Pink Quarter, Agora, Ocularium and Lacrimal Hill.
   - key: happiness
     title: Happiness
     terms:
     - Happiness
     recolor: 1
-    description: How content your faithful are, from 0 to 100%.
+    description: How content your faithful are, from 0 to 100%. Content faithful
+      tithe more: at 100% your zones yield a quarter more Wealth.
   - key: influence
     title: Influence
     terms:

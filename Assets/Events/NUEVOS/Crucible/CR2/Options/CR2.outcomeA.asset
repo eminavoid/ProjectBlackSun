@@ -15,10 +15,11 @@ MonoBehaviour:
   playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
   title: We will send our faithful to deal with the strikers. Let us prove our might
     to the guilds!
-  description: 'COST: 25 Flock'
+  description: 'COST: 15 Flock & 10 Happiness'
   icon: {fileID: 0}
   modules:
   - rid: 2174037052531671140
+  - rid: 6513433601966867058
   - rid: 2174037052531671141
   endsQuestline: 1
   followUpSeeds: []
@@ -29,7 +30,7 @@ MonoBehaviour:
       type: {class: RequireResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
-        required: 25
+        required: 15
         consumeResource: 1
     - rid: 2174037052531671141
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
@@ -78,3 +79,9 @@ MonoBehaviour:
         minAmount: 10
         maxAmount: 10
         refund: 1
+    - rid: 6513433601966867058
+      type: {class: RequireResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        required: 10
+        consumeResource: 1

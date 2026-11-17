@@ -294,7 +294,7 @@ public class TutorialDirector : MonoBehaviour
         if (zone.Influence.Status != ZoneControlStatus.Controlled || zone.Influence.Controller != FactionId.Player) yield break;
 
         Focus(zone);
-        yield return Beat(zone, "You rule this zone now: more than half its influence is yours. Each zone you rule pays tithes and feeds one cleric. Clerics beyond that cost Wealth in upkeep.");
+        yield return Beat(zone, "You rule this zone now: more than half its influence is yours. Each zone you rule pays tithes and feeds one cleric, and your faithful feed more. The rest cost Wealth in upkeep.");
     }
 
     private IEnumerator StruggleBeat()

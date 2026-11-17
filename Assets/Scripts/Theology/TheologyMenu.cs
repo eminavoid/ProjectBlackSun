@@ -14,7 +14,9 @@ public class TheologyMenu : MonoBehaviour
     {
         new Omen("A Quiet Favor", "A new believer takes the cloth. One more cleric waits in your reserve.", Resource.Clerics, 1),
         new Omen("The Street Bows", "The street bows its head. New faithful join your flock.", Resource.Flock, 20),
-        new Omen("Zeal Flickers", "A spark runs through your faithful. Their zeal burns brighter.", Resource.Zeal, 30)
+        new Omen("Zeal Flickers", "A spark runs through your faithful. Their zeal burns brighter.", Resource.Zeal, 30),
+        new Omen("A Generous Patron", "A wealthy patron leaves a heavy purse at your altar.", Resource.Wealth, 25),
+        new Omen("Loose Tongues", "Confessions pour in. Your informants have much to tell.", Resource.Secrets, 15)
     };
 
     private static readonly Omen[] Curses =
@@ -414,10 +416,10 @@ public class TheologyMenu : MonoBehaviour
                 break;
             case TheologyRewardKind.Blessing:
                 blessingsGranted++;
-                RevealOmen("Blessing", Pick(Blessings));
+                RevealOmen("Blessing", PickOmen(Blessings, true));
                 break;
             default:
-                RevealOmen("Curse", Pick(Curses));
+                RevealOmen("Curse", PickOmen(Curses, false));
                 break;
         }
     }
@@ -530,9 +532,46 @@ public class TheologyMenu : MonoBehaviour
         return choices[Random.Range(0, choices.Count)];
     }
 
-    private static T Pick<T>(T[] options)
+    private static Omen PickOmen(Omen[] omens, bool blessing)
     {
-        return options[Random.Range(0, options.Length)];
+        int extreme = -1;
+        float extremeLevel = 0f;
+        for (int i = 0; i < omens.Length; i++)
+        {
+            if (omens[i].Resource == Resource.Clerics) continue;
+            float level = Level(omens[i]);
+            if (extreme >= 0 && (blessing ? level >= extremeLevel : level <= extremeLevel)) continue;
+            extreme = i;
+            extremeLevel = level;
+        }
+
+        float[] weights = new float[omens.Length];
+        float total = 0f;
+        for (int i = 0; i < omens.Length; i++)
+        {
+            int have = ResourceManager.IsNull ? 0 : ResourceManager.Resources.GetResourceAmount(omens[i].Resource);
+            float weight = 1f;
+            if (blessing && have < 0) weight += 4f;
+            else if (i == extreme) weight += blessing ? 2f : 3f;
+            if (!blessing && have <= 0) weight = 0.25f;
+            weights[i] = weight;
+            total += weight;
+        }
+
+        float roll = Random.value * total;
+        for (int i = 0; i < omens.Length; i++)
+        {
+            roll -= weights[i];
+            if (roll < 0f) return omens[i];
+        }
+
+        return omens[omens.Length - 1];
+    }
+
+    private static float Level(Omen omen)
+    {
+        int have = ResourceManager.IsNull ? 0 : ResourceManager.Resources.GetResourceAmount(omen.Resource);
+        return have / (float)Mathf.Max(1, Mathf.Abs(omen.Amount));
     }
 
     private void SetPlates(bool open)

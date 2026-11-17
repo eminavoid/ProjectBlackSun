@@ -122,10 +122,12 @@ public class CultLedger : MonoBehaviour
         if (doctrines != null) book.AddAction("SHAPE YOUR DOCTRINES", OpenDoctrines);
 
         book.AddSection("TREASURY");
-        int clerics = InfluenceManager.Get.CountDeployedClerics(FactionId.Player);
         if (clergy != null && clergy.UpkeepPerCleric > 0)
         {
-            book.AddText($"Your {Count(clerics, "cleric")} on the map cost {clerics * clergy.UpkeepPerCleric} Wealth per turn.");
+            int unfed = clergy.UnfedClerics(InfluenceManager.Get);
+            book.AddText(unfed > 0
+                ? $"{Count(unfed, "cleric")} on the map {(unfed == 1 ? "costs" : "cost")} {unfed * clergy.UpkeepPerCleric} Wealth per turn. Your zones and faithful feed the rest."
+                : "Your zones and faithful feed every cleric you have on the map.");
         }
 
         bool debts = false;
@@ -158,6 +160,7 @@ public class CultLedger : MonoBehaviour
             book.SetSeal(FactionId.Player, "NEXT CLERIC", turns == 1 ? "Next turn" : $"In {turns} turns", animate);
             book.AddText($"Each turn your cult trains {perTurn} points: twice its Learning plus its Stewardship, halved and rounded up. {clergy.Training}/{clergy.OrdinationCost} toward the next cleric.");
             book.AddAction($"ORDAIN NOW  ·  {clergy.OrdainPrice} WEALTH", Ordain);
+            book.AddAction($"ORDAIN NOW  ·  {clergy.OrdainSecretsPrice} SECRETS", OrdainWithSecrets);
         }
         else
         {
@@ -186,7 +189,7 @@ public class CultLedger : MonoBehaviour
         book.AddSection("HOW CLERICS WORK");
         book.AddText("Select a zone on the map and press + to send a cleric from your reserve, or - to call one back.");
         book.AddText("Clerics raise your influence in their zone every turn. With more than half of it, the zone is yours.");
-        if (upkeepEach > 0) book.AddText($"Each zone you rule feeds one cleric. Every other cleric on the map costs {upkeepEach} Wealth per turn. Clerics in reserve cost nothing.");
+        if (upkeepEach > 0) book.AddText($"Each zone you rule feeds one cleric, and every {clergy.FlockPerFedCleric} faithful feed one more. Every other cleric on the map costs {upkeepEach} Wealth per turn. Clerics in reserve cost nothing.");
         book.AddText("No zone is safe. Where faiths meet, the one with more clerics there gains more, and the attacker has the edge.");
     }
 
@@ -324,10 +327,19 @@ public class CultLedger : MonoBehaviour
 
     private void Ordain()
     {
-        if (clergy == null) return;
-        if (!clergy.TryOrdain())
+        if (clergy != null) ConfirmOrdain(clergy.TryOrdain(), "Wealth");
+    }
+
+    private void OrdainWithSecrets()
+    {
+        if (clergy != null) ConfirmOrdain(clergy.TryOrdainWithSecrets(), "Secrets");
+    }
+
+    private void ConfirmOrdain(bool ordained, string resource)
+    {
+        if (!ordained)
         {
-            TopScreenNotification.Show("Not enough Wealth to ordain a cleric.", 3f);
+            TopScreenNotification.Show($"Not enough {resource} to ordain a cleric.", 3f);
             return;
         }
 
