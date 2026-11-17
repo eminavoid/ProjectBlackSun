@@ -37,7 +37,7 @@ MonoBehaviour:
         - weight: 75
           module:
           - rid: 6513433571317776489
-          statUsed: 0
+          statUsed: 3
           outcomeType: 0
           output: The stalls hum along and the coin purse grows heavy.
         - weight: 25

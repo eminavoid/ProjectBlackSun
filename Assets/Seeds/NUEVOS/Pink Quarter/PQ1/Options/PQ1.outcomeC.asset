@@ -37,7 +37,7 @@ MonoBehaviour:
         - weight: 75
           module:
           - rid: 6513433571317776554
-          statUsed: 0
+          statUsed: 5
           outcomeType: 0
           output: Nobles love a holy souvenir.
         - weight: 25

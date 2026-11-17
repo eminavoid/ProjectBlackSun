@@ -38,7 +38,7 @@ MonoBehaviour:
           module:
           - rid: 6513433571317776598
           - rid: 6513433571317776599
-          statUsed: 0
+          statUsed: 4
           outcomeType: 0
           output: His treatise is cited by half the Ocularium.
         - weight: 50

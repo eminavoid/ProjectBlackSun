@@ -38,7 +38,7 @@ MonoBehaviour:
           module:
           - rid: 6513433571317776497
           - rid: 6513433571317776498
-          statUsed: 0
+          statUsed: 3
           outcomeType: 0
           output: Word of our kindness spreads from stall to stall.
         - weight: 40

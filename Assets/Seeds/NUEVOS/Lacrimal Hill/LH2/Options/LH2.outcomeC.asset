@@ -37,7 +37,7 @@ MonoBehaviour:
         - weight: 50
           module:
           - rid: 6513433571317776661
-          statUsed: 0
+          statUsed: 4
           outcomeType: 0
           output: Our blessing is noticed by many, and our reputation among the great
             houses grows.

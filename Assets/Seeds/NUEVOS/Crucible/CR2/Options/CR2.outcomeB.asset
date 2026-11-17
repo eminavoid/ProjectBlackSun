@@ -39,7 +39,7 @@ MonoBehaviour:
           - rid: 6513433571317776535
           - rid: 6513433571317776536
           - rid: 6513433571317776537
-          statUsed: 0
+          statUsed: 1
           outcomeType: 0
           output: The delegations arrive unharmed and the guilds repay us with their
             most devoted recruits.

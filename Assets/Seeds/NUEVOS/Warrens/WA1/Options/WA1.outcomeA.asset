@@ -37,7 +37,7 @@ MonoBehaviour:
         - weight: 75
           module:
           - rid: 6513433571317776603
-          statUsed: 0
+          statUsed: 3
           outcomeType: 0
           output: 'Bellies full and hearts open: many ask to join our flock.'
         - weight: 25

@@ -39,7 +39,7 @@ MonoBehaviour:
           - rid: 6513433571317776644
           - rid: 6513433571317776645
           - rid: 6513433571317776646
-          statUsed: 0
+          statUsed: 1
           outcomeType: 0
           output: The guests are impressed by our pageantry.
         - weight: 50

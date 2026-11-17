@@ -37,7 +37,7 @@ MonoBehaviour:
         - weight: 75
           module:
           - rid: 6513433571317776504
-          statUsed: 0
+          statUsed: 4
           outcomeType: 0
           output: The master weeps with gratitude and empties his purse.
         - weight: 25

@@ -19,13 +19,17 @@ MonoBehaviour:
     error has left them with a massive surplus of these very supplies. They are eager
     to sell, and it may wise for us to buy them out before a rival sect seizes the
     opportunity instead.
+  premise: 
   icon: {fileID: 0}
   ticks: 1
   region: 3
   eventType: 0
   difficulty: 0
+  guideSeed: 0
   <Options>k__BackingField:
   - {fileID: 11400000, guid: cf58d35f4ccbb2a4387251dc860f7553, type: 2}
   - {fileID: 11400000, guid: d4e9ff8d9e8f5544fb95e3ff8bec2cbb, type: 2}
   - {fileID: 11400000, guid: 91e3fe40fe7c61b46864956d261654d4, type: 2}
   - {fileID: 11400000, guid: a9c8c990336b41547b10a2940297e6a0, type: 2}
+  <DefaultOption>k__BackingField: 4
+  playerPlantCooldown: 1

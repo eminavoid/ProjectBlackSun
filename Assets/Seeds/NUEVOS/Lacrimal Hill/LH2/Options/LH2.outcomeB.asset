@@ -39,7 +39,7 @@ MonoBehaviour:
           module:
           - rid: 6513433571317776656
           - rid: 6513433571317776657
-          statUsed: 0
+          statUsed: 1
           outcomeType: 0
           output: Thousands gather beneath our banners in anticipation of the Eclipse.
         - weight: 50

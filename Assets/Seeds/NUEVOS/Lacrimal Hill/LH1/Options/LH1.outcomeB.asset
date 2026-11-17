@@ -38,7 +38,7 @@ MonoBehaviour:
           module:
           - rid: 6513433571317776639
           - rid: 6513433571317776640
-          statUsed: 0
+          statUsed: 3
           outcomeType: 0
           output: The hostess is delighted and speaks highly of us to her peers.
         - weight: 50
