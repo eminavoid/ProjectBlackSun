@@ -14,6 +14,8 @@ public class AIInfluenceController : MonoBehaviour
     private readonly Dictionary<DistrictZone, int> plannedByZone = new Dictionary<DistrictZone, int>();
 
     private bool initialized;
+    private int incomeTurns;
+    private RivalAIDirector director;
 
     private void Start()
     {
@@ -40,11 +42,12 @@ public class AIInfluenceController : MonoBehaviour
         EnsureInitialized();
         if (InfluenceManager.IsNull) return;
 
+        incomeTurns++;
         for (int i = 0; i < rivalProfiles.Count; i++)
         {
             AIInfluenceProfile profile = rivalProfiles[i];
             if (profile == null) continue;
-            InfluenceManager.Get.GetStock(profile.Faction).ReturnClerics(profile.ClericsPerTurn);
+            InfluenceManager.Get.GetStock(profile.Faction).ReturnClerics(IncomeAt(profile, incomeTurns));
         }
     }
 
@@ -54,8 +57,15 @@ public class AIInfluenceController : MonoBehaviour
         if (InfluenceManager.IsNull) return 0;
 
         AIInfluenceProfile profile = FindProfile(faction);
-        int income = profile != null ? profile.ClericsPerTurn : 0;
+        int income = profile != null ? IncomeAt(profile, incomeTurns + 1) : 0;
         return InfluenceManager.Get.GetStock(faction).Clerics + income;
+    }
+
+    private int IncomeAt(AIInfluenceProfile profile, int turn)
+    {
+        if (director == null) director = FindAnyObjectByType<RivalAIDirector>();
+        int every = director != null ? director.TurnsPerClericIncome(profile.Faction) : 1;
+        return turn % every == 0 ? profile.ClericsPerTurn : 0;
     }
 
     public IReadOnlyList<Districts> GetPreferredDistricts(FactionId faction)
@@ -125,7 +135,7 @@ public class AIInfluenceController : MonoBehaviour
         FactionStock stock = InfluenceManager.Get.GetStock(profile.Faction);
 
         // Presupuesto proyectado: el ingreso del turno recién se acredita al commitear.
-        int budget = stock.Clerics + profile.ClericsPerTurn;
+        int budget = stock.Clerics + IncomeAt(profile, incomeTurns + 1);
         int toAssign = Mathf.Min(profile.MaxAssignPerTurn, budget);
         if (toAssign <= 0) return;
 

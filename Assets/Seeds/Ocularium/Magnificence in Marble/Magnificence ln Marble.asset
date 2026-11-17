@@ -18,10 +18,17 @@ MonoBehaviour:
     dispatch men to guard it. The more prominent the location, the greater its impact
     shall be, yet the higher the chances that a rival sect will seek to vandalize
     it.
+  premise: 
   icon: {fileID: 0}
   ticks: 1
+  region: 2
+  eventType: 0
+  difficulty: 1
+  guideSeed: 0
   <Options>k__BackingField:
   - {fileID: 11400000, guid: 31224f9b1624a4d41a8e454f12917bcb, type: 2}
   - {fileID: 11400000, guid: fa7a13ab7d707bf43bfaa35d33884461, type: 2}
   - {fileID: 11400000, guid: 7a1ae63e400b8d64d8662d3db3cc3f24, type: 2}
   - {fileID: 11400000, guid: 724d9ae67c1248f4bbe4674ddbae02ae, type: 2}
+  <DefaultOption>k__BackingField: 4
+  playerPlantCooldown: 1

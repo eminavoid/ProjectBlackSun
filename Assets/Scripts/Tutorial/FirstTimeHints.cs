@@ -104,7 +104,7 @@ public class FirstTimeHints : MonoBehaviour
         (string key, string text) = queue.Dequeue();
         MarkSeen(key);
         showing = true;
-        TopScreenNotification.Hold(text, true, Dismiss, "GOT IT");
+        TopScreenNotification.Hold(text, true, Dismiss, "GOT IT", "HINT");
     }
 
     private void Raise(string key, string text)

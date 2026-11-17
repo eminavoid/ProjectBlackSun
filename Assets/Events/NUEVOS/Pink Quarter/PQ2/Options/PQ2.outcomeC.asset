@@ -55,8 +55,8 @@ MonoBehaviour:
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 6
-        minAmount: -50
-        maxAmount: -50
+        minAmount: -15
+        maxAmount: -15
         refund: 0
     - rid: 2174037052531671284
       type: {class: DoNothing, ns: , asm: Assembly-CSharp}

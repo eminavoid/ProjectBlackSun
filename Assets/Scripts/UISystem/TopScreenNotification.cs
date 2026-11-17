@@ -30,6 +30,10 @@ public class TopScreenNotification : MonoBehaviour
     private TextMeshProUGUI label;
     private Button continueButton;
     private TextMeshProUGUI continueMark;
+    private TextMeshProUGUI kickerLabel;
+    private RectTransform kickerRect;
+    private RectTransform buttonRect;
+    private string heldKicker = string.Empty;
     private LinkTooltipTrigger links;
     private Coroutine hideRoutine;
     private bool holding;
@@ -52,7 +56,7 @@ public class TopScreenNotification : MonoBehaviour
 
     public static bool IsHolding => instance != null && instance.holding;
 
-    public static void Hold(string message, bool showContinue, Action onContinue, string continueLabel = "NEXT")
+    public static void Hold(string message, bool showContinue, Action onContinue, string continueLabel = "NEXT", string kicker = null)
     {
         TopScreenNotification notifier = ResolveInstance();
         if (notifier == null)
@@ -62,6 +66,7 @@ public class TopScreenNotification : MonoBehaviour
         }
 
         if (notifier.continueMark != null) notifier.continueMark.text = continueLabel;
+        notifier.heldKicker = kicker ?? string.Empty;
         notifier.HoldInternal(message, showContinue, onContinue);
     }
 
@@ -136,7 +141,7 @@ public class TopScreenNotification : MonoBehaviour
         if (background == null) background = gameObject.AddComponent<Image>();
         background.sprite = UiArt.Find("Papel_Con_Borde");
         background.type = Image.Type.Simple;
-        background.color = new Color(1f, 1f, 1f, 0.72f);
+        background.color = Color.white;
         background.raycastTarget = true;
 
         Outline outline = gameObject.GetComponent<Outline>();
@@ -175,13 +180,28 @@ public class TopScreenNotification : MonoBehaviour
         textObject.AddComponent<HoverLinkHandlerTMPro>();
         links = textObject.AddComponent<LinkTooltipTrigger>();
 
+        GameObject kickerObject = new GameObject("Kicker", typeof(RectTransform));
+        kickerObject.transform.SetParent(transform, false);
+        kickerRect = kickerObject.GetComponent<RectTransform>();
+        kickerRect.anchorMin = new Vector2(0f, 1f);
+        kickerRect.anchorMax = new Vector2(1f, 1f);
+        kickerRect.pivot = new Vector2(0.5f, 1f);
+        kickerLabel = kickerObject.AddComponent<TextMeshProUGUI>();
+        kickerLabel.font = label.font;
+        kickerLabel.fontSharedMaterial = label.fontSharedMaterial;
+        kickerLabel.fontSize = 18f;
+        kickerLabel.characterSpacing = 6f;
+        kickerLabel.alignment = TextAlignmentOptions.BottomLeft;
+        kickerLabel.color = new Color(0.55f, 0.17f, 0.12f, 1f);
+        kickerLabel.raycastTarget = false;
+        kickerLabel.text = string.Empty;
+
         GameObject buttonObject = new GameObject("Continue", typeof(RectTransform), typeof(Image), typeof(Button));
         buttonObject.transform.SetParent(transform, false);
-        RectTransform buttonRect = buttonObject.GetComponent<RectTransform>();
-        buttonRect.anchorMin = new Vector2(1f, 0.5f);
-        buttonRect.anchorMax = new Vector2(1f, 0.5f);
-        buttonRect.pivot = new Vector2(1f, 0.5f);
-        buttonRect.anchoredPosition = new Vector2(-22f, 0f);
+        buttonRect = buttonObject.GetComponent<RectTransform>();
+        buttonRect.anchorMin = new Vector2(1f, 0f);
+        buttonRect.anchorMax = new Vector2(1f, 0f);
+        buttonRect.pivot = new Vector2(1f, 0f);
         buttonRect.sizeDelta = new Vector2(148f, 46f);
         Image buttonImage = buttonObject.GetComponent<Image>();
         buttonImage.sprite = UiArt.Find("Ladrillo_Gris_Largo_1");
@@ -252,8 +272,9 @@ public class TopScreenNotification : MonoBehaviour
         TooltipLinksDB glossary = Tooltip.Glossary;
         if (links != null) links.Database = glossary;
         label.text = glossary != null ? glossary.Highlight(heldMessage) : heldMessage;
+        kickerLabel.text = heldKicker;
         Place(true);
-        FitToText(heldShowsContinue);
+        FitToText(true, heldShowsContinue);
         SetContinueVisible(heldShowsContinue);
         group.blocksRaycasts = true;
         group.interactable = heldShowsContinue;
@@ -279,8 +300,9 @@ public class TopScreenNotification : MonoBehaviour
         if (label == null) BuildUi();
 
         label.text = message ?? string.Empty;
+        kickerLabel.text = string.Empty;
         Place(false);
-        FitToText(false);
+        FitToText(false, false);
         SetContinueVisible(false);
         group.blocksRaycasts = false;
         group.interactable = false;
@@ -317,34 +339,47 @@ public class TopScreenNotification : MonoBehaviour
         root.sizeDelta = held ? HeldSize : RestSize;
     }
 
-    private void FitToText(bool showContinue)
+    private void FitToText(bool held, bool showContinue)
     {
         if (root == null || label == null) return;
 
-        const float padX = 64f;
-        const float padY = 46f;
-        const float buttonSpace = 176f;
-        const float maxWidth = 560f;
-        const float minWidth = 420f;
+        const float padX = 52f;
+        const float padTop = 40f;
+        const float padBottom = 38f;
+        const float kickerHeight = 30f;
+        const float buttonHeight = 46f;
+        const float gap = 10f;
+        const float heldWidth = 560f;
+        const float minWidth = 360f;
 
-        float side = showContinue ? buttonSpace : 0f;
-        float textWidth = maxWidth - padX * 2f - side;
-        Vector2 preferred = label.GetPreferredValues(label.text, textWidth, 0f);
-        float width = Mathf.Clamp(preferred.x + padX * 2f + side, minWidth, maxWidth);
-        textWidth = width - padX * 2f - side;
-        preferred = label.GetPreferredValues(label.text, textWidth, 0f);
-        float height = Mathf.Clamp(preferred.y + padY * 2f, 112f, 320f);
+        label.alignment = held ? TextAlignmentOptions.TopLeft : TextAlignmentOptions.Center;
+        float width = held
+            ? heldWidth
+            : Mathf.Clamp(label.GetPreferredValues(label.text, heldWidth - padX * 2f, 0f).x + padX * 2f, minWidth, heldWidth);
+        float textHeight = label.GetPreferredValues(label.text, width - padX * 2f, 0f).y;
+        bool hasKicker = kickerLabel != null && !string.IsNullOrEmpty(kickerLabel.text);
+        float top = padTop + (hasKicker ? kickerHeight : 0f);
+        float bottom = padBottom + (showContinue ? buttonHeight + gap : 0f);
+        float height = Mathf.Max(top + textHeight + bottom, 104f);
 
         root.sizeDelta = new Vector2(width, height);
+        if (kickerRect != null)
+        {
+            kickerRect.offsetMin = new Vector2(padX, -(padTop + kickerHeight));
+            kickerRect.offsetMax = new Vector2(-padX, -padTop);
+        }
+
+        if (buttonRect != null) buttonRect.anchoredPosition = new Vector2(-(padX - 10f), padBottom - 8f);
         if (textRect == null) return;
-        textRect.offsetMin = new Vector2(padX, padY);
-        textRect.offsetMax = new Vector2(-(padX + side), -padY);
+        textRect.offsetMin = new Vector2(padX, bottom);
+        textRect.offsetMax = new Vector2(-padX, -top);
     }
 
     private void SetVisible(bool visible)
     {
         if (background != null) background.enabled = visible;
         if (label != null) label.enabled = visible;
+        if (kickerLabel != null) kickerLabel.enabled = visible;
         gameObject.SetActive(true);
         if (!visible && label != null) label.text = string.Empty;
     }

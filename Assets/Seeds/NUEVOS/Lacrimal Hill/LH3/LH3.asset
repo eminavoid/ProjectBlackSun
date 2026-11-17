@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
+  m_Name: LH3
+  m_EditorClassIdentifier: Assembly-CSharp::Seed
+  title: A SEAT AT THE GOVERNOR'S TABLE
+  description: My Pontiff, the invitation has arrived. Tonight you dine with the
+    governor, two magistrates and a bishop of a rival faith. Every word will be weighed.
+  premise: Court the governor's chamberlain for an invitation to dine. Patience and
+    gifts.
+  icon: {fileID: 0}
+  ticks: 5
+  region: 6
+  eventType: 1
+  difficulty: 3
+  guideSeed: 0
+  <Options>k__BackingField:
+  - {fileID: 11400000, guid: 3f26b5c4384329f45aa729eb7ed32cec, type: 2}
+  - {fileID: 11400000, guid: bd140d2e93cdd414985fc92e7a5b95ed, type: 2}
+  - {fileID: 11400000, guid: e152f428f4e55cd4f9938c4fd2c164df, type: 2}
+  - {fileID: 11400000, guid: 9edbfc5b330276742b8709cc724c13f5, type: 2}
+  <DefaultOption>k__BackingField: 4
+  playerPlantCooldown: 1

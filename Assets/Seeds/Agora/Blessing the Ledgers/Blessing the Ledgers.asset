@@ -16,10 +16,17 @@ MonoBehaviour:
   description: High Pontiff, the fruits of our investment are ripe for the reaping.
     I only require you to remind me of one detail... do you recall how much coin
     we ended up committing to the venture?
+  premise: 
   icon: {fileID: 0}
   ticks: 1
+  region: 1
+  eventType: 0
+  difficulty: 1
+  guideSeed: 0
   <Options>k__BackingField:
   - {fileID: 11400000, guid: f92d1bc94ba24f94cbd1e0b9772b75ec, type: 2}
   - {fileID: 11400000, guid: 11c486172c52bbf4f9bfe65665296ed8, type: 2}
   - {fileID: 11400000, guid: 86908c872fb969a40a5b4eea54044fa6, type: 2}
   - {fileID: 11400000, guid: d87ae53ade46a734a91c220e0639f130, type: 2}
+  <DefaultOption>k__BackingField: 4
+  playerPlantCooldown: 1

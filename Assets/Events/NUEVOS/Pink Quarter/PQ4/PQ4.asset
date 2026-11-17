@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
+  m_Name: PQ4
+  m_EditorClassIdentifier: Assembly-CSharp::Seed
+  title: A LETTER WITHOUT A SEAL
+  description: 'My Pontiff, a courier left a letter at our door and vanished into
+    the crowd. It names three magistrates who visit a certain house in the Pink Quarter,
+    with the dates of each visit. Knowledge like this is a blade without a handle:
+    it cuts whoever holds it.'
+  premise: 
+  icon: {fileID: 0}
+  ticks: 1
+  region: 4
+  eventType: 2
+  difficulty: 1
+  guideSeed: 0
+  <Options>k__BackingField:
+  - {fileID: 11400000, guid: a835560159bc370478f91defadac07f4, type: 2}
+  - {fileID: 11400000, guid: 6bc72d26c7bfd9e4d86afb3306e97a6a, type: 2}
+  - {fileID: 11400000, guid: 1247ddef1b5dd7c47b84f7af996a9ca3, type: 2}
+  - {fileID: 11400000, guid: 8ea305425ecebda4899d67f5ea1f0501, type: 2}
+  <DefaultOption>k__BackingField: 4
+  playerPlantCooldown: 1

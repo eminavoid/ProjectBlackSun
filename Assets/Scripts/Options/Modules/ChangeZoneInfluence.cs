@@ -20,6 +20,6 @@ public class ChangeZoneInfluence : OptionModule
         if (zone == null) zone = DistrictSelectionController.SelectedZone;
         if (zone == null) return;
 
-        InfluenceManager.Get.ApplyEventInfluence(zone, faction, amount);
+        InfluenceManager.Get.ApplyEventInfluence(zone, faction, amount, seed != null ? seed.Title : null);
     }
 }

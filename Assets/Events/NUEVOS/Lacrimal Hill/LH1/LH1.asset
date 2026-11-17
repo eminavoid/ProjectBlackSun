@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
+  m_Name: LH1
+  m_EditorClassIdentifier: Assembly-CSharp::Seed
+  title: THE WIDOW'S INHERITANCE
+  description: My Pontiff, a noble widow of Lacrimal Hill wishes to leave part of
+    her estate to a faith before she dies. Her nephews, who expected all of it, watch
+    every priest who climbs her stairs. Her favor could raise us among the great
+    houses, or make enemies of them.
+  premise: 
+  icon: {fileID: 0}
+  ticks: 1
+  region: 6
+  eventType: 1
+  difficulty: 1
+  guideSeed: 0
+  <Options>k__BackingField:
+  - {fileID: 11400000, guid: 14081d9dafe540f4ea8e9bc431fbadf8, type: 2}
+  - {fileID: 11400000, guid: 7f3e1ec8903c81e4b9c30643181695ff, type: 2}
+  - {fileID: 11400000, guid: a0a63356f16cb3240b8c586dd2758b1a, type: 2}
+  - {fileID: 11400000, guid: f0f2d86868f27ad40a53ac5f1a7fdc1e, type: 2}
+  <DefaultOption>k__BackingField: 4
+  playerPlantCooldown: 1

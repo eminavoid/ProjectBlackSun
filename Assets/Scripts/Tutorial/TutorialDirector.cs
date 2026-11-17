@@ -454,7 +454,7 @@ public class TutorialDirector : MonoBehaviour
         heldLine = line;
         heldContinue = showContinue;
         continueBeat = false;
-        TopScreenNotification.Hold(line, showContinue, () => continueBeat = true, label);
+        TopScreenNotification.Hold(line, showContinue, () => continueBeat = true, label, "TUTORIAL");
     }
 
     private void Quiet(params Component[] allow)

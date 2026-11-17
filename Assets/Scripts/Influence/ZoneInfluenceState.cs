@@ -21,6 +21,10 @@ public class ZoneInfluenceState
 
     public ZoneControlStatus Status { get; private set; } = ZoneControlStatus.Contested;
     public FactionId? Controller { get; private set; }
+    public string PlayerSetback { get; private set; }
+
+    public void NotePlayerSetback(string cause) => PlayerSetback = cause;
+    public void ClearPlayerSetback() => PlayerSetback = null;
 
     public int TotalInfluence
     {

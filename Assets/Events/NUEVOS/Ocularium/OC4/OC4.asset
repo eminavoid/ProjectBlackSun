@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
+  m_Name: OC4
+  m_EditorClassIdentifier: Assembly-CSharp::Seed
+  title: THE HERETIC SCHOLAR
+  description: My Pontiff, a scholar of the Ocularium has published a treatise that
+    reads the eclipse as a turn of the heavens, not a divine sign. The students devour
+    it. Some of our own acolytes have been seen with copies tucked into their robes.
+  premise: 
+  icon: {fileID: 0}
+  ticks: 1
+  region: 2
+  eventType: 1
+  difficulty: 1
+  guideSeed: 0
+  <Options>k__BackingField:
+  - {fileID: 11400000, guid: cd1f275c2f55533458ec7362b9524367, type: 2}
+  - {fileID: 11400000, guid: 6722cf278a586474fa342e18654d1a45, type: 2}
+  - {fileID: 11400000, guid: 320b00bccb85ae04d9e3f9956e45f0ef, type: 2}
+  - {fileID: 11400000, guid: 4f640c2517761a74497aa54f6e497147, type: 2}
+  <DefaultOption>k__BackingField: 4
+  playerPlantCooldown: 1

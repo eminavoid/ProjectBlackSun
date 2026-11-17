@@ -132,6 +132,15 @@ public class SeedEventManager : Singleton<SeedEventManager>
         }
     }
 
+    public static void CollectPendingTitles(ICollection<string> titles)
+    {
+        if (IsNull || titles == null) return;
+        for (int i = 0; i < Instance.seedEvents.Count; i++)
+        {
+            if (Instance.seedEvents[i] != null) titles.Add(Instance.seedEvents[i].Title);
+        }
+    }
+
     public static void StoreSeedEvent(Seed seed)
     {
         if (seed == null) return;
@@ -611,17 +620,22 @@ public class SeedEventManager : Singleton<SeedEventManager>
             {
                 uiWindow.TryGetElement<TextMeshProUGUI>("Title").text = seed.Options[i].Title;
                 uiWindow.TryGetElement<TextMeshProUGUI>("Description").text = seed.Options[i].Description;
+                display.InitializeData(seed.Options[i], seed, i);
 
                 testedVirtues.Clear();
                 seed.Options[i].GetTestedVirtues(testedVirtues);
                 testedVirtues.RemoveAll(virtue => playerStats == null || playerStats.GetStat(virtue) <= 0);
 
-                if (testedVirtues.Count > 0)
+                string chanceTip = display.ChanceTip();
+                if (chanceTip != null || testedVirtues.Count > 0)
                 {
                     TooltipTrigger tooltipTrigger = uiWindow.gameObject.AddComponent<TooltipTrigger>();
-                    tooltipTrigger.SetText($"Your <b>{Virtues.Names(testedVirtues)}</b> {(testedVirtues.Count == 1 ? "makes" : "make")} the best outcome of this choice more likely.");
+                    tooltipTrigger.SetText(chanceTip ?? $"Your <b>{Virtues.Names(testedVirtues)}</b> {(testedVirtues.Count == 1 ? "makes" : "make")} the best outcome of this choice more likely.");
                     tooltipTrigger.ShowBesides = false;
+                }
 
+                if (testedVirtues.Count > 0 && seed.Options[i].CanExecute())
+                {
                     int shinePower = 0;
 
                     for (int x = 0; x < testedVirtues.Count; x++)
@@ -639,8 +653,11 @@ public class SeedEventManager : Singleton<SeedEventManager>
                     uiWindow.TryGetElement<Image>("Outline").color = new Color(0f, 0f, 0f, 0f);
                 }
             }
+            else
+            {
+                display.InitializeData(seed.Options[i], seed, i);
+            }
 
-            display.InitializeData(seed.Options[i], seed);
             display.onOptionChosen += OnOptionChosen;
         }
     }

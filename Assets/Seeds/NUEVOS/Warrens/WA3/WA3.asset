@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
+  m_Name: WA3
+  m_EditorClassIdentifier: Assembly-CSharp::Seed
+  title: THE NIGHT SCHOOL
+  description: My Pontiff, the night school is full every evening. Parents bring
+    bread to thank the teachers, and the older pupils ask what they should read next.
+  premise: Teach the children of the Warrens to read by candlelight. Gratitude grows
+    slowly.
+  icon: {fileID: 0}
+  ticks: 3
+  region: 5
+  eventType: 1
+  difficulty: 2
+  guideSeed: 0
+  <Options>k__BackingField:
+  - {fileID: 11400000, guid: 9dea593fc40a5bd469ccafa37c267459, type: 2}
+  - {fileID: 11400000, guid: 1f7d19e5b393a934a8bc3e1face41944, type: 2}
+  - {fileID: 11400000, guid: c726183327346f0458d75bcb4d17f9f1, type: 2}
+  - {fileID: 11400000, guid: cf5cb30a1ac50064ba326e95f05adb4a, type: 2}
+  <DefaultOption>k__BackingField: 4
+  playerPlantCooldown: 1

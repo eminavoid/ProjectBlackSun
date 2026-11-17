@@ -16,7 +16,9 @@ public class WeighedChoice : OptionModule
 
         for (int i = 0; i < modules.Count; i++)
         {
-            float weight = modules[i].Weight + playerStats.GetStatExtraWeight(modules[i].statUsed);
+            PlayerStats.PlayerStat stat = modules[i].statUsed;
+            float extra = playerStats != null && stat != PlayerStats.PlayerStat.None ? playerStats.GetStatExtraWeight(stat) : 0f;
+            float weight = modules[i].Weight + extra;
 
             totalWeight += weight;
 
@@ -25,6 +27,8 @@ public class WeighedChoice : OptionModule
                 positiveWeight += weight;
             }
         }
+
+        if (totalWeight <= 0f) return OutcomeChances.GuarantedPositive;
 
         float positiveChance = positiveWeight / totalWeight;
         return new OutcomeChances(positiveChance, 1f - positiveChance);

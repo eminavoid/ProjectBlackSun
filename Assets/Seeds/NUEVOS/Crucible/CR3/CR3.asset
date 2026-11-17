@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
+  m_Name: CR3
+  m_EditorClassIdentifier: Assembly-CSharp::Seed
+  title: THE BELL FOUNDRY
+  description: My Pontiff, the bell is cast and cooling in its pit. The founders
+    say it is the finest they have made in years, and ask how we wish to raise it.
+  premise: Commission a bell for our chapel from the Crucible's founders. Bronze
+    takes time to pour.
+  icon: {fileID: 0}
+  ticks: 3
+  region: 3
+  eventType: 0
+  difficulty: 2
+  guideSeed: 0
+  <Options>k__BackingField:
+  - {fileID: 11400000, guid: 93e524a1a4dc71f438efa8895ab25ab3, type: 2}
+  - {fileID: 11400000, guid: 602130f95bc30ca48828bed320917949, type: 2}
+  - {fileID: 11400000, guid: bec901f98cbe2454cb2b104ef1dee7af, type: 2}
+  - {fileID: 11400000, guid: aba8435270bfb3c4aa96e1597a8d1a77, type: 2}
+  <DefaultOption>k__BackingField: 4
+  playerPlantCooldown: 1

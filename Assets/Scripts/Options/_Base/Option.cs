@@ -65,6 +65,12 @@ public class Option : ScriptableObject
         return weightedChoice.GetOutcomeChances(playerStats);
     }
 
+    public OutcomeChances GetBaseOutcomeChances()
+    {
+        WeighedChoice weightedChoice = GetModule<WeighedChoice>();
+        return weightedChoice != null ? weightedChoice.GetOutcomeChances(null) : OutcomeChances.GuarantedPositive;
+    }
+
     public bool CanExecute()
     {
         for (int i = 0; i < modules.Count; i++)

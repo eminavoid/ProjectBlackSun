@@ -44,6 +44,6 @@ MonoBehaviour:
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
-        minAmount: -75
-        maxAmount: -75
+        minAmount: -20
+        maxAmount: -20
         refund: 0

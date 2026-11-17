@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fe25bf80fa7e147948b84a062fd40c, type: 3}
+  m_Name: LH3.outcomeC
+  m_EditorClassIdentifier: Assembly-CSharp::Option
+  playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
+  title: Embarrass the rival bishop before the guests.
+  description: 'COST: No cost'
+  icon: {fileID: 0}
+  modules:
+  - rid: 6513433601966866805
+  endsQuestline: 1
+  followUpSeeds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 6513433601966866805
+      type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
+      data:
+        modules:
+        - weight: 45
+          module:
+          - rid: 6513433601966866806
+          - rid: 6513433601966866807
+          statUsed: 2
+          outcomeType: 0
+          output: The bishop stammers and leaves early. The table is ours.
+        - weight: 55
+          module:
+          - rid: 6513433601966866808
+          - rid: 6513433601966866809
+          statUsed: 0
+          outcomeType: 1
+          output: The guests find you crude. Gifts are needed to mend it.
+    - rid: 6513433601966866806
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 2
+        minAmount: 1
+        maxAmount: 1
+        refund: 0
+    - rid: 6513433601966866807
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 1
+        minAmount: 30
+        maxAmount: 30
+        refund: 0
+    - rid: 6513433601966866808
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 0
+        minAmount: -20
+        maxAmount: -20
+        refund: 0
+    - rid: 6513433601966866809
+      type: {class: ChangeZoneInfluence, ns: , asm: Assembly-CSharp}
+      data:
+        faction: 0
+        amount: -8
+        useSeedZone: 1

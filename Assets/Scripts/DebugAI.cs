@@ -140,13 +140,13 @@ public class DebugAI : MonoBehaviour
         return true;
     }
 
-    public bool TryPickSeed(Districts district, out Seed seed)
+    public bool TryPickSeed(Districts district, out Seed seed, ICollection<string> takenTitles = null)
     {
-        seed = GetRandomAllowedSeed(district);
+        seed = GetRandomAllowedSeed(district, takenTitles);
         return seed != null;
     }
 
-    private Seed GetRandomAllowedSeed(Districts? districtFilter)
+    private Seed GetRandomAllowedSeed(Districts? districtFilter, ICollection<string> takenTitles = null)
     {
         if (seedsPool == null || seedsPool.EvilSeeds == null || seedsPool.EvilSeeds.Count == 0)
         {
@@ -166,6 +166,7 @@ public class DebugAI : MonoBehaviour
             Seed seed = seedsPool.EvilSeeds[i];
             if (seed == null) continue;
             if (TutorialContent.IsTutorialSeed(seed)) continue;
+            if (takenTitles != null && takenTitles.Contains(seed.Title)) continue;
 
             if (aiProfile != null && !aiProfile.CanUse(seed)) continue;
 

@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
+  m_Name: AG3
+  m_EditorClassIdentifier: Assembly-CSharp::Seed
+  title: THE PILGRIMS' GATE
+  description: My Pontiff, after weeks of petitions the council grants us the pilgrims'
+    gate for a season. The merchants grumble, and the pilgrims grumble louder.
+  premise: Petition the Agora's council for the toll at the pilgrims' gate. Councils
+    move slowly.
+  icon: {fileID: 0}
+  ticks: 4
+  region: 1
+  eventType: 0
+  difficulty: 3
+  guideSeed: 0
+  <Options>k__BackingField:
+  - {fileID: 11400000, guid: c728c166285466e40b0be9fd37a9b35e, type: 2}
+  - {fileID: 11400000, guid: 2033892663fdc3c4da45a1356cabb9e4, type: 2}
+  - {fileID: 11400000, guid: f66ee13c1f5a5cf42af419acb34eeb77, type: 2}
+  - {fileID: 11400000, guid: de54859c5e852ea4398de4733c596a0a, type: 2}
+  <DefaultOption>k__BackingField: 4
+  playerPlantCooldown: 1

@@ -213,6 +213,20 @@ public class TurnChronicle : MonoBehaviour
             {
                 news.Add($"Rival faiths took {Zones(lost.Count)} from you in {DistrictsOf(lost)}.");
             }
+
+            int explained = 0;
+            for (int i = 0; i < lost.Count && explained < 2; i++)
+            {
+                string cause = lost[i].Influence != null ? lost[i].Influence.PlayerSetback : null;
+                if (string.IsNullOrEmpty(cause)) continue;
+                news.Add($"In {MapStatsQuery.DistrictLabel(lost[i].District)}, {cause}.");
+                explained++;
+            }
+        }
+
+        foreach (KeyValuePair<DistrictZone, FactionId?> pair in controllersBefore)
+        {
+            if (pair.Key != null && pair.Key.Influence != null) pair.Key.Influence.ClearPlayerSetback();
         }
 
         var spreading = new List<KeyValuePair<FactionId, int>>();

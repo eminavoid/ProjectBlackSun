@@ -67,7 +67,15 @@ public static class ZoneTravelCatalogEditor
 
         if (records.Count == 0) return 0;
 
+        records.Sort((x, y) =>
+        {
+            int byFrom = string.CompareOrdinal(x.fromZone, y.fromZone);
+            return byFrom != 0 ? byFrom : string.CompareOrdinal(x.toZone, y.toZone);
+        });
+
         ZoneTravelCatalog catalog = GetOrCreate();
+        if (SameLinks(catalog.Links, records)) return records.Count;
+
         catalog.SetLinks(records);
         EditorUtility.SetDirty(catalog);
         AssetDatabase.SaveAssets();
@@ -88,6 +96,20 @@ public static class ZoneTravelCatalogEditor
         AssetDatabase.CreateAsset(catalog, AssetPath);
         AssetDatabase.SaveAssets();
         return catalog;
+    }
+
+    private static bool SameLinks(IReadOnlyList<ZoneTravelCatalog.Record> saved, List<ZoneTravelCatalog.Record> captured)
+    {
+        if (saved == null || saved.Count != captured.Count) return false;
+        for (int i = 0; i < captured.Count; i++)
+        {
+            ZoneTravelCatalog.Record a = saved[i];
+            ZoneTravelCatalog.Record b = captured[i];
+            if (a == null || a.fromZone != b.fromZone || a.toZone != b.toZone || a.kind != b.kind) return false;
+            if (!Mathf.Approximately(a.gap, b.gap)) return false;
+        }
+
+        return true;
     }
 
     private static TravelEdgeKind KindBetween(DistrictZone a, DistrictZone b)

@@ -157,9 +157,10 @@ public class DistrictClericAssignPanel : MonoBehaviour
     private string GainText(InfluenceManager manager, int clerics)
     {
         Vector2Int range = ClericInfluenceTable.GetRange(clerics);
+        int bonus = InfluenceManager.OutnumberBonus(shown != null ? shown.Influence : null, FactionId.Player, clerics);
         float multiplier = manager.GetInfluenceGenerationMultiplier(FactionId.Player, shown);
-        int low = Mathf.RoundToInt(range.x * multiplier);
-        int high = Mathf.RoundToInt(range.y * multiplier);
+        int low = Mathf.RoundToInt((range.x + bonus) * multiplier);
+        int high = Mathf.RoundToInt((range.y + bonus) * multiplier);
         return low == high ? $"+{low}" : $"+{low} to +{high}";
     }
 

@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
+  m_Name: WA3
+  m_EditorClassIdentifier: Assembly-CSharp::Seed
+  title: THE DRY WELL
+  description: My Pontiff, the last clean well in the Warrens has run dry. People
+    queue at the river with buckets, and the sick are already among them. A rival
+    preacher swears his god will bring the water back before the week is out.
+  premise: 
+  icon: {fileID: 0}
+  ticks: 1
+  region: 5
+  eventType: 1
+  difficulty: 1
+  guideSeed: 0
+  <Options>k__BackingField:
+  - {fileID: 11400000, guid: 28559734a66456640886e8d3b2b84da5, type: 2}
+  - {fileID: 11400000, guid: 1843ae746058e7f49a947b4084920140, type: 2}
+  - {fileID: 11400000, guid: a9afe0abd5315124782b69a8a13ec4ae, type: 2}
+  - {fileID: 11400000, guid: 28e25474e048618428fb8e1d78cc2378, type: 2}
+  <DefaultOption>k__BackingField: 4
+  playerPlantCooldown: 1

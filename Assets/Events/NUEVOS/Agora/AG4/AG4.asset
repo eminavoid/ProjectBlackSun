@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e58992549ec8740bbdf6b531ac1d0f, type: 3}
+  m_Name: AG4
+  m_EditorClassIdentifier: Assembly-CSharp::Seed
+  title: THE MONEYLENDER'S OFFER
+  description: 'My Pontiff, a moneylender of the Agora offers us a loan: one hundred
+    coins today, repaid with interest when the moon turns. He swears his terms are
+    generous. His former clients swear otherwise, when they can be found.'
+  premise: 
+  icon: {fileID: 0}
+  ticks: 1
+  region: 1
+  eventType: 0
+  difficulty: 1
+  guideSeed: 0
+  <Options>k__BackingField:
+  - {fileID: 11400000, guid: 29b12d91baa9f074aadc1923f0c461d4, type: 2}
+  - {fileID: 11400000, guid: 27b23ebf85f21ca4babea865212f2023, type: 2}
+  - {fileID: 11400000, guid: fd5b1f0e6732bfa4da7d6e6701209921, type: 2}
+  - {fileID: 11400000, guid: 906cd675adf002c429c849e7289e7e3f, type: 2}
+  <DefaultOption>k__BackingField: 4
+  playerPlantCooldown: 1

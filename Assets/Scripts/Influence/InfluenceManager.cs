@@ -259,10 +259,15 @@ public class InfluenceManager : Singleton<InfluenceManager>
         return TryAssignClerics(zone, faction, amount, out _);
     }
 
-    public void ApplyEventInfluence(DistrictZone zone, FactionId faction, int delta)
+    public void ApplyEventInfluence(DistrictZone zone, FactionId faction, int delta, string source = null)
     {
         if (zone == null) return;
         zone.EnsureInfluenceState(defaultZoneCap);
+        string from = string.IsNullOrWhiteSpace(source) ? "an event" : $"the event \"{source}\"";
+        if (FactionIdUtil.IsPlayer(faction) && delta < 0)
+            zone.Influence.NotePlayerSetback($"{from} cost you {-delta} influence");
+        else if (!FactionIdUtil.IsPlayer(faction) && delta > 0 && zone.Influence.GetShare(FactionId.Player) > 0)
+            zone.Influence.NotePlayerSetback($"{from} gave {FactionIdUtil.DisplayName(faction)} {delta} influence");
         zone.Influence.ApplyDirectInfluenceDelta(faction, delta);
         zone.RefreshControlVisual();
         OnControlChanged?.Invoke();
@@ -351,13 +356,25 @@ public class InfluenceManager : Singleton<InfluenceManager>
             int clerics = state.GetClerics(faction);
             if (clerics <= 0) continue;
 
-            int roll = ClericInfluenceTable.Roll(clerics);
+            int roll = ClericInfluenceTable.Roll(clerics) + OutnumberBonus(state, faction, clerics);
             float mult = GetInfluenceGenerationMultiplier(faction, zone);
             int gen = Mathf.Max(0, Mathf.RoundToInt(roll * mult));
             generation[faction] = gen;
         }
 
         return generation;
+    }
+
+    public static int OutnumberBonus(ZoneInfluenceState state, FactionId faction, int clerics)
+    {
+        if (state == null || clerics <= 0) return 0;
+        int strongest = 0;
+        foreach (FactionId other in FactionIdUtil.All)
+        {
+            if (other != faction) strongest = Mathf.Max(strongest, state.GetClerics(other));
+        }
+
+        return strongest > 0 ? Mathf.Max(0, clerics - strongest) : 0;
     }
 
     public float GetInfluenceGenerationMultiplier(FactionId faction, DistrictZone zone)
@@ -423,19 +440,33 @@ public class InfluenceManager : Singleton<InfluenceManager>
 
         if (peak <= 0) return;
 
+        List<FactionId> winners = new List<FactionId>();
         List<FactionId> toExpel = new List<FactionId>();
+        int pool = 0;
         for (int i = 0; i < present.Count; i++)
         {
             FactionId faction = present[i];
             generation.TryGetValue(faction, out int gen);
-            if (gen >= peak) continue;
-
-            int loss = peak - gen;
-            state.AddShare(faction, -loss);
-            if (state.GetShare(faction) <= 0)
+            if (gen >= peak)
             {
-                toExpel.Add(faction);
+                winners.Add(faction);
+                continue;
             }
+
+            int had = state.GetShare(faction);
+            int loss = Mathf.Min(peak - gen, had);
+            if (loss <= 0) continue;
+
+            state.AddShare(faction, -loss);
+            pool += loss;
+            if (FactionIdUtil.IsPlayer(faction)) state.NotePlayerSetback(StruggleCause(state, loss, generation, peak));
+            if (state.GetShare(faction) <= 0) toExpel.Add(faction);
+        }
+
+        for (int i = 0; i < winners.Count && pool > 0; i++)
+        {
+            int part = pool / winners.Count + (i < pool % winners.Count ? 1 : 0);
+            state.AddShare(winners[i], part);
         }
 
         for (int i = 0; i < toExpel.Count; i++)
@@ -443,6 +474,18 @@ public class InfluenceManager : Singleton<InfluenceManager>
             int returned = state.Expel(toExpel[i], returnClerics: true);
             if (returned > 0) GetStock(toExpel[i]).ReturnClerics(returned);
         }
+    }
+
+    private static string StruggleCause(ZoneInfluenceState state, int loss, Dictionary<FactionId, int> generation, int peak)
+    {
+        FactionId? top = null;
+        foreach (KeyValuePair<FactionId, int> pair in generation)
+        {
+            if (pair.Value >= peak && !FactionIdUtil.IsPlayer(pair.Key)) top = pair.Key;
+        }
+
+        if (!top.HasValue) return $"you lost {loss} influence in the struggle for the zone";
+        return $"{FactionIdUtil.DisplayName(top.Value)} won the struggle and took {loss} influence ({state.GetClerics(top.Value)} of their clerics against {state.GetClerics(FactionId.Player)} of yours)";
     }
 
     private void ApplyPendingSpill(List<(DistrictZone source, FactionId faction, int excess)> pendingSpill)

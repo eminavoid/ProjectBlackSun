@@ -86,7 +86,7 @@ public class OptionHoverTextFeedback : MonoBehaviour, IPointerEnterHandler, IPoi
         {
             if (texts[i] == null) continue;
             Color c = originalColors[i];
-            texts[i].color = new Color(c.r * disabledDimFactor, c.g * disabledDimFactor, c.b * disabledDimFactor, c.a);
+            texts[i].color = new Color(c.r, c.g, c.b, c.a * disabledDimFactor);
         }
     }
 

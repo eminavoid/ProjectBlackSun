@@ -64,20 +64,41 @@ public class RivalAIDirector : MonoBehaviour
 
     [SerializeField] private bool logPlans;
 
+    [Serializable]
+    private struct Pace
+    {
+        [Tooltip("Events each rival plants per turn. 0.5 means one every other turn.")]
+        [Min(0f)] public float seedsPerTurn;
+        [Tooltip("Most clerics a rival sends out in one turn.")]
+        [Min(0)] public int clericsSentPerTurn;
+        [Tooltip("A rival gains its cleric income once every this many turns.")]
+        [Min(1)] public int turnsPerClericIncome;
+        [Tooltip("Clerics kept back to defend zones the rival is losing.")]
+        [Min(0)] public int clericReserve;
+    }
+
+    [Header("Pace")]
+    [SerializeField] private Pace easyPace = new Pace { seedsPerTurn = 0.5f, clericsSentPerTurn = 1, turnsPerClericIncome = 3, clericReserve = 2 };
+    [SerializeField] private Pace normalPace = new Pace { seedsPerTurn = 1f, clericsSentPerTurn = 2, turnsPerClericIncome = 2, clericReserve = 2 };
+    [SerializeField] private Pace hardPace = new Pace { seedsPerTurn = 2f, clericsSentPerTurn = 3, turnsPerClericIncome = 1, clericReserve = 1 };
+
     private struct Tuning
     {
         public int actions;
         public float aggression;
         public float mistakes;
+        public Pace pace;
     }
 
     private int actionPoints = 4;
     private float aggressiveness = 0.35f;
     private float mistakeChance = 0.1f;
+    private Pace pace;
     private bool difficultyApplied;
     private bool usePerRival;
     private readonly Dictionary<FactionId, Tuning> perRival = new Dictionary<FactionId, Tuning>();
 
+    private readonly HashSet<string> seedTitlesTaken = new HashSet<string>();
     private readonly List<DistrictZone> plannedSeedZones = new List<DistrictZone>();
     private readonly List<Choice> plannedSeeds = new List<Choice>();
     private readonly Dictionary<DistrictZone, int> plannedClerics = new Dictionary<DistrictZone, int>();
@@ -179,7 +200,10 @@ public class RivalAIDirector : MonoBehaviour
         perRival.Clear();
         Tuning tuning = Resolve(difficulty);
         SetDifficulty(tuning.actions, tuning.aggression, tuning.mistakes);
+        pace = tuning.pace;
     }
+
+    public int TurnsPerClericIncome(FactionId faction) => Mathf.Max(1, TuningFor(faction).pace.turnsPerClericIncome);
 
     /// <summary>Ata la dificultad: pocas acciones y poca agresividad, o al revés.</summary>
     public void ApplyDifficulty(int actions, float aggression)
@@ -187,14 +211,32 @@ public class RivalAIDirector : MonoBehaviour
         usePerRival = false;
         perRival.Clear();
         float mistakes = normalMistakeChance;
-        if (aggression <= 0.2f) mistakes = easyMistakeChance;
-        else if (aggression >= 0.7f) mistakes = hardMistakeChance;
+        pace = normalPace;
+        if (aggression <= 0.2f)
+        {
+            mistakes = easyMistakeChance;
+            pace = easyPace;
+        }
+        else if (aggression >= 0.7f)
+        {
+            mistakes = hardMistakeChance;
+            pace = hardPace;
+        }
+
         SetDifficulty(actions, aggression, mistakes);
     }
 
     public void PlanIntents(List<AIIntent> intents)
     {
         if (intents == null || InfluenceManager.IsNull) return;
+
+        seedTitlesTaken.Clear();
+        SeedEventManager.CollectPendingTitles(seedTitlesTaken);
+        IReadOnlyList<DistrictZone> zones = InfluenceManager.Get.GetPlayableZones();
+        for (int i = 0; i < zones.Count; i++)
+        {
+            if (zones[i] != null && zones[i].PlantedSeed != null) seedTitlesTaken.Add(zones[i].PlantedSeed.Title);
+        }
 
         for (int i = 0; i < agents.Count; i++)
         {
@@ -224,6 +266,7 @@ public class RivalAIDirector : MonoBehaviour
         actionPoints = baseline.actions;
         aggressiveness = baseline.aggression;
         mistakeChance = baseline.mistakes;
+        pace = baseline.pace;
         difficultyApplied = true;
     }
 
@@ -236,21 +279,24 @@ public class RivalAIDirector : MonoBehaviour
                 {
                     actions = Mathf.Max(1, normalActionPoints - 2),
                     aggression = 0.1f,
-                    mistakes = easyMistakeChance
+                    mistakes = easyMistakeChance,
+                    pace = easyPace
                 };
             case RivalDifficulty.Hard:
                 return new Tuning
                 {
                     actions = normalActionPoints + 2,
                     aggression = 0.85f,
-                    mistakes = hardMistakeChance
+                    mistakes = hardMistakeChance,
+                    pace = hardPace
                 };
             default:
                 return new Tuning
                 {
                     actions = normalActionPoints,
                     aggression = normalAggressiveness,
-                    mistakes = normalMistakeChance
+                    mistakes = normalMistakeChance,
+                    pace = normalPace
                 };
         }
     }
@@ -259,10 +305,17 @@ public class RivalAIDirector : MonoBehaviour
     {
         Tuning tuning = usePerRival && perRival.TryGetValue(faction, out Tuning stored)
             ? stored
-            : new Tuning { actions = actionPoints, aggression = aggressiveness, mistakes = mistakeChance };
+            : new Tuning { actions = actionPoints, aggression = aggressiveness, mistakes = mistakeChance, pace = pace };
 
         tuning.actions = TutorialActionBudget(tuning.actions);
         return tuning;
+    }
+
+    private static int SeedsThisTurn(float perTurn)
+    {
+        if (perTurn <= 0f) return 0;
+        int turn = Mathf.Max(1, GameTime.CurrentTurn);
+        return Mathf.FloorToInt(turn * perTurn + 0.0001f) - Mathf.FloorToInt((turn - 1) * perTurn + 0.0001f);
     }
 
     /// <summary>Mientras la guía está en juego, cada rival gasta la mitad de sus acciones por turno.</summary>
@@ -292,10 +345,14 @@ public class RivalAIDirector : MonoBehaviour
         plannedSeeds.Clear();
 
         int points = tuning.actions;
+        int seedCap = SeedsThisTurn(tuning.pace.seedsPerTurn);
+        int sent = 0;
         string name = FactionIdUtil.DisplayName(agent.faction);
         while (points > 0)
         {
-            if (!TryPick(agent, influence, seeds, costs, slipping, points, clericsLeft, tuning, out Choice choice, out bool misplayed))
+            int seedsAllowed = seedCap - plannedSeeds.Count;
+            int sendsAllowed = tuning.pace.clericsSentPerTurn - sent;
+            if (!TryPick(agent, influence, seeds, costs, slipping, points, clericsLeft, seedsAllowed, sendsAllowed, tuning, out Choice choice, out bool misplayed))
             {
                 break;
             }
@@ -304,6 +361,7 @@ public class RivalAIDirector : MonoBehaviour
             if (choice.kind == AIIntentKind.AssignClerics)
             {
                 clericsLeft--;
+                sent++;
                 plannedClerics.TryGetValue(choice.zone, out int amount);
                 plannedClerics[choice.zone] = amount + 1;
             }
@@ -311,6 +369,7 @@ public class RivalAIDirector : MonoBehaviour
             {
                 plannedSeedZones.Add(choice.zone);
                 plannedSeeds.Add(choice);
+                if (choice.seed != null) seedTitlesTaken.Add(choice.seed.Title);
             }
 
             if (logPlans)
@@ -359,6 +418,8 @@ public class RivalAIDirector : MonoBehaviour
         HashSet<DistrictZone> slipping,
         int points,
         int clericsLeft,
+        int seedsAllowed,
+        int sendsAllowed,
         Tuning tuning,
         out Choice picked,
         out bool misplayed)
@@ -387,7 +448,8 @@ public class RivalAIDirector : MonoBehaviour
             bool secured = zone.Influence.Status == ZoneControlStatus.Controlled
                 && zone.Influence.Controller == agent.faction
                 && !EnemyShare(zone, agent.faction);
-            if (clericsLeft > 0 && zone.Influence.CanEnterByNormalMeans(agent.faction))
+            bool canSend = sendsAllowed > 0 && (clericsLeft > tuning.pace.clericReserve || (lost && clericsLeft > 0));
+            if (canSend && zone.Influence.CanEnterByNormalMeans(agent.faction))
             {
                 Choice clerics = MakeChoice(zone, AIIntentKind.AssignClerics, null, weight, cost, lost, secured, pressure, agent.personality);
                 clerics.hunt = hunt;
@@ -395,8 +457,8 @@ public class RivalAIDirector : MonoBehaviour
                 choices.Add(clerics);
             }
 
-            if (seeds != null && !zone.IsOccupied && !plannedSeedZones.Contains(zone) &&
-                seeds.TryPickSeed(zone.District, out Seed seed) && seed != null)
+            if (seedsAllowed > 0 && seeds != null && !zone.IsOccupied && !plannedSeedZones.Contains(zone) &&
+                seeds.TryPickSeed(zone.District, out Seed seed, seedTitlesTaken) && seed != null)
             {
                 choices.Add(MakeChoice(zone, AIIntentKind.PlantSeed, seed, weight, cost, lost, secured, pressure, agent.personality));
             }
