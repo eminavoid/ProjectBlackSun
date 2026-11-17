@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c01700fd266d6914ababb731e09af2eb, type: 3}
   m_Name: DepthOfField
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.DepthOfField
-  active: 1
+  active: 0
   mode:
     m_OverrideState: 1
     m_Value: 2
@@ -206,6 +206,32 @@ MonoBehaviour:
   - {fileID: -1186085971983690401}
   - {fileID: -6038406878738459255}
   - {fileID: -3183374834846607650}
+  - {fileID: 5831330459158859061}
+--- !u!114 &5831330459158859061
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 208e5f8be84080b4d98db965660984bd, type: 3}
+  m_Name: EdgeBlur
+  m_EditorClassIdentifier: Assembly-CSharp::EdgeBlur
+  active: 1
+  intensity:
+    m_OverrideState: 1
+    m_Value: 1
+  radius:
+    m_OverrideState: 1
+    m_Value: 5
+  sharpArea:
+    m_OverrideState: 1
+    m_Value: 0.6
+  falloff:
+    m_OverrideState: 1
+    m_Value: 0.6
 --- !u!114 &6894595095994421614
 MonoBehaviour:
   m_ObjectHideFlags: 3
