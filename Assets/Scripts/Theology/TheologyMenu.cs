@@ -46,6 +46,7 @@ public class TheologyMenu : MonoBehaviour
     [SerializeField] private Locked seedsPool;
     [SerializeField] private Locked doctrinesPool;
     [SerializeField] private DistrictSeedPlantPanel districtSeedPlantPanel;
+    [SerializeField] private DoctrinePopUp doctrinePopUp;
 
     [Space]
 
@@ -490,7 +491,10 @@ public class TheologyMenu : MonoBehaviour
 
         DoctrinesController doctrines = FindAnyObjectByType<DoctrinesController>();
         if (doctrines != null && doctrines.Stats != null)
+        {
             doctrines.Stats.RememberDoctrine(doctrine);
+            doctrinePopUp.OnDoctrineReceived();
+        }
     }
 
     private void Reveal(string title, string body, IReadOnlyList<ResourceDelta> changes = null)

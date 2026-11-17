@@ -3790,6 +3790,10 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3207784972399085606, guid: a7afed5e78cd44947a637251968f85f6, type: 3}
+      propertyPath: doctrinePopUp
+      value: 
+      objectReference: {fileID: 2134387227}
+    - target: {fileID: 3207784972399085606, guid: a7afed5e78cd44947a637251968f85f6, type: 3}
       propertyPath: doctrinesPool
       value: 
       objectReference: {fileID: 11400000, guid: b316260b62c6c724cb1540d8ee6ae23b, type: 2}
@@ -16968,6 +16972,7 @@ GameObject:
   - component: {fileID: 2134387221}
   - component: {fileID: 2134387225}
   - component: {fileID: 2134387226}
+  - component: {fileID: 2134387227}
   m_Layer: 5
   m_Name: Button (1)
   m_TagString: Untagged
@@ -17051,6 +17056,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 2134387227}
+        m_TargetAssemblyTypeName: DoctrinePopUp, Assembly-CSharp
+        m_MethodName: ClearNewDoctrinesVisual
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &2134387222
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17120,6 +17137,19 @@ MonoBehaviour:
 
     <size=80%>Events your seeds have set in motion.</size>'
   showBesides: 1
+--- !u!114 &2134387227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2134387219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dc28696973842842aec72ca4ba9ef87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DoctrinePopUp
+  rectTransform: {fileID: 2134387220}
 --- !u!4 &2121203401892262
 Transform:
   m_ObjectHideFlags: 0
