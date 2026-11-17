@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: OC1.outcomeB
   m_EditorClassIdentifier: Assembly-CSharp::Option
   playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
-  shineWith: 0
   title: Bind it in gold leaf and put it on display.
   description: 'COST: 40 Wealth'
   icon: {fileID: 0}
@@ -40,11 +39,13 @@ MonoBehaviour:
           - rid: 6513433571317776576
           - rid: 6513433571317776577
           statUsed: 0
+          outcomeType: 0
           output: The gilded volume draws pilgrims from across the Ocularium.
         - weight: 50
           module:
           - rid: 6513433571317776578
           statUsed: 0
+          outcomeType: 1
           output: The book is admired, though few dare to read it.
     - rid: 6513433571317776576
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}

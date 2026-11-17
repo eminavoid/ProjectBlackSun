@@ -5,13 +5,15 @@ public class PlayerClergy : MonoBehaviour
 {
     [Header("Ordination")]
     [Tooltip("Training points for a new cleric. Each turn the cult earns (2 x Learning + Stewardship) / 2, rounded up, both stats counted from 10.")]
-    [SerializeField, Min(1)] private int ordinationCost = 50;
+    [SerializeField, Min(1)] private int ordinationCost = 35;
     [Tooltip("Wealth to ordain a cleric at once from the clerics menu.")]
     [SerializeField, Min(0)] private int ordainPrice = 60;
 
     [Header("Upkeep")]
     [Tooltip("Wealth each cleric on the map costs per turn. Clerics in reserve cost nothing.")]
     [SerializeField, Min(0)] private int upkeepPerCleric = 2;
+    [Tooltip("Clerics each zone you rule feeds for free. Only the clerics beyond that pay upkeep.")]
+    [SerializeField, Min(0)] private int clericsFedPerZone = 1;
 
     public static Action<int> onOrdained;
     public static Action<int, int> onUpkeepPaid;
@@ -19,6 +21,13 @@ public class PlayerClergy : MonoBehaviour
     private int training;
 
     public int UpkeepPerCleric => upkeepPerCleric;
+
+    public int UnfedClerics(InfluenceManager influence)
+    {
+        if (influence == null) return 0;
+        int fed = influence.CountControlledZones(FactionId.Player) * clericsFedPerZone;
+        return Mathf.Max(0, influence.CountDeployedClerics(FactionId.Player) - fed);
+    }
     public int OrdinationCost => ordinationCost;
     public int OrdainPrice => ordainPrice;
     public int Training => training;
@@ -49,7 +58,7 @@ public class PlayerClergy : MonoBehaviour
 
     private void PayUpkeep(InfluenceManager influence)
     {
-        int clerics = influence.CountDeployedClerics(FactionId.Player);
+        int clerics = UnfedClerics(influence);
         int cost = clerics * upkeepPerCleric;
         if (cost <= 0) return;
 

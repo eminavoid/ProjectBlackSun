@@ -35,6 +35,7 @@ MonoBehaviour:
           - rid: 1516066228257685610
           - rid: 1516066228257685611
           statUsed: 0
+          outcomeType: 0
           output: The commoners stand baffled by our deception. Yet many remain in
             their seats, either because they lack alternative plans or because they
             dare not risk offending the Beholder.
@@ -43,6 +44,7 @@ MonoBehaviour:
           - rid: 1516066228257685612
           - rid: 1516066228257685613
           statUsed: 0
+          outcomeType: 1
           output: The populace is furious with our deceit! The majority marches out
             in search of more honest congregations. Our gambit has proven thoroughly
             ineffective; who would have thought that lying to the people could bring
@@ -52,6 +54,7 @@ MonoBehaviour:
           - rid: 1516066228257685614
           - rid: 1516066228257685615
           statUsed: 2
+          outcomeType: 0
           output: The crowd is initially incensed by our ruse, but the imposing presence
             of our men intimidates them into submission. In the end, they listen
             regardless, and the display of courage by our brothers seems to inspire
@@ -62,33 +65,39 @@ MonoBehaviour:
         resource: 3
         minAmount: 20
         maxAmount: 20
+        refund: 0
     - rid: 1516066228257685611
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: 30
         maxAmount: 30
+        refund: 0
     - rid: 1516066228257685612
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: -10
         maxAmount: -10
+        refund: 0
     - rid: 1516066228257685613
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: -10
         maxAmount: -10
+        refund: 0
     - rid: 1516066228257685614
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: 30
         maxAmount: 30
+        refund: 0
     - rid: 1516066228257685615
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: 60
         maxAmount: 60
+        refund: 0

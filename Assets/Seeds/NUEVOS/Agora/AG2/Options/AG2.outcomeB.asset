@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: AG2.outcomeB
   m_EditorClassIdentifier: Assembly-CSharp::Option
   playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
-  shineWith: 0
   title: Send a cleric along to bless them at every waystation.
   description: 'COST: 10 Flock'
   icon: {fileID: 0}
@@ -40,11 +39,13 @@ MonoBehaviour:
           - rid: 6513433571317776507
           - rid: 6513433571317776508
           statUsed: 0
+          outcomeType: 0
           output: The caravan returns months later, laden with profit for all.
         - weight: 50
           module:
           - rid: 6513433571317776509
           statUsed: 0
+          outcomeType: 1
           output: The caravan returns with only enough to pay our cleric's meals.
     - rid: 6513433571317776507
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}

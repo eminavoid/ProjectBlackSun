@@ -142,9 +142,9 @@ public class FirstTimeHints : MonoBehaviour
         if (zone == null) return;
 
         if (after == FactionId.Player)
-            Raise(ZoneTaken, $"You now rule {ZoneName(zone)}: more than half its influence is yours. Every zone you rule pays tithes each turn.");
+            Raise(ZoneTaken, $"You now rule {ZoneName(zone)}: more than half its influence is yours. Every zone you rule pays tithes and feeds one of your clerics.");
         else if (before == FactionId.Player)
-            Raise(ZoneLost, $"You lost {ZoneName(zone)}: you no longer hold more than half its influence. Send clerics to win it back.");
+            Raise(ZoneLost, $"You lost {ZoneName(zone)}: you no longer hold more than half its influence. Send more clerics than the rival has there to win it back.");
     }
 
     private void OnSeedStored(Seed seed)
@@ -195,7 +195,7 @@ public class FirstTimeHints : MonoBehaviour
             foreach (FactionId faction in FactionIdUtil.All)
             {
                 if (FactionIdUtil.IsPlayer(faction) || state.GetClerics(faction) <= 0) continue;
-                Raise(RivalNear, $"The {FactionIdUtil.DisplayName(faction)} is spreading into {ZoneName(zones[i])}, a zone you rule. If they pass half its influence, it becomes theirs.");
+                Raise(RivalNear, $"The {FactionIdUtil.DisplayName(faction)} is spreading into {ZoneName(zones[i])}, a zone you rule. If they pass half its influence, it becomes theirs. Keep more clerics there than they do.");
                 return;
             }
         }

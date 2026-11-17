@@ -14,6 +14,14 @@ public class InfluenceManager : Singleton<InfluenceManager>
     [SerializeField] private DistrictProductionConfig productionConfig;
     [SerializeField] private PlayerStats playerStats;
     [SerializeField] private float adjacencyPadding = 0.35f;
+
+    [Header("Zone Struggle")]
+    [Tooltip("Multiplies the influence that changes hands each turn in a full, contested zone. Higher flips zones faster.")]
+    [SerializeField, Min(0f)] private float struggleSwing = 2f;
+    [Tooltip("Roll multiplier for a sect pushing into a zone another sect rules.")]
+    [SerializeField, Min(0f)] private float attackerRollMultiplier = 1.5f;
+    [Tooltip("Extra roll for each cleric a sect has over the strongest rival in the zone.")]
+    [SerializeField, Min(0)] private int outnumberBonusPerCleric = 2;
     [SerializeField] private bool logTurnSummary;
 
     private readonly Dictionary<FactionId, FactionStock> stocks = new Dictionary<FactionId, FactionStock>();
@@ -356,8 +364,8 @@ public class InfluenceManager : Singleton<InfluenceManager>
             int clerics = state.GetClerics(faction);
             if (clerics <= 0) continue;
 
-            int roll = ClericInfluenceTable.Roll(clerics) + OutnumberBonus(state, faction, clerics);
-            float mult = GetInfluenceGenerationMultiplier(faction, zone);
+            int roll = ClericInfluenceTable.Roll(clerics) + OutnumberBonus(state, faction, clerics, outnumberBonusPerCleric);
+            float mult = GetInfluenceGenerationMultiplier(faction, zone) * AttackMultiplier(state, faction);
             int gen = Mathf.Max(0, Mathf.RoundToInt(roll * mult));
             generation[faction] = gen;
         }
@@ -365,7 +373,15 @@ public class InfluenceManager : Singleton<InfluenceManager>
         return generation;
     }
 
-    public static int OutnumberBonus(ZoneInfluenceState state, FactionId faction, int clerics)
+    public int OutnumberBonusPerCleric => outnumberBonusPerCleric;
+
+    public float AttackMultiplier(ZoneInfluenceState state, FactionId faction)
+    {
+        if (state == null || state.Status != ZoneControlStatus.Controlled || !state.Controller.HasValue) return 1f;
+        return state.Controller.Value == faction ? 1f : attackerRollMultiplier;
+    }
+
+    public static int OutnumberBonus(ZoneInfluenceState state, FactionId faction, int clerics, int perCleric = 1)
     {
         if (state == null || clerics <= 0) return 0;
         int strongest = 0;
@@ -374,7 +390,7 @@ public class InfluenceManager : Singleton<InfluenceManager>
             if (other != faction) strongest = Mathf.Max(strongest, state.GetClerics(other));
         }
 
-        return strongest > 0 ? Mathf.Max(0, clerics - strongest) : 0;
+        return strongest > 0 ? Mathf.Max(0, clerics - strongest) * perCleric : 0;
     }
 
     public float GetInfluenceGenerationMultiplier(FactionId faction, DistrictZone zone)
@@ -454,7 +470,7 @@ public class InfluenceManager : Singleton<InfluenceManager>
             }
 
             int had = state.GetShare(faction);
-            int loss = Mathf.Min(peak - gen, had);
+            int loss = Mathf.Min(Mathf.RoundToInt((peak - gen) * struggleSwing), had);
             if (loss <= 0) continue;
 
             state.AddShare(faction, -loss);

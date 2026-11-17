@@ -40,18 +40,21 @@ MonoBehaviour:
           module:
           - rid: 1516066228257685664
           statUsed: 3
+          outcomeType: 0
           output: It is said that one must venture to win. Today was one of those
             fortunate days, for we have secured a bounty of wealth.
         - weight: 50
           module:
           - rid: 1516066228257685666
           statUsed: 0
+          outcomeType: 0
           output: Perhaps speculating upon the markets is not our calling. We gained
             not a single copper, yet we lost nothing either. What a relief!
         - weight: 20
           module:
           - rid: 1516066228257685667
           statUsed: 0
+          outcomeType: 1
           output: What a disgrace! So much wealth committed, only for us to lose
             the greater part of it!
     - rid: 1516066228257685664
@@ -60,15 +63,18 @@ MonoBehaviour:
         resource: 0
         minAmount: 150
         maxAmount: 150
+        refund: 0
     - rid: 1516066228257685666
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 0
         minAmount: 100
         maxAmount: 100
+        refund: 0
     - rid: 1516066228257685667
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 0
         minAmount: 35
         maxAmount: 35
+        refund: 0

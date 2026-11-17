@@ -46,12 +46,14 @@ MonoBehaviour:
           - rid: 2174037291684069481
           - rid: 2174037291684069482
           statUsed: 0
+          outcomeType: 0
           output: The merchants take the bribe gladly.
         - weight: 40
           module:
           - rid: 2174037291684069483
           - rid: 2174037291684069484
           statUsed: 0
+          outcomeType: 1
           output: They report you to the guards instead.
     - rid: 2174037291684069481
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
@@ -59,21 +61,25 @@ MonoBehaviour:
         resource: 0
         minAmount: 20
         maxAmount: 20
+        refund: 0
     - rid: 2174037291684069482
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: 10
         maxAmount: 10
+        refund: 0
     - rid: 2174037291684069483
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: -10
         maxAmount: -10
+        refund: 0
     - rid: 2174037291684069484
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 5
         minAmount: 5
         maxAmount: 5
+        refund: 0

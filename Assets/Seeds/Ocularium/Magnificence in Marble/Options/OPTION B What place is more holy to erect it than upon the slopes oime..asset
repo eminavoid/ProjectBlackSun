@@ -41,6 +41,7 @@ MonoBehaviour:
           - rid: 1516066228257685509
           - rid: 1516066228257685510
           statUsed: 0
+          outcomeType: 0
           output: To erect an idol of our sect upon the most sacred ground in the
             Empire? Such a decision truly demanded immense courage. Naturally, all
             other cults forged a brittle alliance to ensure the monument was removed,
@@ -52,6 +53,7 @@ MonoBehaviour:
           - rid: 1516066228257685511
           - rid: 1516066228257685512
           statUsed: 2
+          outcomeType: 0
           output: To erect an idol of our sect upon the most sacred ground in the
             Empire? Such a decision truly demanded immense courage. Naturally, all
             other cults forged a brittle alliance to ensure the monument was removed.
@@ -65,21 +67,25 @@ MonoBehaviour:
         resource: 3
         minAmount: 20
         maxAmount: 20
+        refund: 0
     - rid: 1516066228257685510
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: 60
         maxAmount: 60
+        refund: 0
     - rid: 1516066228257685511
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: 40
         maxAmount: 40
+        refund: 0
     - rid: 1516066228257685512
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: 100
         maxAmount: 100
+        refund: 0

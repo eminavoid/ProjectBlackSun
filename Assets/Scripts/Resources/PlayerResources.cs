@@ -38,6 +38,8 @@ public class PlayerResources : ScriptableObject
 
         int flock = resources[Resource.Flock];
         resources[Resource.Flock] = Math.Clamp(flock, 0, int.MaxValue);
+
+        resources[Resource.Authority] = Math.Max(0, resources[Resource.Authority]);
     }
 
     public void Clear()

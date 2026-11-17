@@ -598,6 +598,8 @@ public class TheologyMenu : MonoBehaviour
 
     private bool RiteIdle() => !opening && !riteOpen && !rewarding && !paying;
 
+    public int NextCost => cost;
+
     private void OnCommuneDenied()
     {
         if (!RiteIdle()) return;

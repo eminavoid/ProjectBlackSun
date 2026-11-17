@@ -38,18 +38,21 @@ MonoBehaviour:
           module:
           - rid: 1516066228257685659
           statUsed: 3
+          outcomeType: 0
           output: We were cautious, but not cowardly. Our investment has paid handsome
             dividends.
         - weight: 50
           module:
           - rid: 1516066228257685660
           statUsed: 0
+          outcomeType: 0
           output: We ended up breaking even. A pity, but at the very least we lost
             no coin.
         - weight: 10
           module:
           - rid: 1516066228257685661
           statUsed: 0
+          outcomeType: 1
           output: Ill fortune, we have lost coin. Though we can take comfort that
             we did not risk a greater sum.
     - rid: 1516066228257685659
@@ -58,15 +61,18 @@ MonoBehaviour:
         resource: 0
         minAmount: 100
         maxAmount: 100
+        refund: 0
     - rid: 1516066228257685660
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 0
         minAmount: 75
         maxAmount: 75
+        refund: 0
     - rid: 1516066228257685661
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 0
         minAmount: 25
         maxAmount: 25
+        refund: 0

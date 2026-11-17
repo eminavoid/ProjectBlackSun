@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: WA2.outcomeB
   m_EditorClassIdentifier: Assembly-CSharp::Option
   playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
-  shineWith: 0
   title: Invite him to preach from our sanctuary steps.
   description: 'COST: 10 Zeal'
   icon: {fileID: 0}
@@ -40,11 +39,13 @@ MonoBehaviour:
           - rid: 6513433571317776624
           - rid: 6513433571317776625
           statUsed: 0
+          outcomeType: 0
           output: His voice fills the square, and our banners with it.
         - weight: 50
           module:
           - rid: 6513433571317776626
           statUsed: 0
+          outcomeType: 1
           output: He declines, though he speaks kindly of us.
     - rid: 6513433571317776624
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}

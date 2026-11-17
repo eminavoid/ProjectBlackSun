@@ -105,7 +105,7 @@ public class DistrictClericAssignPanel : MonoBehaviour
         int perCleric = clergy != null ? clergy.UpkeepPerCleric : 0;
 
         title.text = $"{MapStatsQuery.ZoneLabel(shown)}  ·  {MapStatsQuery.DistrictLabel(shown.District)} district  ·  {RulerText(state)}";
-        string upkeep = perCleric > 0 ? $"  ·  Upkeep: {manager.CountDeployedClerics(FactionId.Player) * perCleric} Wealth a turn" : string.Empty;
+        string upkeep = perCleric > 0 && clergy != null ? $"  ·  Upkeep: {clergy.UnfedClerics(manager) * perCleric} Wealth a turn" : string.Empty;
         SetLinked(counts, $"Clerics here: {here}  ·  Reserve: {reserve}{upkeep}");
         if (forecast != null) SetLinked(forecast, Forecast(manager, state, here));
 
@@ -157,8 +157,9 @@ public class DistrictClericAssignPanel : MonoBehaviour
     private string GainText(InfluenceManager manager, int clerics)
     {
         Vector2Int range = ClericInfluenceTable.GetRange(clerics);
-        int bonus = InfluenceManager.OutnumberBonus(shown != null ? shown.Influence : null, FactionId.Player, clerics);
-        float multiplier = manager.GetInfluenceGenerationMultiplier(FactionId.Player, shown);
+        ZoneInfluenceState state = shown != null ? shown.Influence : null;
+        int bonus = InfluenceManager.OutnumberBonus(state, FactionId.Player, clerics, manager.OutnumberBonusPerCleric);
+        float multiplier = manager.GetInfluenceGenerationMultiplier(FactionId.Player, shown) * manager.AttackMultiplier(state, FactionId.Player);
         int low = Mathf.RoundToInt((range.x + bonus) * multiplier);
         int high = Mathf.RoundToInt((range.y + bonus) * multiplier);
         return low == high ? $"+{low}" : $"+{low} to +{high}";

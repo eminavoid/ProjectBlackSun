@@ -34,6 +34,7 @@ MonoBehaviour:
           - rid: 1516066228257685531
           - rid: 1516066228257685532
           statUsed: 0
+          outcomeType: 0
           output: Though this gamble might well earn us a visit from an Imperial
             Inquisitor, it is undeniable that the common folk are deeply enticed
             by subjects forbidden since the last Faith Eclipse. The mass is a triumph!
@@ -41,6 +42,7 @@ MonoBehaviour:
           module:
           - rid: 1516066228257685533
           statUsed: 0
+          outcomeType: 1
           output: What a disaster! The populace flees in terror at the mere prospect
             of being implicated in an Imperial Inquisition witch-hunt for harboring
             heretical knowledge. As for us? We had best sleep with one eye open.
@@ -49,6 +51,7 @@ MonoBehaviour:
           - rid: 1516066228257685534
           - rid: 1516066228257685535
           statUsed: 5
+          outcomeType: 0
           output: "Our profound and exhaustive knowledge concerning the ancient teachings\u2014now
             forbidden by the latest Faith Eclipse\u2014allows us to deliver an informative
             mass without ever falling into the peril of being branded as heretics."
@@ -58,27 +61,32 @@ MonoBehaviour:
         resource: 3
         minAmount: 20
         maxAmount: 20
+        refund: 0
     - rid: 1516066228257685532
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: 30
         maxAmount: 30
+        refund: 0
     - rid: 1516066228257685533
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: -20
         maxAmount: -20
+        refund: 0
     - rid: 1516066228257685534
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: 30
         maxAmount: 30
+        refund: 0
     - rid: 1516066228257685535
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: 60
         maxAmount: 60
+        refund: 0

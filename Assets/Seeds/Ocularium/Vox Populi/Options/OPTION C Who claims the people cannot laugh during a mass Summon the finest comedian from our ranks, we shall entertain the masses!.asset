@@ -34,6 +34,7 @@ MonoBehaviour:
           - rid: 1516066228257685604
           - rid: 1516066228257685605
           statUsed: 0
+          outcomeType: 0
           output: The crowd roars with laughter at our man's performance. However,
             our sacred teachings are entirely lost in the absurdist sea of his creation.
             At the very least, we have ensured the people will desire to return.
@@ -41,6 +42,7 @@ MonoBehaviour:
           module:
           - rid: 1516066228257685606
           statUsed: 0
+          outcomeType: 1
           output: A difficult audience... the jests do not seem to land. By the conclusion
             of the service, half the temple stands empty, and our man is red as a
             turnip from sheer embarrassment.
@@ -49,6 +51,7 @@ MonoBehaviour:
           - rid: 1516066228257685607
           - rid: 1516066228257685608
           statUsed: 1
+          outcomeType: 0
           output: What an artisan! Our man is a natural comedian. Not only that,
             but while it would be simple to merely make the masses laugh and leave
             it at that, he masterfully weaves reflections and holy lessons between
@@ -59,27 +62,32 @@ MonoBehaviour:
         resource: 3
         minAmount: 20
         maxAmount: 20
+        refund: 0
     - rid: 1516066228257685605
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: 30
         maxAmount: 30
+        refund: 0
     - rid: 1516066228257685606
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: -10
         maxAmount: -10
+        refund: 0
     - rid: 1516066228257685607
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: 30
         maxAmount: 30
+        refund: 0
     - rid: 1516066228257685608
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: 60
         maxAmount: 60
+        refund: 0

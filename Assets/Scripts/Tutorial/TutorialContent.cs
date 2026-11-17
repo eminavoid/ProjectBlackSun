@@ -1,9 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Seeds, doctrina e intenciones de los tres turnos guionados.
-/// </summary>
 public static class TutorialContent
 {
     public static DistrictZone ScriptedClericZone { get; private set; }
@@ -77,7 +74,7 @@ public static class TutorialContent
     {
         return Doctrine.CreateRuntime(
             "First Vigil",
-            "The cult studies the eclipse. Learning makes White districts yield more Zeal.",
+            "The cult studies the eclipse. Learning makes White districts yield more Zeal and trains new clerics faster.",
             PlayerStats.PlayerStat.Learning,
             1);
     }

@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: WA2.outcomeA
   m_EditorClassIdentifier: Assembly-CSharp::Option
   playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
-  shineWith: 0
   title: Have our clerics stand beside him and lend weight to his words.
   description: 'COST: 1 Cleric'
   icon: {fileID: 0}
@@ -40,12 +39,14 @@ MonoBehaviour:
           - rid: 6513433571317776618
           - rid: 6513433571317776619
           statUsed: 0
+          outcomeType: 0
           output: The crowd takes him for one of ours and many join our flock.
         - weight: 25
           module:
           - rid: 6513433571317776620
           - rid: 6513433571317776621
           statUsed: 0
+          outcomeType: 1
           output: The prophet pays our clerics no mind, but the crowd takes notice.
     - rid: 6513433571317776618
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}

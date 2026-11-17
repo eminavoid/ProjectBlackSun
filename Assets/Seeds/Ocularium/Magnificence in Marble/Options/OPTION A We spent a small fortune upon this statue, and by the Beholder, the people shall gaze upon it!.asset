@@ -40,6 +40,7 @@ MonoBehaviour:
         - weight: 90
           module: []
           statUsed: 0
+          outcomeType: 1
           output: The Imperial Family accepts our offering and displays it within
             their private gardens. From this day forth, all who visit them shall
             bear witness to the magnificence of our fold.
@@ -47,6 +48,7 @@ MonoBehaviour:
           module:
           - rid: 1516066228257685506
           statUsed: 1
+          outcomeType: 0
           output: At first, the Imperial Family was reluctant to show favor to any
             single sect, yet upon witnessing the grandeur of our sculpture, they
             chose to make an exception. They practically declared that we were doing
@@ -57,3 +59,4 @@ MonoBehaviour:
         resource: 2
         minAmount: 2
         maxAmount: 2
+        refund: 0

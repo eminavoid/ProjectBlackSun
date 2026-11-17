@@ -148,7 +148,7 @@ public class CultLedger : MonoBehaviour
         int upkeepEach = clergy != null ? clergy.UpkeepPerCleric : 0;
 
         SetCover("THE CLERGY OF", name);
-        book.SetHeading("YOUR CLERGY", "CLERICS", $"{field} in the field  ·  {reserve} in reserve  ·  {field * upkeepEach} Wealth per turn");
+        book.SetHeading("YOUR CLERGY", "CLERICS", $"{field} in the field  ·  {reserve} in reserve  ·  {(clergy != null ? clergy.UnfedClerics(influence) : field) * upkeepEach} Wealth per turn");
 
         book.AddSection("ORDINATION");
         if (clergy != null)
@@ -186,8 +186,8 @@ public class CultLedger : MonoBehaviour
         book.AddSection("HOW CLERICS WORK");
         book.AddText("Select a zone on the map and press + to send a cleric from your reserve, or - to call one back.");
         book.AddText("Clerics raise your influence in their zone every turn. With more than half of it, the zone is yours.");
-        if (upkeepEach > 0) book.AddText($"Each cleric on the map costs {upkeepEach} Wealth per turn. Clerics in reserve cost nothing.");
-        book.AddText("A zone without clerics can be taken: a rival who sends clerics there drains your influence every turn.");
+        if (upkeepEach > 0) book.AddText($"Each zone you rule feeds one cleric. Every other cleric on the map costs {upkeepEach} Wealth per turn. Clerics in reserve cost nothing.");
+        book.AddText("No zone is safe. Where faiths meet, the one with more clerics there gains more, and the attacker has the edge.");
     }
 
     private void RenderRivals(bool animate)
@@ -209,7 +209,7 @@ public class CultLedger : MonoBehaviour
             string detail = FieldLine(row);
             string covets = Covets(ai, row.Faction);
             if (!string.IsNullOrEmpty(covets)) detail += "\nCovets " + covets;
-            if (director != null && director.TryGetPersonality(row.Faction, out AIPersonality personality)) detail += "\n" + Manner(personality);
+            if (director != null && director.TryGetPersonality(row.Faction, out AIPersonality personality)) detail += "\n" + RivalAIDirector.PersonalityLabel(personality) + ": " + Manner(personality);
             AddFaction(row, leader == row.Faction ? "  ·  leads the eclipse" : string.Empty, detail);
         }
 
@@ -221,8 +221,8 @@ public class CultLedger : MonoBehaviour
         }
 
         book.AddSection("HOW RIVALS PLAY");
-        book.AddText("Each rival gains a cleric every turn and plants seeds of its own.");
-        book.AddText("When a faith leads the eclipse, the others turn on it and send clerics into its least defended zones.");
+        book.AddText("Each rival trains new clerics as the turns pass and plants events of its own.");
+        book.AddText("Each rival's temperament is drawn anew every match. Aggressive and opportunist faiths turn on whoever leads the eclipse; cautious ones keep to their own.");
         book.AddAction("OPEN THE CITY LEDGER", OpenCityLedger);
     }
 
@@ -413,9 +413,9 @@ public class CultLedger : MonoBehaviour
     {
         switch (personality)
         {
-            case AIPersonality.Seeds: return "Works through seeds and schemes.";
-            case AIPersonality.Clerics: return "Floods the streets with clerics.";
-            default: return "Mixes clerics and seeds.";
+            case AIPersonality.Aggressive: return "Spreads fast, one cleric per zone, and picks fights with every faith.";
+            case AIPersonality.Cautious: return "Builds strongholds slowly and never starts a fight.";
+            default: return "Takes empty ground first and only fights battles it can win.";
         }
     }
 
