@@ -13,6 +13,9 @@ public class FirstTimeHints : MonoBehaviour
     private const string Debt = "debt";
     private const string DistrictRuled = "district";
     private const string AtRisk = "atRisk";
+    private const string SecretsOrdain = "secretsOrdain";
+    private const string TheologyReady = "theologyReady";
+    private const string HappinessChanged = "happiness";
 
     private const string EnabledKey = "hints.enabled";
     private const string SeenKey = "hints.seen";
@@ -23,6 +26,9 @@ public class FirstTimeHints : MonoBehaviour
     private bool showing;
     private bool resolving;
     private InfluenceManager influence;
+    private PlayerClergy clergy;
+    private TheologyMenu theology;
+    private int lastHappiness = -1;
 
     public static bool Enabled
     {
@@ -102,12 +108,33 @@ public class FirstTimeHints : MonoBehaviour
         if (influence != null && influence.GetClericPool(FactionId.Player) <= 0 && influence.CountDeployedClerics(FactionId.Player) > 0)
             Raise(ReserveEmpty, "Your reserve is empty. Ordain clerics from your cult's Clergy page, wait for new ones to train, or recall some from the map.");
 
+        RaiseResourceHints();
+
         if (queue.Count == 0 || !Calm()) return;
 
         (string key, string text) = queue.Dequeue();
         MarkSeen(key);
         showing = true;
         TopScreenNotification.Hold(text, true, Dismiss, "GOT IT", "HINT");
+    }
+
+    private void RaiseResourceHints()
+    {
+        if (ResourceManager.IsNull || ResourceManager.Resources == null) return;
+        PlayerResources wallet = ResourceManager.Resources;
+
+        if (clergy == null) clergy = FindAnyObjectByType<PlayerClergy>();
+        if (clergy != null && wallet.GetResourceAmount(Resource.Secrets) >= clergy.OrdainSecretsPrice)
+            Raise(SecretsOrdain, $"You hold {clergy.OrdainSecretsPrice} Secrets or more: enough to ordain a cleric at once from your cult's Clergy page.");
+
+        if (theology == null) theology = FindAnyObjectByType<TheologyMenu>(FindObjectsInactive.Include);
+        if (theology != null && theology.NextCost > 0 && wallet.GetResourceAmount(Resource.Zeal) >= theology.NextCost)
+            Raise(TheologyReady, "You have enough Zeal to commune with the Beholder. A ! on Theology marks it; open it for seeds, doctrines and blessings.");
+
+        int happiness = wallet.GetResourceAmount(Resource.Happiness);
+        if (lastHappiness >= 0 && happiness != lastHappiness)
+            Raise(HappinessChanged, "Your faithful's Happiness changed. Content faithful tithe more: at 100% Happiness your zones yield a quarter more Wealth.");
+        lastHappiness = happiness;
     }
 
     private void OnRiskShown(DistrictZone zone)

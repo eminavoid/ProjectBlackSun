@@ -103,6 +103,7 @@ public class TutorialDirector : MonoBehaviour
         yield return EndTurnStep(2, "End the turn. Your clerics and the rival's move take effect.");
         yield return ChronicleStep();
         yield return RuleBeat();
+        yield return ResourcesBeat();
         yield return BookStep(CultLedger.Page.Clergy, "OpenClergy",
             "Open Clerics to see where yours preach and how new ones join.",
             "A new cleric joins your reserve every few turns, or you can ordain one now for Wealth. Below, see where each of yours preaches.");
@@ -295,6 +296,28 @@ public class TutorialDirector : MonoBehaviour
 
         Focus(zone);
         yield return Beat(zone, "You rule this zone now: more than half its influence is yours. Each zone you rule pays tithes and feeds one cleric, and your faithful feed more. The rest cost Wealth in upkeep.");
+    }
+
+    private static readonly string[] ResourceLines =
+    {
+        "These are your resources. Wealth pays the upkeep of your clerics, Zeal buys communion with the Beholder, and Flock is your faithful: if they all leave, your cult falls.",
+        "Authority, Materials and Secrets pay for event choices, and Secrets can also ordain clerics. Happiness makes your zones tithe more Wealth. Hover any resource for details."
+    };
+
+    private IEnumerator ResourcesBeat()
+    {
+        Component bar = ResourceManager.IsNull ? null : ResourceManager.Sidebar;
+        if (bar == null) yield break;
+
+        foreach (string line in ResourceLines)
+        {
+            continueBeat = false;
+            while (!continueBeat && !Stopped)
+            {
+                Guide(line, bar, true, bar);
+                yield return null;
+            }
+        }
     }
 
     private IEnumerator StruggleBeat()
