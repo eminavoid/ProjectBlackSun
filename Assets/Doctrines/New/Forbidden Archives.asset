@@ -16,11 +16,13 @@ MonoBehaviour:
   <Description>k__BackingField: "+5 Learning  +1 Intrigue  -1 Diplomacy  -1 Stewardship
     \nYou lose 5 secrets every turn."
   statUpdates:
-  - playerStat: 2
-    changeAmount: 3
+  - playerStat: 5
+    changeAmount: 5
+  - playerStat: 4
+    changeAmount: 1
+  - playerStat: 1
+    changeAmount: -1
   - playerStat: 3
     changeAmount: -1
-  - playerStat: 5
-    changeAmount: -3
   behaviours:
   - {fileID: 11400000, guid: 4b473de5170e5a343b0ed53a6ac2f7c8, type: 2}

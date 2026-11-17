@@ -25,6 +25,12 @@ public class UIBackgroundBlur : MonoBehaviour
     public bool IsReady { get; private set; }
     public float FadeDuration => fadeDuration;
 
+    public Color Tint
+    {
+        get => tint;
+        set => tint = value;
+    }
+
     void Awake()
     {
         image = GetComponent<RawImage>();

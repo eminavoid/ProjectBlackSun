@@ -307,9 +307,9 @@ public class CultLedger : MonoBehaviour
     private static string DoctrineDetail(Doctrine doctrine)
     {
         string changes = StatChanges(doctrine);
-        string description = string.IsNullOrWhiteSpace(doctrine.Description) ? string.Empty : doctrine.Description.Trim();
-        if (string.IsNullOrEmpty(changes)) return description;
-        return string.IsNullOrEmpty(description) ? $"<b>{changes}</b>" : $"<b>{changes}</b>\n{description}";
+        string rules = DoctrineText.Rules(doctrine);
+        if (string.IsNullOrEmpty(changes)) return rules;
+        return string.IsNullOrEmpty(rules) ? changes : $"{changes}\n<i>{rules}</i>";
     }
 
     private void AddVirtue(PlayerStats stats, PlayerStats.PlayerStat virtue)
@@ -438,19 +438,7 @@ public class CultLedger : MonoBehaviour
         return $"ruled by {FactionIdUtil.DisplayName(state.Controller.Value)}";
     }
 
-    private static string StatChanges(Doctrine doctrine)
-    {
-        if (doctrine.StatUpdates == null || doctrine.StatUpdates.Count == 0) return string.Empty;
-
-        var parts = new List<string>();
-        foreach (Doctrine.StatUpdate update in doctrine.StatUpdates)
-        {
-            if (update.playerStat == PlayerStats.PlayerStat.None || update.changeAmount == 0) continue;
-            parts.Add($"{(update.changeAmount > 0 ? "+" : "")}{update.changeAmount} {Virtues.Name(update.playerStat)}");
-        }
-
-        return string.Join(", ", parts);
-    }
+    private static string StatChanges(Doctrine doctrine) => DoctrineText.Effects(doctrine, ",  ");
 
     private static int Rank(MapStatsGlobalSnapshot city, int zones)
     {

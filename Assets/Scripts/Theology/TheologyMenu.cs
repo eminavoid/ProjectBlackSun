@@ -417,10 +417,10 @@ public class TheologyMenu : MonoBehaviour
                 break;
             case TheologyRewardKind.Blessing:
                 blessingsGranted++;
-                RevealOmen("Blessing", PickOmen(Blessings, true));
+                RevealOmen(TheologyRewardKind.Blessing, PickOmen(Blessings, true));
                 break;
             default:
-                RevealOmen("Curse", PickOmen(Curses, false));
+                RevealOmen(TheologyRewardKind.Curse, PickOmen(Curses, false));
                 break;
         }
     }
@@ -445,14 +445,14 @@ public class TheologyMenu : MonoBehaviour
         Seed seed = PickSeed();
         if (seed == null)
         {
-            Reveal("New Seed", "The eye offers a seed, but none are prepared.");
+            Reveal(TheologyRewardKind.Seed, "A new seed", "Nothing Prepared", "The eye offers a seed, but none are prepared.");
             return;
         }
 
         if (unlockedSeeds != null && !unlockedSeeds.Contains(seed)) unlockedSeeds.Add(seed, Rarity.Common);
         DistrictSeedPlantPanel panel = FindAnyObjectByType<DistrictSeedPlantPanel>();
         if (panel != null) panel.Grant(seed, 1);
-        Reveal($"New Seed: {seed.Title}", $"{seed.Description}\n\n<size=85%>It waits in your seed menu. Plant it on a free zone.</size>");
+        Reveal(TheologyRewardKind.Seed, "A new seed", seed.Title, seed.Description + Hint("It waits in your seed menu. Plant it on a free zone."));
         districtSeedPlantPanel.NewSeeds += 1;
     }
 
@@ -460,30 +460,25 @@ public class TheologyMenu : MonoBehaviour
     {
         if (doctrine == null)
         {
-            Reveal("New Doctrine", "The eye offers a doctrine, but none are prepared.");
+            Reveal(TheologyRewardKind.Doctrine, "A new doctrine", "Nothing Prepared", "The eye offers a doctrine, but none are prepared.");
             return;
         }
 
-        Reveal($"New Doctrine: {doctrine.Name}", $"{doctrine.Description}\n\n<size=85%>{DoctrineEffect(doctrine)}Adopt it from Doctrines to put it to work.</size>");
+        string effects = DoctrineText.Effects(doctrine, "     ");
+        string rules = DoctrineText.Rules(doctrine);
+        string text = effects.Length > 0 ? $"<size=115%>{effects}</size>" : string.Empty;
+        if (rules.Length > 0) text += (text.Length > 0 ? "\n" : string.Empty) + $"<i>{rules}</i>";
+        Reveal(TheologyRewardKind.Doctrine, "A new doctrine", doctrine.Name.Trim(), text + Hint("Adopt it from Doctrines to put it to work."));
     }
 
-    private void RevealOmen(string kind, Omen omen)
+    private void RevealOmen(TheologyRewardKind kind, Omen omen)
     {
         ResourceManager.AddResource(omen.Resource, omen.Amount);
-        Reveal($"{kind}: {omen.Name}", omen.Text, new[] { new ResourceDelta(omen.Resource, omen.Amount) });
+        string kicker = kind == TheologyRewardKind.Curse ? "A curse" : "A blessing";
+        Reveal(kind, kicker, omen.Name, omen.Text, new[] { new ResourceDelta(omen.Resource, omen.Amount) });
     }
 
-    private static string DoctrineEffect(Doctrine doctrine)
-    {
-        var parts = new List<string>();
-        foreach (Doctrine.StatUpdate update in doctrine.StatUpdates)
-        {
-            if (update.changeAmount == 0) continue;
-            parts.Add($"{(update.changeAmount > 0 ? "+" : string.Empty)}{update.changeAmount} {Virtues.Name(update.playerStat)}");
-        }
-
-        return parts.Count > 0 ? $"When adopted: {string.Join(", ", parts)}. " : string.Empty;
-    }
+    private static string Hint(string text) => $"\n\n<size=75%><color=#6B5A48>{text}</color></size>";
 
     private void GiveDoctrine(Doctrine doctrine)
     {
@@ -499,9 +494,12 @@ public class TheologyMenu : MonoBehaviour
         }
     }
 
-    private void Reveal(string title, string body, IReadOnlyList<ResourceDelta> changes = null)
+    private void Reveal(TheologyRewardKind kind, string kicker, string title, string body, IReadOnlyList<ResourceDelta> changes = null)
     {
-        SeedEventManager.CreateEventOutputWindow(title, body, changes, false, CloseAfterReward);
+        Transform previous = SeedEventManager.OutputWindow;
+        SeedEventManager.CreateEventOutputWindow(title, body, changes, true, CloseAfterReward);
+        Transform window = SeedEventManager.OutputWindow;
+        if (window != previous) TheologyRevelation.Dress(window, kind, kicker);
     }
 
     private Seed PickSeed()
