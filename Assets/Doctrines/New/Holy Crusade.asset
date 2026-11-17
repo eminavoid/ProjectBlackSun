@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c8663d018124b3449311023f4c288e6, type: 3}
+  m_Name: Holy Crusade
+  m_EditorClassIdentifier: Assembly-CSharp::Doctrine
+  <Name>k__BackingField: 'Holy Crusade '
+  <Description>k__BackingField: '+5 Aggresion  -4 Stewardship  -2 Diplomacy '
+  statUpdates:
+  - playerStat: 2
+    changeAmount: 5
+  - playerStat: 3
+    changeAmount: -4
+  - playerStat: 1
+    changeAmount: -2
+  behaviours: []

@@ -18,7 +18,7 @@ public class WeighedChoice : OptionModule
         {
             PlayerStats.PlayerStat stat = modules[i].statUsed;
             float extra = playerStats != null && stat != PlayerStats.PlayerStat.None ? playerStats.GetStatExtraWeight(stat) : 0f;
-            float weight = modules[i].Weight + extra;
+            float weight = Mathf.Max(0f, modules[i].Weight + extra);
 
             totalWeight += weight;
 
@@ -91,7 +91,7 @@ public class WeighedChoice : OptionModule
         public readonly WeightedElement weightedElement;
         public readonly Option optionRef;
 
-        public readonly int Weight => weightedElement.Weight + optionRef.PlayerStats.GetStatExtraWeight(weightedElement.statUsed);
+        public readonly int Weight => Mathf.Max(0, weightedElement.Weight + optionRef.PlayerStats.GetStatExtraWeight(weightedElement.statUsed));
 
         public WeightedElementWrapper(WeightedElement weightedElement, Option optionRef)
         {

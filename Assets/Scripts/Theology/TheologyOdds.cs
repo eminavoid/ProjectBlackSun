@@ -21,7 +21,7 @@ public struct TheologyChances
 /// </summary>
 public static class TheologyOdds
 {
-    public static readonly int[] Costs = { 10, 12, 15, 18, 20, 25, 30, 40, 45, 50, 60, 70, 80, 90, 120, 150 };
+    public static readonly int[] Costs = { 10, 12, 15, 18, 21, 24, 27, 30, 33, 36, 40, 45, 50, 55, 60, 65, 70, 80, 90, 100 };
 
     private static readonly float[] OfferingPoints = { 2.5f, 5f, 10f, 20f };
     private static readonly float[] SacrificePoints = { 5f, 10f, 20f, 40f };
@@ -45,8 +45,8 @@ public static class TheologyOdds
     {
         float curse = 0f;
         float blessing = 0f;
-        float seed = 90f;
-        float doctrine = 10f;
+        float seed = 0f;
+        float doctrine = 100f;
         float points = PointsFor(offeringTiers, false) + PointsFor(sacrificeTiers, true);
 
         float fromCurse = Mathf.Min(points, curse);
