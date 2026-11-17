@@ -13,106 +13,6 @@ MonoBehaviour:
   m_Name: ZoneTravelCatalog
   m_EditorClassIdentifier: Assembly-CSharp::ZoneTravelCatalog
   links:
-  - fromZone: ZONE_WHITE_5
-    toZone: ZONE_WHITE_9
-    gap: 0.089494996
-    kind: 0
-  - fromZone: ZONE_WHITE_8
-    toZone: ZONE_WHITE_9
-    gap: 0.08940856
-    kind: 0
-  - fromZone: ZONE_WHITE_10
-    toZone: ZONE_WHITE_9
-    gap: 0.07562245
-    kind: 0
-  - fromZone: ZONE_GREEN_4
-    toZone: ZONE_GREEN_7
-    gap: 0.118408084
-    kind: 0
-  - fromZone: ZONE_GREEN_5
-    toZone: ZONE_GREEN_7
-    gap: 0.075444505
-    kind: 0
-  - fromZone: ZONE_GREEN_6
-    toZone: ZONE_GREEN_7
-    gap: 0.07480853
-    kind: 0
-  - fromZone: ZONE_GREEN_10
-    toZone: ZONE_GREEN_7
-    gap: 0.09517771
-    kind: 0
-  - fromZone: ZONE_GREEN_7
-    toZone: ZONE_GREEN_9
-    gap: 0.09169392
-    kind: 0
-  - fromZone: ZONE_GREEN_7
-    toZone: ZONE_GREEN_8
-    gap: 0.11437679
-    kind: 0
-  - fromZone: ZONE_RED_3
-    toZone: ZONE_YELLOW_5
-    gap: 0.08527522
-    kind: 1
-  - fromZone: ZONE_YELLOW_4
-    toZone: ZONE_YELLOW_5
-    gap: 0.08364582
-    kind: 0
-  - fromZone: ZONE_YELLOW_5
-    toZone: ZONE_YELLOW_7
-    gap: 0.17922343
-    kind: 0
-  - fromZone: ZONE_YELLOW_3
-    toZone: ZONE_YELLOW_5
-    gap: 0.095892966
-    kind: 0
-  - fromZone: ZONE_BLUE_2
-    toZone: ZONE_BLUE_3
-    gap: 0.13600463
-    kind: 0
-  - fromZone: ZONE_BLUE_2
-    toZone: ZONE_GREEN_8
-    gap: 0.07833172
-    kind: 1
-  - fromZone: ZONE_BLUE_2
-    toZone: ZONE_WHITE_2
-    gap: 0.08011165
-    kind: 1
-  - fromZone: ZONE_BLUE_2
-    toZone: ZONE_WHITE_1
-    gap: 0.08940802
-    kind: 1
-  - fromZone: ZONE_BLUE_2
-    toZone: ZONE_GREEN_3
-    gap: 0.064222075
-    kind: 1
-  - fromZone: ZONE_BLUE_1
-    toZone: ZONE_BLUE_2
-    gap: 0.11266985
-    kind: 0
-  - fromZone: ZONE_GREEN_2
-    toZone: ZONE_GREEN_4
-    gap: 0.09420848
-    kind: 0
-  - fromZone: ZONE_GREEN_2
-    toZone: ZONE_PINK_3
-    gap: 0.058717117
-    kind: 1
-  - fromZone: ZONE_GREEN_1
-    toZone: ZONE_GREEN_2
-    gap: 0.11064045
-    kind: 0
-  - fromZone: ZONE_GREEN_2
-    toZone: ZONE_GREEN_3
-    gap: 0.04186169
-    kind: 0
-  - fromZone: ZONE_RED_4
-    toZone: ZONE_RED_6
-    gap: 0.117305845
-    kind: 0
-  - fromZone: ZONE_RED_4
-    toZone: ZONE_RED_7
-    gap: 0.105901435
-    kind: 0
   - fromZone: ZONE_RED_3
     toZone: ZONE_RED_4
     gap: 0.17336015
@@ -121,93 +21,169 @@ MonoBehaviour:
     toZone: ZONE_RED_4
     gap: 0.14337815
     kind: 0
-  - fromZone: ZONE_PINK_4
-    toZone: ZONE_PINK_5
-    gap: 0.07895372
+  - fromZone: ZONE_RED_4
+    toZone: ZONE_RED_7
+    gap: 0.105901435
     kind: 0
-  - fromZone: ZONE_PINK_4
-    toZone: ZONE_YELLOW_1
-    gap: 0.090124965
-    kind: 1
-  - fromZone: ZONE_PINK_1
-    toZone: ZONE_PINK_4
-    gap: 0.14319916
+  - fromZone: ZONE_RED_4
+    toZone: ZONE_RED_6
+    gap: 0.117305845
     kind: 0
-  - fromZone: ZONE_GREEN_1
-    toZone: ZONE_PINK_1
-    gap: 0.09919191
+  - fromZone: ZONE_WHITE_1
+    toZone: ZONE_WHITE_4
+    gap: 0.16731729
+    kind: 0
+  - fromZone: ZONE_WHITE_1
+    toZone: ZONE_WHITE_3
+    gap: 0.1669521
+    kind: 0
+  - fromZone: ZONE_WHITE_1
+    toZone: ZONE_WHITE_2
+    gap: 0.12073043
+    kind: 0
+  - fromZone: ZONE_BLUE_2
+    toZone: ZONE_WHITE_1
+    gap: 0.08940802
     kind: 1
-  - fromZone: ZONE_PINK_1
-    toZone: ZONE_PINK_2
-    gap: 0.07524073
+  - fromZone: ZONE_GREEN_8
+    toZone: ZONE_WHITE_1
+    gap: 0.1350231
+    kind: 1
+  - fromZone: ZONE_RED_2
+    toZone: ZONE_RED_5
+    gap: 0.105620414
+    kind: 0
+  - fromZone: ZONE_RED_1
+    toZone: ZONE_RED_2
+    gap: 0.059793785
     kind: 0
   - fromZone: ZONE_RED_2
     toZone: ZONE_RED_3
     gap: 0.16130078
     kind: 0
-  - fromZone: ZONE_GREEN_10
-    toZone: ZONE_WHITE_3
-    gap: 0.066836506
-    kind: 1
-  - fromZone: ZONE_GREEN_10
-    toZone: ZONE_GREEN_8
-    gap: 0.14258681
-    kind: 0
-  - fromZone: ZONE_GREEN_10
-    toZone: ZONE_GREEN_9
-    gap: 0.065898664
-    kind: 0
-  - fromZone: ZONE_BLUE_1
-    toZone: ZONE_YELLOW_6
-    gap: 0.06059448
-    kind: 1
-  - fromZone: ZONE_BLUE_1
-    toZone: ZONE_RED_5
-    gap: 0.10262435
-    kind: 1
-  - fromZone: ZONE_BLUE_1
+  - fromZone: ZONE_RED_2
     toZone: ZONE_YELLOW_7
-    gap: 0.087302655
+    gap: 0.083962046
     kind: 1
-  - fromZone: ZONE_BLUE_1
-    toZone: ZONE_RED_1
-    gap: 0.1067671
-    kind: 1
-  - fromZone: ZONE_BLUE_1
-    toZone: ZONE_BLUE_3
-    gap: 0.11494628
+  - fromZone: ZONE_PINK_1
+    toZone: ZONE_PINK_2
+    gap: 0.07524073
     kind: 0
-  - fromZone: ZONE_PINK_3
-    toZone: ZONE_PINK_6
-    gap: 0.11992191
+  - fromZone: ZONE_PINK_2
+    toZone: ZONE_PINK_5
+    gap: 0.1354981
     kind: 0
   - fromZone: ZONE_PINK_2
     toZone: ZONE_PINK_3
     gap: 0.12284055
     kind: 0
-  - fromZone: ZONE_GREEN_3
-    toZone: ZONE_PINK_3
-    gap: 0.07478024
+  - fromZone: ZONE_GREEN_7
+    toZone: ZONE_GREEN_9
+    gap: 0.09169392
+    kind: 0
+  - fromZone: ZONE_GREEN_6
+    toZone: ZONE_GREEN_9
+    gap: 0.0806248
+    kind: 0
+  - fromZone: ZONE_GREEN_9
+    toZone: ZONE_WHITE_7
+    gap: 0.07908725
     kind: 1
-  - fromZone: ZONE_BLUE_3
-    toZone: ZONE_PINK_3
-    gap: 0.07204021
+  - fromZone: ZONE_GREEN_10
+    toZone: ZONE_GREEN_9
+    gap: 0.065898664
+    kind: 0
+  - fromZone: ZONE_RED_5
+    toZone: ZONE_WHITE_2
+    gap: 0.102889396
     kind: 1
-  - fromZone: ZONE_RED_6
-    toZone: ZONE_RED_7
-    gap: 0.07175536
+  - fromZone: ZONE_RED_5
+    toZone: ZONE_RED_6
+    gap: 0.13114862
+    kind: 0
+  - fromZone: ZONE_RED_1
+    toZone: ZONE_RED_5
+    gap: 0.10575712
+    kind: 0
+  - fromZone: ZONE_BLUE_1
+    toZone: ZONE_RED_5
+    gap: 0.10262435
+    kind: 1
+  - fromZone: ZONE_GREEN_2
+    toZone: ZONE_GREEN_4
+    gap: 0.09420848
+    kind: 0
+  - fromZone: ZONE_GREEN_1
+    toZone: ZONE_GREEN_2
+    gap: 0.11064045
+    kind: 0
+  - fromZone: ZONE_GREEN_2
+    toZone: ZONE_GREEN_3
+    gap: 0.04186169
+    kind: 0
+  - fromZone: ZONE_GREEN_2
+    toZone: ZONE_PINK_3
+    gap: 0.058717117
+    kind: 1
+  - fromZone: ZONE_GREEN_6
+    toZone: ZONE_GREEN_7
+    gap: 0.07480853
+    kind: 0
+  - fromZone: ZONE_GREEN_5
+    toZone: ZONE_GREEN_6
+    gap: 0.09173725
+    kind: 0
+  - fromZone: ZONE_GREEN_10
+    toZone: ZONE_GREEN_7
+    gap: 0.09517771
+    kind: 0
+  - fromZone: ZONE_GREEN_4
+    toZone: ZONE_GREEN_7
+    gap: 0.118408084
+    kind: 0
+  - fromZone: ZONE_GREEN_7
+    toZone: ZONE_GREEN_8
+    gap: 0.11437679
+    kind: 0
+  - fromZone: ZONE_GREEN_5
+    toZone: ZONE_GREEN_7
+    gap: 0.075444505
+    kind: 0
+  - fromZone: ZONE_YELLOW_4
+    toZone: ZONE_YELLOW_5
+    gap: 0.08364582
+    kind: 0
+  - fromZone: ZONE_YELLOW_3
+    toZone: ZONE_YELLOW_5
+    gap: 0.095892966
+    kind: 0
+  - fromZone: ZONE_RED_3
+    toZone: ZONE_YELLOW_5
+    gap: 0.08527522
+    kind: 1
+  - fromZone: ZONE_YELLOW_5
+    toZone: ZONE_YELLOW_7
+    gap: 0.17922343
+    kind: 0
+  - fromZone: ZONE_WHITE_10
+    toZone: ZONE_WHITE_9
+    gap: 0.07562245
+    kind: 0
+  - fromZone: ZONE_WHITE_10
+    toZone: ZONE_WHITE_6
+    gap: 0.08986258
     kind: 0
   - fromZone: ZONE_RED_7
     toZone: ZONE_WHITE_10
     gap: 0.08481175
     kind: 1
-  - fromZone: ZONE_YELLOW_2
-    toZone: ZONE_YELLOW_6
-    gap: 0.12403895
-    kind: 0
   - fromZone: ZONE_YELLOW_1
     toZone: ZONE_YELLOW_2
     gap: 0.062860616
+    kind: 0
+  - fromZone: ZONE_YELLOW_2
+    toZone: ZONE_YELLOW_6
+    gap: 0.12403895
     kind: 0
   - fromZone: ZONE_YELLOW_2
     toZone: ZONE_YELLOW_4
@@ -217,157 +193,93 @@ MonoBehaviour:
     toZone: ZONE_YELLOW_3
     gap: 0.13351543
     kind: 0
-  - fromZone: ZONE_RED_2
-    toZone: ZONE_RED_5
-    gap: 0.105620414
-    kind: 0
-  - fromZone: ZONE_RED_2
-    toZone: ZONE_YELLOW_7
-    gap: 0.083962046
+  - fromZone: ZONE_BLUE_3
+    toZone: ZONE_PINK_6
+    gap: 0.060078543
     kind: 1
-  - fromZone: ZONE_RED_1
-    toZone: ZONE_RED_2
-    gap: 0.059793785
-    kind: 0
-  - fromZone: ZONE_GREEN_3
-    toZone: ZONE_GREEN_4
-    gap: 0.04987387
-    kind: 0
-  - fromZone: ZONE_GREEN_4
-    toZone: ZONE_GREEN_5
-    gap: 0.11638253
-    kind: 0
-  - fromZone: ZONE_GREEN_4
-    toZone: ZONE_GREEN_8
-    gap: 0.07346749
-    kind: 0
-  - fromZone: ZONE_RED_5
-    toZone: ZONE_RED_6
-    gap: 0.13114862
-    kind: 0
-  - fromZone: ZONE_RED_6
-    toZone: ZONE_WHITE_6
-    gap: 0.0794899
-    kind: 1
-  - fromZone: ZONE_WHITE_1
-    toZone: ZONE_WHITE_3
-    gap: 0.1669521
-    kind: 0
-  - fromZone: ZONE_GREEN_8
-    toZone: ZONE_WHITE_1
-    gap: 0.1350231
-    kind: 1
-  - fromZone: ZONE_WHITE_1
-    toZone: ZONE_WHITE_4
-    gap: 0.16731729
-    kind: 0
-  - fromZone: ZONE_WHITE_1
-    toZone: ZONE_WHITE_2
-    gap: 0.12073043
-    kind: 0
-  - fromZone: ZONE_GREEN_5
-    toZone: ZONE_GREEN_6
-    gap: 0.09173725
-    kind: 0
-  - fromZone: ZONE_GREEN_6
-    toZone: ZONE_GREEN_9
-    gap: 0.0806248
-    kind: 0
-  - fromZone: ZONE_YELLOW_1
+  - fromZone: ZONE_BLUE_3
     toZone: ZONE_YELLOW_6
-    gap: 0.12352833
-    kind: 0
-  - fromZone: ZONE_PINK_5
-    toZone: ZONE_YELLOW_1
-    gap: 0.08224039
+    gap: 0.09155209
     kind: 1
-  - fromZone: ZONE_PINK_2
-    toZone: ZONE_PINK_5
-    gap: 0.1354981
+  - fromZone: ZONE_BLUE_1
+    toZone: ZONE_BLUE_3
+    gap: 0.11494628
     kind: 0
-  - fromZone: ZONE_GREEN_1
-    toZone: ZONE_GREEN_5
-    gap: 0.18557954
-    kind: 0
-  - fromZone: ZONE_WHITE_4
-    toZone: ZONE_WHITE_8
-    gap: 0.08590163
-    kind: 0
-  - fromZone: ZONE_WHITE_7
-    toZone: ZONE_WHITE_8
-    gap: 0.0630986
-    kind: 0
-  - fromZone: ZONE_WHITE_5
-    toZone: ZONE_WHITE_6
-    gap: 0.06674326
-    kind: 0
-  - fromZone: ZONE_WHITE_10
-    toZone: ZONE_WHITE_6
-    gap: 0.08986258
-    kind: 0
-  - fromZone: ZONE_WHITE_2
-    toZone: ZONE_WHITE_6
-    gap: 0.16663453
-    kind: 0
-  - fromZone: ZONE_GREEN_3
-    toZone: ZONE_GREEN_8
-    gap: 0.093589745
+  - fromZone: ZONE_BLUE_2
+    toZone: ZONE_BLUE_3
+    gap: 0.13600463
     kind: 0
   - fromZone: ZONE_BLUE_3
     toZone: ZONE_GREEN_3
     gap: 0.05166306
     kind: 1
-  - fromZone: ZONE_GREEN_9
-    toZone: ZONE_WHITE_7
-    gap: 0.07908725
-    kind: 1
-  - fromZone: ZONE_YELLOW_6
-    toZone: ZONE_YELLOW_7
-    gap: 0.11580206
-    kind: 0
   - fromZone: ZONE_BLUE_3
-    toZone: ZONE_YELLOW_6
-    gap: 0.09155209
+    toZone: ZONE_PINK_3
+    gap: 0.07204021
     kind: 1
-  - fromZone: ZONE_PINK_6
-    toZone: ZONE_YELLOW_6
-    gap: 0.11702541
+  - fromZone: ZONE_WHITE_5
+    toZone: ZONE_WHITE_9
+    gap: 0.089494996
+    kind: 0
+  - fromZone: ZONE_WHITE_8
+    toZone: ZONE_WHITE_9
+    gap: 0.08940856
+    kind: 0
+  - fromZone: ZONE_BLUE_1
+    toZone: ZONE_RED_1
+    gap: 0.1067671
     kind: 1
-  - fromZone: ZONE_WHITE_3
-    toZone: ZONE_WHITE_4
-    gap: 0.066011295
+  - fromZone: ZONE_RED_1
+    toZone: ZONE_YELLOW_7
+    gap: 0.089757815
+    kind: 1
+  - fromZone: ZONE_WHITE_7
+    toZone: ZONE_WHITE_8
+    gap: 0.0630986
     kind: 0
   - fromZone: ZONE_WHITE_4
-    toZone: ZONE_WHITE_5
-    gap: 0.08334996
+    toZone: ZONE_WHITE_8
+    gap: 0.08590163
     kind: 0
-  - fromZone: ZONE_WHITE_2
-    toZone: ZONE_WHITE_5
-    gap: 0.1721826
-    kind: 0
-  - fromZone: ZONE_RED_5
-    toZone: ZONE_WHITE_2
-    gap: 0.102889396
-    kind: 1
-  - fromZone: ZONE_BLUE_3
+  - fromZone: ZONE_PINK_3
     toZone: ZONE_PINK_6
-    gap: 0.060078543
+    gap: 0.11992191
+    kind: 0
+  - fromZone: ZONE_GREEN_3
+    toZone: ZONE_PINK_3
+    gap: 0.07478024
     kind: 1
+  - fromZone: ZONE_GREEN_1
+    toZone: ZONE_GREEN_5
+    gap: 0.18557954
+    kind: 0
+  - fromZone: ZONE_GREEN_1
+    toZone: ZONE_PINK_1
+    gap: 0.09919191
+    kind: 1
+  - fromZone: ZONE_GREEN_4
+    toZone: ZONE_GREEN_8
+    gap: 0.07346749
+    kind: 0
+  - fromZone: ZONE_GREEN_10
+    toZone: ZONE_GREEN_8
+    gap: 0.14258681
+    kind: 0
+  - fromZone: ZONE_BLUE_2
+    toZone: ZONE_GREEN_8
+    gap: 0.07833172
+    kind: 1
+  - fromZone: ZONE_GREEN_3
+    toZone: ZONE_GREEN_8
+    gap: 0.093589745
+    kind: 0
   - fromZone: ZONE_PINK_5
     toZone: ZONE_PINK_6
     gap: 0.16388108
     kind: 0
-  - fromZone: ZONE_WHITE_3
-    toZone: ZONE_WHITE_7
-    gap: 0.079337746
-    kind: 0
-  - fromZone: ZONE_RED_1
-    toZone: ZONE_RED_5
-    gap: 0.10575712
-    kind: 0
-  - fromZone: ZONE_RED_1
-    toZone: ZONE_YELLOW_7
-    gap: 0.089757815
+  - fromZone: ZONE_PINK_6
+    toZone: ZONE_YELLOW_6
+    gap: 0.11702541
     kind: 1
   - fromZone: ZONE_YELLOW_4
     toZone: ZONE_YELLOW_7
@@ -377,3 +289,91 @@ MonoBehaviour:
     toZone: ZONE_YELLOW_4
     gap: 0.08615971
     kind: 0
+  - fromZone: ZONE_BLUE_1
+    toZone: ZONE_BLUE_2
+    gap: 0.11266985
+    kind: 0
+  - fromZone: ZONE_BLUE_2
+    toZone: ZONE_WHITE_2
+    gap: 0.08011165
+    kind: 1
+  - fromZone: ZONE_BLUE_2
+    toZone: ZONE_GREEN_3
+    gap: 0.064222075
+    kind: 1
+  - fromZone: ZONE_BLUE_1
+    toZone: ZONE_YELLOW_6
+    gap: 0.06059448
+    kind: 1
+  - fromZone: ZONE_BLUE_1
+    toZone: ZONE_YELLOW_7
+    gap: 0.087302655
+    kind: 1
+  - fromZone: ZONE_YELLOW_1
+    toZone: ZONE_YELLOW_6
+    gap: 0.12352833
+    kind: 0
+  - fromZone: ZONE_YELLOW_6
+    toZone: ZONE_YELLOW_7
+    gap: 0.11580206
+    kind: 0
+  - fromZone: ZONE_GREEN_10
+    toZone: ZONE_WHITE_3
+    gap: 0.066836506
+    kind: 1
+  - fromZone: ZONE_WHITE_3
+    toZone: ZONE_WHITE_7
+    gap: 0.079337746
+    kind: 0
+  - fromZone: ZONE_WHITE_3
+    toZone: ZONE_WHITE_4
+    gap: 0.066011295
+    kind: 0
+  - fromZone: ZONE_GREEN_4
+    toZone: ZONE_GREEN_5
+    gap: 0.11638253
+    kind: 0
+  - fromZone: ZONE_GREEN_3
+    toZone: ZONE_GREEN_4
+    gap: 0.04987387
+    kind: 0
+  - fromZone: ZONE_WHITE_2
+    toZone: ZONE_WHITE_5
+    gap: 0.1721826
+    kind: 0
+  - fromZone: ZONE_WHITE_2
+    toZone: ZONE_WHITE_6
+    gap: 0.16663453
+    kind: 0
+  - fromZone: ZONE_RED_6
+    toZone: ZONE_RED_7
+    gap: 0.07175536
+    kind: 0
+  - fromZone: ZONE_PINK_1
+    toZone: ZONE_PINK_4
+    gap: 0.14319916
+    kind: 0
+  - fromZone: ZONE_PINK_4
+    toZone: ZONE_YELLOW_1
+    gap: 0.090124965
+    kind: 1
+  - fromZone: ZONE_PINK_4
+    toZone: ZONE_PINK_5
+    gap: 0.07895372
+    kind: 0
+  - fromZone: ZONE_PINK_5
+    toZone: ZONE_YELLOW_1
+    gap: 0.08224039
+    kind: 1
+  - fromZone: ZONE_WHITE_4
+    toZone: ZONE_WHITE_5
+    gap: 0.08334996
+    kind: 0
+  - fromZone: ZONE_WHITE_5
+    toZone: ZONE_WHITE_6
+    gap: 0.06674326
+    kind: 0
+  - fromZone: ZONE_RED_6
+    toZone: ZONE_WHITE_6
+    gap: 0.0794899
+    kind: 1

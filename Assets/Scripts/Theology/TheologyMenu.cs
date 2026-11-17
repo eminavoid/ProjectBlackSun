@@ -55,7 +55,6 @@ public class TheologyMenu : MonoBehaviour
     [SerializeField] private ResourceIcons icons;
     [SerializeField] private Unlocked unlockedSeeds;
     [SerializeField] private Unlocked unlockedDoctrines;
-    [SerializeField] private Doctrine[] doctrinePool;
 
     [SerializeField] private Image closedArt;
     [SerializeField] private RectMask2D openMask;
@@ -517,24 +516,18 @@ public class TheologyMenu : MonoBehaviour
 
     private Doctrine PickDoctrine()
     {
-        if (doctrinePool == null || doctrinePool.Length == 0) return null;
+        if (doctrinesPool == null) return null;
 
-        DoctrinesController doctrines = FindAnyObjectByType<DoctrinesController>();
-        List<Doctrine> owned = doctrines != null && doctrines.Stats != null
-            ? doctrines.Stats.DoctrineInventory
-            : null;
-
-        List<Doctrine> available = new List<Doctrine>();
-        for (int i = 0; i < doctrinePool.Length; i++)
+        List<Doctrine> choices = new List<Doctrine>();
+        foreach (Unlockeable unlock in doctrinesPool.GetCopy())
         {
-            Doctrine doctrine = doctrinePool[i];
-            if (doctrine == null) continue;
-            if (owned != null && owned.Contains(doctrine)) continue;
-            available.Add(doctrine);
+            if (unlock == null || !(unlock.Scriptable is Doctrine doctrine)) continue;
+            if (unlockedDoctrines != null && unlockedDoctrines.Contains(doctrine)) continue;
+            choices.Add(doctrine);
         }
 
-        if (available.Count == 0) return null;
-        return available[Random.Range(0, available.Count)];
+        if (choices.Count == 0) return null;
+        return choices[Random.Range(0, choices.Count)];
     }
 
     private static T Pick<T>(T[] options)

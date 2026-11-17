@@ -3790,6 +3790,10 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3207784972399085606, guid: a7afed5e78cd44947a637251968f85f6, type: 3}
+      propertyPath: doctrinesPool
+      value: 
+      objectReference: {fileID: 11400000, guid: b316260b62c6c724cb1540d8ee6ae23b, type: 2}
+    - target: {fileID: 3207784972399085606, guid: a7afed5e78cd44947a637251968f85f6, type: 3}
       propertyPath: districtSeedPlantPanel
       value: 
       objectReference: {fileID: 1774865035}
@@ -12451,6 +12455,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UnlockerManager
   unlocks:
   - {fileID: 11400000, guid: 4614166d5d34a4b4e8a155aa5c87e740, type: 2}
+  - {fileID: 11400000, guid: 2a8116ba0990db54d96a7a650250a416, type: 2}
   startUnlocks:
   - {fileID: 11400000, guid: 894bb2f33b3a2ef4982bd58fbdd8a7ce, type: 2}
 --- !u!4 &1340745865
