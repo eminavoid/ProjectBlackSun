@@ -9,6 +9,31 @@ public class WeighedChoice : OptionModule
 
     private readonly List<WeightedElementWrapper> tempModules = new List<WeightedElementWrapper>();
 
+    public List<Resource> GetPosibleResourceRewards()
+    {
+        List<Resource> possibleResources = new List<Resource>();
+
+        for (int i = 0; i < modules.Count; i++)
+        {
+            GetElementPosibleResourceReward(modules[i], possibleResources);
+        }
+
+        return possibleResources;
+    }
+
+    private void GetElementPosibleResourceReward(WeightedElement weightedElement, List<Resource> possibleResources)
+    {
+        for (int i = 0; i < weightedElement.module.Count; i++)
+        {
+            OptionModule module = weightedElement.module[i];
+
+            if (module is ChangeResource resourceChange && !resourceChange.IsRefund && resourceChange.IsPositive)
+            {
+                if (!possibleResources.Contains(resourceChange.Resource)) possibleResources.Add(resourceChange.Resource);
+            }
+        }
+    }
+
     public OutcomeChances GetOutcomeChances(PlayerStats playerStats)
     {
         float totalWeight = 0f;

@@ -38,7 +38,7 @@ MonoBehaviour:
           module:
           - rid: 6513433571317776634
           - rid: 6513433571317776635
-          statUsed: 0
+          statUsed: 3
           outcomeType: 0
           output: Our cleric charms the guests with elegant sermons.
         - weight: 25

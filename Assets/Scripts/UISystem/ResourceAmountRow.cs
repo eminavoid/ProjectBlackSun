@@ -89,6 +89,8 @@ public class ResourceAmountRow : MonoBehaviour
             delta = delta
         };
 
+        root.GetComponentInChildren<Image>(true).rectTransform.localScale *= 1.5f;
+
         Color color = delta.IsRefund ? refundColor : delta.Amount > 0 ? gainColor : lossColor;
         Color iconColor = delta.IsRefund ? refundIconColor : Color.white;
         if (dimmed)

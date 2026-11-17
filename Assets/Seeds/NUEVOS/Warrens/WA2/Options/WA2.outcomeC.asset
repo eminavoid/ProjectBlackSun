@@ -38,7 +38,7 @@ MonoBehaviour:
           module:
           - rid: 6513433571317776629
           - rid: 6513433571317776630
-          statUsed: 0
+          statUsed: 3
           outcomeType: 0
           output: He gratefully joins our ranks as a wandering preacher.
         - weight: 50

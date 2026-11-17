@@ -30,7 +30,7 @@ MonoBehaviour:
         - weight: 75
           module:
           - rid: 6513433571317776516
-          statUsed: 0
+          statUsed: 3
           outcomeType: 0
           output: The workers join in unison and the fires burn brighter than ever.
         - weight: 25

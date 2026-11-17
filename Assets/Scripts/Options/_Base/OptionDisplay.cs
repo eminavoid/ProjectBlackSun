@@ -82,15 +82,25 @@ public class OptionDisplay : MonoBehaviour
         virtues.Clear();
         option.GetTestedVirtues(virtues);
         PlayerStats stats = option.PlayerStats;
-        virtues.RemoveAll(virtue => stats == null || stats.GetStat(virtue) <= 0);
-        if (virtues.Count > 0 && now > start) tip += $"\nYour {Virtues.Names(virtues)}: <b>+{now - start}%</b>";
+        virtues.RemoveAll(virtue => stats == null || stats.GetStat(virtue) == 0);
+        if (virtues.Count > 0 && now != start) tip += $"\nYour {Virtues.Names(virtues)}: <b>{(Mathf.Sign(now - start) == 1 ? "+" : " - ")}{now - start}%</b>";
         else if (virtues.Count == 0)
         {
             option.GetTestedVirtues(virtues);
             if (virtues.Count > 0) tip += $"\n<size=80%>{Virtues.Names(virtues)} would raise it.</size>";
         }
 
-        return tip + "\n<size=80%>Success brings the good outcome. Failure, the bad one.</size>";
+        ResourceRewards possibleRewards = option.GetPosibleResourceRewards();
+
+        string possibleRewardsText = "";
+
+        for (int i = 0; i < possibleRewards.resources.Count; i++)
+        {
+            possibleRewardsText += possibleRewards.resources[i].ToString();
+            if (i != possibleRewards.resources.Count - 1) possibleRewardsText += ", ";
+        }
+
+        return tip + $"\n<size=80%>Possible Rewards: {possibleRewardsText}.</size>";
     }
 
     private void OnDisable()

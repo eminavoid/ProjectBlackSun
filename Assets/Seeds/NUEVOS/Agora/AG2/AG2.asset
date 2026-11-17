@@ -31,4 +31,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 82e6aa2ef07a2894a9cf691851df61fe, type: 2}
   - {fileID: 11400000, guid: 77b9532ba22a2444fb5e7f645e558c49, type: 2}
   <DefaultOption>k__BackingField: 4
-  playerPlantCooldown: 1
+  playerPlantCooldown: 4

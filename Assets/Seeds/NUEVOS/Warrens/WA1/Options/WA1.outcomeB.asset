@@ -31,7 +31,7 @@ MonoBehaviour:
           module:
           - rid: 6513433571317776606
           - rid: 6513433571317776607
-          statUsed: 0
+          statUsed: 4
           outcomeType: 0
           output: The families sit politely through the sermon, and several take
             our words to heart.
