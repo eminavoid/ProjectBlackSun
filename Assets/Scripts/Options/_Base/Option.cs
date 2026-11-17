@@ -56,6 +56,15 @@ public class Option : ScriptableObject
         return null;
     }
 
+    public ResourceRewards GetPosibleResourceRewards()
+    {
+        WeighedChoice weightedChoice = GetModule<WeighedChoice>();
+
+        if (weightedChoice == null) return ResourceRewards.None;
+
+        return new ResourceRewards(weightedChoice.GetPosibleResourceRewards());
+    }
+
     public OutcomeChances GetOutcomeChances()
     {
         WeighedChoice weightedChoice = GetModule<WeighedChoice>();
@@ -103,8 +112,18 @@ public class Option : ScriptableObject
     public void ExecuteOption()
     {
         OutcomeChances outcome = GetOutcomeChances();
+        ResourceRewards possibleRewards = GetPosibleResourceRewards();
+
+        string possibleRewardsText = "";
+
+        for (int i = 0; i < possibleRewards.resources.Count; i++)
+        {
+            possibleRewardsText += possibleRewards.resources[i].ToString();
+            if (i != possibleRewards.resources.Count - 1) possibleRewardsText += ", ";
+        }
 
         Debug.Log($"positive chance: {outcome.GoodPercentage}% | negative chance: {outcome.BadPercentage}%");
+        Debug.Log($"Possible rewards: {possibleRewardsText}");
 
         for (int i = 0; i < modules.Count; i++)
         {

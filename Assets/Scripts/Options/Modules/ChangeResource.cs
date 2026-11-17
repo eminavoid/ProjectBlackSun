@@ -13,6 +13,11 @@ public class ChangeResource : OptionModule
 
     public override bool IsRefund => refund;
 
+    public Resource Resource => resource;
+
+    public bool IsPositive => maxAmount > 0;
+    public bool IsNegative => !IsPositive;
+
     public override bool CanExecute() => true;
 
     public override void Execute(Option option, Seed seed)
