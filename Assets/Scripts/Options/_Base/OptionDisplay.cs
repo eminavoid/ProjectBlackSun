@@ -83,7 +83,7 @@ public class OptionDisplay : MonoBehaviour
         option.GetTestedVirtues(virtues);
         PlayerStats stats = option.PlayerStats;
         virtues.RemoveAll(virtue => stats == null || stats.GetStat(virtue) == 0);
-        if (virtues.Count > 0 && now != start) tip += $"\nYour {Virtues.Names(virtues)}: <b>{Mathf.Sign(now-start) == 1 : + ? -}{now - start}%</b>";
+        if (virtues.Count > 0 && now != start) tip += $"\nYour {Virtues.Names(virtues)}: <b>{(Mathf.Sign(now - start) == 1 ? "+" : " - ")}{now - start}%</b>";
         else if (virtues.Count == 0)
         {
             option.GetTestedVirtues(virtues);
