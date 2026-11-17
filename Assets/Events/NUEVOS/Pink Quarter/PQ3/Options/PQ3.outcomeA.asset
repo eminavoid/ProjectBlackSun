@@ -46,6 +46,7 @@ MonoBehaviour:
           module:
           - rid: 2174037371569569822
           statUsed: 3
+          outcomeType: 0
           output: The men, along with a few good beatings handed to local thugs,
             clear the dread from the streets. Our flock can finally breathe easy
             again!
@@ -53,6 +54,7 @@ MonoBehaviour:
           module:
           - rid: 2174037371569569823
           statUsed: 0
+          outcomeType: 1
           output: Dammit all! Our followers think the sellswords are secretly on
             our rivals' payroll. The paranoia rages on!
     - rid: 2174037371569569822

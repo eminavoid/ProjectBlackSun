@@ -39,6 +39,7 @@ MonoBehaviour:
           - rid: 107151359355650070
           - rid: 107151359355650071
           statUsed: 3
+          outcomeType: 0
           output: The masses are moved by our charity. Many among them had never
             received a gift in all their lives! We may take satisfaction in a righteous
             deed well done, with the added grace of new initiates joining our fold.
@@ -47,6 +48,7 @@ MonoBehaviour:
           - rid: 107151359355650072
           - rid: 107151359355650073
           statUsed: 0
+          outcomeType: 1
           output: What a disaster! The delicacies were spoiled. Reports are already
             arriving of the commoners falling ill after consuming them. This is the
             price of placing our trust in outlanders! May they never receive the

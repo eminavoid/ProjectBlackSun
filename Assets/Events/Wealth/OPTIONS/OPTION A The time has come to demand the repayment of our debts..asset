@@ -45,12 +45,14 @@ MonoBehaviour:
           module:
           - rid: 5546513177521160325
           statUsed: 1
+          outcomeType: 0
           output: The merchants and families grudgingly comply. Not all can pay in
             full, but enough settle their dues to partially stabilize our coffers.
         - weight: 50
           module:
           - rid: 5841915870972215298
           statUsed: 0
+          outcomeType: 1
           output: Wretches! The merchants and guilds drove our clerics out with kicks
             and blows the moment we raised the matter of their debts. To think we
             aided those bastards in their hour of need!

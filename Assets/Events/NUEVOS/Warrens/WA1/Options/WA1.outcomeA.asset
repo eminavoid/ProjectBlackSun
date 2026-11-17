@@ -35,12 +35,14 @@ MonoBehaviour:
           - rid: 2174037531835236796
           - rid: 5546513177521160324
           statUsed: 3
+          outcomeType: 0
           output: We are hailed as the saviors of the hour! Praised be the Beholder
             for placing us upon this earth!
         - weight: 70
           module:
           - rid: 2174037531835236797
           statUsed: 0
+          outcomeType: 1
           output: Our clerics catch the contagion and succumb to the affliction.
     - rid: 2174037052531671285
       type: {class: DoNothing, ns: , asm: Assembly-CSharp}

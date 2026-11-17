@@ -39,11 +39,13 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671150
           statUsed: 1
+          outcomeType: 0
           output: The merchant agrees, securing a mutually beneficial partnership.
         - weight: 70
           module:
           - rid: 2174037052531671151
           statUsed: 0
+          outcomeType: 1
           output: The merchant proved to be nothing more than a charlatan chasing
             coin. Spooked by our proposal, he fled to peddle trinkets for another
             cult.

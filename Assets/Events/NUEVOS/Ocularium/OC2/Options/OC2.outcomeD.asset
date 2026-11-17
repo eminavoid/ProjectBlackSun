@@ -31,6 +31,7 @@ MonoBehaviour:
         - weight: 50
           module: []
           statUsed: 0
+          outcomeType: 0
           output: The spectacle proved far less grand than the crowd anticipated...
             and certainly void of divinity. How fortunate that we wasted no time
             on it.
@@ -38,6 +39,7 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671153
           statUsed: 0
+          outcomeType: 1
           output: Curse it all! The eclipse bore no divine essence, yet the masses
             took it as such. We squandered a magnificent opportunity!
     - rid: 2174037052531671153
@@ -46,3 +48,4 @@ MonoBehaviour:
         resource: 1
         minAmount: -25
         maxAmount: -25
+        refund: 0

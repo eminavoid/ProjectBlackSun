@@ -39,12 +39,14 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671132
           statUsed: 3
+          outcomeType: 0
           output: The entire temple is brought to tears by the young prophet's stirring
             words! Faith in our sect has reached unprecedented heights!
         - weight: 75
           module:
           - rid: 2174037052531671133
           statUsed: 0
+          outcomeType: 1
           output: What a disaster! The boy was seized by fright and could hardly
             stop stammering! We are the laughingstock of all Beheld! Whatever possessed
             us to entrust such a duty to a mere child!?

@@ -31,6 +31,7 @@ MonoBehaviour:
           module:
           - rid: 107151343762276447
           statUsed: 5
+          outcomeType: 0
           output: "The Beholder is with us! Our man utterly humiliated this so-called
             \u201Corator.\u201D He exposed the fallacies of his arguments and proved
             to all that he is naught but a charlatan. The commoners themselves drove
@@ -40,6 +41,7 @@ MonoBehaviour:
           module:
           - rid: 107151343762276448
           statUsed: 0
+          outcomeType: 1
           output: What a disgrace! Our man was utterly undone by the rival's rhetoric
             and logic. The humiliation was such that by the time it ended, the crowd
             was roaring with laughter at his expense. We have been defeated, and

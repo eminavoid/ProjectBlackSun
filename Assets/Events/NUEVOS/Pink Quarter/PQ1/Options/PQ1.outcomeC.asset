@@ -39,12 +39,14 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671136
           statUsed: 3
+          outcomeType: 0
           output: The heretic bends to our will. We shall make ample use of him before
             casting him aside.
         - weight: 50
           module:
           - rid: 2174037052531671137
           statUsed: 0
+          outcomeType: 1
           output: The heretic refuses to be cowed! Worse yet, he threatens to reveal
             his secret and drag us down with him if we lay a finger on him. We must
             tread carefully.

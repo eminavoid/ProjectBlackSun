@@ -41,6 +41,7 @@ MonoBehaviour:
           - rid: 107151359355650121
           - rid: 107151359355650122
           statUsed: 3
+          outcomeType: 0
           output: We are the talk of the town. Everyone witnessed our followers mobilizing
             to save those in need throughout the city. By the time the waters recede,
             our temples lie in ruins, but our image is untarnished.
@@ -51,6 +52,7 @@ MonoBehaviour:
           - rid: 107151359355650125
           - rid: 107151359355650126
           statUsed: 0
+          outcomeType: 1
           output: What a tragedy! Many of our heroic followers drown while attempting
             to save the innocent. Though our martyrs shall be remembered as heroes,
             the loss is undeniable. To worsen matters, our temples have been reduced

@@ -37,6 +37,7 @@ MonoBehaviour:
           - rid: 2174037531835236803
           - rid: 2174037531835236804
           statUsed: 2
+          outcomeType: 0
           output: Bolstered by our forces, our favored boss amasses enough power
             to crush the rival gangs. Not only do we hold a puppet in high places,
             but the district credits our sect with ending the bloodshed!
@@ -44,6 +45,7 @@ MonoBehaviour:
           module:
           - rid: 2174037531835236805
           statUsed: 0
+          outcomeType: 1
           output: Our chosen champion is cut down, and worse still, we stand publicly
             accused of stoking the violence!
     - rid: 2174037531835236798

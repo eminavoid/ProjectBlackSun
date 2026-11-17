@@ -38,6 +38,7 @@ MonoBehaviour:
           module:
           - rid: 107151343762276418
           statUsed: 5
+          outcomeType: 0
           output: "Gold serves well to soothe the Overseer\u2019s temper. However,
             his men remain restless, fearing the future intervention of other rival
             sects."
@@ -45,6 +46,7 @@ MonoBehaviour:
           module:
           - rid: 107151343762276419
           statUsed: 0
+          outcomeType: 1
           output: "The Overseer is quick to accept our donation, yet he cannot help
             but remark that both he and his men would have preferred a more \u201Cdirect\u201D
             retribution against those responsible."

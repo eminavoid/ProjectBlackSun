@@ -41,12 +41,14 @@ MonoBehaviour:
           - rid: 2174037371569569809
           - rid: 5546513177521160322
           statUsed: 3
+          outcomeType: 0
           output: Appealing to the material greed of the masses never fails!
         - weight: 50
           module:
           - rid: 2174037371569569810
           - rid: 5546513177521160323
           statUsed: 0
+          outcomeType: 1
           output: Curse it all! We merely confirmed what they already suspected about
             our cult's shallowness!
     - rid: 2174037371569569809

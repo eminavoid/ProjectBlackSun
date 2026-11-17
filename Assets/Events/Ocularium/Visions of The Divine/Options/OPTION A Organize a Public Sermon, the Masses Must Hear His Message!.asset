@@ -32,6 +32,7 @@ MonoBehaviour:
           module:
           - rid: 107151358184390657
           statUsed: 4
+          outcomeType: 0
           output: The prophet speaks with undeniable conviction, enough to stir the
             hearts of all present. Even if his divine visions do not truly descend
             from the Beholder, it is undeniable that his words inspire the faithful!
@@ -39,6 +40,7 @@ MonoBehaviour:
           module:
           - rid: 107151358184390658
           statUsed: 0
+          outcomeType: 1
           output: What a disaster! The prophet proved to be little more than a raving
             lunatic. The moment he was granted the floor, he began to babble of apocalyptic
             dooms and other absurdities. The people took no liking to his sermons;
@@ -48,6 +50,7 @@ MonoBehaviour:
           - rid: 107151358184390659
           - rid: 107151358184390660
           statUsed: 0
+          outcomeType: 0
           output: A miracle! As the prophet addressed the masses, the heavens parted
             and a shaft of light descended from the very center of the sun. His words
             echoed throughout the Ocularium, and the sound of trumpets could be heard

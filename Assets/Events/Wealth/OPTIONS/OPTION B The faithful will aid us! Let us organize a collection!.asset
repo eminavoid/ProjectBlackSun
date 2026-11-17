@@ -38,18 +38,21 @@ MonoBehaviour:
           module:
           - rid: 5841915870972215301
           statUsed: 3
+          outcomeType: 0
           output: The collection is a resounding success! The faithful flock to our
             aid and fill our coffers with tribute!
         - weight: 60
           module:
           - rid: 5841915870972215302
           statUsed: 1
+          outcomeType: 0
           output: The faithful do their part! Though they possess little, our flock
             recognizes the crisis we are facing. May the Beholder bless them!
         - weight: 20
           module:
           - rid: 5841915870972215303
           statUsed: 0
+          outcomeType: 1
           output: Miserly wretches! Our "faithful" offer nothing more than paltry
             alms. At this rate, we will never recover.
         - weight: 10
@@ -57,6 +60,7 @@ MonoBehaviour:
           - rid: 5841915870972215304
           - rid: 5841915870972215305
           statUsed: 0
+          outcomeType: 1
           output: A rival cult seized upon our plea for aid to aggrandize themselves,
             even donating to our cause! We collected very little, and worse still,
             they lured away our followers! Curse them!

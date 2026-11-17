@@ -31,12 +31,14 @@ MonoBehaviour:
           module:
           - rid: 107151359355650173
           statUsed: 2
+          outcomeType: 0
           output: What is better than having a talented painter under our sway? Having
             that same artist dedicate his skills to slandering our primary rival!
         - weight: 45
           module:
           - rid: 107151359355650174
           statUsed: 0
+          outcomeType: 1
           output: The artist is horrified by our attempt at slander. It seems we
             have caused him to become disillusioned with all sects. It could have
             been worse; at least now he shall not paint for anyone!
@@ -44,6 +46,7 @@ MonoBehaviour:
           module:
           - rid: 107151359355650175
           statUsed: 0
+          outcomeType: 1
           output: "What a tragedy! It appears our rivals had the very same idea.
             The painter found himself at the center of the worst aspects of our warring
             folds. Such was the chaos that the youth eventually lost his faith\u2014and

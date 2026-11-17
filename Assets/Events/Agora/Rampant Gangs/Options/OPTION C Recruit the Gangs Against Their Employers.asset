@@ -38,6 +38,7 @@ MonoBehaviour:
           module:
           - rid: 107151359355650060
           statUsed: 0
+          outcomeType: 1
           output: It was in vain; the ruffians refuse to even lend us an ear. One
             wonders how much they were paid to secure such unwavering loyalty. May
             the Beholder curse them!
@@ -45,6 +46,7 @@ MonoBehaviour:
           module:
           - rid: 107151359355650061
           statUsed: 0
+          outcomeType: 0
           output: The scoundrels accept our offer with grins upon their faces. After
             all, we are paying them once more to perform the very same deeds they
             were already committing. A fine trade for them, but at least they are

@@ -38,12 +38,14 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671146
           statUsed: 1
+          outcomeType: 0
           output: Our cleric successfully brokers a compromise between both factions.
         - weight: 50
           module:
           - rid: 2174037052531671147
           - rid: 2174037052531671255
           statUsed: 0
+          outcomeType: 1
           output: The strikers pay no heed to our cleric. Curse it all!
     - rid: 2174037052531671146
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}

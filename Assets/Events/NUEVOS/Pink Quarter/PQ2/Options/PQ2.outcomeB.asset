@@ -32,11 +32,13 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671146
           statUsed: 0
+          outcomeType: 0
           output: The deviant agrees to buy our silence.
         - weight: 50
           module:
           - rid: 2174037052531671147
           statUsed: 0
+          outcomeType: 1
           output: The aristocrat cannot bear the shame... and takes his own life!
             The other Iris nobles hold us accountable for the blood of their peer.
     - rid: 2174037052531671146
@@ -45,12 +47,14 @@ MonoBehaviour:
         resource: 0
         minAmount: 100
         maxAmount: 100
+        refund: 0
     - rid: 2174037052531671147
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 2
         minAmount: -1
         maxAmount: -1
+        refund: 0
     - rid: 2174037052531671283
       type: {class: DoNothing, ns: , asm: Assembly-CSharp}
       data: 

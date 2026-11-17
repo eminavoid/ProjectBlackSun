@@ -39,6 +39,7 @@ MonoBehaviour:
           - rid: 107151359355650109
           - rid: 107151359355650110
           statUsed: 5
+          outcomeType: 0
           output: The order is given and our followers mobilize. Barricades, buckets,
             and every precaution are employed to keep the waters at bay. When the
             storm finally breaks, the homes of the faithful lie in ruins, but the
@@ -50,6 +51,7 @@ MonoBehaviour:
           - rid: 107151359355650112
           - rid: 107151359355650113
           statUsed: 0
+          outcomeType: 0
           output: Good news! We managed to minimize the damage to our temples. However,
             the populace accuses us of prioritizing material wealth over the lives
             of our followers. We shall have to toil hard to cleanse this stain from
@@ -60,6 +62,7 @@ MonoBehaviour:
           - rid: 107151359355650115
           - rid: 107151359355650116
           statUsed: 0
+          outcomeType: 1
           output: The wrath of the Beholder is directed at us! The districts where
             our temples stand are the hardest hit by the deluge. Our men drown while
             attempting to defend the holy sites, which are destroyed regardless.

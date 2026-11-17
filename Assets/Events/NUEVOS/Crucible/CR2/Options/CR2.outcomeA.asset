@@ -39,6 +39,7 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671142
           statUsed: 2
+          outcomeType: 0
           output: Our men make short work of the strikers. The guilds are grateful
             and eager to return the favor
         - weight: 50
@@ -47,6 +48,7 @@ MonoBehaviour:
           - rid: 2174037052531671253
           - rid: 2174037052531671254
           statUsed: 0
+          outcomeType: 1
           output: Our forces are beaten back. What an utter humiliation!
     - rid: 2174037052531671142
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}

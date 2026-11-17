@@ -32,6 +32,7 @@ MonoBehaviour:
           module:
           - rid: 2174037371569569832
           statUsed: 0
+          outcomeType: 1
           output: The shadows will clear on their own.
     - rid: 2174037371569569832
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
@@ -39,3 +40,4 @@ MonoBehaviour:
         resource: 3
         minAmount: -50
         maxAmount: -50
+        refund: 0

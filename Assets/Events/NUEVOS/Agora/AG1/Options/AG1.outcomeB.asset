@@ -39,12 +39,14 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671132
           statUsed: 0
+          outcomeType: 0
           output: The guards welcome our bribe with open arms.
         - weight: 50
           module:
           - rid: 2174037052531671133
           - rid: 2174037052531671248
           statUsed: 0
+          outcomeType: 1
           output: Just our luck! The only guards in all of Beheld with actual morals
             happened to be on duty! Our cleric has been arrested.
     - rid: 2174037052531671132
@@ -53,15 +55,18 @@ MonoBehaviour:
         resource: 0
         minAmount: 50
         maxAmount: 50
+        refund: 0
     - rid: 2174037052531671133
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: -25
         maxAmount: -25
+        refund: 0
     - rid: 2174037052531671248
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 0
         minAmount: 50
         maxAmount: 50
+        refund: 0

@@ -39,6 +39,7 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671146
           statUsed: 4
+          outcomeType: 0
           output: The eclipse bore no divine essence, yet the masses took it as such.
             It may have been somewhat extravagant, but our festival was warmly embraced
             by the populace.
@@ -46,6 +47,7 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671147
           statUsed: 0
+          outcomeType: 1
           output: The spectacle proved far less grand than the crowd anticipated...
             and certainly void of divinity. We look like utter fools for staging
             such a lavish feast in its name.

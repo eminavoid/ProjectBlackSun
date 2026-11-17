@@ -32,11 +32,13 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671281
           statUsed: 0
+          outcomeType: 1
           output: Catastrophe! A rival sect unearths the truth and exposes our shame
             to the city!
         - weight: 40
           module: []
           statUsed: 0
+          outcomeType: 0
           output: In the end, it was nothing more than baseless gossip after all.
     - rid: 2174037052531671281
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
@@ -44,3 +46,4 @@ MonoBehaviour:
         resource: 1
         minAmount: -75
         maxAmount: -75
+        refund: 0

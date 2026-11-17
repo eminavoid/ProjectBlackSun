@@ -31,12 +31,14 @@ MonoBehaviour:
           module:
           - rid: 2174037371569569812
           statUsed: 2
+          outcomeType: 0
           output: The sheer force of our zealots beats some sense into the flock;
             our temples are packed once more!
         - weight: 75
           module:
           - rid: 2174037371569569813
           statUsed: 0
+          outcomeType: 1
           output: The cure was far worse than the disease. Who could have guessed
             that bullying the desperate would alienate them even further?
     - rid: 2174037371569569812

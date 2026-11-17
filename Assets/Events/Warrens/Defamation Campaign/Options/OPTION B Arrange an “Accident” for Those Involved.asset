@@ -38,6 +38,7 @@ MonoBehaviour:
           module:
           - rid: 107151359355650096
           statUsed: 2
+          outcomeType: 0
           output: A bit of sabotage upon the podium where they preached and... Crack!
             The entire structure came crashing down. The masses attributed it to
             divine providence, and the survivors are now shunned for professing falsehoods.
@@ -47,6 +48,7 @@ MonoBehaviour:
           - rid: 107151359355650097
           - rid: 107151359355650098
           statUsed: 0
+          outcomeType: 1
           output: Our attempt at sabotage does not go as planned. Though their podium
             collapsed, by what can only be described as a miracle, no one was harmed.
             Now the men speak with even greater conviction, and none can deny they
@@ -57,6 +59,7 @@ MonoBehaviour:
           - rid: 107151359355650100
           - rid: 107151359355650101
           statUsed: 0
+          outcomeType: 1
           output: Our attempt at sabotage is revealed when one of our agents is captured
             in the act. The speakers argue that if their words were lies, we would
             not need to resort to such desperate measures. The people believe them.

@@ -28,18 +28,42 @@ MonoBehaviour:
       type: {class: WeighedChoice, ns: , asm: Assembly-CSharp}
       data:
         modules:
-        - weight: 100
+        - weight: 75
           module:
           - rid: 2174037052531671136
           statUsed: 0
+          outcomeType: 1
           output: The district resents us for such callousness, but at least our
             flock remains entirely untainted!
+        - weight: 25
+          module:
+          - rid: 5546513177521160351
+          - rid: 5546513177521160352
+          statUsed: 0
+          outcomeType: 0
+          output: The district and the wealthy seem satisfied by our decision to
+            keep them away from the "tainted".
     - rid: 2174037052531671136
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: -50
         maxAmount: -50
+        refund: 0
     - rid: 2174037052531671289
       type: {class: DoNothing, ns: , asm: Assembly-CSharp}
       data: 
+    - rid: 5546513177521160351
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 4
+        minAmount: -3
+        maxAmount: -3
+        refund: 0
+    - rid: 5546513177521160352
+      type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
+      data:
+        resource: 2
+        minAmount: 1
+        maxAmount: 1
+        refund: 0

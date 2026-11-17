@@ -32,6 +32,7 @@ MonoBehaviour:
           - rid: 107151359355650063
           - rid: 107151359355650064
           statUsed: 0
+          outcomeType: 1
           output: What were we thinking? To convince these wretches of the error
             of their ways? They laughed in the face of the cleric we dispatched and
             gave him a sound thrashing to boot. What shall the people think of our
@@ -42,6 +43,7 @@ MonoBehaviour:
           - rid: 107151359355650066
           - rid: 107151359355650067
           statUsed: 0
+          outcomeType: 0
           output: Impressive! The man we sent to convert the miscreants must surely
             possess a silver tongue, for he has persuaded them to abandon their wicked
             ways and join our fold instead. If this is not proof that we are favored

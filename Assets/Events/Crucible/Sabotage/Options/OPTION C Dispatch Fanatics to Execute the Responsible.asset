@@ -33,6 +33,7 @@ MonoBehaviour:
           - rid: 107151343762276421
           - rid: 107151343762276422
           statUsed: 2
+          outcomeType: 0
           output: Our men track the culprits to a small rival parish, which is promptly
             stormed and its inhabitants beaten. We have not only defended our followers
             but proven that the Beholder favors us.
@@ -42,6 +43,7 @@ MonoBehaviour:
           - rid: 107151343762276424
           - rid: 107151343762276425
           statUsed: 0
+          outcomeType: 1
           output: Our men track the culprits to a rival parish but are ambushed along
             the way. The struggle is bitter, and in the end, we are forced to retreat.
             Not all return home. The Beholder has abandoned us.

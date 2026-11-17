@@ -32,6 +32,7 @@ MonoBehaviour:
           - rid: 107151358184390669
           - rid: 107151358184390670
           statUsed: 0
+          outcomeType: 0
           output: The people gather around the pyre with heavy hearts. The accused's
             cries for mercy fall upon deaf ears, yet he maintained his innocence
             until his final breath. The populace is disturbed, questioning why we
@@ -41,6 +42,7 @@ MonoBehaviour:
           - rid: 107151358184390671
           - rid: 107151358184390672
           statUsed: 2
+          outcomeType: 0
           output: The people rejoice! The shrieks of a heretic are as music to the
             ears of the masses. The burning of a transgressor always serves to rouse
             the spirit... and keep dissidents at bay.
@@ -48,6 +50,7 @@ MonoBehaviour:
           module:
           - rid: 107151358184390673
           statUsed: 0
+          outcomeType: 1
           output: What calamity! What horror! We are surely forsaken! As we bound
             the cleric to the stake, he remained defiant, simply whispering "Forgive
             them, Father, for they know not what they do" while gazing at the sky.

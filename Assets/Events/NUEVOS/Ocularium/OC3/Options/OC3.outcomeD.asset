@@ -31,6 +31,7 @@ MonoBehaviour:
           module:
           - rid: 2174037371569569818
           statUsed: 0
+          outcomeType: 1
           output: Time will prove us right.
     - rid: 2174037371569569818
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
@@ -38,3 +39,4 @@ MonoBehaviour:
         resource: 3
         minAmount: -50
         maxAmount: -50
+        refund: 0

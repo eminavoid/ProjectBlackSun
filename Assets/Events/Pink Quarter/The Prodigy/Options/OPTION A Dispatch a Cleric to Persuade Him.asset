@@ -32,6 +32,7 @@ MonoBehaviour:
           - rid: 107151359355650160
           - rid: 107151359355650161
           statUsed: 1
+          outcomeType: 0
           output: The Beholder smiles upon us! Our cleric successfully convinced
             the youth to join our ranks. With such a talented figure by our side,
             our doctrine shall breathe life upon the canvas. Through his brush, we
@@ -40,6 +41,7 @@ MonoBehaviour:
           module:
           - rid: 107151359355650162
           statUsed: 0
+          outcomeType: 1
           output: Terrible news! It seems we were not the only sect attempting to
             recruit the young artist. By the time we arrived, he had already been
             indoctrinated by one of our rivals. Our followers are crestfallen at

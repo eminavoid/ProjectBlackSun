@@ -41,11 +41,13 @@ MonoBehaviour:
           - rid: 2174037052531671296
           - rid: 2174037052531671297
           statUsed: 5
+          outcomeType: 0
           output: The cleric persuades the cutthroats to forsake their wicked ways.
             A true miracle!
         - weight: 90
           module: []
           statUsed: 0
+          outcomeType: 1
           output: The bandits beat our cleric within an inch of his life. Honestly,
             what else did we expect?
     - rid: 2174037052531671146

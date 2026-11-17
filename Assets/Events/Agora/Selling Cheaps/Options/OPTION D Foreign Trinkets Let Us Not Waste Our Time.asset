@@ -32,6 +32,7 @@ MonoBehaviour:
           - rid: 107151359355650084
           - rid: 107151359355650085
           statUsed: 0
+          outcomeType: 1
           output: We quickly come to regret our hesitation, as a rival sect seizes
             the opportunity to strengthen its foothold in the city. That influence
             could have been ours!
@@ -40,6 +41,7 @@ MonoBehaviour:
           - rid: 107151359355650086
           - rid: 107151359355650087
           statUsed: 0
+          outcomeType: 0
           output: Ha! Another sect fell for this crude trick and has become the laughingstock
             of the city for squandering a fortune on such rubbish. That is what befalls
             those who place their trust in outlanders!
@@ -49,21 +51,25 @@ MonoBehaviour:
         resource: 4
         minAmount: -10
         maxAmount: -10
+        refund: 0
     - rid: 107151359355650085
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: -10
         maxAmount: -10
+        refund: 0
     - rid: 107151359355650086
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 4
         minAmount: 10
         maxAmount: 10
+        refund: 0
     - rid: 107151359355650087
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: 10
         maxAmount: 10
+        refund: 0

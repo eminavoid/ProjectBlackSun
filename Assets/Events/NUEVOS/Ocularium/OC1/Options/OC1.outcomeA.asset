@@ -33,12 +33,14 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671128
           statUsed: 3
+          outcomeType: 0
           output: The lad delivers a masterclass in rhetoric! The congregation hangs
             on his every word!
         - weight: 25
           module:
           - rid: 2174037052531671129
           statUsed: 0
+          outcomeType: 1
           output: What a disaster! The boy was seized by fright and could hardly
             stop stammering! Whatever possessed us to entrust such a duty to a mere
             child!?

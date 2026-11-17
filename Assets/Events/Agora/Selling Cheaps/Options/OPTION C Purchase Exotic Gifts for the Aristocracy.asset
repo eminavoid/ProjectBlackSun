@@ -38,6 +38,7 @@ MonoBehaviour:
           module:
           - rid: 107151359355650081
           statUsed: 1
+          outcomeType: 0
           output: Such reverence! The aristocrats are fascinated by our offerings.
             The exotic nature of the gifts has given us the edge we required, as
             it seems we have started a new trend among the nobility. They shall not
@@ -46,6 +47,7 @@ MonoBehaviour:
           module:
           - rid: 107151359355650082
           statUsed: 0
+          outcomeType: 1
           output: Horrible news! The gifts proved to be cheap counterfeits of the
             true articles. The refined eyes of the aristocracy were quick to spot
             the deception and were left indignant. They now believe us to be charlatans!

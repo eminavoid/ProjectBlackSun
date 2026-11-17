@@ -33,12 +33,14 @@ MonoBehaviour:
           module:
           - rid: 2174037531835236789
           statUsed: 4
+          outcomeType: 0
           output: The eclipse bore no divine essence, yet the masses took it as such.
             We enjoyed a splendid evening celebrating the Beholder, the true divine
             entity.
         - weight: 50
           module: []
           statUsed: 0
+          outcomeType: 1
           output: The spectacle proved far less grand than the crowd anticipated...
             and certainly void of divinity. At least we wasted few resources on the
             farce.

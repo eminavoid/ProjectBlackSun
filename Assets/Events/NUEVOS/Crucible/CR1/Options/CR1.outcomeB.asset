@@ -32,10 +32,12 @@ MonoBehaviour:
           module:
           - rid: 2174037531835236781
           statUsed: 1
+          outcomeType: 0
           output: The guilds agree to lower their rates. Quite the bargain!
         - weight: 25
           module: []
           statUsed: 0
+          outcomeType: 1
           output: The guilds refuse to budge an inch.
     - rid: 2174037531835236780
       type: {class: RequireResource, ns: , asm: Assembly-CSharp}

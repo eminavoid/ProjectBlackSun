@@ -38,12 +38,14 @@ MonoBehaviour:
           module:
           - rid: 107151359355650050
           statUsed: 0
+          outcomeType: 0
           output: The mercenaries make short work of the scoundrels. In less than
             a fortnight, order is restored to the bazaar, and the commoners rejoice.
         - weight: 20
           module:
           - rid: 107151359355650051
           statUsed: 0
+          outcomeType: 1
           output: Curse them! The mercenaries are efficient enough, yet they seem
             unable or unwilling to deliver a killing blow to the gangs. It appears
             we shall be forced to keep them on our coin for the foreseeable future.
@@ -58,6 +60,6 @@ MonoBehaviour:
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 4
-        minAmount: 5
-        maxAmount: 5
+        minAmount: -5
+        maxAmount: -5
         refund: 0

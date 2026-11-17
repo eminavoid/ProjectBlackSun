@@ -31,6 +31,7 @@ MonoBehaviour:
           module:
           - rid: 107151358184390666
           statUsed: 5
+          outcomeType: 0
           output: The cleric speaks with absolute certainty. Our Inquisitor could
             not determine if the visions are genuine or merely delusions, but there
             seems to be no harm in allowing him to minister to the masses. However,
@@ -38,6 +39,7 @@ MonoBehaviour:
         - weight: 30
           module: []
           statUsed: 0
+          outcomeType: 0
           output: What a relief! The cleric was revealed to be a charlatan. He made
             a valiant effort to conceal his deceit, but after a lengthy session of
             "interrogation," the truth was wrung from him. Long live the Beholder,
@@ -46,6 +48,7 @@ MonoBehaviour:
           module:
           - rid: 107151358184390667
           statUsed: 0
+          outcomeType: 1
           output: The Inquisitor overplayed his hand during the questioning... the
             cleric did not survive the ordeal. Now, we shall never know the truth
             of his visions.

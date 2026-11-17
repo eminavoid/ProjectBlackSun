@@ -32,12 +32,14 @@ MonoBehaviour:
           module:
           - rid: 2174037531835236793
           statUsed: 2
+          outcomeType: 0
           output: 'The crowds applaud our forthrightness. Better still: they lynch
             the heretic on the spot.'
         - weight: 50
           module:
           - rid: 2174037531835236794
           statUsed: 0
+          outcomeType: 1
           output: The public proved far less forgiving than we anticipated. Our standing
             has suffered a severe blow.
     - rid: 2174037531835236793

@@ -39,11 +39,13 @@ MonoBehaviour:
           - rid: 2174037052531671128
           - rid: 2174037052531671247
           statUsed: 1
+          outcomeType: 0
           output: The cleric successfully convinces the guards to release the goods.
         - weight: 25
           module:
           - rid: 2174037052531671129
           statUsed: 0
+          outcomeType: 0
           output: Our cleric is ignored, and the merchant seeks aid elsewhere.
     - rid: 2174037052531671128
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}

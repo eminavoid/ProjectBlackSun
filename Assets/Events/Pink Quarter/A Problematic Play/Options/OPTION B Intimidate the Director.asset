@@ -31,6 +31,7 @@ MonoBehaviour:
           module:
           - rid: 107151359355650148
           statUsed: 2
+          outcomeType: 0
           output: A nocturnal visit is all it takes for the director to abandon his
             patrons. Our men can be so persuasive when the need arises... it is their
             trade, after all!
@@ -39,6 +40,7 @@ MonoBehaviour:
           - rid: 107151359355650149
           - rid: 107151359355650150
           statUsed: 0
+          outcomeType: 1
           output: The gall of this man! Even with a band of fanatics appearing at
             his doorstep, he refuses to forsake his benefactors. Such dedication
             would be commendable were it not directed squarely against us.

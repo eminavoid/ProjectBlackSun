@@ -40,6 +40,7 @@ MonoBehaviour:
           - rid: 107151359355650090
           - rid: 107151359355650091
           statUsed: 2
+          outcomeType: 0
           output: We dispatched our faithful to demonstrate the error of their ways...
             with their fists! Clearly, we are the superior sect, for our men gave
             them a thorough thrashing. They shall think twice before crossing us
@@ -49,6 +50,7 @@ MonoBehaviour:
           - rid: 107151359355650092
           - rid: 107151359355650093
           statUsed: 0
+          outcomeType: 1
           output: "Ill tidings! The rival speakers proved to be hardier than we anticipated.
             They delivered a terrible beating to our men\u2014not all of whom survived.
             We have been exposed as a weak fold in the eyes of the public!"

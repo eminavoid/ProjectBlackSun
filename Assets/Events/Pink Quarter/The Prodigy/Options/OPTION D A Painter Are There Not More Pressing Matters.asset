@@ -31,6 +31,7 @@ MonoBehaviour:
           module:
           - rid: 107151359355650177
           statUsed: 0
+          outcomeType: 0
           output: It seems the artist's faith transcends the need for sectarian ties.
             He remains content to paint the Beholder and little else. We heard he
             told the messengers of other folds that "his faith would be decided at
@@ -39,6 +40,7 @@ MonoBehaviour:
           module:
           - rid: 107151359355650178
           statUsed: 0
+          outcomeType: 1
           output: The artist was eventually captivated by one of our rivals. His
             paintings were so awe-inspiring that we ended up losing followers to
             their fold.
@@ -51,3 +53,4 @@ MonoBehaviour:
         resource: 3
         minAmount: -20
         maxAmount: -20
+        refund: 0

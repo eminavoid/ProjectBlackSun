@@ -31,6 +31,7 @@ MonoBehaviour:
           module:
           - rid: 107151359355650106
           statUsed: 0
+          outcomeType: 1
           output: Perhaps what the speakers say are lies, but the people believe
             them nonetheless. This stain upon our reputation shall be difficult to
             wash away.
@@ -40,3 +41,4 @@ MonoBehaviour:
         resource: 1
         minAmount: -20
         maxAmount: -20
+        refund: 0

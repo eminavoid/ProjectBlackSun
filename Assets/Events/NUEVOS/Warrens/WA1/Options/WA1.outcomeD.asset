@@ -31,12 +31,14 @@ MonoBehaviour:
         - weight: 80
           module: []
           statUsed: 4
+          outcomeType: 0
           output: The outbreak passes without much fuss; it truly was nothing worse
             than a common cold.
         - weight: 20
           module:
           - rid: 2174037052531671139
           statUsed: 0
+          outcomeType: 1
           output: Curse it all! We grew far too reckless! Our clerics have fallen
             ill.
     - rid: 2174037052531671139

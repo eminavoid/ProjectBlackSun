@@ -31,6 +31,7 @@ MonoBehaviour:
           module:
           - rid: 107151343762276443
           statUsed: 0
+          outcomeType: 0
           output: "The commoners of the district gather around the foundry to witness
             the destruction as if it were a communal bonfire. The cracking of the
             timber almost manages to drown out the screams of those trapped within\u2026
@@ -39,6 +40,7 @@ MonoBehaviour:
           module:
           - rid: 107151343762276444
           statUsed: 0
+          outcomeType: 1
           output: "The commoners of the district gather around the foundry to witness
             the destruction as if it were a communal bonfire. The cracking of the
             timber almost manages to drown out the screams of those trapped within\u2026

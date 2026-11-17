@@ -40,6 +40,7 @@ MonoBehaviour:
           module:
           - rid: 2174037371569569826
           statUsed: 2
+          outcomeType: 0
           output: Nothing like a brutal public punishment to drive out fear from
             the flock. Or, at the very least, point all that terror right back at
             us.
@@ -47,6 +48,7 @@ MonoBehaviour:
           module:
           - rid: 2174037371569569827
           statUsed: 0
+          outcomeType: 1
           output: The people resent us deeply! They say that instead of helping,
             we just want to beat them into submission! How on earth did they see
             through that?!

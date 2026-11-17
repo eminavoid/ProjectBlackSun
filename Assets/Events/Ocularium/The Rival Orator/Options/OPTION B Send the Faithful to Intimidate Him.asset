@@ -39,6 +39,7 @@ MonoBehaviour:
           - rid: 107151343762276451
           - rid: 107151343762276452
           statUsed: 2
+          outcomeType: 0
           output: "Our followers discover where this \u201Corator\u201D dwells and
             pay him a nocturnal visit. Coincidentally, he does not appear in the
             plaza the following morning, nor any day thereafter."
@@ -46,6 +47,7 @@ MonoBehaviour:
           module:
           - rid: 107151343762276453
           statUsed: 0
+          outcomeType: 1
           output: "What a disaster! Our followers ambush the orator as he concludes
             one of his sermons. Yet, he stands his ground, even as our men begin
             to threaten violence. They clearly misread the situation; the orator\u2019s
@@ -57,6 +59,7 @@ MonoBehaviour:
           - rid: 107151343762276456
           - rid: 107151343762276457
           statUsed: 0
+          outcomeType: 1
           output: "A catastrophe! Matters have spiraled out of control. Our men were
             meant only to give him a fright, but they overplayed their hand and ended
             the poor devil's life! Worse, they did so before the eyes of all his

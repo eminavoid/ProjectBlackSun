@@ -48,12 +48,14 @@ MonoBehaviour:
           - rid: 2174037371569569799
           - rid: 2174037371569569800
           statUsed: 0
+          outcomeType: 0
           output: The flock works day and night! In no time our temples are back
             in shape, and it only cost a handful of lives along the way...
         - weight: 50
           module:
           - rid: 2174037371569569801
           statUsed: 0
+          outcomeType: 1
           output: Curse it all! One too many workplace accidents and the flock walked
             out en masse. Do they really have no loyalty to their sect in times of
             trouble?!

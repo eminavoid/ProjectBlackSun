@@ -33,6 +33,7 @@ MonoBehaviour:
           - rid: 107151359355650156
           - rid: 107151359355650157
           statUsed: 0
+          outcomeType: 1
           output: The play is a resounding success. For several months, it is the
             only topic of conversation among high society. What a disaster! May the
             Beholder curse them!
@@ -40,6 +41,7 @@ MonoBehaviour:
           module:
           - rid: 107151359355650158
           statUsed: 0
+          outcomeType: 0
           output: "Ha! The play had the misfortune of opening on the same eve as
             a premiere directed by one of the Empire\u2019s greatest masters. It
             passed without glory or notice. Those who did attend mentioned it cast
@@ -50,21 +52,25 @@ MonoBehaviour:
         resource: 1
         minAmount: -20
         maxAmount: -20
+        refund: 0
     - rid: 107151359355650156
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 4
         minAmount: -10
         maxAmount: -10
+        refund: 0
     - rid: 107151359355650157
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: -20
         maxAmount: -20
+        refund: 0
     - rid: 107151359355650158
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 4
         minAmount: -5
         maxAmount: -5
+        refund: 0

@@ -31,6 +31,7 @@ MonoBehaviour:
           module:
           - rid: 2174037371569569806
           statUsed: 0
+          outcomeType: 1
           output: There is a certain charm to this crumbling ruins...
     - rid: 2174037371569569806
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
@@ -38,3 +39,4 @@ MonoBehaviour:
         resource: 3
         minAmount: -40
         maxAmount: -40
+        refund: 0

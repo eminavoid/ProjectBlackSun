@@ -32,12 +32,14 @@ MonoBehaviour:
           module:
           - rid: 2174037531835236778
           statUsed: 4
+          outcomeType: 0
           output: A roaring success! The people flock to our stall and the wares
             quickly sell out.
         - weight: 50
           module:
           - rid: 2174037531835236779
           statUsed: 0
+          outcomeType: 1
           output: Unfortunately, the merchant held too strong a foothold; we ended
             up being branded as the knockoffs.
     - rid: 2174037531835236777

@@ -38,10 +38,12 @@ MonoBehaviour:
           module:
           - rid: 2174037052531671128
           statUsed: 1
+          outcomeType: 0
           output: More materials are always welcome.
         - weight: 25
           module: []
           statUsed: 0
+          outcomeType: 1
           output: Curse it all! The materials were shoddy! We have been swindled!
     - rid: 2174037052531671128
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}

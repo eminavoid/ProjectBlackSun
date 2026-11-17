@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: OPTION B Bribe the Ruffians
   m_EditorClassIdentifier: Assembly-CSharp::Option
   playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
-  shineWith: 1
   title: Bribe the Ruffians
   description: 'COST: 50 Wealth'
   icon: {fileID: 0}
@@ -39,6 +38,7 @@ MonoBehaviour:
           module:
           - rid: 107151359355650054
           statUsed: 0
+          outcomeType: 0
           output: Let it not be said that gold cannot move mountains. At the prospect
             of being paid for their idleness, the ruffians accept our offer as swiftly
             as it is proposed. The price was steep, but we should suffer no further
@@ -48,6 +48,7 @@ MonoBehaviour:
           - rid: 107151359355650055
           - rid: 107151359355650056
           statUsed: 0
+          outcomeType: 1
           output: Who would have thought it? Criminals with standards! The gang refused
             to accept our coin, remaining loyal to their current masters. It seems
             our troubles shall continue for the time being.
@@ -55,6 +56,7 @@ MonoBehaviour:
           module:
           - rid: 107151359355650057
           statUsed: 0
+          outcomeType: 1
           output: What a disaster! Our agents made contact with the scoundrels, who
             accepted the payment without hesitation. However, it was naught but a
             ruse, for the very next day they returned to wreak even greater havoc!

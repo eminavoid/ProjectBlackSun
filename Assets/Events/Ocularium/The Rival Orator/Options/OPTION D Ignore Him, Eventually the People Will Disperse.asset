@@ -32,6 +32,7 @@ MonoBehaviour:
           - rid: 107151343762276462
           - rid: 107151343762276463
           statUsed: 0
+          outcomeType: 1
           output: But the people did not disperse; instead, they grew in number.
             The orator has gained great influence within the Ocularium, and our sect
             pays dearly for failing to deal with him when the chance was ours.
@@ -41,9 +42,11 @@ MonoBehaviour:
         resource: 1
         minAmount: -30
         maxAmount: -30
+        refund: 0
     - rid: 107151343762276463
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: -30
         maxAmount: -30
+        refund: 0

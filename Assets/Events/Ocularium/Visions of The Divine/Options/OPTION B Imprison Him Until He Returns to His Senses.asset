@@ -30,6 +30,7 @@ MonoBehaviour:
         - weight: 70
           module: []
           statUsed: 2
+          outcomeType: 0
           output: After several days in isolation, the cleric recovers his wits.
             It appears this episode was naught but a fleeting bout of madness. Having
             reflected upon his errors, the cleric is now prepared to return to his
@@ -39,6 +40,7 @@ MonoBehaviour:
           - rid: 107151358184390663
           - rid: 107151358184390664
           statUsed: 0
+          outcomeType: 1
           output: We have a problem... the cleric has escaped his confinement. Reports
             are flooding in of a naked madman shrieking in the streets about the
             coming apocalypse and the righteous punishment of the Beholder. Lamentably,

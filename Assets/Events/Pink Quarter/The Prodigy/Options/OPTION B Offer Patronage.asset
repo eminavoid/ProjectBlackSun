@@ -38,6 +38,7 @@ MonoBehaviour:
           module:
           - rid: 107151359355650165
           statUsed: 3
+          outcomeType: 0
           output: Though the price is steep, can one truly place a value upon talent?
             The prodigy accepts us as his new benefactors, and our priests are already
             planning his first commission. Our sacred truths shall take form through
@@ -47,6 +48,7 @@ MonoBehaviour:
           - rid: 107151359355650166
           - rid: 107151359355650167
           statUsed: 0
+          outcomeType: 1
           output: Curse it! Another sect outbid us, offering a sum far greater than
             what we had planned. It does not appear we shall be able to recruit the
             lad now. Our fold is devastated by the missed chance.
@@ -57,6 +59,7 @@ MonoBehaviour:
           - rid: 107151359355650170
           - rid: 107151359355650171
           statUsed: 0
+          outcomeType: 1
           output: Grave trouble! The artist took offense at "men of God attempting
             to purchase his spirit." It seems his zeal for the Beholder outweighs
             his reason! Oh, what a loss... and worse still, he has vowed that his
