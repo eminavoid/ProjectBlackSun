@@ -42,6 +42,7 @@ MonoBehaviour:
           - rid: 1516066228257685516
           - rid: 1516066228257685517
           statUsed: 0
+          outcomeType: 0
           output: The statue was eventually defaced, yet we believe it fulfilled
             its sacred purpose. The masses were able to admire it, and our men feel
             a deep sense of pride for having stood in its defense.
@@ -50,6 +51,7 @@ MonoBehaviour:
           - rid: 1516066228257685518
           - rid: 1516066228257685519
           statUsed: 0
+          outcomeType: 1
           output: The monument was swiftly reduced to rubble by our rivals. At the
             very least, it was displayed before the masses, fleeting though that
             moment was.
@@ -58,6 +60,7 @@ MonoBehaviour:
           - rid: 1516066228257685520
           - rid: 1516066228257685521
           statUsed: 0
+          outcomeType: 0
           output: To our surprise, the rival sects left the statue unmolested. In
             time, it transformed into a prominent landmark of the plaza, bringing
             us prestige with each passing day.
@@ -67,39 +70,46 @@ MonoBehaviour:
         resource: 3
         minAmount: 40
         maxAmount: 40
+        refund: 0
     - rid: 1516066228257685516
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: 40
         maxAmount: 40
+        refund: 0
     - rid: 1516066228257685517
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 4
         minAmount: 10
         maxAmount: 10
+        refund: 0
     - rid: 1516066228257685518
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: 20
         maxAmount: 20
+        refund: 0
     - rid: 1516066228257685519
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: 20
         maxAmount: 20
+        refund: 0
     - rid: 1516066228257685520
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 3
         minAmount: 40
         maxAmount: 40
+        refund: 0
     - rid: 1516066228257685521
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 1
         minAmount: 20
         maxAmount: 20
+        refund: 0

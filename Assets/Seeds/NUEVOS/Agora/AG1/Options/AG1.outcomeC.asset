@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: AG1.outcomeC
   m_EditorClassIdentifier: Assembly-CSharp::Option
   playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
-  shineWith: 0
   title: Give a share of the proceeds to the needy. Let them see our generosity.
   description: 'COST: 20 Wealth'
   icon: {fileID: 0}
@@ -40,11 +39,13 @@ MonoBehaviour:
           - rid: 6513433571317776497
           - rid: 6513433571317776498
           statUsed: 0
+          outcomeType: 0
           output: Word of our kindness spreads from stall to stall.
         - weight: 40
           module:
           - rid: 6513433571317776499
           statUsed: 0
+          outcomeType: 1
           output: The gesture is appreciated, if little noticed.
     - rid: 6513433571317776497
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}

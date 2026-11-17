@@ -312,7 +312,7 @@ public class TurnChronicle : MonoBehaviour
 
         if (upkeepCost > 0 && !explainedUpkeep)
         {
-            news.Add($"Your {upkeepClerics} {(upkeepClerics == 1 ? "cleric" : "clerics")} on the map cost {upkeepCost} Wealth in upkeep. Recall the ones you don't need to spend less.");
+            news.Add($"Each zone you rule feeds one cleric. The other {upkeepClerics} {(upkeepClerics == 1 ? "cleric" : "clerics")} on the map cost {upkeepCost} Wealth in upkeep. Recall the ones you don't need to spend less.");
             explainedUpkeep = true;
         }
     }

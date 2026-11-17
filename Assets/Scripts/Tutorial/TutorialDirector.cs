@@ -107,9 +107,10 @@ public class TutorialDirector : MonoBehaviour
             "Open Clerics to see where yours preach and how new ones join.",
             "A new cleric joins your reserve every few turns, or you can ordain one now for Wealth. Below, see where each of yours preaches.");
         yield return LedgerStep();
+        yield return StruggleBeat();
         yield return BookStep(CultLedger.Page.Rivals, "OpenRivals",
             "Open Rival Cults to size up the other faiths.",
-            "Each rival covets its own districts and plays its own way. When a faith leads the eclipse, the others turn on it.");
+            "Each rival covets its own districts, and its temperament is drawn anew each match: cautious, aggressive or opportunist. See here how each one plays.");
         yield return EndTurnStep(3, "End the turn again.");
         yield return ChronicleStep();
         yield return TheologyStep();
@@ -293,7 +294,14 @@ public class TutorialDirector : MonoBehaviour
         if (zone.Influence.Status != ZoneControlStatus.Controlled || zone.Influence.Controller != FactionId.Player) yield break;
 
         Focus(zone);
-        yield return Beat(zone, "You rule this zone now: more than half its influence is yours. Every zone you rule pays tithes each turn, and every cleric on the map costs upkeep.");
+        yield return Beat(zone, "You rule this zone now: more than half its influence is yours. Each zone you rule pays tithes and feeds one cleric. Clerics beyond that cost Wealth in upkeep.");
+    }
+
+    private IEnumerator StruggleBeat()
+    {
+        DistrictZone zone = TutorialContent.ScriptedClericZone;
+        Focus(zone);
+        yield return Beat(zone, "No zone is safe. Where faiths meet, the one with more clerics there gains more, and the attacker has the edge. Once a zone is full, the stronger faith takes influence from the rest.");
     }
 
     private IEnumerator LedgerStep()
@@ -350,7 +358,7 @@ public class TutorialDirector : MonoBehaviour
             }
             else if (!theology.gameObject.activeInHierarchy)
             {
-                Guide("Theology: spend Zeal to commune with the Beholder for seeds, doctrines and blessings. Open it.", opener, opener);
+                Guide("Theology: spend Zeal to commune with the Beholder for seeds, doctrines and blessings. A ! here means you can afford it. Open it.", opener, opener);
             }
             else if (!communed)
             {
@@ -410,7 +418,7 @@ public class TutorialDirector : MonoBehaviour
     private IEnumerator ClosingBeat()
     {
         string hints = FirstTimeHints.Enabled ? " Hints will appear the first time something new happens." : string.Empty;
-        yield return Beat(null, $"That's the basics. Rule the most zones by turn {EclipseTurn()}.{hints}", "DONE");
+        yield return Beat(null, $"That's the basics. Rule the most zones by turn {EclipseTurn()}, and guard them: rivals take what you leave unattended.{hints}", "DONE");
     }
 
     private IEnumerator WaitForCamera()

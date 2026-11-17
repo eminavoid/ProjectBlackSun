@@ -64,8 +64,7 @@ public class AIInfluenceController : MonoBehaviour
     private int IncomeAt(AIInfluenceProfile profile, int turn)
     {
         if (director == null) director = FindAnyObjectByType<RivalAIDirector>();
-        int every = director != null ? director.TurnsPerClericIncome(profile.Faction) : 1;
-        return turn % every == 0 ? profile.ClericsPerTurn : 0;
+        return director != null ? director.ClericIncomeAt(profile.Faction, turn) * profile.ClericsPerTurn : profile.ClericsPerTurn;
     }
 
     public IReadOnlyList<Districts> GetPreferredDistricts(FactionId faction)

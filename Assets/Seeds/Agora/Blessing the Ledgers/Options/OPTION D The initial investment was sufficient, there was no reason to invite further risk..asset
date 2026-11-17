@@ -33,6 +33,7 @@ MonoBehaviour:
           module:
           - rid: 1516066228257685673
           statUsed: 3
+          outcomeType: 0
           output: "\u201CRisk little, gain little,\u201D so muttered the bolder members
             of our fold. Yet, a gain is a gain. What would have befallen us had we
             gambled all and lost?"
@@ -40,12 +41,14 @@ MonoBehaviour:
           module:
           - rid: 1516066228257685674
           statUsed: 0
+          outcomeType: 0
           output: We were conservative, and with good reason! Our meager investment
             barely managed to break even. Crisis averted!
         - weight: 10
           module:
           - rid: 1516066228257685675
           statUsed: 0
+          outcomeType: 1
           output: What a disgrace. Even with the slight risk we took, we managed
             to lose coin nonetheless. Perhaps we should dedicate ourselves to other
             endeavors.
@@ -55,15 +58,18 @@ MonoBehaviour:
         resource: 0
         minAmount: 75
         maxAmount: 75
+        refund: 0
     - rid: 1516066228257685674
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 0
         minAmount: 50
         maxAmount: 50
+        refund: 0
     - rid: 1516066228257685675
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 0
         minAmount: 25
         maxAmount: 25
+        refund: 0

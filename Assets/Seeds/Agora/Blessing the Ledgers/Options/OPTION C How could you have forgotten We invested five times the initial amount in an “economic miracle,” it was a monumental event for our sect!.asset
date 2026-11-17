@@ -41,12 +41,14 @@ MonoBehaviour:
           module:
           - rid: 1516066228257685670
           statUsed: 3
+          outcomeType: 0
           output: Stake high and win high! If this is not a glorious testament to
             the Beholder's favor, then naught is!
         - weight: 40
           module:
           - rid: 1516066228257685671
           statUsed: 0
+          outcomeType: 0
           output: Perhaps market speculation is not our trade. In the end, despite
             pouring so much coin into the venture, we merely broke even. At least
             a crisis was averted; the mere thought of what would have become of us
@@ -54,6 +56,7 @@ MonoBehaviour:
         - weight: 40
           module: []
           statUsed: 0
+          outcomeType: 1
           output: "We are ruined! Utterly ruined! We have lost the entirety of our
             investment\u2014this \u201Cmiracle\u201D was little more than a grand
             swindle! Are we certain none of our rival sects were behind this villainy?!"
@@ -63,9 +66,11 @@ MonoBehaviour:
         resource: 0
         minAmount: 375
         maxAmount: 375
+        refund: 0
     - rid: 1516066228257685671
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 0
         minAmount: 250
         maxAmount: 250
+        refund: 0

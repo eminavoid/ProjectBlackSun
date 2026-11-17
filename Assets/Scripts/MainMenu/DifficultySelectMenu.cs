@@ -190,7 +190,7 @@ public class DifficultySelectMenu : MonoBehaviour
                 1f,
                 matrixGroup.transform);
             MakeText(
-                RivalAIDirector.PersonalityLabel(RivalAIDirector.DefaultPersonality(faction)),
+                "Random temperament",
                 new Vector2(RightX, rowY - 16f),
                 new Vector2(250f, 24f),
                 16f,

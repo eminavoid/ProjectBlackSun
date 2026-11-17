@@ -9,10 +9,6 @@ public enum RivalDifficulty
     Hard
 }
 
-/// <summary>
-/// Tres rivales con objetivos y un presupuesto de puntos.
-/// La dificultad cambia los puntos, la agresividad y cuántas jugadas desperdician.
-/// </summary>
 [DefaultExecutionOrder(45)]
 public class RivalAIDirector : MonoBehaviour
 {
@@ -20,7 +16,7 @@ public class RivalAIDirector : MonoBehaviour
     public class Agent
     {
         public FactionId faction = FactionId.Rival1;
-        public AIPersonality personality = AIPersonality.Clerics;
+        public AIPersonality personality = AIPersonality.Opportunist;
     }
 
     private struct Choice
@@ -34,15 +30,17 @@ public class RivalAIDirector : MonoBehaviour
         public bool secured;
         public bool hunt;
         public int defenders;
+        public int opposition;
+        public bool full;
         public float pressure;
         public float personality;
     }
 
     [SerializeField] private List<Agent> agents = new List<Agent>
     {
-        new Agent { faction = FactionId.Rival1, personality = DefaultPersonality(FactionId.Rival1) },
-        new Agent { faction = FactionId.Rival2, personality = DefaultPersonality(FactionId.Rival2) },
-        new Agent { faction = FactionId.Rival3, personality = DefaultPersonality(FactionId.Rival3) }
+        new Agent { faction = FactionId.Rival1 },
+        new Agent { faction = FactionId.Rival2 },
+        new Agent { faction = FactionId.Rival3 }
     };
 
     [Tooltip("Presupuesto normal. Easy resta 2 (mínimo 1). Hard suma 2.")]
@@ -71,16 +69,28 @@ public class RivalAIDirector : MonoBehaviour
         [Min(0f)] public float seedsPerTurn;
         [Tooltip("Most clerics a rival sends out in one turn.")]
         [Min(0)] public int clericsSentPerTurn;
-        [Tooltip("A rival gains its cleric income once every this many turns.")]
-        [Min(1)] public int turnsPerClericIncome;
+        [Tooltip("Clerics a rival gains per turn. 1.5 means one, then two, then one...")]
+        [Min(0f)] public float clericsPerTurn;
         [Tooltip("Clerics kept back to defend zones the rival is losing.")]
         [Min(0)] public int clericReserve;
     }
 
+    [Header("Events")]
+    [Tooltip("Most events all rivals together plant in one turn.")]
+    [SerializeField, Min(0)] private int maxEventsPerTurn = 2;
+    [Tooltip("Chance that no rival plants an event this turn.")]
+    [SerializeField, Range(0f, 1f)] private float quietTurnChance = 0.25f;
+    [Tooltip("How many recent events stay out of the pool so the same ones don't come back too soon.")]
+    [SerializeField, Min(0)] private int recentEventMemory = 8;
+
+    [Header("Personalities")]
+    [Tooltip("Most clerics a Cautious rival keeps in one zone, even while defending it.")]
+    [SerializeField, Min(1)] private int cautiousClericCap = 5;
+
     [Header("Pace")]
-    [SerializeField] private Pace easyPace = new Pace { seedsPerTurn = 0.5f, clericsSentPerTurn = 1, turnsPerClericIncome = 3, clericReserve = 2 };
-    [SerializeField] private Pace normalPace = new Pace { seedsPerTurn = 1f, clericsSentPerTurn = 2, turnsPerClericIncome = 2, clericReserve = 2 };
-    [SerializeField] private Pace hardPace = new Pace { seedsPerTurn = 2f, clericsSentPerTurn = 3, turnsPerClericIncome = 1, clericReserve = 1 };
+    [SerializeField] private Pace easyPace = new Pace { seedsPerTurn = 0.5f, clericsSentPerTurn = 2, clericsPerTurn = 0.5f, clericReserve = 2 };
+    [SerializeField] private Pace normalPace = new Pace { seedsPerTurn = 1f, clericsSentPerTurn = 3, clericsPerTurn = 1.5f, clericReserve = 2 };
+    [SerializeField] private Pace hardPace = new Pace { seedsPerTurn = 2f, clericsSentPerTurn = 4, clericsPerTurn = 2f, clericReserve = 1 };
 
     private struct Tuning
     {
@@ -99,6 +109,10 @@ public class RivalAIDirector : MonoBehaviour
     private readonly Dictionary<FactionId, Tuning> perRival = new Dictionary<FactionId, Tuning>();
 
     private readonly HashSet<string> seedTitlesTaken = new HashSet<string>();
+    private readonly List<string> recentEvents = new List<string>();
+    private readonly List<Agent> turnOrder = new List<Agent>();
+    private int eventsLeftThisTurn;
+    private readonly HashSet<Districts> playerDistrictThreats = new HashSet<Districts>();
     private readonly List<DistrictZone> plannedSeedZones = new List<DistrictZone>();
     private readonly List<Choice> plannedSeeds = new List<Choice>();
     private readonly Dictionary<DistrictZone, int> plannedClerics = new Dictionary<DistrictZone, int>();
@@ -110,20 +124,22 @@ public class RivalAIDirector : MonoBehaviour
 
     private void Awake()
     {
+        ShufflePersonalities();
         if (difficultyApplied) return;
         if (MatchSettings.UseCustom) ApplyCustomFromMatch();
         else ApplyDifficulty(MatchSettings.Shared);
     }
 
-    /// <summary>Personalidad de cada rival cuando el director se crea en la escena de juego.</summary>
-    public static AIPersonality DefaultPersonality(FactionId faction)
+    private void ShufflePersonalities()
     {
-        switch (faction)
+        List<AIPersonality> pool = new List<AIPersonality>();
+        for (int i = 0; i < agents.Count; i++)
         {
-            case FactionId.Rival1: return AIPersonality.Seeds;
-            case FactionId.Rival2: return AIPersonality.Balanced;
-            case FactionId.Rival3: return AIPersonality.Clerics;
-            default: return AIPersonality.Balanced;
+            if (agents[i] == null) continue;
+            if (pool.Count == 0) pool.AddRange((AIPersonality[])Enum.GetValues(typeof(AIPersonality)));
+            int pick = UnityEngine.Random.Range(0, pool.Count);
+            agents[i].personality = pool[pick];
+            pool.RemoveAt(pick);
         }
     }
 
@@ -187,13 +203,12 @@ public class RivalAIDirector : MonoBehaviour
     {
         switch (personality)
         {
-            case AIPersonality.Clerics: return "Clerics";
-            case AIPersonality.Seeds: return "Seeds";
-            default: return "Balanced";
+            case AIPersonality.Aggressive: return "Aggressive";
+            case AIPersonality.Cautious: return "Cautious";
+            default: return "Opportunist";
         }
     }
 
-    /// <summary>Easy baja puntos y agresividad. Hard hace lo contrario. El plan de objetivos no cambia.</summary>
     public void ApplyDifficulty(RivalDifficulty difficulty)
     {
         usePerRival = false;
@@ -203,9 +218,8 @@ public class RivalAIDirector : MonoBehaviour
         pace = tuning.pace;
     }
 
-    public int TurnsPerClericIncome(FactionId faction) => Mathf.Max(1, TuningFor(faction).pace.turnsPerClericIncome);
+    public int ClericIncomeAt(FactionId faction, int turn) => PerTurn(TuningFor(faction).pace.clericsPerTurn, turn);
 
-    /// <summary>Ata la dificultad: pocas acciones y poca agresividad, o al revés.</summary>
     public void ApplyDifficulty(int actions, float aggression)
     {
         usePerRival = false;
@@ -233,17 +247,53 @@ public class RivalAIDirector : MonoBehaviour
         seedTitlesTaken.Clear();
         SeedEventManager.CollectPendingTitles(seedTitlesTaken);
         IReadOnlyList<DistrictZone> zones = InfluenceManager.Get.GetPlayableZones();
+        var zonesPerDistrict = new Dictionary<Districts, int>();
+        var playerPerDistrict = new Dictionary<Districts, int>();
         for (int i = 0; i < zones.Count; i++)
         {
-            if (zones[i] != null && zones[i].PlantedSeed != null) seedTitlesTaken.Add(zones[i].PlantedSeed.Title);
+            DistrictZone zone = zones[i];
+            if (zone == null) continue;
+            if (zone.PlantedSeed != null) seedTitlesTaken.Add(zone.PlantedSeed.Title);
+            zonesPerDistrict.TryGetValue(zone.District, out int total);
+            zonesPerDistrict[zone.District] = total + 1;
+            if (zone.Influence != null && zone.Influence.Status == ZoneControlStatus.Controlled && zone.Influence.Controller == FactionId.Player)
+            {
+                playerPerDistrict.TryGetValue(zone.District, out int held);
+                playerPerDistrict[zone.District] = held + 1;
+            }
         }
 
-        for (int i = 0; i < agents.Count; i++)
+        playerDistrictThreats.Clear();
+        foreach (KeyValuePair<Districts, int> pair in playerPerDistrict)
         {
-            Agent agent = agents[i];
+            if (pair.Value >= 2 && pair.Value * 2 >= zonesPerDistrict[pair.Key]) playerDistrictThreats.Add(pair.Key);
+        }
+
+        for (int i = 0; i < recentEvents.Count; i++) seedTitlesTaken.Add(recentEvents[i]);
+        eventsLeftThisTurn = UnityEngine.Random.value < quietTurnChance ? 0 : UnityEngine.Random.Range(1, maxEventsPerTurn + 1);
+
+        turnOrder.Clear();
+        turnOrder.AddRange(agents);
+        for (int i = turnOrder.Count - 1; i > 0; i--)
+        {
+            int j = UnityEngine.Random.Range(0, i + 1);
+            (turnOrder[i], turnOrder[j]) = (turnOrder[j], turnOrder[i]);
+        }
+
+        for (int i = 0; i < turnOrder.Count; i++)
+        {
+            Agent agent = turnOrder[i];
             if (agent == null) continue;
             PlanAgent(agent, intents);
         }
+    }
+
+    private void RememberEvent(string title)
+    {
+        if (recentEventMemory <= 0 || string.IsNullOrEmpty(title)) return;
+        recentEvents.Remove(title);
+        recentEvents.Add(title);
+        while (recentEvents.Count > recentEventMemory) recentEvents.RemoveAt(0);
     }
 
     private void SetDifficulty(int actions, float aggression, float mistakes)
@@ -311,14 +361,15 @@ public class RivalAIDirector : MonoBehaviour
         return tuning;
     }
 
-    private static int SeedsThisTurn(float perTurn)
+    private static int SeedsThisTurn(float perTurn) => PerTurn(perTurn, GameTime.CurrentTurn);
+
+    private static int PerTurn(float perTurn, int turn)
     {
         if (perTurn <= 0f) return 0;
-        int turn = Mathf.Max(1, GameTime.CurrentTurn);
+        turn = Mathf.Max(1, turn);
         return Mathf.FloorToInt(turn * perTurn + 0.0001f) - Mathf.FloorToInt((turn - 1) * perTurn + 0.0001f);
     }
 
-    /// <summary>Mientras la guía está en juego, cada rival gasta la mitad de sus acciones por turno.</summary>
     private static int TutorialActionBudget(int actions)
     {
         if (!TutorialSession.SuppressAmbientEvents || actions <= 0) return actions;
@@ -333,7 +384,6 @@ public class RivalAIDirector : MonoBehaviour
 
         ZoneTravelGraph travel = Travel();
         Dictionary<DistrictZone, int> costs = new Dictionary<DistrictZone, int>();
-        // Cost comes only from the saved touch paths: 1 hop = 1, 2 = 4, 3 = 9, plus the unclaimed border.
         travel.FillActionCosts(agent.faction, costs);
 
         AIInfluenceController influence = FindAnyObjectByType<AIInfluenceController>();
@@ -350,7 +400,7 @@ public class RivalAIDirector : MonoBehaviour
         string name = FactionIdUtil.DisplayName(agent.faction);
         while (points > 0)
         {
-            int seedsAllowed = seedCap - plannedSeeds.Count;
+            int seedsAllowed = Mathf.Min(seedCap - plannedSeeds.Count, eventsLeftThisTurn);
             int sendsAllowed = tuning.pace.clericsSentPerTurn - sent;
             if (!TryPick(agent, influence, seeds, costs, slipping, points, clericsLeft, seedsAllowed, sendsAllowed, tuning, out Choice choice, out bool misplayed))
             {
@@ -369,7 +419,12 @@ public class RivalAIDirector : MonoBehaviour
             {
                 plannedSeedZones.Add(choice.zone);
                 plannedSeeds.Add(choice);
-                if (choice.seed != null) seedTitlesTaken.Add(choice.seed.Title);
+                eventsLeftThisTurn--;
+                if (choice.seed != null)
+                {
+                    seedTitlesTaken.Add(choice.seed.Title);
+                    RememberEvent(choice.seed.Title);
+                }
             }
 
             if (logPlans)
@@ -438,9 +493,8 @@ public class RivalAIDirector : MonoBehaviour
             if (!costs.TryGetValue(zone, out int cost)) continue;
 
             bool lost = slipping != null && slipping.Contains(zone);
-            bool hunt = leader.HasValue
-                && zone.Influence.Status == ZoneControlStatus.Controlled
-                && zone.Influence.Controller == leader;
+            FactionId? owner = zone.Influence.Status == ZoneControlStatus.Controlled ? zone.Influence.Controller : null;
+            bool hunt = owner.HasValue && owner != agent.faction && Hunts(agent.personality, owner.Value, leader, zone.District);
             int weight = influence != null ? influence.ObjectiveWeight(agent.faction, zone.District) : 0;
             if (!lost && !hunt && weight <= 0) continue;
 
@@ -448,12 +502,19 @@ public class RivalAIDirector : MonoBehaviour
             bool secured = zone.Influence.Status == ZoneControlStatus.Controlled
                 && zone.Influence.Controller == agent.faction
                 && !EnemyShare(zone, agent.faction);
-            bool canSend = sendsAllowed > 0 && (clericsLeft > tuning.pace.clericReserve || (lost && clericsLeft > 0));
-            if (canSend && zone.Influence.CanEnterByNormalMeans(agent.faction))
+            int reserve = ReserveFor(agent.personality, tuning.pace.clericReserve);
+            bool canSend = sendsAllowed > 0 && (clericsLeft > reserve || (lost && clericsLeft > 0));
+            plannedClerics.TryGetValue(zone, out int planned);
+            int stack = zone.Influence.GetClerics(agent.faction) + planned;
+            int opposition = Opposition(zone, agent.faction);
+            if (canSend && zone.Influence.CanEnterByNormalMeans(agent.faction)
+                && WillingToSend(agent.personality, lost, opposition, EnemyShare(zone, agent.faction), stack, sendsAllowed))
             {
                 Choice clerics = MakeChoice(zone, AIIntentKind.AssignClerics, null, weight, cost, lost, secured, pressure, agent.personality);
                 clerics.hunt = hunt;
-                clerics.defenders = hunt ? zone.Influence.GetClerics(leader.Value) : 0;
+                clerics.defenders = hunt ? zone.Influence.GetClerics(owner.Value) : 0;
+                clerics.opposition = opposition;
+                clerics.full = IsFull(agent.personality, secured, stack, opposition);
                 choices.Add(clerics);
             }
 
@@ -473,7 +534,7 @@ public class RivalAIDirector : MonoBehaviour
             if (choice.cost > points) continue;
             if (choice.kind == AIIntentKind.AssignClerics && clericsLeft <= 0) continue;
 
-            if (bestIndex < 0 || CompareChoice(choice, choices[bestIndex]) < 0) bestIndex = i;
+            if (bestIndex < 0 || CompareChoice(choice, choices[bestIndex], agent.personality) < 0) bestIndex = i;
             if (choice.cost < cheapest)
             {
                 cheapest = choice.cost;
@@ -524,11 +585,14 @@ public class RivalAIDirector : MonoBehaviour
         };
     }
 
-    /// <summary>Mayor peso, luego reconquista, luego menor coste. Un nodo ya seguro cede ante uno que todavía no lo está.</summary>
-    private static int CompareChoice(Choice a, Choice b)
+    private static int CompareChoice(Choice a, Choice b, AIPersonality style)
     {
+        if (style != AIPersonality.Aggressive && a.slipping != b.slipping) return a.slipping ? -1 : 1;
+        if (a.full != b.full) return a.full ? 1 : -1;
         if (a.hunt != b.hunt) return a.hunt ? -1 : 1;
         if (a.hunt && a.defenders != b.defenders) return a.defenders.CompareTo(b.defenders);
+        if (style == AIPersonality.Aggressive && (a.opposition > 0) != (b.opposition > 0)) return a.opposition > 0 ? -1 : 1;
+        if (style == AIPersonality.Opportunist && a.opposition != b.opposition) return a.opposition.CompareTo(b.opposition);
         if (a.weight != b.weight) return b.weight.CompareTo(a.weight);
         if (a.slipping != b.slipping) return a.slipping ? -1 : 1;
         if (a.cost != b.cost) return a.cost.CompareTo(b.cost);
@@ -542,13 +606,67 @@ public class RivalAIDirector : MonoBehaviour
     {
         switch (personality)
         {
-            case AIPersonality.Clerics:
+            case AIPersonality.Aggressive:
                 return kind == AIIntentKind.AssignClerics ? 1f : 0f;
-            case AIPersonality.Seeds:
+            case AIPersonality.Cautious:
                 return kind == AIIntentKind.PlantSeed ? 1f : 0f;
             default:
                 return 0.5f;
         }
+    }
+
+    private bool Hunts(AIPersonality personality, FactionId owner, FactionId? leader, Districts district)
+    {
+        switch (personality)
+        {
+            case AIPersonality.Aggressive: return true;
+            case AIPersonality.Cautious: return false;
+            default: return owner == leader || (owner == FactionId.Player && playerDistrictThreats.Contains(district));
+        }
+    }
+
+    private bool WillingToSend(AIPersonality personality, bool slipping, int opposition, bool enemyShare, int stack, int sendsAllowed)
+    {
+        if (personality == AIPersonality.Cautious && stack >= cautiousClericCap) return false;
+        if (slipping) return true;
+        switch (personality)
+        {
+            case AIPersonality.Cautious: return opposition == 0 && !enemyShare;
+            case AIPersonality.Opportunist: return opposition <= stack + sendsAllowed;
+            default: return true;
+        }
+    }
+
+    private static bool IsFull(AIPersonality personality, bool secured, int stack, int opposition)
+    {
+        switch (personality)
+        {
+            case AIPersonality.Cautious: return stack >= 3;
+            case AIPersonality.Aggressive: return secured || stack >= 1;
+            default: return secured || stack >= Mathf.Max(2, opposition + 1);
+        }
+    }
+
+    private static int ReserveFor(AIPersonality personality, int reserve)
+    {
+        switch (personality)
+        {
+            case AIPersonality.Aggressive: return Mathf.Max(0, reserve - 1);
+            case AIPersonality.Cautious: return reserve + 1;
+            default: return reserve;
+        }
+    }
+
+    private static int Opposition(DistrictZone zone, FactionId self)
+    {
+        ZoneInfluenceState state = zone.Influence;
+        int clerics = 0;
+        foreach (FactionId faction in (FactionId[])Enum.GetValues(typeof(FactionId)))
+        {
+            if (faction != self) clerics += state.GetClerics(faction);
+        }
+
+        return clerics;
     }
 
     private HashSet<DistrictZone> SlippingZones(FactionId faction)

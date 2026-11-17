@@ -38,16 +38,19 @@ MonoBehaviour:
           module:
           - rid: 2174037291684069488
           statUsed: 0
+          outcomeType: 0
           output: Great success!
         - weight: 50
           module:
           - rid: 2174037291684069489
           statUsed: 0
+          outcomeType: 1
           output: Partial success.
         - weight: 25
           module:
           - rid: 2174037291684069490
           statUsed: 0
+          outcomeType: 1
           output: Total failure.
     - rid: 2174037291684069488
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
@@ -55,15 +58,18 @@ MonoBehaviour:
         resource: 0
         minAmount: 100
         maxAmount: 100
+        refund: 0
     - rid: 2174037291684069489
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 0
         minAmount: 30
         maxAmount: 30
+        refund: 0
     - rid: 2174037291684069490
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 4
         minAmount: -20
         maxAmount: -20
+        refund: 0

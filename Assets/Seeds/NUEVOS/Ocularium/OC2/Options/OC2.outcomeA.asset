@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: OC2.outcomeA
   m_EditorClassIdentifier: Assembly-CSharp::Option
   playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
-  shineWith: 0
   title: Host him with every hospitality and attend in person.
   description: 'COST: 25 Wealth'
   icon: {fileID: 0}
@@ -40,11 +39,13 @@ MonoBehaviour:
           - rid: 6513433571317776588
           - rid: 6513433571317776589
           statUsed: 0
+          outcomeType: 0
           output: He concludes that the Beholder surely watches us in particular.
         - weight: 25
           module:
           - rid: 6513433571317776590
           statUsed: 0
+          outcomeType: 1
           output: He is a dull speaker, but the hall is full.
     - rid: 6513433571317776588
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}

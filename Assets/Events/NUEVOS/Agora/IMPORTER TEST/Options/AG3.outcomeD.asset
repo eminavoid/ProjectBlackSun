@@ -39,11 +39,13 @@ MonoBehaviour:
           - rid: 2174037291684069493
           - rid: 2174037291684069494
           statUsed: 0
+          outcomeType: 0
           output: They help you out.
         - weight: 30
           module:
           - rid: 2174037291684069495
           statUsed: 0
+          outcomeType: 1
           output: They laugh at you.
     - rid: 2174037291684069493
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
@@ -51,15 +53,18 @@ MonoBehaviour:
         resource: 2
         minAmount: 1
         maxAmount: 1
+        refund: 0
     - rid: 2174037291684069494
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 6
         minAmount: 15
         maxAmount: 15
+        refund: 0
     - rid: 2174037291684069495
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
       data:
         resource: 2
         minAmount: -10
         maxAmount: -10
+        refund: 0

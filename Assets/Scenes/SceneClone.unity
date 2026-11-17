@@ -2591,6 +2591,7 @@ GameObject:
   - component: {fileID: 264348026}
   - component: {fileID: 264348030}
   - component: {fileID: 264348031}
+  - component: {fileID: 264348032}
   m_Layer: 5
   m_Name: Button (4)
   m_TagString: Untagged
@@ -2743,6 +2744,20 @@ MonoBehaviour:
 
     <size=80%>Commune to unlock new seeds and doctrines.</size>'
   showBesides: 1
+--- !u!114 &264348032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 264348024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8bb39df44f79334496a7921904c677b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TheologyBadge
+  direction: 5
+  distance: -20
 --- !u!1 &268629323
 GameObject:
   m_ObjectHideFlags: 0
@@ -7992,9 +8007,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 549f4eb8871e51843b752db00c394067, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerClergy
-  ordinationCost: 50
+  ordinationCost: 35
   ordainPrice: 60
   upkeepPerCleric: 2
+  clericsFedPerZone: 1
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -12461,7 +12477,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4614166d5d34a4b4e8a155aa5c87e740, type: 2}
   - {fileID: 11400000, guid: 2a8116ba0990db54d96a7a650250a416, type: 2}
   startUnlocks:
-  - {fileID: 11400000, guid: 894bb2f33b3a2ef4982bd58fbdd8a7ce, type: 2}
+  - {fileID: 11400000, guid: 1c92a82bde8d3b343be3d6c1942aabc0, type: 2}
 --- !u!4 &1340745865
 Transform:
   m_ObjectHideFlags: 0

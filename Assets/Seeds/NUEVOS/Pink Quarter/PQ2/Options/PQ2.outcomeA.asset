@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: PQ2.outcomeA
   m_EditorClassIdentifier: Assembly-CSharp::Option
   playerStats: {fileID: 11400000, guid: b7d3c9e7f6c33844e81cb8cbf5f34e55, type: 2}
-  shineWith: 0
   title: Settle the debt discreetly from our own coffers.
   description: 'COST: 100 Wealth'
   icon: {fileID: 0}
@@ -40,12 +39,14 @@ MonoBehaviour:
           - rid: 6513433571317776559
           - rid: 6513433571317776560
           statUsed: 0
+          outcomeType: 1
           output: The house's gratitude is sealed in wax. They owe us a very large
             favor.
         - weight: 25
           module:
           - rid: 6513433571317776561
           statUsed: 0
+          outcomeType: 0
           output: The house expresses its gratitude in coin alone.
     - rid: 6513433571317776559
       type: {class: ChangeResource, ns: , asm: Assembly-CSharp}
