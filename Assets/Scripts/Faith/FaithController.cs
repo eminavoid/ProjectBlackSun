@@ -9,6 +9,9 @@ namespace Assets.Scripts
         [SerializeField] private PlayerResources resources;
         [SerializeField] private List<Faith> faithStages;
 
+        [Header("Debug")]
+        [SerializeField] private bool enableLogging;
+
         private Faith currentFaith;
 
         public static Faith CurrentFaith
@@ -83,7 +86,7 @@ namespace Assets.Scripts
             bool hasClosestFaithToRatioYet = false;
             Faith minflockRatioFaith = null;
 
-            ClosestFaithToRatio closestFaithToRatio = new ClosestFaithToRatio();
+            ClosestFaithToRatio closestFaithToRatio = new ClosestFaithToRatio(null, float.PositiveInfinity);
 
             foreach (Faith faithStage in faithStages)
             {
@@ -92,16 +95,20 @@ namespace Assets.Scripts
                     minflockRatioFaith = faithStage;
                 }
 
+                if (enableLogging)
+                    Debug.Log($"faithStage: {faithStage.name} | closestFaithToRatio: {closestFaithToRatio.faith}, zeal ratio: {zealRatio}, faith stage min zeal ratio: {faithStage.MinZealRatio}, is more or equal: {zealRatio >= faithStage.MinZealRatio}," +
+                    $" has closest faith to ratio yet: {hasClosestFaithToRatioYet}, Has closest ratio to current: {HasClosestRatio(zealRatio, faithStage.MinZealRatio, closestFaithToRatio.distance)}.");
+
                 if (zealRatio >= faithStage.MinZealRatio && (!hasClosestFaithToRatioYet 
                     || HasClosestRatio(zealRatio, faithStage.MinZealRatio, closestFaithToRatio.distance)))
                 {
                     closestFaithToRatio = new ClosestFaithToRatio(faithStage, Mathf.Abs(zealRatio - faithStage.MinZealRatio));
                     hasClosestFaithToRatioYet = true;
                 }
-
-                if (!hasClosestFaithToRatioYet) return minflockRatioFaith;
-                else return closestFaithToRatio.faith;
             }
+
+            if (!hasClosestFaithToRatioYet) return minflockRatioFaith;
+            else return closestFaithToRatio.faith;
 
             throw new Exception("No Faith found");
         }
