@@ -15,7 +15,7 @@ public class ResourceManager : Singleton<ResourceManager>
     [SerializeField] private int startSecrets;
 
     [Header("Modifiers")]
-    [SerializeField] private float tithe = 0.5f;
+    [SerializeField] private float test = 0f;
 
     [Header("User Interface")]
     [SerializeField] private UIWindow uiWindow;
@@ -26,11 +26,6 @@ public class ResourceManager : Singleton<ResourceManager>
 
     private UIWindow resourceWindow = null;
     private ResourceSidebar sidebar = null;
-
-    public void SetTithe(float value)
-    {
-        tithe = value;
-    }
 
     public static void AddResource(Resource resource, int amount)
     {

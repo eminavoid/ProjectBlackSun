@@ -8254,7 +8254,7 @@ MonoBehaviour:
   startHappiness: 25
   startMaterials: 25
   startSecrets: 25
-  tithe: 0.5
+  test: 0
   uiWindow: {fileID: 8615628383825455374, guid: 778a8f7019ff05743b5ad1abc6c8d319, type: 3}
 --- !u!1 &868146993
 GameObject:
@@ -9061,6 +9061,61 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+--- !u!1 &947547454
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 947547455}
+  - component: {fileID: 947547456}
+  m_Layer: 0
+  m_Name: FaithController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &947547455
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 947547454}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1000514344}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &947547456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 947547454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bef133155e9eda459d9d0e335727847, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.FaithController
+  resources: {fileID: 11400000, guid: b6189538476b6ff4eba1374d56e45c58, type: 2}
+  faithStages:
+  - {fileID: 11400000, guid: 3f2765c837dedf449896c45da946aff7, type: 2}
+  - {fileID: 11400000, guid: d2483576afcce964bad6eb8b232c6218, type: 2}
+  - {fileID: 11400000, guid: 9a9e30ca1592f40408cad98c9b2601a5, type: 2}
+  - {fileID: 11400000, guid: 046c4728b5eed8d499cdd6d3b365de51, type: 2}
+  - {fileID: 11400000, guid: 772b4878dd191de47bf474ee905481c3, type: 2}
+  - {fileID: 11400000, guid: e8c3ef48b2f2af74a864e2de26838e3e, type: 2}
+  - {fileID: 11400000, guid: 36e07fd9349c17b49be489280d13cc36, type: 2}
+  - {fileID: 11400000, guid: 36e09eaadc6fcd849be68a3182acd3f8, type: 2}
+  - {fileID: 11400000, guid: 5178481775c0e294a97c78ab478beff6, type: 2}
 --- !u!1 &976879951
 GameObject:
   m_ObjectHideFlags: 0
@@ -9431,6 +9486,7 @@ Transform:
   - {fileID: 1809780766}
   - {fileID: 828777555}
   - {fileID: 474057378}
+  - {fileID: 947547455}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1005410469
