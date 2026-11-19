@@ -81,12 +81,12 @@ namespace Assets.Scripts
         private Faith GetCurrentFaith(float zealRatio)
         {
             bool hasClosestFaithToRatioYet = false;
+            Faith minflockRatioFaith = null;
+
+            ClosestFaithToRatio closestFaithToRatio = new ClosestFaithToRatio();
 
             foreach (Faith faithStage in faithStages)
             {
-                Faith minflockRatioFaith = null;
-                ClosestFaithToRatio closestFaithToRatio = new ClosestFaithToRatio();
-
                 if (minflockRatioFaith == null || faithStage.MinZealRatio < minflockRatioFaith.MinZealRatio)
                 {
                     minflockRatioFaith = faithStage;
