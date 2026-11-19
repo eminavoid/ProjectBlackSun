@@ -16,10 +16,15 @@ public class PlayerResources : ScriptableObject
         { Resource.Secrets, 0 },
     };
 
+    private readonly HashSet<Resource> lockedResources = new HashSet<Resource>();
+
     public Action<Resource, int> onResourceGained;
 
     public void AddResource(Resource resource, int amount)
     {
+        //Can't add resources if the resource is locked for tutorial purposes.
+        if (lockedResources.Contains(resource)) return; 
+
         if (resource == Resource.Clerics)
         {
             if (InfluenceManager.IsNull) return;
@@ -42,9 +47,20 @@ public class PlayerResources : ScriptableObject
         resources[Resource.Authority] = Math.Max(0, resources[Resource.Authority]);
     }
 
+    public void LockResource(Resource resource)
+    {
+        lockedResources.Add(resource);
+    }
+
+    public void UnlockResource(Resource resource)
+    {
+        lockedResources.Remove(resource);
+    }
+
     public void Clear()
     {
         foreach (Resource resource in new List<Resource>(resources.Keys)) resources[resource] = 0;
+        lockedResources.Clear();
     }
 
     public int GetResourceAmount(Resource resource)
