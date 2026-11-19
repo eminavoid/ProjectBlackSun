@@ -58,7 +58,7 @@ namespace Assets.Scripts
             int flock = resources.GetResourceAmount(Resource.Flock);
 
             if (flock == 0) return 0f;
-            return zeal / flock;
+            return (float)zeal / flock;
         }
 
         private void UpdateCurrentFaith()
@@ -80,11 +80,11 @@ namespace Assets.Scripts
 
         private Faith GetCurrentFaith(float zealRatio)
         {
+            bool hasClosestFaithToRatioYet = false;
+
             foreach (Faith faithStage in faithStages)
             {
                 Faith minflockRatioFaith = null;
-
-                bool hasClosestFaithToRatioYet = false;
                 ClosestFaithToRatio closestFaithToRatio = new ClosestFaithToRatio();
 
                 if (minflockRatioFaith == null || faithStage.MinZealRatio < minflockRatioFaith.MinZealRatio)
@@ -92,7 +92,7 @@ namespace Assets.Scripts
                     minflockRatioFaith = faithStage;
                 }
 
-                if (faithStage.MinZealRatio >= zealRatio && (!hasClosestFaithToRatioYet 
+                if (zealRatio >= faithStage.MinZealRatio && (!hasClosestFaithToRatioYet 
                     || HasClosestRatio(zealRatio, faithStage.MinZealRatio, closestFaithToRatio.distance)))
                 {
                     closestFaithToRatio = new ClosestFaithToRatio(faithStage, Mathf.Abs(zealRatio - faithStage.MinZealRatio));
